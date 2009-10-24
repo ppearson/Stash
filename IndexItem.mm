@@ -76,6 +76,11 @@
 	return [children count];
 }
 
+- (void)deleteChild:(int)i
+{
+	[children removeObjectAtIndex:i];
+}
+
 - (BOOL)expandable
 {
 	return ([children count] > 0);

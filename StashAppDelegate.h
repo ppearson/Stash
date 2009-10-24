@@ -37,6 +37,17 @@
 - (void)buildIndexTree;
 - (void)buildContentTree;
 
+- (IBAction)AddAccount:(id)sender;
+- (IBAction)AddTransaction:(id)sender;
+- (IBAction)Delete:(id)sender;
+- (IBAction)SplitTransaction:(id)sender;
+
+- (void)TransactionSelectionDidChange:(NSNotification *)notification;
+
+- (IBAction)updateItem:(id)sender;
+
+NSDate *convertToNSDate(Date *date);
+
 @property (assign) IBOutlet NSWindow *window;
 
 @end

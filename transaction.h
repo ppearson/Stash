@@ -31,6 +31,7 @@ public:
 	void addSplit(std::string Description, std::string Payee, fixed Amount);
 	SplitTransaction & getSplit(int item) { return m_aSplits[item]; }
 	int getSplitCount() { return m_aSplits.size(); }
+	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
 	fixed getSplitTotal();
 	
 	void Load(std::fstream &stream);

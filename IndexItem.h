@@ -27,6 +27,7 @@
 - (void)addChild:(IndexItem *)n;
 - (int)childrenCount;
 - (IndexItem *)childAtIndex:(int)i;
+- (void)deleteChild:(int)i;
 
 - (BOOL)expandable;
 

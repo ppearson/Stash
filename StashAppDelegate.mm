@@ -16,6 +16,19 @@
 	// Insert code here to initialize your application 
 }
 
+- (id)init
+{
+	self = [super init];
+	if (self)
+	{
+		[NSApp setDelegate: self];
+		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:contentView];
+	}
+	
+	return self;
+}
+
 - (void) awakeFromNib
 {
 	m_bEditing = false;	
@@ -44,17 +57,12 @@
 	m_pAccount->addTransaction(t2);
 	m_pAccount->addTransaction(t3);	
 	
-//	[contentView setDelegate:self];
+	[contentView setDelegate:self];
 	[contentView setAutoresizesOutlineColumn:NO];
 	
 	[self buildIndexTree];
 	[self buildContentTree];	
 }
-
-
-
-
-
 
 - (void)buildIndexTree
 {
@@ -164,8 +172,8 @@
 				std::string strAmount = splitValue;
 				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 				
+				[newSplit setValue:@"Split Value" forKey:@"Description"];
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
-				[newSplit setValue:@"" forKey:@"Description"];
 				[newSplit setValue:sAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTransaction];
@@ -181,9 +189,295 @@
 		[m_aContentItems addObject:newTransaction];		
 	}
 	
-	[contentView reloadData];	
+	[contentView reloadData];
 }
 
+- (IBAction)AddAccount:(id)sender
+{
+	
+}
+
+- (IBAction)AddTransaction:(id)sender
+{
+	Transaction newTransaction("", "", 0.0, -1);
+	
+	m_pAccount->addTransaction(newTransaction);
+	
+	[Payee setStringValue:@""];
+	[Description setStringValue:@""];
+	[Amount setStringValue:@""];
+	
+	[self buildContentTree];
+}
+
+- (IBAction)Delete:(id)sender
+{
+	NSIndexSet *rows = [contentView selectedRowIndexes];
+	
+	if ([rows count] > 0)
+	{
+		NSInteger row = [rows lastIndex];
+		
+		while (row != NSNotFound)
+		{
+			IndexItem *item = [contentView itemAtRow:row];
+			
+			int nSplit = [item intKeyValue:@"Split"];
+			int nTransaction = [item intKeyValue:@"Transaction"];
+			
+			if (nSplit == -1)
+			{
+				m_pAccount->deleteTransaction(nTransaction);
+				[m_aContentItems removeObjectAtIndex:nTransaction];
+			}
+			else if (nSplit != -2)
+			{
+				IndexItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction];
+				Transaction &trans = m_pAccount->getTransaction(nTransaction);
+				
+				trans.deleteSplit(nSplit);
+				[transactionItem deleteChild:nSplit];
+			}
+			
+			row = [rows indexLessThanIndex:row];			
+		}
+		
+		// TODO: for multiple selection this won't work, as indexes will get out of sync
+		//		 also, when removing items, the balance value of other objects will be wrong
+		
+//		[self buildContentTree];
+		[contentView reloadData];
+	}	
+}
+
+- (IBAction)SplitTransaction:(id)sender
+{
+	NSInteger row = [contentView selectedRow];
+	
+	if (row == NSNotFound)
+		return;
+	
+	IndexItem *item = [contentView itemAtRow:row];
+	
+	int nTransaction = [item intKeyValue:@"Transaction"];
+	Transaction &trans = m_pAccount->getTransaction(nTransaction);
+	
+	fixed splitValue = trans.Amount();
+	IndexItem *newSplit = [[IndexItem alloc] init];
+	
+	std::string strAmount = splitValue;
+	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+	
+	[newSplit setValue:@"Split Value" forKey:@"Description"];
+	[newSplit setValue:@"Split Value" forKey:@"Payee"];
+	[newSplit setValue:sAmount forKey:@"Amount"];
+	
+	[newSplit setTransaction:nTransaction];
+	[newSplit setIntValue:nTransaction forKey:@"Transaction"];
+	
+	[newSplit setSplitTransaction:-2];
+	[newSplit setIntValue:-2 forKey:@"Split"];
+	
+	[item addChild:newSplit];
+	
+	[contentView reloadData];
+	
+	[contentView expandItem:item];
+//	[contentView select
+}
+
+- (void)TransactionSelectionDidChange:(NSNotification *)notification
+{
+	NSIndexSet *rows = [contentView selectedRowIndexes];
+	
+	if ([rows count] == 1)
+	{
+		NSInteger row = [rows lastIndex];
+		
+		IndexItem *item = [contentView itemAtRow:row];
+		
+		int nTrans = [item transaction];
+		int nSplit = [item splitTransaction];
+		
+		Transaction *trans = NULL;
+		SplitTransaction *split = NULL;
+		
+		if (nTrans >= 0)
+			trans = &m_pAccount->getTransaction(nTrans);
+		
+		if (nSplit >= 0)
+			split = &trans->getSplit(nSplit);
+		
+		m_SelectedTransaction = item;
+		
+		if (trans && !split && nSplit != -2) // A normal transaction
+		{
+			m_bEditing = true;			
+			
+			std::string strPayee = trans->Payee();
+			NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+			
+			std::string strDescription = trans->Description();
+			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+			
+			std::string strAmount = trans->Amount();
+			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+			
+			Date date1 = trans->Date1();
+			NSDate *datetemp = convertToNSDate(&date1);
+			
+			[Payee setStringValue:sPayee];
+			[Description setStringValue:sDescription];
+			[Amount setStringValue:sAmount];
+			[DateCntl setDateValue:datetemp];
+		}
+		else if (trans && split && nSplit != -2)
+		{
+			m_bEditing = true;
+			
+			std::string strPayee = split->Payee();
+			NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+			
+			std::string strDescription = split->Description();
+			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+			
+			std::string strAmount = split->Amount();
+			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+			
+			[Payee setStringValue:sPayee];
+			[Description setStringValue:sDescription];
+			[Amount setStringValue:sAmount];
+		}
+		else // Dummy Split
+		{
+			m_bEditing = true;
+			
+			NSString *sPayee = [item keyValue:@"Payee"];
+			NSString *sDescription = [item keyValue:@"Description"];
+			NSString *sAmount = [item keyValue:@"Amount"];
+			
+			[Payee setStringValue:sPayee];
+			[Description setStringValue:sDescription];
+			[Amount setStringValue:sAmount];
+		}
+		
+	}
+	else
+	{
+		m_SelectedTransaction = 0; 
+		m_bEditing = false;		
+	}
+}
+
+- (void)textDidChange:(NSNotification *)notification
+{
+	NSTextField *ed = [notification object];
+	
+	//	[ed v
+	
+	[self updateItem:self];
+}
+
+- (IBAction)updateItem:(id)sender
+{
+	if (!m_bEditing || !m_SelectedTransaction)
+		return;
+	
+	NSDate *ndate1 = [DateCntl dateValue];
+	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
+	
+	int nYear = [CalDate yearOfCommonEra];
+	int nMonth = [CalDate monthOfYear];
+	int nDay = [CalDate dayOfMonth];
+	
+	Date date1(nDay, nMonth, nYear);
+	std::string strDate = date1.FormattedDate(0);
+	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
+	
+	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	double dAmount = [Amount doubleValue];
+	
+	fixed fAmount = dAmount;
+	std::string strAmount = fAmount;
+	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+	
+	int nTrans = [m_SelectedTransaction transaction];
+	int nSplit = [m_SelectedTransaction splitTransaction];
+	
+	Transaction *trans = NULL;
+	SplitTransaction *split = NULL;
+	
+	if (nTrans >= 0)
+		trans = &m_pAccount->getTransaction(nTrans);
+	
+	if (nSplit >= 0)
+		split = &trans->getSplit(nSplit);
+	
+	if (trans && !split && nSplit != -2)
+	{
+		trans->setDate(date1);
+		trans->setPayee(strPayee);
+		trans->setDescription(strDesc);
+		trans->setAmount(fAmount);
+		
+		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
+	}
+	else
+	{
+		if (nSplit != -2)
+		{
+			split->setPayee(strPayee);
+			split->setDescription(strDesc);
+			split->setAmount(fAmount);
+		}
+		
+		if (nSplit == -2) // Dummy value, so convert to a real split
+		{
+			fixed transValue = trans->Amount();			
+			fixed splitValue = trans->getSplitTotal();
+			
+			fixed diff = transValue -= splitValue;
+			
+			trans->addSplit(strDesc, strPayee, fAmount);
+			int nNumSplits = trans->getSplitCount();
+			[m_SelectedTransaction setSplitTransaction:nNumSplits - 1];
+			
+			// Then add a new dummy value if needed
+			
+			if (diff < 0.0)
+			{
+				IndexItem *transIndex = [m_aContentItems objectAtIndex:nTrans];
+				
+				IndexItem *newSplit = [[IndexItem alloc] init];
+				
+				std::string strAmount = splitValue;
+				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+				
+				[newSplit setValue:@"Split Value" forKey:@"Payee"];
+				[newSplit setValue:@"" forKey:@"Description"];
+				[newSplit setValue:sAmount forKey:@"Amount"];
+				
+				[newSplit setTransaction:nTrans];
+				[newSplit setIntValue:nTrans forKey:@"Transaction"];
+				
+				[newSplit setSplitTransaction:-2];
+				[newSplit setIntValue:-2 forKey:@"Split"];
+				
+				[transIndex addChild:newSplit];
+			}			
+		}		
+	}	
+	
+	[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
+	[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
+	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+	
+	[contentView reloadData];
+	
+	//	[self buildTree];
+	//	m_bEditing = false;	
+}
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item
 {
@@ -197,7 +491,6 @@
 		{
 			return [m_aIndexItems objectAtIndex:index];
 		}
-
 	}
 	else
 	{
@@ -222,7 +515,6 @@
 		{
 			return [m_aIndexItems count];
 		}
-
     }
 	
     return [item childrenCount];
@@ -328,6 +620,22 @@
 	}
 	else
 		[cell setTextColor:fontColor];
+}
+
+NSDate * convertToNSDate(Date *date)
+{
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    
+    NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];
+    [dateComponents setYear:date->Year()];
+    [dateComponents setMonth:date->Month()];
+    [dateComponents setDay:date->Day()];
+    
+    [dateComponents setHour:0];
+    [dateComponents setMinute:0];
+    [dateComponents setSecond:0];
+	
+    return [gregorian dateFromComponents:dateComponents];	
 }
 
 @end
