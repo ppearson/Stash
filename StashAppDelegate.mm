@@ -35,6 +35,7 @@
 	m_SelectedTransaction = 0;
 	
 	m_aContentItems = [[NSMutableArray alloc] init];
+	m_aIndexItems = [[NSMutableArray alloc] init];
 	
 	NSDate *date1 = [NSDate date];
 	[DateCntl setDateValue:date1];
@@ -68,7 +69,13 @@
 {
 	[m_aIndexItems removeAllObjects];
 	
+	IndexItem *newAccount = [[IndexItem alloc] init];
+	[newAccount setValue:@"Main" forKey:@"Name"];
 	
+	
+	[m_aIndexItems addObject:newAccount];
+	
+	[indexView reloadData];	
 }
 
 
@@ -207,7 +214,50 @@
 	[Description setStringValue:@""];
 	[Amount setStringValue:@""];
 	
-	[self buildContentTree];
+//	[self buildContentTree];
+	
+	IndexItem *newIndex = [[IndexItem alloc] init];
+	
+	std::string strPayee = newTransaction.Payee();
+	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+	
+	std::string strDescription = newTransaction.Description();
+	NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+	
+	std::string strAmount = newTransaction.Amount();
+	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+	
+	std::string strDate = newTransaction.Date1().FormattedDate(0);
+	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
+	
+	fixed localBalance = newTransaction.Amount();
+	
+	std::string strBalance = localBalance;
+	NSString *sBalance = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
+	
+	int nTransaction = m_pAccount->getTransactionCount() - 1;
+	
+	[newIndex setTransaction:nTransaction];
+	
+	int recon = newTransaction.isReconciled();
+	
+	[newIndex setIntValue:recon forKey:@"Reconciled"];
+	[newIndex setValue:sDate forKey:@"Date"];
+	[newIndex setValue:sPayee forKey:@"Payee"];
+	[newIndex setValue:sDescription forKey:@"Description"];
+	[newIndex setValue:sAmount forKey:@"Amount"];
+	[newIndex setValue:sBalance forKey:@"Balance"];
+	
+	[newIndex setIntValue:nTransaction forKey:@"Transaction"];
+	
+	[m_aContentItems addObject:newIndex];
+	[contentView reloadData];
+	
+	NSInteger row = [contentView rowForItem:newIndex];
+	
+	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	
+	[window makeFirstResponder:Payee];
 }
 
 - (IBAction)Delete:(id)sender

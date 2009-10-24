@@ -923,6 +923,7 @@
 											<object class="NSMutableArray" key="NSTableColumns">
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<object class="NSTableColumn" id="5193116">
+													<string key="NSIdentifier">Name</string>
 													<double key="NSWidth">135</double>
 													<double key="NSMinWidth">16</double>
 													<double key="NSMaxWidth">1000</double>
@@ -1005,6 +1006,7 @@
 											<int key="NSDraggingSourceMaskForNonLocal">0</int>
 											<bool key="NSAllowsTypeSelect">YES</bool>
 											<int key="NSTableViewDraggingDestinationStyle">0</int>
+											<float key="NSOutlineViewIndentationPerLevelKey">0.0</float>
 										</object>
 									</object>
 									<string key="NSFrame">{{1, 1}, {138, 596}}</string>
@@ -1341,7 +1343,7 @@
 										<object class="NSTextField" id="590539037">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{10, 102}, {81, 17}}</string>
+											<string key="NSFrame">{{10, 83}, {81, 17}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="88528660">
@@ -1362,7 +1364,7 @@
 										<object class="NSTextField" id="710538084">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{10, 77}, {59, 17}}</string>
+											<string key="NSFrame">{{10, 113}, {59, 17}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="628298347">
@@ -1378,7 +1380,7 @@
 										<object class="NSTextField" id="941255500">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{10, 127}, {44, 17}}</string>
+											<string key="NSFrame">{{10, 143}, {44, 17}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="328813074">
@@ -1394,7 +1396,7 @@
 										<object class="NSTextField" id="671073799">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{131, 122}, {190, 22}}</string>
+											<string key="NSFrame">{{131, 138}, {190, 22}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="435640868">
@@ -1421,7 +1423,7 @@
 										<object class="NSTextField" id="519023726">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{131, 97}, {306, 22}}</string>
+											<string key="NSFrame">{{131, 78}, {306, 22}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="567840602">
@@ -1482,7 +1484,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 										<object class="NSTextField" id="724451679">
 											<reference key="NSNextResponder" ref="618316034"/>
 											<int key="NSvFlags">268</int>
-											<string key="NSFrame">{{131, 72}, {123, 22}}</string>
+											<string key="NSFrame">{{131, 108}, {123, 22}}</string>
 											<reference key="NSSuperview" ref="618316034"/>
 											<bool key="NSEnabled">YES</bool>
 											<object class="NSTextFieldCell" key="NSCell" id="130850455">
@@ -2766,13 +2768,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="object" ref="618316034"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="590539037"/>
-							<reference ref="710538084"/>
-							<reference ref="941255500"/>
-							<reference ref="671073799"/>
-							<reference ref="519023726"/>
-							<reference ref="724451679"/>
 							<reference ref="992951619"/>
+							<reference ref="671073799"/>
+							<reference ref="941255500"/>
+							<reference ref="724451679"/>
+							<reference ref="710538084"/>
+							<reference ref="519023726"/>
+							<reference ref="590539037"/>
 						</object>
 						<reference key="parent" ref="267157718"/>
 					</object>
