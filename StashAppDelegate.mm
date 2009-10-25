@@ -72,11 +72,13 @@
 		m_pAccount->addTransaction(t3);
 	}
 */	
+	
 	[contentView setDelegate:self];
 	[contentView setAutoresizesOutlineColumn:NO];
 	
 	[self buildIndexTree];
-	[self buildContentTree];	
+	[self buildContentTree];
+	[self updateUI];
 }
 
 - (void)buildIndexTree
@@ -236,6 +238,26 @@
 	[contentView reloadData];
 }
 
+- (void)updateUI
+{
+	NSString *sTransactions;
+	if (m_pAccount->getTransactionCount() == 1)
+	{
+		sTransactions = @"1 Transaction.";
+	}
+	else
+	{
+		sTransactions = [NSString stringWithFormat:@"%i Transactions.", m_pAccount->getTransactionCount()];
+	}
+	[Transactions setStringValue:sTransactions];
+	
+	std::string strBalance = m_pAccount->getBalance(true);
+	NSString *sBal1 = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
+	
+	NSString *sBalance = [NSString stringWithFormat:@"Balance: £%@", sBal1];
+	[Balance setStringValue:sBalance];	
+}
+
 - (IBAction)AddAccount:(id)sender
 {
 	
@@ -300,6 +322,8 @@
 	[window makeFirstResponder:Payee];
 	
 	m_UnsavedChanges = true;
+	
+	[self updateUI];
 }
 
 - (IBAction)Delete:(id)sender
@@ -341,6 +365,8 @@
 		[contentView reloadData];
 		
 		m_UnsavedChanges = true;
+		
+		[self updateUI];
 	}	
 }
 
@@ -600,6 +626,8 @@
 	[contentView reloadData];
 	
 	m_UnsavedChanges = true;
+	
+	[self updateUI];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item
@@ -687,6 +715,8 @@
 				}
 				
 				m_UnsavedChanges = true;
+				
+				[self updateUI];
 			}
 		}
 	}
@@ -817,6 +847,8 @@ NSDate * convertToNSDate(Date *date)
 		m_UnsavedChanges = false;
 		
 		[self buildContentTree];
+		
+		[self updateUI];
 	}
 }
 

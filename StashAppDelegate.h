@@ -17,6 +17,9 @@
 	IBOutlet NSSplitView *splitView;
 	IBOutlet NSOutlineView *indexView, *contentView;
 	
+	IBOutlet NSTextField *Transactions;
+	IBOutlet NSTextField *Balance;
+	
 	IBOutlet NSTextField *Payee;
 	IBOutlet NSTextField *Description;
 	IBOutlet NSTextField *Category;
@@ -42,6 +45,8 @@
 
 - (void)buildIndexTree;
 - (void)buildContentTree;
+
+- (void)updateUI;
 
 - (IBAction)AddAccount:(id)sender;
 - (IBAction)AddTransaction:(id)sender;
