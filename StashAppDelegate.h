@@ -31,6 +31,8 @@
 	Account *m_pAccount;	
 	bool m_bEditing;
 	
+	int m_nTransactionOffset;
+	
 	IndexItem *m_SelectedIndex;
 	IndexItem *m_SelectedTransaction;
 	

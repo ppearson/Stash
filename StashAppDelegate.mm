@@ -115,6 +115,7 @@
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin();
 	int nTransaction = 0;
+	m_nTransactionOffset = 0;
 	
 	if (m_pAccount->getTransactionCount() > nTransactionsToShow)
 	{
@@ -124,6 +125,8 @@
 		{
 			localBalance += (*it).Amount();
 		}
+		
+		m_nTransactionOffset = nTransaction;
 	}	
 	
 	for (; it != m_pAccount->end(); ++it, nTransaction++)
@@ -317,11 +320,11 @@
 			if (nSplit == -1)
 			{
 				m_pAccount->deleteTransaction(nTransaction);
-				[m_aContentItems removeObjectAtIndex:nTransaction];
+				[m_aContentItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
 			}
 			else if (nSplit != -2)
 			{
-				IndexItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction];
+				IndexItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction - m_nTransactionOffset];
 				Transaction &trans = m_pAccount->getTransaction(nTransaction);
 				
 				trans.deleteSplit(nSplit);
@@ -567,7 +570,7 @@
 			
 			if (diff != 0.0)
 			{
-				IndexItem *transIndex = [m_aContentItems objectAtIndex:nTrans];
+				IndexItem *transIndex = [m_aContentItems objectAtIndex:nTrans - m_nTransactionOffset];
 				
 				IndexItem *newSplit = [[IndexItem alloc] init];
 				
