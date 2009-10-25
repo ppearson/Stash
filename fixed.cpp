@@ -373,3 +373,11 @@ bool fixed::operator ==( const fixed & rhs ) const
 	else
 		return m_num == rhs.m_num;
 }
+
+bool fixed::operator !=(const fixed & rhs) const
+{
+	if (m_positive != rhs.m_positive)
+		return true;
+	
+	return m_num != rhs.m_num;
+}

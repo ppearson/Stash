@@ -172,7 +172,7 @@
 			
 			// add remainder as a temp editable row
 			
-			if (splitValue < 0.0)
+			if (splitValue != 0.0)
 			{
 				IndexItem *newSplit = [[IndexItem alloc] init];
 				
@@ -499,27 +499,30 @@
 		if (nSplit == -2) // Dummy value, so convert to a real split
 		{
 			fixed transValue = trans->Amount();			
+			
+			trans->addSplit(strDesc, strPayee, fAmount);
+			
+			int nSplitsNumber = trans->getSplitCount() - 1;
+			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
+			[m_SelectedTransaction setIntValue:nSplitsNumber forKey:@"Split"];
+			
 			fixed splitValue = trans->getSplitTotal();
 			
 			fixed diff = transValue -= splitValue;
 			
-			trans->addSplit(strDesc, strPayee, fAmount);
-			int nNumSplits = trans->getSplitCount();
-			[m_SelectedTransaction setSplitTransaction:nNumSplits - 1];
-			
 			// Then add a new dummy value if needed
 			
-			if (diff < 0.0)
+			if (diff != 0.0)
 			{
 				IndexItem *transIndex = [m_aContentItems objectAtIndex:nTrans];
 				
 				IndexItem *newSplit = [[IndexItem alloc] init];
 				
-				std::string strAmount = splitValue;
+				std::string strAmount = diff;
 				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
-				[newSplit setValue:@"" forKey:@"Description"];
+				[newSplit setValue:@"Split Value" forKey:@"Description"];
 				[newSplit setValue:sAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTrans];
@@ -540,7 +543,7 @@
 	[contentView reloadData];
 	
 	//	[self buildTree];
-	m_bEditing = false;
+	//	m_bEditing = false;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item

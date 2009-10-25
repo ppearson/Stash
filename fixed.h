@@ -32,6 +32,7 @@ public:
 	bool operator>(const fixed & rhs) const;	
 	bool operator<(const fixed & rhs) const;	
 	bool operator==(const fixed & rhs) const;
+	bool operator!=(const fixed & rhs) const;
 	
 	bool IsPositive() const;
 	
