@@ -60,7 +60,7 @@
 	m_pAccount->addTransaction(t1);
 	m_pAccount->addTransaction(t2);
 	m_pAccount->addTransaction(t3);
-	
+/*	
 	for (int i = 0; i < 50; i++)
 	{
 		Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
@@ -71,7 +71,7 @@
 		m_pAccount->addTransaction(t2);
 		m_pAccount->addTransaction(t3);
 	}
-	
+*/	
 	[contentView setDelegate:self];
 	[contentView setAutoresizesOutlineColumn:NO];
 	
