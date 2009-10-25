@@ -54,6 +54,7 @@
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
+- (void)applicationWillTerminate:(NSNotification *)aNotification;
 
 - (IBAction)updateTransaction:(id)sender;
 

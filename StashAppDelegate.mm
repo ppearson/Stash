@@ -8,12 +8,14 @@
 
 #import "StashAppDelegate.h"
 
+
 @implementation StashAppDelegate
 
 @synthesize window;
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application 
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{	
+	[window makeKeyAndOrderFront:self];
 }
 
 - (id)init
@@ -901,6 +903,11 @@ NSDate * convertToNSDate(Date *date)
 - (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     [NSApp replyToApplicationShouldTerminate:returnCode == NSAlertDefaultReturn];
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+	
 }
 
 @end
