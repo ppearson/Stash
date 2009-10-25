@@ -49,3 +49,30 @@ void Account::Store(std::fstream &stream)
 		(*it).Store(stream);
 	}
 }
+
+fixed Account::getBalance(bool onlyReconciled)
+{
+	fixed balance = 0.0;
+	
+	std::vector<Transaction>::iterator it = m_aTransactions.begin();
+	
+	if (onlyReconciled)
+	{
+		for (; it != m_aTransactions.end(); ++it)
+		{
+			if ((*it).isReconciled())
+			{
+				balance += (*it).Amount();
+			}
+		}
+	}
+	else
+	{
+		for (; it != m_aTransactions.end(); ++it)
+		{			
+			balance += (*it).Amount();
+		}
+	}
+	
+	return balance;
+}

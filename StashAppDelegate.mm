@@ -230,7 +230,7 @@
 	std::string strDate = newTransaction.Date1().FormattedDate(0);
 	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
 	
-	fixed localBalance = newTransaction.Amount();
+	fixed localBalance = m_pAccount->getBalance(true);
 	
 	std::string strBalance = localBalance;
 	NSString *sBalance = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
@@ -333,6 +333,12 @@
 	[contentView reloadData];
 	
 	[contentView expandItem:item];
+	
+	row = [contentView rowForItem:newSplit];
+	
+	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	
+	[window makeFirstResponder:Payee];
 //	[contentView select
 }
 
@@ -375,6 +381,17 @@
 			
 			Date date1 = trans->Date1();
 			NSDate *datetemp = convertToNSDate(&date1);
+			
+			bool bReconciled = trans->isReconciled();
+			
+			if (bReconciled)
+			{
+				[Reconciled setState:NSOnState];
+			}
+			else
+			{
+				[Reconciled setState:NSOffState];
+			}
 			
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
@@ -419,16 +436,7 @@
 	}
 }
 
-- (void)textDidChange:(NSNotification *)notification
-{
-	NSTextField *ed = [notification object];
-	
-	//	[ed v
-	
-	[self updateItem:self];
-}
-
-- (IBAction)updateItem:(id)sender
+- (void)updateTransaction:(id)sender
 {
 	if (!m_bEditing || !m_SelectedTransaction)
 		return;
@@ -452,6 +460,11 @@
 	std::string strAmount = fAmount;
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 	
+	bool bReconciled = false;
+	
+	if ([Reconciled state] == NSOnState)
+		bReconciled = true;
+	
 	int nTrans = [m_SelectedTransaction transaction];
 	int nSplit = [m_SelectedTransaction splitTransaction];
 	
@@ -470,6 +483,7 @@
 		trans->setPayee(strPayee);
 		trans->setDescription(strDesc);
 		trans->setAmount(fAmount);
+		trans->setReconciled(bReconciled);
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
 	}
@@ -526,7 +540,7 @@
 	[contentView reloadData];
 	
 	//	[self buildTree];
-	//	m_bEditing = false;	
+	m_bEditing = false;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item
@@ -605,9 +619,17 @@
 			if ([identifier isEqualToString:@"Reconciled"])
 			{
 				if ([object boolValue] == YES)
+				{
 					trans->setReconciled(true);
+//					[item setIntValue:1 forKey:@"Reconciled"];
+				}
 				else
+				{
 					trans->setReconciled(false);
+//					[item setIntValue:0 forKey:@"Reconciled"];
+				}
+				
+//				[contentView reloadItem:item];
 			}
 		}
 	}
@@ -638,7 +660,7 @@
 	
 	if ([item intKeyValue:@"Split"] != -1)
 		enableCheck = NO;
-	
+		
 	if ([outlineView selectedRow] == [outlineView rowForItem:item])
 	{
 		fontColor = [NSColor whiteColor];
@@ -665,8 +687,6 @@
 		{
 			[cell setImagePosition: NSNoImage];
 		}
-		
-		[cell setEnabled:enableCheck];
 	}
 	else
 		[cell setTextColor:fontColor];

@@ -19,9 +19,10 @@
 	
 	IBOutlet NSTextField *Payee;
 	IBOutlet NSTextField *Description;
+	IBOutlet NSTextField *Category;
 	IBOutlet NSTextField *Amount;
-	
 	IBOutlet id DateCntl;
+	IBOutlet id Reconciled;
 	
 	NSMutableArray *m_aIndexItems;
 	NSMutableArray *m_aContentItems;
@@ -44,7 +45,7 @@
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 
-- (IBAction)updateItem:(id)sender;
+- (IBAction)updateTransaction:(id)sender;
 
 NSDate *convertToNSDate(Date *date);
 
