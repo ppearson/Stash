@@ -41,6 +41,7 @@
 	[DateCntl setDateValue:date1];
 	
 	Account acc;
+	acc.setName("Main");
 	
 	m_aAccounts.push_back(acc);
 	m_pAccount = &m_aAccounts[0];
@@ -56,7 +57,18 @@
 	m_pAccount->addTransaction(t0);
 	m_pAccount->addTransaction(t1);
 	m_pAccount->addTransaction(t2);
-	m_pAccount->addTransaction(t3);	
+	m_pAccount->addTransaction(t3);
+	
+	for (int i = 0; i < 50; i++)
+	{
+		Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
+		Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
+		Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
+		
+		m_pAccount->addTransaction(t1);
+		m_pAccount->addTransaction(t2);
+		m_pAccount->addTransaction(t3);
+	}
 	
 	[contentView setDelegate:self];
 	[contentView setAutoresizesOutlineColumn:NO];
@@ -69,11 +81,23 @@
 {
 	[m_aIndexItems removeAllObjects];
 	
-	IndexItem *newAccount = [[IndexItem alloc] init];
-	[newAccount setValue:@"Main" forKey:@"Name"];
+	std::vector<Account>::iterator it = m_aAccounts.begin();
 	
+	for (; it != m_aAccounts.end(); ++it)
+	{
+		IndexItem *newAccount = [[IndexItem alloc] init];
+		
+		std::string strName = it->getName();
+		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+		
+		std::string strBalance = it->getBalance(true);
+		NSString *sBalance = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
+		
+		[newAccount setValue:sName forKey:@"Name"];
+		[newAccount setValue:sBalance forKey:@"Balance"];
 	
-	[m_aIndexItems addObject:newAccount];
+		[m_aIndexItems addObject:newAccount];
+	}
 	
 	[indexView reloadData];	
 }
@@ -85,7 +109,7 @@
 	
 	fixed localBalance = 0.0;
 	
-	int nTransactionsToShow = 10;
+	int nTransactionsToShow = 100;
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin();
 	int nTransaction = 0;
@@ -449,6 +473,7 @@
 			
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
+			[Category setStringValue:@""];
 			[Amount setStringValue:sAmount];
 		}		
 	}
@@ -732,7 +757,10 @@ NSDate * convertToNSDate(Date *date)
     [dateComponents setMinute:0];
     [dateComponents setSecond:0];
 	
-    return [gregorian dateFromComponents:dateComponents];	
+	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
+	[gregorian release];
+	
+    return nsDate;
 }
 
 - (IBAction)OpenFile:(id)sender
