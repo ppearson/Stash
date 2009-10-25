@@ -12,12 +12,14 @@ class Transaction
 {
 public:
 	Transaction() { m_Split = false; m_Reconciled = false; }
-	Transaction(std::string Description, std::string Payee, fixed Amount, Date date);
+	Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date);
 	
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
 	Date Date1() const { return m_Date; }
 	void setDate(Date date) { m_Date = date; }
+	std::string Category() const { return m_Category; }
+	void setCategory(std::string Category) { m_Category = Category; }
 	std::string Description() const { return m_Description; }
 	void setDescription(std::string Description) { m_Description = Description; }
 	std::string Payee() const { return m_Payee; }
@@ -28,7 +30,7 @@ public:
 	void setSplit(bool split) { m_Split = split; }
 	bool Split() { return m_Split; }
 	
-	void addSplit(std::string Description, std::string Payee, fixed Amount);
+	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);
 	SplitTransaction & getSplit(int item) { return m_aSplits[item]; }
 	int getSplitCount() { return m_aSplits.size(); }
 	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
@@ -43,6 +45,7 @@ private:
 	
 	bool m_Reconciled;
 	Date m_Date;
+	std::string m_Category;
 	std::string m_Description;
 	std::string m_Payee;
 	fixed m_Amount;

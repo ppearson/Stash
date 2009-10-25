@@ -45,13 +45,13 @@
 	m_aAccounts.push_back(acc);
 	m_pAccount = &m_aAccounts[0];
 	
-	Transaction t0("Starting balance", "", 2142.51, Date(13, 9, 2009));
-	Transaction t1("Tax", "Council", -86.00, Date(13, 9, 2009));
-	Transaction t2("Food", "Sainsbury's", -13.44, Date(17, 9, 2009));
-	Transaction t3("Pay", "Work", 2470.0, Date(29, 9, 2009));
+	Transaction t0("Starting balance", "", "", 2142.51, Date(13, 9, 2009));
+	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
+	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
+	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
 	
-	t1.addSplit("Test1", "Test1", -30);
-	t1.addSplit("Test2", "Test2", -21.44);
+	t1.addSplit("Test1", "Test1", "T1", -30);
+	t1.addSplit("Test2", "Test2", "T2", -21.44);
 	
 	m_pAccount->addTransaction(t0);
 	m_pAccount->addTransaction(t1);
@@ -110,6 +110,9 @@
 		std::string strDescription = it->Description();
 		NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 		
+		std::string strCategory = it->Category();
+		NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+		
 		std::string strAmount = it->Amount();
 		NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 		
@@ -129,6 +132,7 @@
 		[newTransaction setValue:sDate forKey:@"Date"];
 		[newTransaction setValue:sPayee forKey:@"Payee"];
 		[newTransaction setValue:sDescription forKey:@"Description"];
+		[newTransaction setValue:sCategory forKey:@"Category"];
 		[newTransaction setValue:sAmount forKey:@"Amount"];
 		[newTransaction setValue:sBalance forKey:@"Balance"];
 		
@@ -152,11 +156,15 @@
 				std::string strDescription = split.Description();
 				NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 				
+				std::string strCategory = split.Category();
+				NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+				
 				std::string strAmount = split.Amount();
 				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 				
 				[newSplit setValue:sPayee forKey:@"Payee"];
 				[newSplit setValue:sDescription forKey:@"Description"];
+				[newSplit setValue:sCategory forKey:@"Category"];
 				[newSplit setValue:sAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTransaction];
@@ -206,15 +214,14 @@
 
 - (IBAction)AddTransaction:(id)sender
 {
-	Transaction newTransaction("", "", 0.0, -1);
+	Transaction newTransaction("", "", "", 0.0, -1);
 	
 	m_pAccount->addTransaction(newTransaction);
 	
 	[Payee setStringValue:@""];
 	[Description setStringValue:@""];
+	[Category setStringValue:@""];
 	[Amount setStringValue:@""];
-	
-//	[self buildContentTree];
 	
 	IndexItem *newIndex = [[IndexItem alloc] init];
 	
@@ -223,6 +230,9 @@
 	
 	std::string strDescription = newTransaction.Description();
 	NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+	
+	std::string strCategory = newTransaction.Category();
+	NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 	
 	std::string strAmount = newTransaction.Amount();
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
@@ -245,6 +255,7 @@
 	[newIndex setValue:sDate forKey:@"Date"];
 	[newIndex setValue:sPayee forKey:@"Payee"];
 	[newIndex setValue:sDescription forKey:@"Description"];
+	[newIndex setValue:sCategory forKey:@"Category"];
 	[newIndex setValue:sAmount forKey:@"Amount"];
 	[newIndex setValue:sBalance forKey:@"Balance"];
 	
@@ -345,8 +356,6 @@
 	[window makeFirstResponder:Payee];
 	
 	m_UnsavedChanges = true;
-	
-//	[contentView select
 }
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
@@ -383,6 +392,9 @@
 			std::string strDescription = trans->Description();
 			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 			
+			std::string strCategory = trans->Category();
+			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+			
 			std::string strAmount = trans->Amount();
 			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 			
@@ -402,6 +414,7 @@
 			
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
+			[Category setStringValue:sCategory];
 			[Amount setStringValue:sAmount];
 			[DateCntl setDateValue:datetemp];
 		}
@@ -415,11 +428,15 @@
 			std::string strDescription = split->Description();
 			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 			
+			std::string strCategory = trans->Category();
+			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+			
 			std::string strAmount = split->Amount();
 			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 			
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
+			[Category setStringValue:sCategory];
 			[Amount setStringValue:sAmount];
 		}
 		else // Dummy Split
@@ -433,8 +450,7 @@
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
 			[Amount setStringValue:sAmount];
-		}
-		
+		}		
 	}
 	else
 	{
@@ -461,6 +477,7 @@
 	
 	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strCategory = [[Category stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	double dAmount = [Amount doubleValue];
 	
 	fixed fAmount = dAmount;
@@ -489,6 +506,7 @@
 		trans->setDate(date1);
 		trans->setPayee(strPayee);
 		trans->setDescription(strDesc);
+		trans->setCategory(strCategory);
 		trans->setAmount(fAmount);
 		trans->setReconciled(bReconciled);
 		
@@ -500,6 +518,7 @@
 		{
 			split->setPayee(strPayee);
 			split->setDescription(strDesc);
+			split->setCategory(strCategory);
 			split->setAmount(fAmount);
 		}
 		
@@ -507,7 +526,7 @@
 		{
 			fixed transValue = trans->Amount();			
 			
-			trans->addSplit(strDesc, strPayee, fAmount);
+			trans->addSplit(strDesc, strPayee, strCategory, fAmount);
 			
 			int nSplitsNumber = trans->getSplitCount() - 1;
 			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
@@ -545,14 +564,12 @@
 	
 	[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
 	[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
+	[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
 	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 	
 	[contentView reloadData];
 	
 	m_UnsavedChanges = true;
-	
-	//	[self buildTree];
-	//	m_bEditing = false;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(int)index ofItem:(id)item
@@ -633,15 +650,11 @@
 				if ([object boolValue] == YES)
 				{
 					trans->setReconciled(true);
-//					[item setIntValue:1 forKey:@"Reconciled"];
 				}
 				else
 				{
 					trans->setReconciled(false);
-//					[item setIntValue:0 forKey:@"Reconciled"];
 				}
-				
-//				[contentView reloadItem:item];
 				
 				m_UnsavedChanges = true;
 			}

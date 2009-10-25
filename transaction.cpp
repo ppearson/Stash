@@ -8,8 +8,8 @@
 #include "transaction.h"
 #include "string.h"
 
-Transaction::Transaction(std::string Description, std::string Payee, fixed Amount, Date date) :
-	m_Description(Description), m_Payee(Payee), m_Amount(Amount), m_Split(false), m_Reconciled(false)
+Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
+	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Split(false), m_Reconciled(false)
 {
 	m_Date.Now();
 }
@@ -19,6 +19,7 @@ void Transaction::Load(std::fstream &stream)
 	m_Date.Load(stream);
 	LoadString(m_Description, stream);
 	LoadString(m_Payee, stream);
+	LoadString(m_Category, stream);
 	m_Amount.Load(stream);
 	
 	std::bitset<8> localset;
@@ -45,6 +46,7 @@ void Transaction::Store(std::fstream &stream)
 	m_Date.Store(stream);
 	StoreString(m_Description, stream);
 	StoreString(m_Payee, stream);
+	StoreString(m_Category, stream);
 	m_Amount.Store(stream);
 	
 	std::bitset<8> localset;	
@@ -63,9 +65,9 @@ void Transaction::Store(std::fstream &stream)
 	}
 }
 
-void Transaction::addSplit(std::string Description, std::string Payee, fixed Amount)
+void Transaction::addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount)
 {
-	SplitTransaction split(Description, Payee, Amount);
+	SplitTransaction split(Description, Payee, Category, Amount);
 	
 	m_aSplits.push_back(split);
 	m_Split = true;
