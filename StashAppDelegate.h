@@ -33,6 +33,9 @@
 	
 	IndexItem *m_SelectedIndex;
 	IndexItem *m_SelectedTransaction;
+	
+	std::string m_DocumentFile;
+	bool m_UnsavedChanges;
 }
 
 - (void)buildIndexTree;
@@ -43,7 +46,14 @@
 - (IBAction)Delete:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
 
+- (IBAction)OpenFile:(id)sender;
+- (IBAction)SaveFile:(id)sender;
+- (IBAction)SaveFileAs:(id)sender;
+- (bool)SaveFileTo:(std::string)path;
+
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
+- (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 
 - (IBAction)updateTransaction:(id)sender;
 

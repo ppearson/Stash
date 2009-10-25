@@ -258,6 +258,8 @@
 	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
 	[window makeFirstResponder:Payee];
+	
+	m_UnsavedChanges = true;
 }
 
 - (IBAction)Delete:(id)sender
@@ -297,6 +299,8 @@
 		
 //		[self buildContentTree];
 		[contentView reloadData];
+		
+		m_UnsavedChanges = true;
 	}	
 }
 
@@ -339,6 +343,9 @@
 	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
 	[window makeFirstResponder:Payee];
+	
+	m_UnsavedChanges = true;
+	
 //	[contentView select
 }
 
@@ -542,6 +549,8 @@
 	
 	[contentView reloadData];
 	
+	m_UnsavedChanges = true;
+	
 	//	[self buildTree];
 	//	m_bEditing = false;
 }
@@ -633,6 +642,8 @@
 				}
 				
 //				[contentView reloadItem:item];
+				
+				m_UnsavedChanges = true;
 			}
 		}
 	}
@@ -709,6 +720,146 @@ NSDate * convertToNSDate(Date *date)
     [dateComponents setSecond:0];
 	
     return [gregorian dateFromComponents:dateComponents];	
+}
+
+- (IBAction)OpenFile:(id)sender
+{
+	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+	NSString *fileToOpen;
+	std::string strFile = "";
+	[oPanel setAllowsMultipleSelection: NO];
+	[oPanel setResolvesAliases: YES];
+	[oPanel setTitle: @"Open Document"];
+	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"stash", nil]];
+	
+	if ([oPanel runModal] == NSOKButton)
+	{
+		fileToOpen = [oPanel filename];
+		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
+		
+		std::fstream fileStream(strFile.c_str(), std::ios::in | std::ios::binary);
+		
+		if (!fileStream)
+		{
+			NSAlert *alert = [[NSAlert alloc] init];
+			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
+			[alert setInformativeText: @"There was a problem open the Document file."];
+			[alert setAlertStyle: NSWarningAlertStyle];
+			[alert addButtonWithTitle: @"OK"];
+			
+			[alert runModal];
+			[alert release];
+			return;
+		}
+		
+		m_aAccounts.clear();
+		unsigned char numAccounts = 0;
+		
+		fileStream.read((char *) &numAccounts, sizeof(unsigned char));
+		
+		for (int i = 0; i < numAccounts; i++)
+		{
+			Account tempAccount;
+			tempAccount.Load(fileStream);
+			
+			m_aAccounts.push_back(tempAccount);
+		}
+		
+		fileStream.close();
+		
+		m_DocumentFile = strFile;
+		m_UnsavedChanges = false;
+		
+		[self buildContentTree];
+	}
+}
+
+- (IBAction)SaveFile:(id)sender
+{
+	if (m_DocumentFile.empty())
+	{
+		[self SaveFileAs:sender];
+	}
+	else
+	{
+		[self SaveFileTo:m_DocumentFile];
+	}
+}
+
+- (IBAction)SaveFileAs:(id)sender
+{
+	NSSavePanel *sPanel = [NSSavePanel savePanel];
+	NSString *fileToSave;
+	std::string strFile = "";
+	
+	[sPanel setTitle: @"Save Document"];
+	[sPanel setRequiredFileType:@"stash"];
+	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"stash", nil]];
+	
+	if ([sPanel runModal] == NSOKButton)
+	{
+		fileToSave = [sPanel filename];
+		strFile = [fileToSave cStringUsingEncoding: NSASCIIStringEncoding];
+		
+		if ([self SaveFileTo:strFile] == false)
+		{
+			NSAlert *alert = [[NSAlert alloc] init];
+			[alert setMessageText:[NSString stringWithFormat:@"Could not save to file: \"%@\".", fileToSave]];
+			[alert setInformativeText: @"There was a problem saving the Document to the file."];
+			[alert setAlertStyle: NSWarningAlertStyle];
+			[alert addButtonWithTitle: @"OK"];
+			
+			[alert runModal];
+			[alert release];
+		}
+		else
+		{
+			m_DocumentFile = strFile;
+			m_UnsavedChanges = false;
+		}
+	}
+}
+
+- (bool)SaveFileTo:(std::string)path
+{
+	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::binary);
+	
+	if (!fileStream)
+	{
+		return false;
+	}
+	
+	unsigned char numAccounts = m_aAccounts.size();
+	
+	fileStream.write((char *) &numAccounts, sizeof(unsigned char));
+	
+	for (std::vector<Account>::iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
+	{
+		(*it).Store(fileStream);
+	}
+	
+	fileStream.close();
+	
+	return true;
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+    if (m_UnsavedChanges)
+    {
+        NSString * message = @"You have unsaved changes in this document. Are you sure you want to quit?";
+		
+        NSBeginAlertSheet(@"Are you sure you want to quit?", @"Quit", @"Cancel", nil, window, self,
+						@selector(quitSheetDidEnd:returnCode:contextInfo:), nil, nil, message);
+        return NSTerminateLater;
+    }
+	
+    return NSTerminateNow;
+}
+
+- (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    [NSApp replyToApplicationShouldTerminate:returnCode == NSAlertDefaultReturn];
 }
 
 @end
