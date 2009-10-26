@@ -904,7 +904,10 @@ NSDate * convertToNSDate(Date *date)
 	}
 	else
 	{
-		[self SaveFileTo:m_DocumentFile];
+		if ([self SaveFileTo:m_DocumentFile] == true)
+		{
+			m_UnsavedChanges = false;
+		}
 	}
 }
 
