@@ -8,6 +8,17 @@
 
 #include "split_transaction.h"
 
+enum TransactionType
+{
+	None,
+	Deposit,
+	Withdrawal,
+	Transfer,
+	PointOfSale,
+	Charge,
+	ATM
+};
+
 class Transaction
 {
 public:
@@ -26,6 +37,8 @@ public:
 	void setPayee(std::string Payee) { m_Payee = Payee; }
 	fixed Amount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
+	TransactionType Type() const { return m_Type; }
+	void setType(TransactionType type) { m_Type = type; }
 	
 	void setSplit(bool split) { m_Split = split; }
 	bool Split() { return m_Split; }
@@ -49,6 +62,7 @@ private:
 	std::string m_Description;
 	std::string m_Payee;
 	fixed m_Amount;
+	TransactionType m_Type;
 	
 	bool m_Split;
 	

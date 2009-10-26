@@ -24,6 +24,8 @@
 	IBOutlet NSTextField *Description;
 	IBOutlet NSTextField *Category;
 	IBOutlet NSTextField *Amount;
+	
+	IBOutlet NSPopUpButton *Type;
 	IBOutlet id DateCntl;
 	IBOutlet id Reconciled;
 	

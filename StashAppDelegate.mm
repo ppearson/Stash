@@ -42,28 +42,40 @@
 	NSDate *date1 = [NSDate date];
 	[DateCntl setDateValue:date1];
 	
+	[Type removeAllItems];
+	
+	[Type addItemWithTitle:@"None"];
+	[Type addItemWithTitle:@"Deposit"];
+	[Type addItemWithTitle:@"Withdrawal"];
+	[Type addItemWithTitle:@"Transfer"];
+	[Type addItemWithTitle:@"Point Of Sale"];
+	[Type addItemWithTitle:@"Charge"];
+	[Type addItemWithTitle:@"ATM"];
+	
+	[Type selectItemAtIndex:0];
+	
 	Account acc;
 	acc.setName("Main");
 	
 	m_aAccounts.push_back(acc);
 	m_pAccount = &m_aAccounts[0];
 	
-	Transaction t0("Starting balance", "", "", 2142.51, Date(13, 9, 2009));
-	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
-	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
-	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
+	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
+//	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
+//	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
+//	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
 	
-	t1.addSplit("Test1", "Test1", "T1", -30);
-	t1.addSplit("Test2", "Test2", "T2", -21.44);
+//	t1.addSplit("Test1", "Test1", "T1", -30);
+//	t1.addSplit("Test2", "Test2", "T2", -21.44);
 	
 	m_pAccount->addTransaction(t0);
-	m_pAccount->addTransaction(t1);
+/*	m_pAccount->addTransaction(t1);
 	m_pAccount->addTransaction(t2);
 	m_pAccount->addTransaction(t3);
-/*	
-	for (int i = 0; i < 50; i++)
+*/	
+/*	for (int i = 0; i < 5000; i++)
 	{
-		Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
+		Transaction t1("Tax", "Council", "Tax", -2466.00, Date(13, 9, 2009));
 		Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
 		Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
 		
@@ -273,6 +285,7 @@
 	[Description setStringValue:@""];
 	[Category setStringValue:@""];
 	[Amount setStringValue:@""];
+	[Type selectItemAtIndex:0];
 	
 	IndexItem *newIndex = [[IndexItem alloc] init];
 	
@@ -453,6 +466,8 @@
 			std::string strAmount = trans->Amount();
 			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 			
+			TransactionType eType = trans->Type();
+			
 			Date date1 = trans->Date1();
 			NSDate *datetemp = convertToNSDate(&date1);
 			
@@ -472,6 +487,7 @@
 			[Category setStringValue:sCategory];
 			[Amount setStringValue:sAmount];
 			[DateCntl setDateValue:datetemp];
+			[Type selectItemAtIndex:eType];
 		}
 		else if (trans && split && nSplit != -2)
 		{
@@ -493,6 +509,7 @@
 			[Description setStringValue:sDescription];
 			[Category setStringValue:sCategory];
 			[Amount setStringValue:sAmount];
+			[Type selectItemAtIndex:0];
 		}
 		else // Dummy Split
 		{
@@ -506,6 +523,7 @@
 			[Description setStringValue:sDescription];
 			[Category setStringValue:@""];
 			[Amount setStringValue:sAmount];
+			[Type selectItemAtIndex:0];
 		}		
 	}
 	else
@@ -540,6 +558,9 @@
 	std::string strAmount = fAmount;
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 	
+	int nType = [Type indexOfSelectedItem];
+	TransactionType eType = static_cast<TransactionType>(nType);
+	
 	bool bReconciled = false;
 	
 	if ([Reconciled state] == NSOnState)
@@ -564,6 +585,7 @@
 		trans->setDescription(strDesc);
 		trans->setCategory(strCategory);
 		trans->setAmount(fAmount);
+		trans->setType(eType);
 		trans->setReconciled(bReconciled);
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];

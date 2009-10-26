@@ -9,7 +9,8 @@
 #include "string.h"
 
 Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
-	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Split(false), m_Reconciled(false)
+	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Split(false), m_Reconciled(false),
+	m_Type(None)
 {
 	m_Date.Now();
 }
@@ -21,6 +22,8 @@ void Transaction::Load(std::fstream &stream)
 	LoadString(m_Payee, stream);
 	LoadString(m_Category, stream);
 	m_Amount.Load(stream);
+	
+	stream.read((char *) &m_Type, sizeof(TransactionType));
 	
 	unsigned char cBitset = 0;
 	stream.read((char *) &cBitset, sizeof(unsigned char));
@@ -50,6 +53,8 @@ void Transaction::Store(std::fstream &stream)
 	StoreString(m_Payee, stream);
 	StoreString(m_Category, stream);
 	m_Amount.Store(stream);
+	
+	stream.write((char *) &m_Type, sizeof(TransactionType));
 	
 	std::bitset<8> localset;	
 	localset[0] = m_Reconciled;
