@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
+			<integer value="567"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1086,7 +1086,7 @@
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSScrollView" id="800188037">
 									<reference key="NSNextResponder" ref="267157718"/>
-									<int key="NSvFlags">286</int>
+									<int key="NSvFlags">4382</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
 										<object class="NSClipView" id="573510658">
@@ -1096,7 +1096,7 @@
 												<bool key="EncodedWithXMLCoder">YES</bool>
 												<object class="NSOutlineView" id="781317227">
 													<reference key="NSNextResponder" ref="573510658"/>
-													<int key="NSvFlags">256</int>
+													<int key="NSvFlags">4352</int>
 													<string key="NSFrameSize">{859, 381}</string>
 													<reference key="NSSuperview" ref="573510658"/>
 													<bool key="NSEnabled">YES</bool>
@@ -3766,9 +3766,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{290, 183}, {1032, 597}}</string>
+					<string>{{329, 183}, {1032, 597}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{290, 183}, {1032, 597}}</string>
+					<string>{{329, 183}, {1032, 597}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<string>{3.40282e+38, 3.40282e+38}</string>

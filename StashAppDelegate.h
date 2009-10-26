@@ -11,7 +11,7 @@
 #include "transaction.h"
 #import "IndexItem.h"
 
-@interface StashAppDelegate : NSObject <NSApplicationDelegate>
+@interface StashAppDelegate : NSObject// <NSApplicationDelegate>
 {
     NSWindow *window;
 	IBOutlet NSSplitView *splitView;
