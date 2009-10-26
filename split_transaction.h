@@ -28,7 +28,7 @@ public:
 	fixed Amount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	
-	void Load(std::fstream &stream);
+	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 
 private:

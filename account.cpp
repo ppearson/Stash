@@ -15,7 +15,7 @@ Account::Account()
 
 }
 
-void Account::Load(std::fstream &stream)
+void Account::Load(std::fstream &stream, int version)
 {
 	LoadString(m_name, stream);
 	LoadString(m_institution, stream);
@@ -28,7 +28,7 @@ void Account::Load(std::fstream &stream)
 	for (unsigned int i = 0; i < numTransactions; i++)
 	{
 		Transaction tempTransaction;
-		tempTransaction.Load(stream);
+		tempTransaction.Load(stream, version);
 		
 		m_aTransactions.push_back(tempTransaction);
 	}

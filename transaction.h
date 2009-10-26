@@ -49,7 +49,7 @@ public:
 	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
 	fixed getSplitTotal();
 	
-	void Load(std::fstream &stream);
+	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 
 private:

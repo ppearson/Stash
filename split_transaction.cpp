@@ -14,12 +14,12 @@ m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amoun
 
 }
 
-void SplitTransaction::Load(std::fstream &stream)
+void SplitTransaction::Load(std::fstream &stream, int version)
 {
 	LoadString(m_Description, stream);
 	LoadString(m_Payee, stream);
 	LoadString(m_Category, stream);
-	m_Amount.Load(stream);	
+	m_Amount.Load(stream, version);	
 }
 
 void SplitTransaction::Store(std::fstream &stream)

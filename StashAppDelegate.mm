@@ -841,7 +841,7 @@ NSDate * convertToNSDate(Date *date)
 		{
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
-			[alert setInformativeText: @"There was a problem open the Document file."];
+			[alert setInformativeText: @"There was a problem opening the Document file."];
 			[alert setAlertStyle: NSWarningAlertStyle];
 			[alert addButtonWithTitle: @"OK"];
 			
@@ -850,7 +850,29 @@ NSDate * convertToNSDate(Date *date)
 			return;
 		}
 		
+		unsigned char fileID = 0;
+		fileStream.read((char *) &fileID, sizeof(unsigned char));
+		
+		if (fileID != 42)
+		{
+			fileStream.close();
+			
+			NSAlert *alert = [[NSAlert alloc] init];
+			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
+			[alert setInformativeText: @"The Document was not a file type Stash recognises."];
+			[alert setAlertStyle: NSWarningAlertStyle];
+			[alert addButtonWithTitle: @"OK"];
+			
+			[alert runModal];
+			[alert release];
+			return;			
+		}
+		
 		m_aAccounts.clear();
+		
+		unsigned char fileVersion = 0;
+		fileStream.read((char *) &fileVersion, sizeof(unsigned char));
+		
 		unsigned char numAccounts = 0;
 		
 		fileStream.read((char *) &numAccounts, sizeof(unsigned char));
@@ -858,7 +880,7 @@ NSDate * convertToNSDate(Date *date)
 		for (int i = 0; i < numAccounts; i++)
 		{
 			Account tempAccount;
-			tempAccount.Load(fileStream);
+			tempAccount.Load(fileStream, fileVersion);
 			
 			m_aAccounts.push_back(tempAccount);
 		}
@@ -928,6 +950,12 @@ NSDate * convertToNSDate(Date *date)
 	{
 		return false;
 	}
+	
+	unsigned char fileID = 42;
+	fileStream.write((char *) &fileID, sizeof(unsigned char));
+	
+	unsigned char fileVersion = FILE_VERSION;
+	fileStream.write((char *) &fileVersion, sizeof(unsigned char));
 	
 	unsigned char numAccounts = m_aAccounts.size();
 	

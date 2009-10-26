@@ -36,7 +36,7 @@ public:
 	
 	bool IsPositive() const;
 	
-	void Load(std::fstream &stream);
+	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	
 	friend std::ostream& operator<< (std::ostream & os, const fixed & d);

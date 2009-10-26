@@ -15,13 +15,13 @@ Transaction::Transaction(std::string Description, std::string Payee, std::string
 	m_Date.Now();
 }
 
-void Transaction::Load(std::fstream &stream)
+void Transaction::Load(std::fstream &stream, int version)
 {
-	m_Date.Load(stream);
+	m_Date.Load(stream, version);
 	LoadString(m_Description, stream);
 	LoadString(m_Payee, stream);
 	LoadString(m_Category, stream);
-	m_Amount.Load(stream);
+	m_Amount.Load(stream, version);
 	
 	stream.read((char *) &m_Type, sizeof(TransactionType));
 	
@@ -40,7 +40,7 @@ void Transaction::Load(std::fstream &stream)
 	for (int i = 0; i < numSplits; i++)
 	{
 		SplitTransaction tempSplit;
-		tempSplit.Load(stream);
+		tempSplit.Load(stream, version);
 		
 		m_aSplits.push_back(tempSplit);
 	}

@@ -3,6 +3,8 @@
 
 #include "transaction.h"
 
+#define FILE_VERSION 0
+
 class Account
 {
 public:
@@ -22,7 +24,7 @@ public:
 	int getTransactionCount() { return m_aTransactions.size(); }
 	void deleteTransaction(int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
 	
-	void Load(std::fstream &stream);
+	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	
 	std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }

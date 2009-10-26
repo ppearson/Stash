@@ -112,7 +112,7 @@ void Date::setDate(int Day, int Month, int Year)
 	SetTimeFromVars();
 }
 
-void Date::Load(std::fstream &stream)
+void Date::Load(std::fstream &stream, int version)
 {
 	stream.read((char *) &m_Time, sizeof(long));
 	SetVarsFromTime();
