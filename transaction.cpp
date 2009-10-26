@@ -22,9 +22,11 @@ void Transaction::Load(std::fstream &stream)
 	LoadString(m_Category, stream);
 	m_Amount.Load(stream);
 	
-	std::bitset<8> localset;
-	stream >> localset;
+	unsigned char cBitset = 0;
+	stream.read((char *) &cBitset, sizeof(unsigned char));
 	
+	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
+		
 	m_Reconciled = localset[0];
 	m_Split = localset[1];
 	
@@ -53,10 +55,10 @@ void Transaction::Store(std::fstream &stream)
 	localset[0] = m_Reconciled;
 	localset[1] = m_Split;
 	
-	stream << localset;
+	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
+	stream.write((char *) &cBitset, sizeof(unsigned char));
 	
 	unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
-	
 	stream.write((char *) &numSplits, sizeof(unsigned char));
 	
 	for (std::vector<SplitTransaction>::iterator it = m_aSplits.begin(); it != m_aSplits.end(); ++it)
