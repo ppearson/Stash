@@ -19,13 +19,14 @@
 		D086FCFF10931EE3001AE198 /* split_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCF710931EE3001AE198 /* split_transaction.cpp */; };
 		D086FD0010931EE3001AE198 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCFA10931EE3001AE198 /* transaction.cpp */; };
 		D086FD0710931F14001AE198 /* IndexItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* IndexItem.mm */; };
+		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
+		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StashAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StashAppDelegate.mm; sourceTree = "<group>"; };
@@ -49,7 +50,9 @@
 		D086FCFB10931EE3001AE198 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
 		D086FD0510931F14001AE198 /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
 		D086FD0610931F14001AE198 /* IndexItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndexItem.mm; sourceTree = "<group>"; };
+		D08D8DBD1097831C004636BC /* Stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Stash.icns; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
+		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
-				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -156,6 +158,8 @@
 		D07749291093B3AB00EDC307 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D0EC53B710978AFE006E67CA /* StashDocument.icns */,
+				D08D8DBD1097831C004636BC /* Stash.icns */,
 				D0C5987A10943E55002326F0 /* round_uncheck.png */,
 				D077492A1093B3AB00EDC307 /* round_check.png */,
 			);
@@ -209,6 +213,8 @@
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				D077492B1093B3AB00EDC307 /* round_check.png in Resources */,
 				D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */,
+				D08D8DBE1097831C004636BC /* Stash.icns in Resources */,
+				D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

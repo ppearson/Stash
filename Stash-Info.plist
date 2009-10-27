@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>Stash.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.peterpearson.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.peterpearson.Stash</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -28,35 +28,42 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	
 	<key>NSServices</key>
 	<array>
-        <dict>
-                <key>NSPortName</key>
-                <string>Transmission</string>
-                <key>NSSendTypes</key>
-                <array>
-                        <string>NSStringPboardType</string>
-                        <string>NSURLPboardType</string>
-                </array>
-        </dict>
+		<dict>
+			<key>NSPortName</key>
+			<string>Transmission</string>
+			<key>NSSendTypes</key>
+			<array>
+				<string>NSStringPboardType</string>
+				<string>NSURLPboardType</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleDocumentTypes</key>
-<array>
-  <dict>
-    <key>CFBundleTypeExtensions</key>
-    <array>
-      <string>*</string>
-    </array>
-    <key>CFBundleTypeName</key>
-    <string>Plain Text File</string>
-    <key>CFBundleTypeOSTypes</key>
-    <array>
-      <string>****</string>
-    </array>
-    <key>CFBundleTypeRole</key>
-    <string>Editor</string>
-  </dict>
-</array>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string>StashDocument.icns</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>stash</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>Stash Document</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>****</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.peterpearson.Stash</string>
+			</array>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+	</array>
 </dict>
 </plist>
