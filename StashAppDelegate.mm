@@ -837,12 +837,18 @@ NSDate * convertToNSDate(Date *date)
     {
 		int choice = NSAlertDefaultReturn;
 		
-        NSString * message = @"You have unsaved changes in this document. Are you sure you want to open another document?";
+		NSString *message = @"Do you want to save the changes you made in this document?";
 		
-		choice = NSRunAlertPanel(@"Replace current document?", message, @"Replace", @"Cancel", nil);
+		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
 		
-		if (choice != NSAlertDefaultReturn)
+		if (choice == NSAlertDefaultReturn) // Save file
+		{
+			[self SaveFile:sender];
+		}
+		else if (choice == NSAlertOtherReturn) // Cancel
+		{
 			return;
+		}
     }
 	
 	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
@@ -1013,21 +1019,26 @@ NSDate * convertToNSDate(Date *date)
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    if (m_UnsavedChanges)
+	if (m_UnsavedChanges)
     {
-        NSString * message = @"You have unsaved changes in this document. Are you sure you want to quit?";
+		int choice = NSAlertDefaultReturn;
 		
-        NSBeginAlertSheet(@"Are you sure you want to quit?", @"Quit", @"Cancel", nil, window, self,
-						@selector(quitSheetDidEnd:returnCode:contextInfo:), nil, nil, message);
-        return NSTerminateLater;
+		NSString *message = @"Do you want to save the changes you made in this document?";
+		
+		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
+		
+		if (choice == NSAlertDefaultReturn) // Save file
+		{
+			[self SaveFile:sender];
+			return NSTerminateNow;
+		}
+		else if (choice == NSAlertOtherReturn) // Cancel
+		{
+			return NSTerminateLater;
+		}
     }
 	
     return NSTerminateNow;
-}
-
-- (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
-{
-    [NSApp replyToApplicationShouldTerminate:returnCode == NSAlertDefaultReturn];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
