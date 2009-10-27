@@ -20,6 +20,9 @@ void Account::Load(std::fstream &stream, int version)
 	LoadString(m_name, stream);
 	LoadString(m_institution, stream);
 	LoadString(m_number, stream);
+	LoadString(m_note, stream);
+	
+	stream.read((char *) &m_type, sizeof(AccountType));
 	
 	unsigned int numTransactions = 0;
 	
@@ -39,6 +42,9 @@ void Account::Store(std::fstream &stream)
 	StoreString(m_name, stream);
 	StoreString(m_institution, stream);
 	StoreString(m_number, stream);
+	StoreString(m_note, stream);
+	
+	stream.write((char *) &m_type, sizeof(AccountType));
 	
 	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());
 	

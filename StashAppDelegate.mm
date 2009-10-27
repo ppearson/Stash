@@ -13,6 +13,8 @@
 
 @synthesize window;
 
+#define FILE_VERSION 0
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
 	[window makeKeyAndOrderFront:self];

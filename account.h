@@ -3,7 +3,16 @@
 
 #include "transaction.h"
 
-#define FILE_VERSION 0
+enum AccountType
+{
+	Cash,
+	Checking,
+	CreditCard,
+	Investment,
+	Asset,
+	Liability,
+	Other
+};
 
 class Account
 {
@@ -14,10 +23,14 @@ public:
 	void setName(std::string name) { m_name = name; }
 	void setInstitution(std::string institution) { m_institution = institution; }
 	void setNumber(std::string number) { m_number = number; }
+	void setNote(std::string note) { m_note = note; }
+	void setType(AccountType type) { m_type = type; }
 	
 	std::string getName() { return m_name; }
 	std::string getInstitution() { return m_institution; }
 	std::string getNumber() { return m_number; }
+	std::string getNote() { return m_note; }
+	AccountType getType() { return m_type; }
 	
 	void addTransaction(Transaction &trans) { m_aTransactions.push_back(trans); }
 	Transaction &getTransaction(int trans) { return m_aTransactions[trans]; }
@@ -36,6 +49,8 @@ protected:
 	std::string m_name;
 	std::string m_institution;
 	std::string m_number;
+	std::string m_note;
+	AccountType m_type;
 	
 	std::vector<Transaction> m_aTransactions;
 };
