@@ -58,6 +58,7 @@
 - (IBAction)OpenFile:(id)sender;
 - (IBAction)SaveFile:(id)sender;
 - (IBAction)SaveFileAs:(id)sender;
+- (bool)OpenFileAt:(std::string)path;
 - (bool)SaveFileTo:(std::string)path;
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;

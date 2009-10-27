@@ -28,5 +28,35 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	
+	<key>NSServices</key>
+	<array>
+        <dict>
+                <key>NSPortName</key>
+                <string>Transmission</string>
+                <key>NSSendTypes</key>
+                <array>
+                        <string>NSStringPboardType</string>
+                        <string>NSURLPboardType</string>
+                </array>
+        </dict>
+	</array>
+	<key>CFBundleDocumentTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeExtensions</key>
+    <array>
+      <string>*</string>
+    </array>
+    <key>CFBundleTypeName</key>
+    <string>Plain Text File</string>
+    <key>CFBundleTypeOSTypes</key>
+    <array>
+      <string>****</string>
+    </array>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+  </dict>
+</array>
 </dict>
 </plist>

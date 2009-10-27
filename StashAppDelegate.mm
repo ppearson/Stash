@@ -831,6 +831,18 @@ NSDate * convertToNSDate(Date *date)
 
 - (IBAction)OpenFile:(id)sender
 {
+	if (m_UnsavedChanges)
+    {
+		int choice = NSAlertDefaultReturn;
+		
+        NSString * message = @"You have unsaved changes in this document. Are you sure you want to open another document?";
+		
+		choice = NSRunAlertPanel(@"Replace current document?", message, @"Replace", @"Cancel", nil);
+		
+		if (choice != NSAlertDefaultReturn)
+			return;
+    }
+	
 	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
 	NSString *fileToOpen;
 	std::string strFile = "";
@@ -844,9 +856,7 @@ NSDate * convertToNSDate(Date *date)
 		fileToOpen = [oPanel filename];
 		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
 		
-		std::fstream fileStream(strFile.c_str(), std::ios::in | std::ios::binary);
-		
-		if (!fileStream)
+		if ([self OpenFileAt:strFile] == false)
 		{
 			NSAlert *alert = [[NSAlert alloc] init];
 			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
@@ -858,43 +868,6 @@ NSDate * convertToNSDate(Date *date)
 			[alert release];
 			return;
 		}
-		
-		unsigned char fileID = 0;
-		fileStream.read((char *) &fileID, sizeof(unsigned char));
-		
-		if (fileID != 42)
-		{
-			fileStream.close();
-			
-			NSAlert *alert = [[NSAlert alloc] init];
-			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
-			[alert setInformativeText: @"The Document was not a file type Stash recognises."];
-			[alert setAlertStyle: NSWarningAlertStyle];
-			[alert addButtonWithTitle: @"OK"];
-			
-			[alert runModal];
-			[alert release];
-			return;			
-		}
-		
-		m_aAccounts.clear();
-		
-		unsigned char fileVersion = 0;
-		fileStream.read((char *) &fileVersion, sizeof(unsigned char));
-		
-		unsigned char numAccounts = 0;
-		
-		fileStream.read((char *) &numAccounts, sizeof(unsigned char));
-		
-		for (int i = 0; i < numAccounts; i++)
-		{
-			Account tempAccount;
-			tempAccount.Load(fileStream, fileVersion);
-			
-			m_aAccounts.push_back(tempAccount);
-		}
-		
-		fileStream.close();
 		
 		m_DocumentFile = strFile;
 		m_UnsavedChanges = false;
@@ -952,6 +925,47 @@ NSDate * convertToNSDate(Date *date)
 			m_UnsavedChanges = false;
 		}
 	}
+}
+
+- (bool)OpenFileAt:(std::string)path
+{
+	std::fstream fileStream(path.c_str(), std::ios::in | std::ios::binary);
+	
+	if (!fileStream)
+	{
+		return false;;
+	}
+	
+	unsigned char fileID = 0;
+	fileStream.read((char *) &fileID, sizeof(unsigned char));
+	
+	if (fileID != 42)
+	{
+		fileStream.close();
+		
+		return false;
+	}
+	
+	m_aAccounts.clear();
+	
+	unsigned char fileVersion = 0;
+	fileStream.read((char *) &fileVersion, sizeof(unsigned char));
+	
+	unsigned char numAccounts = 0;
+	
+	fileStream.read((char *) &numAccounts, sizeof(unsigned char));
+	
+	for (int i = 0; i < numAccounts; i++)
+	{
+		Account tempAccount;
+		tempAccount.Load(fileStream, fileVersion);
+		
+		m_aAccounts.push_back(tempAccount);
+	}
+	
+	fileStream.close();
+	
+	return true;	
 }
 
 - (bool)SaveFileTo:(std::string)path
@@ -1017,6 +1031,37 @@ NSDate * convertToNSDate(Date *date)
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
 	
+}
+
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
+{
+	if (m_UnsavedChanges)
+    {
+		int choice = NSAlertDefaultReturn;
+		
+        NSString * message = @"You have unsaved changes in this document. Are you sure you want to open another document?";
+		
+		choice = NSRunAlertPanel(@"Replace current document?", message, @"Replace", @"Cancel", nil);
+		
+		if (choice != NSAlertDefaultReturn)
+			return NO;
+    }
+	
+	std::string strFile = [filename cStringUsingEncoding: NSASCIIStringEncoding];
+	
+	if ([self OpenFileAt:strFile] == false)
+	{
+		return NO;
+	}
+	
+	m_DocumentFile = strFile;
+	m_UnsavedChanges = false;
+	
+	[self buildContentTree];
+	
+	[self updateUI];
+
+	return YES;
 }
 
 @end
