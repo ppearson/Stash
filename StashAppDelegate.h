@@ -14,7 +14,7 @@
 @interface StashAppDelegate : NSObject// <NSApplicationDelegate>
 {
     NSWindow *window;
-	IBOutlet NSSplitView *splitView;
+	IBOutlet NSSplitView *horizonalSplitView, *verticalSplitView;
 	IBOutlet NSOutlineView *indexView, *contentView;
 	
 	IBOutlet NSTextField *Transactions;
@@ -62,7 +62,6 @@
 - (bool)SaveFileTo:(std::string)path;
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
-- (void)quitSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;
 
