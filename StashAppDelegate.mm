@@ -471,6 +471,9 @@
 			Date date1 = trans->Date1();
 			NSDate *datetemp = convertToNSDate(&date1);
 			
+			[Reconciled setEnabled:YES];
+			[Type setEnabled:YES];
+			
 			bool bReconciled = trans->isReconciled();
 			
 			if (bReconciled)
@@ -510,6 +513,9 @@
 			[Category setStringValue:sCategory];
 			[Amount setStringValue:sAmount];
 			[Type selectItemAtIndex:0];
+			
+			[Reconciled setEnabled:NO];
+			[Type setEnabled:NO];
 		}
 		else // Dummy Split
 		{
@@ -524,6 +530,9 @@
 			[Category setStringValue:@""];
 			[Amount setStringValue:sAmount];
 			[Type selectItemAtIndex:0];
+			
+			[Reconciled setEnabled:NO];
+			[Type setEnabled:NO];
 		}		
 	}
 	else
@@ -972,6 +981,18 @@ NSDate * convertToNSDate(Date *date)
 	fileStream.close();
 	
 	return true;
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)item
+{
+    SEL action = [item action];
+    if (action == @selector(toggleVisibleControllerView:))
+	{
+		
+		
+	}
+	
+	return YES;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
