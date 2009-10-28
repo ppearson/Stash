@@ -927,6 +927,8 @@ NSDate * convertToNSDate(Date *date)
 		}
 		else
 		{
+			[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileToSave]];
+			
 			m_DocumentFile = strFile;
 			m_UnsavedChanges = false;
 		}
