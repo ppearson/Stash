@@ -13,8 +13,6 @@
 
 @synthesize window;
 
-#define FILE_VERSION 0
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
 	[window makeKeyAndOrderFront:self];
@@ -33,7 +31,7 @@
 	return self;
 }
 
-- (void) awakeFromNib
+- (void)awakeFromNib
 {
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
@@ -59,8 +57,8 @@
 	Account acc;
 	acc.setName("Main");
 	
-	m_aAccounts.push_back(acc);
-	m_pAccount = &m_aAccounts[0];
+	m_Document.addAccount(acc);
+	m_pAccount = m_Document.getAccountPtr(0);
 	
 	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
 //	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
@@ -99,9 +97,9 @@
 {
 	[m_aIndexItems removeAllObjects];
 	
-	std::vector<Account>::iterator it = m_aAccounts.begin();
+	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	
-	for (; it != m_aAccounts.end(); ++it)
+	for (; it != m_Document.AccountEnd(); ++it)
 	{
 		IndexItem *newAccount = [[IndexItem alloc] init];
 		
@@ -944,32 +942,8 @@ NSDate * convertToNSDate(Date *date)
 		return false;;
 	}
 	
-	unsigned char fileID = 0;
-	fileStream.read((char *) &fileID, sizeof(unsigned char));
-	
-	if (fileID != 42)
-	{
-		fileStream.close();
-		
+	if (!m_Document.Load(fileStream))
 		return false;
-	}
-	
-	m_aAccounts.clear();
-	
-	unsigned char fileVersion = 0;
-	fileStream.read((char *) &fileVersion, sizeof(unsigned char));
-	
-	unsigned char numAccounts = 0;
-	
-	fileStream.read((char *) &numAccounts, sizeof(unsigned char));
-	
-	for (int i = 0; i < numAccounts; i++)
-	{
-		Account tempAccount;
-		tempAccount.Load(fileStream, fileVersion);
-		
-		m_aAccounts.push_back(tempAccount);
-	}
 	
 	fileStream.close();
 	
@@ -985,20 +959,7 @@ NSDate * convertToNSDate(Date *date)
 		return false;
 	}
 	
-	unsigned char fileID = 42;
-	fileStream.write((char *) &fileID, sizeof(unsigned char));
-	
-	unsigned char fileVersion = FILE_VERSION;
-	fileStream.write((char *) &fileVersion, sizeof(unsigned char));
-	
-	unsigned char numAccounts = m_aAccounts.size();
-	
-	fileStream.write((char *) &numAccounts, sizeof(unsigned char));
-	
-	for (std::vector<Account>::iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
-	{
-		(*it).Store(fileStream);
-	}
+	m_Document.Store(fileStream);
 	
 	fileStream.close();
 	

@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #include "account.h"
+#include "document.h"
 #include "transaction.h"
 #import "IndexItem.h"
 
@@ -32,7 +33,7 @@
 	NSMutableArray *m_aIndexItems;
 	NSMutableArray *m_aContentItems;
 	
-	std::vector<Account> m_aAccounts;
+	Document m_Document;
 	Account *m_pAccount;	
 	bool m_bEditing;
 	

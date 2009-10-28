@@ -20,6 +20,7 @@
 		D086FD0010931EE3001AE198 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCFA10931EE3001AE198 /* transaction.cpp */; };
 		D086FD0710931F14001AE198 /* IndexItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* IndexItem.mm */; };
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
+		D09C02811098D76900764EC1 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09C02801098D76900764EC1 /* document.cpp */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
 /* End PBXBuildFile section */
@@ -51,6 +52,8 @@
 		D086FD0510931F14001AE198 /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
 		D086FD0610931F14001AE198 /* IndexItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndexItem.mm; sourceTree = "<group>"; };
 		D08D8DBD1097831C004636BC /* Stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Stash.icns; sourceTree = "<group>"; };
+		D09C027F1098D76900764EC1 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		D09C02801098D76900764EC1 /* document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = document.cpp; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
 		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +107,8 @@
 		29B97314FDCFA39411CA2CEA /* Stash */ = {
 			isa = PBXGroup;
 			children = (
+				D09C027F1098D76900764EC1 /* document.h */,
+				D09C02801098D76900764EC1 /* document.cpp */,
 				D086FD0510931F14001AE198 /* IndexItem.h */,
 				D086FD0610931F14001AE198 /* IndexItem.mm */,
 				D086FCF110931EE3001AE198 /* account.cpp */,
@@ -233,6 +238,7 @@
 				D086FCFF10931EE3001AE198 /* split_transaction.cpp in Sources */,
 				D086FD0010931EE3001AE198 /* transaction.cpp in Sources */,
 				D086FD0710931F14001AE198 /* IndexItem.mm in Sources */,
+				D09C02811098D76900764EC1 /* document.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
