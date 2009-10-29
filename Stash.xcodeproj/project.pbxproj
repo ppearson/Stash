@@ -12,6 +12,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D02C0721109A291000155B13 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D02C0720109A291000155B13 /* AddAccount.xib */; };
+		D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.m */; };
 		D077492B1093B3AB00EDC307 /* round_check.png in Resources */ = {isa = PBXBuildFile; fileRef = D077492A1093B3AB00EDC307 /* round_check.png */; };
 		D086FCFC10931EE3001AE198 /* account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCF110931EE3001AE198 /* account.cpp */; };
 		D086FCFD10931EE3001AE198 /* datetime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCF310931EE3001AE198 /* datetime.cpp */; };
@@ -38,6 +40,9 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Stash-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Stash-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D02C0720109A291000155B13 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
+		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
+		D02C0726109A2A4F00155B13 /* AddAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAccountController.m; sourceTree = "<group>"; };
 		D077492A1093B3AB00EDC307 /* round_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_check.png; sourceTree = "<group>"; };
 		D086FCF110931EE3001AE198 /* account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = account.cpp; sourceTree = "<group>"; };
 		D086FCF210931EE3001AE198 /* account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = account.h; sourceTree = "<group>"; };
@@ -110,6 +115,8 @@
 		29B97314FDCFA39411CA2CEA /* Stash */ = {
 			isa = PBXGroup;
 			children = (
+				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
+				D02C0726109A2A4F00155B13 /* AddAccountController.m */,
 				D09C027F1098D76900764EC1 /* document.h */,
 				D09C02801098D76900764EC1 /* document.cpp */,
 				D086FD0510931F14001AE198 /* IndexItem.h */,
@@ -132,6 +139,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				D02C0720109A291000155B13 /* AddAccount.xib */,
 			);
 			name = Stash;
 			sourceTree = "<group>";
@@ -225,6 +233,7 @@
 				D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */,
 				D08D8DBE1097831C004636BC /* Stash.icns in Resources */,
 				D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */,
+				D02C0721109A291000155B13 /* AddAccount.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +254,7 @@
 				D086FD0710931F14001AE198 /* IndexItem.mm in Sources */,
 				D09C02811098D76900764EC1 /* document.cpp in Sources */,
 				D097A594109A1025004FA992 /* storage.cpp in Sources */,
+				D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

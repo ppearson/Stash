@@ -10,6 +10,8 @@
 #include "account.h"
 #include "document.h"
 #include "transaction.h"
+
+#import "AddAccountController.h"
 #import "IndexItem.h"
 
 @interface StashAppDelegate : NSObject// <NSApplicationDelegate>
@@ -56,6 +58,8 @@
 - (IBAction)Delete:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
 
+- (void)addAccountConfirmed:(AddAccountController *)addAccountController;
+
 - (IBAction)OpenFile:(id)sender;
 - (IBAction)SaveFile:(id)sender;
 - (IBAction)SaveFileAs:(id)sender;
@@ -65,6 +69,7 @@
 - (IBAction)ImportQIF:(id)sender;
 - (IBAction)ExportQIF:(id)sender;
 
+- (void)IndexSelectionDidChange:(NSNotification *)notification;
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;

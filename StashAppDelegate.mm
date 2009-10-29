@@ -7,6 +7,7 @@
 //
 
 #import "StashAppDelegate.h"
+
 #include "storage.h"
 
 @implementation StashAppDelegate
@@ -24,8 +25,6 @@
 	if (self)
 	{
 		[NSApp setDelegate: self];
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:contentView];
 	}
 	
 	return self;
@@ -56,12 +55,16 @@
 	
 	[Type selectItemAtIndex:0];
 	
-	Account acc;
+	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:contentView];
+	[nc addObserver:self selector:@selector(IndexSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:indexView];
+	
+/*	Account acc;
 	acc.setName("Main");
 	
 	m_Document.addAccount(acc);
 	m_pAccount = m_Document.getAccountPtr(0);
-	
+*/	
 /*	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
 	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
 	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
@@ -101,7 +104,9 @@
 	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	
-	for (; it != m_Document.AccountEnd(); ++it)
+	int nAccount = 0;
+	
+	for (; it != m_Document.AccountEnd(); ++it, nAccount++)
 	{
 		IndexItem *newAccount = [[IndexItem alloc] init];
 		
@@ -113,9 +118,14 @@
 		
 		[newAccount setValue:sName forKey:@"Name"];
 		[newAccount setValue:sBalance forKey:@"Balance"];
+		
+		[newAccount setIntValue:nAccount forKey:@"Account"];
 	
 		[m_aIndexItems addObject:newAccount];
 	}
+	
+	m_SelectedTransaction = 0; 
+	m_bEditing = false;
 	
 	[indexView reloadData];	
 }
@@ -126,6 +136,9 @@
 	[m_aContentItems removeAllObjects];
 	
 	fixed localBalance = 0.0;
+	
+	if (!m_pAccount)
+		return;
 	
 	int nTransactionsToShow = 100;
 	
@@ -254,6 +267,9 @@
 
 - (void)updateUI
 {
+	if (!m_pAccount)
+		return;
+	
 	NSString *sTransactions;
 	if (m_pAccount->getTransactionCount() == 1)
 	{
@@ -274,11 +290,41 @@
 
 - (IBAction)AddAccount:(id)sender
 {
+	AddAccountController *addAccountController = [[AddAccountController alloc] initWnd:self];
+	[addAccountController showWindow:self];
+}
+
+- (void)addAccountConfirmed:(AddAccountController *)addAccountController
+{
+	NSString *sAccountName = [addAccountController accountName];
+	NSString *sStartingBalance = [addAccountController startingBalance];
 	
+	int nType = [addAccountController accountType];
+	
+	std::string strName = [sAccountName cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strStartingBalance = [sStartingBalance cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	fixed startingBalance(strStartingBalance, UKFormat);
+	
+	Account newAccount;
+	newAccount.setName(strName);
+	newAccount.setType(static_cast<AccountType>(nType));
+	
+	Transaction newTransaction("Starting balance", "", "", startingBalance, -1);
+	newAccount.addTransaction(newTransaction);
+	
+	m_Document.addAccount(newAccount);
+	
+	[addAccountController release];
+	
+	[self buildIndexTree];
 }
 
 - (IBAction)AddTransaction:(id)sender
 {
+	if (!m_pAccount)
+		return;
+	
 	Transaction newTransaction("", "", "", 0.0, -1);
 	
 	m_pAccount->addTransaction(newTransaction);
@@ -428,8 +474,37 @@
 	m_UnsavedChanges = true;
 }
 
+- (void)IndexSelectionDidChange:(NSNotification *)notification
+{
+	if ([indexView numberOfRows] == 0)
+		return;
+	
+	NSIndexSet *rows = [indexView selectedRowIndexes];
+	
+	if ([rows count] == 1)
+	{
+		NSInteger row = [rows lastIndex];
+		
+		IndexItem *item = [indexView itemAtRow:row];
+		
+		int nAccount = [item intKeyValue:@"Account"];
+		
+		if (nAccount != -1)
+		{
+			m_pAccount = m_Document.getAccountPtr(nAccount);			
+			m_SelectedTransaction = 0;
+			
+			[self buildContentTree];
+			[self updateUI];
+		}		
+	}	
+}
+
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
 {
+	if (!m_pAccount)
+		return;
+	
 	NSIndexSet *rows = [contentView selectedRowIndexes];
 	
 	if ([rows count] == 1)
@@ -880,6 +955,10 @@ NSDate * convertToNSDate(Date *date)
 		m_DocumentFile = strFile;
 		m_UnsavedChanges = false;
 		
+		m_SelectedTransaction = 0;
+		m_pAccount = 0;
+		
+		[self buildIndexTree];
 		[self buildContentTree];
 		
 		[self updateUI];
