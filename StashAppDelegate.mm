@@ -48,6 +48,8 @@
 	[Type addItemWithTitle:@"Deposit"];
 	[Type addItemWithTitle:@"Withdrawal"];
 	[Type addItemWithTitle:@"Transfer"];
+	[Type addItemWithTitle:@"Standing Order"];
+	[Type addItemWithTitle:@"Direct Debit"];
 	[Type addItemWithTitle:@"Point Of Sale"];
 	[Type addItemWithTitle:@"Charge"];
 	[Type addItemWithTitle:@"ATM"];

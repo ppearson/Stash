@@ -14,6 +14,8 @@ enum TransactionType
 	Deposit,
 	Withdrawal,
 	Transfer,
+	StandingOrder,
+	DirectDebit,
 	PointOfSale,
 	Charge,
 	ATM
