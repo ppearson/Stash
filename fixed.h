@@ -9,10 +9,17 @@
 
 #include <string>
 
+enum CurrencyFormat
+{
+	UKFormat,
+	EuropeFormat
+};
+
 class fixed
 {
 public:
 	fixed(const double value = 0.00);
+	fixed(std::string value, CurrencyFormat format = UKFormat);
 	~fixed() { };
 	
 	fixed & operator=(const double & rhs);
@@ -54,6 +61,7 @@ private:
 	std::string ToString() const;
 	
 	void SetFromDouble(const double value = 0.00);
+	void SetFromString(std::string value, CurrencyFormat format = UKFormat);
 	
 	static void add(fixed & dec, const fixed & value);
 	static void subtract(fixed & dec, const fixed & value);

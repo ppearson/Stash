@@ -7,6 +7,7 @@
  *
  */
 
+#include <algorithm>
 #include "datetime.h"
 
 Date::Date() : m_Separator('/')
@@ -31,9 +32,14 @@ Date::Date(time_t Time)
 }
 
 Date::Date(int Day, int Month, int Year) :
-m_Day(Day), m_Month(Month), m_Year(Year), m_Separator('/')
+	m_Day(Day), m_Month(Month), m_Year(Year), m_Separator('/')
 {
 	SetTimeFromVars();
+}
+
+Date::Date(std::string date, char cSep, DateStringFormat dateFormat) : m_Separator(cSep)
+{
+	setDate(date, cSep, dateFormat);
 }
 
 const Date& Date::operator=(const Date& rhs)
@@ -85,6 +91,42 @@ void Date::SetTimeFromVars()
 	m_Time = mktime(&time);
 }
 
+void Date::setDate(std::string date, char cSep, DateStringFormat dateFomat)
+{
+	if (date.find(cSep) == -1)
+		return;
+
+	std::replace(date.begin(), date.end(), cSep, ' ');
+
+	std::stringstream strm(date);
+	std::string strDay;
+	std::string strMonth;
+	std::string strYear;
+
+	strm >> strDay;
+	strm >> strMonth;
+	strm >> strYear;
+
+	int nDay = atoi(strDay.c_str());
+	int nMonth = atoi(strMonth.c_str());
+	int nYear = atoi(strYear.c_str());
+	
+	if (strYear.length() == 2)
+	{
+		if (nYear > 85)
+		{
+			nYear += 1900;
+		}
+		else
+		{
+			nYear += 2000;
+		}
+	}
+
+	setSeparator(cSep);
+	setDate(nDay, nMonth, nYear);
+}
+
 void Date::setYear(int Year)
 {
 	m_Year = Year;
@@ -125,15 +167,22 @@ void Date::Store(std::fstream &stream)
 
 std::ostream & operator <<( std::ostream & os, const Date & d)
 {
-	os << d.FormattedDate(0);
+	os << d.FormattedDate(UK);
 	return os;
 }
 
-std::string Date::FormattedDate(int Format) const
+std::string Date::FormattedDate(DateStringFormat format) const
 {
 	std::stringstream sDate;
 
-	sDate << m_Day << m_Separator << m_Month << m_Separator << m_Year;
+	if (format == UK)
+	{
+		sDate << m_Day << m_Separator << m_Month << m_Separator << m_Year;
+	}
+	else if (format == US)
+	{
+		sDate << m_Month << m_Separator << m_Day << m_Separator << m_Year;
+	}
 
 	sDate << std::ends;
 

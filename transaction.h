@@ -43,6 +43,7 @@ public:
 	void setSplit(bool split) { m_Split = split; }
 	bool Split() { return m_Split; }
 	
+	void addSplit(SplitTransaction &split) { m_aSplits.push_back(split); }
 	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);
 	SplitTransaction & getSplit(int item) { return m_aSplits[item]; }
 	int getSplitCount() { return m_aSplits.size(); }

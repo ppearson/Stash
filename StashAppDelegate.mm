@@ -7,7 +7,7 @@
 //
 
 #import "StashAppDelegate.h"
-
+#include "storage.h"
 
 @implementation StashAppDelegate
 
@@ -60,16 +60,16 @@
 	m_Document.addAccount(acc);
 	m_pAccount = m_Document.getAccountPtr(0);
 	
-	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
-//	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
-//	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
-//	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
+/*	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
+	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
+	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
+	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
 	
-//	t1.addSplit("Test1", "Test1", "T1", -30);
-//	t1.addSplit("Test2", "Test2", "T2", -21.44);
+	t1.addSplit("Test1", "Test1", "T1", -30);
+	t1.addSplit("Test2", "Test2", "T2", -21.44);
 	
 	m_pAccount->addTransaction(t0);
-/*	m_pAccount->addTransaction(t1);
+	m_pAccount->addTransaction(t1);
 	m_pAccount->addTransaction(t2);
 	m_pAccount->addTransaction(t3);
 */	
@@ -159,7 +159,7 @@
 		std::string strAmount = it->Amount();
 		NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 		
-		std::string strDate = it->Date1().FormattedDate(0);
+		std::string strDate = it->Date1().FormattedDate(UK);
 		NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
 		
 		localBalance += it->Amount();
@@ -301,7 +301,7 @@
 	std::string strAmount = newTransaction.Amount();
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 	
-	std::string strDate = newTransaction.Date1().FormattedDate(0);
+	std::string strDate = newTransaction.Date1().FormattedDate(UK);
 	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
 	
 	fixed localBalance = m_pAccount->getBalance(true);
@@ -555,7 +555,7 @@
 	int nDay = [CalDate dayOfMonth];
 	
 	Date date1(nDay, nMonth, nYear);
-	std::string strDate = date1.FormattedDate(0);
+	std::string strDate = date1.FormattedDate(UK);
 	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
 	
 	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
@@ -966,6 +966,47 @@ NSDate * convertToNSDate(Date *date)
 	fileStream.close();
 	
 	return true;
+}
+
+- (IBAction)ImportQIF:(id)sender
+{
+	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+	NSString *fileToOpen;
+	std::string strFile = "";
+	[oPanel setAllowsMultipleSelection: NO];
+	[oPanel setResolvesAliases: YES];
+	[oPanel setTitle: @"Import QIF file"];
+	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"qif", nil]];
+	
+	if ([oPanel runModal] == NSOKButton)
+	{
+		fileToOpen = [oPanel filename];
+		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
+		
+		
+		importQIFFileToAccount(m_pAccount, strFile, UK);
+		
+		[self buildContentTree];
+	}
+}
+
+- (IBAction)ExportQIF:(id)sender
+{
+	NSSavePanel *sPanel = [NSSavePanel savePanel];
+	NSString *fileToSave;
+	std::string strFile = "";
+	
+	[sPanel setTitle: @"Export to QIF file"];
+	[sPanel setRequiredFileType:@"qif"];
+	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"qif", nil]];
+	
+	if ([sPanel runModal] == NSOKButton)
+	{
+		fileToSave = [sPanel filename];
+		strFile = [fileToSave cStringUsingEncoding: NSASCIIStringEncoding];
+		
+		exportAccountToQIFFile(m_pAccount, strFile, UK);
+	}	
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item

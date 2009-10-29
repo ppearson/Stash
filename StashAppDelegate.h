@@ -62,6 +62,9 @@
 - (bool)OpenFileAt:(std::string)path;
 - (bool)SaveFileTo:(std::string)path;
 
+- (IBAction)ImportQIF:(id)sender;
+- (IBAction)ExportQIF:(id)sender;
+
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;

@@ -9,11 +9,17 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <algorithm>
 
 fixed::fixed(const double value)
 {
 	m_precision = 2;
 	SetFromDouble(value);
+}
+
+fixed::fixed(std::string value, CurrencyFormat format) : m_precision(2)
+{
+	SetFromString(value, format);
 }
 
 double fixed::ToDouble( ) const
@@ -209,7 +215,7 @@ void fixed::SetFromDouble(const double value )
 	double fractpart, intpart;
 	
 	fractpart = modf(fabs(value), &intpart);
-	m_num = (long long int)intpart * (long long int)pow(10.0, m_precision);
+	m_num = (long int)intpart * ( long int)pow(10.0, m_precision);
 	
 	// move fixed point over so now fractpart's `precision` digits
 	// are on the int side
@@ -217,7 +223,7 @@ void fixed::SetFromDouble(const double value )
 	
 	// combine fracpart into (already shifted) m_intpart
 	double roundCheck = modf(fractpart, &fractpart);
-	m_num += (long long int)fractpart;
+	m_num += (long int)fractpart;
 	
 	double nextDigit;
 	roundCheck = modf(roundCheck * 10.0, &nextDigit);
@@ -236,6 +242,32 @@ void fixed::SetFromDouble(const double value )
 		m_positive = false;
 	else
 		m_positive = true;
+}
+
+void fixed::SetFromString(std::string value, CurrencyFormat format)
+{
+	char delim = -1;
+	if (format == UKFormat)
+	{
+		delim = ',';
+	}
+	else
+	{
+		delim = '.';
+	}
+	
+	std::string::iterator it = value.begin();
+	
+	for (; it != value.end(); ++it)
+	{
+		if ((*it) == delim)
+		{
+			it = value.erase(it);
+		}
+	}
+	
+	double dValue = atof(value.c_str());
+	SetFromDouble(dValue);
 }
 
 fixed & fixed::operator =( const double & rhs )
@@ -346,7 +378,7 @@ void fixed::divide( fixed & dec, const fixed & value )
 	fractpart *= pow(10.0, dec.m_precision); //move as much as we want over to the int side of the fixed point
 	
 	// combine fracpart into (already shifted) m_intpart
-	dec.m_num = (long long int)intpart + (long long int)fractpart;
+	dec.m_num = (long int)intpart + ( long int)fractpart;
 	
 	double roundCheck = modf(fractpart, &fractpart);
 	
