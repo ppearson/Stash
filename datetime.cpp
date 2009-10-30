@@ -102,9 +102,18 @@ void Date::setDate(std::string date, char cSep, DateStringFormat dateFomat)
 	std::string strDay;
 	std::string strMonth;
 	std::string strYear;
+	
+	if (dateFomat == UK)
+	{
+		strm >> strDay;
+		strm >> strMonth;
+	}
+	else
+	{
+		strm >> strMonth;
+		strm >> strDay;
+	}
 
-	strm >> strDay;
-	strm >> strMonth;
 	strm >> strYear;
 
 	int nDay = atoi(strDay.c_str());
