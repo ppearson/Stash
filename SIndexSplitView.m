@@ -11,7 +11,6 @@
 
 @implementation SIndexSplitView
 
-
 - (void)awakeFromNib
 {
 	[super awakeFromNib];

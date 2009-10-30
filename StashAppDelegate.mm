@@ -301,6 +301,7 @@
 	newAccount.setType(static_cast<AccountType>(nType));
 	
 	Transaction newTransaction("Starting balance", "", "", startingBalance, -1);
+	newTransaction.setReconciled(true);
 	newAccount.addTransaction(newTransaction);
 	
 	m_Document.addAccount(newAccount);
