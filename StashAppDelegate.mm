@@ -35,6 +35,12 @@
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
+	[indexView setFrameSize:[indexViewPlaceholder frame].size];
+	[indexViewPlaceholder addSubview:indexView];
+	
+	[contentView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder addSubview:contentView];
+	
 	m_aContentItems = [[NSMutableArray alloc] init];
 	m_aIndexItems = [[NSMutableArray alloc] init];
 	
@@ -56,15 +62,15 @@
 	[Type selectItemAtIndex:0];
 	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:contentView];
-	[nc addObserver:self selector:@selector(IndexSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:indexView];
+	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
+	[nc addObserver:self selector:@selector(IndexSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:indexTableView];
 	
-/*	Account acc;
+	Account acc;
 	acc.setName("Main");
 	
 	m_Document.addAccount(acc);
 	m_pAccount = m_Document.getAccountPtr(0);
-*/	
+	
 /*	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
 	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
 	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
@@ -90,8 +96,8 @@
 	}
 */	
 	
-	[contentView setDelegate:self];
-	[contentView setAutoresizesOutlineColumn:NO];
+	[transactionsTableView setDelegate:self];
+	[transactionsTableView setAutoresizesOutlineColumn:NO];
 	
 	[self buildIndexTree];
 	[self buildContentTree];
@@ -127,7 +133,7 @@
 	m_SelectedTransaction = 0; 
 	m_bEditing = false;
 	
-	[indexView reloadData];	
+	[indexTableView reloadData];	
 }
 
 
@@ -262,7 +268,7 @@
 		[m_aContentItems addObject:newTransaction];		
 	}
 	
-	[contentView reloadData];
+	[transactionsTableView reloadData];
 }
 
 - (void)updateUI
@@ -270,22 +276,6 @@
 	if (!m_pAccount)
 		return;
 	
-	NSString *sTransactions;
-	if (m_pAccount->getTransactionCount() == 1)
-	{
-		sTransactions = @"1 Transaction.";
-	}
-	else
-	{
-		sTransactions = [NSString stringWithFormat:@"%i Transactions.", m_pAccount->getTransactionCount()];
-	}
-	[Transactions setStringValue:sTransactions];
-	
-	std::string strBalance = m_pAccount->getBalance(true);
-	NSString *sBal1 = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
-	
-	NSString *sBalance = [NSString stringWithFormat:@"Balance: £%@", sBal1];
-	[Balance setStringValue:sBalance];	
 }
 
 - (IBAction)AddAccount:(id)sender
@@ -374,11 +364,11 @@
 	[newIndex setIntValue:nTransaction forKey:@"Transaction"];
 	
 	[m_aContentItems addObject:newIndex];
-	[contentView reloadData];
+	[transactionsTableView reloadData];
 	
-	NSInteger row = [contentView rowForItem:newIndex];
+	NSInteger row = [transactionsTableView rowForItem:newIndex];
 	
-	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
 	[window makeFirstResponder:Payee];
 	
@@ -389,7 +379,7 @@
 
 - (IBAction)Delete:(id)sender
 {
-	NSIndexSet *rows = [contentView selectedRowIndexes];
+	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
 	
 	if ([rows count] > 0)
 	{
@@ -397,7 +387,7 @@
 		
 		while (row != NSNotFound)
 		{
-			IndexItem *item = [contentView itemAtRow:row];
+			IndexItem *item = [transactionsTableView itemAtRow:row];
 			
 			int nSplit = [item intKeyValue:@"Split"];
 			int nTransaction = [item intKeyValue:@"Transaction"];
@@ -423,7 +413,7 @@
 		//		 also, when removing items, the balance value of other objects will be wrong
 		
 //		[self buildContentTree];
-		[contentView reloadData];
+		[transactionsTableView reloadData];
 		
 		m_UnsavedChanges = true;
 		
@@ -433,12 +423,12 @@
 
 - (IBAction)SplitTransaction:(id)sender
 {
-	NSInteger row = [contentView selectedRow];
+	NSInteger row = [transactionsTableView selectedRow];
 	
 	if (row == NSNotFound)
 		return;
 	
-	IndexItem *item = [contentView itemAtRow:row];
+	IndexItem *item = [transactionsTableView itemAtRow:row];
 	
 	int nTransaction = [item intKeyValue:@"Transaction"];
 	Transaction &trans = m_pAccount->getTransaction(nTransaction);
@@ -461,13 +451,13 @@
 	
 	[item addChild:newSplit];
 	
-	[contentView reloadData];
+	[transactionsTableView reloadData];
 	
-	[contentView expandItem:item];
+	[transactionsTableView expandItem:item];
 	
-	row = [contentView rowForItem:newSplit];
+	row = [transactionsTableView rowForItem:newSplit];
 	
-	[contentView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
 	[window makeFirstResponder:Payee];
 	
@@ -476,16 +466,16 @@
 
 - (void)IndexSelectionDidChange:(NSNotification *)notification
 {
-	if ([indexView numberOfRows] == 0)
+	if ([indexTableView numberOfRows] == 0)
 		return;
 	
-	NSIndexSet *rows = [indexView selectedRowIndexes];
+	NSIndexSet *rows = [indexTableView selectedRowIndexes];
 	
 	if ([rows count] == 1)
 	{
 		NSInteger row = [rows lastIndex];
 		
-		IndexItem *item = [indexView itemAtRow:row];
+		IndexItem *item = [indexTableView itemAtRow:row];
 		
 		int nAccount = [item intKeyValue:@"Account"];
 		
@@ -505,13 +495,13 @@
 	if (!m_pAccount)
 		return;
 	
-	NSIndexSet *rows = [contentView selectedRowIndexes];
+	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
 	
 	if ([rows count] == 1)
 	{
 		NSInteger row = [rows lastIndex];
 		
-		IndexItem *item = [contentView itemAtRow:row];
+		IndexItem *item = [transactionsTableView itemAtRow:row];
 		
 		int nTrans = [item transaction];
 		int nSplit = [item splitTransaction];
@@ -731,7 +721,7 @@
 	[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
 	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 	
-	[contentView reloadData];
+	[transactionsTableView reloadData];
 	
 	m_UnsavedChanges = true;
 	
@@ -742,7 +732,7 @@
 {
 	if (item == nil)
 	{
-		if (outlineView == contentView)
+		if (outlineView == transactionsTableView)
 		{
 			return [m_aContentItems objectAtIndex:index];
 		}
@@ -766,7 +756,7 @@
 {
     if (item == nil)
 	{
-		if (outlineView == contentView)
+		if (outlineView == transactionsTableView)
 		{
 			return [m_aContentItems count];
 		}
@@ -798,7 +788,7 @@
 	
 	if (item)
 	{
-		if (outlineView == contentView)
+		if (outlineView == transactionsTableView)
 		{
 			[item setValue:object forKey:identifier];
 			
@@ -844,7 +834,7 @@
 
 - (void)outlineView:(NSOutlineView *)outlineView willDisplayCell:(id)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	if (outlineView != contentView)
+	if (outlineView != transactionsTableView)
 	{
 		return;
 	}

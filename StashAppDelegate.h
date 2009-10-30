@@ -17,12 +17,20 @@
 @interface StashAppDelegate : NSObject// <NSApplicationDelegate>
 {
     NSWindow *window;
-	IBOutlet NSSplitView *horizonalSplitView, *verticalSplitView;
-	IBOutlet NSOutlineView *indexView, *contentView;
 	
-	IBOutlet NSTextField *Transactions;
-	IBOutlet NSTextField *Balance;
+	IBOutlet NSView *indexViewPlaceholder;
+	IBOutlet NSView *contentViewPlaceholder;
 	
+	// Index View
+	IBOutlet NSView *indexView;
+	IBOutlet NSOutlineView *indexTableView;
+	
+	// Content View
+	IBOutlet NSView *contentView;
+	IBOutlet NSOutlineView *transactionsTableView;
+		
+	IBOutlet NSSplitView *verticalSplitView;
+			
 	IBOutlet NSTextField *Payee;
 	IBOutlet NSTextField *Description;
 	IBOutlet NSTextField *Category;
