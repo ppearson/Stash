@@ -84,6 +84,12 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D086FD0510931F14001AE198 /* IndexItem.h */,
+				D086FD0610931F14001AE198 /* IndexItem.mm */,
+				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
+				D02C0726109A2A4F00155B13 /* AddAccountController.m */,
+				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
+				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 				256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
 			);
@@ -118,12 +124,8 @@
 		29B97314FDCFA39411CA2CEA /* Stash */ = {
 			isa = PBXGroup;
 			children = (
-				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
-				D02C0726109A2A4F00155B13 /* AddAccountController.m */,
 				D09C027F1098D76900764EC1 /* document.h */,
 				D09C02801098D76900764EC1 /* document.cpp */,
-				D086FD0510931F14001AE198 /* IndexItem.h */,
-				D086FD0610931F14001AE198 /* IndexItem.mm */,
 				D086FCF110931EE3001AE198 /* account.cpp */,
 				D086FCF210931EE3001AE198 /* account.h */,
 				D086FCF310931EE3001AE198 /* datetime.cpp */,
@@ -163,8 +165,6 @@
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
-				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
