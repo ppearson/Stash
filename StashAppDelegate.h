@@ -29,7 +29,7 @@
 	IBOutlet NSView *contentView;
 	IBOutlet NSOutlineView *transactionsTableView;
 		
-	IBOutlet NSSplitView *verticalSplitView;
+	IBOutlet NSSplitView  *verticalSplitView;
 			
 	IBOutlet NSTextField *Payee;
 	IBOutlet NSTextField *Description;

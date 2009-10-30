@@ -484,6 +484,14 @@
 			m_pAccount = m_Document.getAccountPtr(nAccount);			
 			m_SelectedTransaction = 0;
 			
+			[Payee setStringValue:@""];
+			[Description setStringValue:@""];
+			[Category setStringValue:@""];
+			[Amount setStringValue:@""];
+			[Type selectItemAtIndex:0];
+			
+			[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
+			
 			[self buildContentTree];
 			[self updateUI];
 		}		
