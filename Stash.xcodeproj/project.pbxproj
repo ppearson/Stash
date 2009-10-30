@@ -25,6 +25,7 @@
 		D097A594109A1025004FA992 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D097A592109A1025004FA992 /* storage.cpp */; };
 		D09C02811098D76900764EC1 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09C02801098D76900764EC1 /* document.cpp */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
+		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,8 @@
 		D09C027F1098D76900764EC1 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
 		D09C02801098D76900764EC1 /* document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = document.cpp; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
+		D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIndexSplitView.h; sourceTree = "<group>"; };
+		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
 		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +163,8 @@
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
+				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -255,6 +260,7 @@
 				D09C02811098D76900764EC1 /* document.cpp in Sources */,
 				D097A594109A1025004FA992 /* storage.cpp in Sources */,
 				D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */,
+				D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
