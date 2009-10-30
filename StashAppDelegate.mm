@@ -637,10 +637,9 @@
 	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strCategory = [[Category stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	double dAmount = [Amount doubleValue];
+	std::string strAmount = [[Amount stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	
-	fixed fAmount = dAmount;
-	std::string strAmount = fAmount;
+	fixed fAmount = strAmount;
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 	
 	int nType = [Type indexOfSelectedItem];
