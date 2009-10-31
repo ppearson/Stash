@@ -1,5 +1,5 @@
 //
-//  SIndexSplitView.h
+//  STransactionsSplitView.h
 //  Stash
 //
 //  Created by Peter Pearson on 30/10/2009.
@@ -9,12 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface SIndexSplitView : NSSplitView
+@interface STransactionsSplitView : NSSplitView
 {
-	id indexSubView;
-	id contentSubView;
+	id transactionsSubView;
+	id editSubView;
 }
-
-- (float)dividerThickness;
 
 @end

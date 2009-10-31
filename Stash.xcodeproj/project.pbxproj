@@ -22,6 +22,7 @@
 		D086FD0010931EE3001AE198 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCFA10931EE3001AE198 /* transaction.cpp */; };
 		D086FD0710931F14001AE198 /* IndexItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* IndexItem.mm */; };
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
+		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D097A594109A1025004FA992 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D097A592109A1025004FA992 /* storage.cpp */; };
 		D09C02811098D76900764EC1 /* document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09C02801098D76900764EC1 /* document.cpp */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
@@ -59,6 +60,8 @@
 		D086FD0510931F14001AE198 /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
 		D086FD0610931F14001AE198 /* IndexItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndexItem.mm; sourceTree = "<group>"; };
 		D08D8DBD1097831C004636BC /* Stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Stash.icns; sourceTree = "<group>"; };
+		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
+		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
 		D097A592109A1025004FA992 /* storage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = storage.cpp; sourceTree = "<group>"; };
 		D097A593109A1025004FA992 /* storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = storage.h; sourceTree = "<group>"; };
 		D09C027F1098D76900764EC1 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
@@ -86,6 +89,8 @@
 			children = (
 				D086FD0510931F14001AE198 /* IndexItem.h */,
 				D086FD0610931F14001AE198 /* IndexItem.mm */,
+				D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */,
+				D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */,
 				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
 				D02C0726109A2A4F00155B13 /* AddAccountController.m */,
 				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
@@ -261,6 +266,7 @@
 				D097A594109A1025004FA992 /* storage.cpp in Sources */,
 				D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */,
 				D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */,
+				D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

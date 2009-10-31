@@ -30,28 +30,29 @@
 	NSRectFill(rect);
 }
 
-- (float)splitView:(NSSplitView *)splitView constrainMinCoordinate:(float)proposedMin ofSubviewAt:(int)index
+- (float)splitView:(NSSplitView *)sender constrainMinCoordinate:(float)proposedMin ofSubviewAt:(int)offset
 {
-	return (proposedMin + 150.0);	
+	NSRect mainFrame = [[sender superview] frame];
+	return mainFrame.size.width - (mainFrame.size.width - 150.0);
 }
 
-/*
-- (float)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(float)proposedMax ofSubviewAt:(int)index
+- (BOOL)splitView:(id)sender canCollapseSubview:(NSView *)subview
 {
-	return (proposedMax - 350.0);	
+    return NO;
 }
-
-*/
 
 - (void)splitView:(id)sender resizeSubviewsWithOldSize:(NSSize)oldSize
 {
+	float newHeight = [sender frame].size.height;
 	float newWidth = [sender frame].size.width - [indexSubView frame].size.width - [self dividerThickness];
 	
 	NSRect newFrame = [indexSubView frame];
+	newFrame.size.height = newHeight;
 	[indexSubView setFrame:newFrame];
 	
 	newFrame = [contentSubView frame];
 	newFrame.size.width = newWidth;
+	newFrame.size.height = newHeight;
 	[contentSubView setFrame:newFrame];
 	
 	[sender adjustSubviews];

@@ -35,6 +35,8 @@
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
+	[window setDelegate:self];
+	
 	[indexView setFrameSize:[indexViewPlaceholder frame].size];
 	[indexViewPlaceholder addSubview:indexView];
 	
