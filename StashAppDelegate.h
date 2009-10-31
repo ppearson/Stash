@@ -12,6 +12,7 @@
 #include "transaction.h"
 
 #import "AddAccountController.h"
+#import "ImportQIFController.h"
 #import "IndexItem.h"
 
 @interface StashAppDelegate : NSObject// <NSApplicationDelegate>
@@ -76,6 +77,8 @@
 
 - (IBAction)ImportQIF:(id)sender;
 - (IBAction)ExportQIF:(id)sender;
+
+- (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
 - (void)IndexSelectionDidChange:(NSNotification *)notification;
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;

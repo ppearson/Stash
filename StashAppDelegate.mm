@@ -1064,11 +1064,33 @@ NSDate * convertToNSDate(Date *date)
 		fileToOpen = [oPanel filename];
 		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
 		
+		std::string strDateSample = "";
+		NSString *sDateSample = @"";
 		
-		importQIFFileToAccount(m_pAccount, strFile, UK);
+		if (getDateFormatSampleFromQIFFile(strFile, strDateSample))
+		{
+			sDateSample = [[NSString alloc] initWithUTF8String:strDateSample.c_str()];
+		}
 		
-		[self buildContentTree];
+		ImportQIFController *importQIFController = [[ImportQIFController alloc] initWnd:self withFile:fileToOpen sampleFormat:sDateSample];
+		[importQIFController showWindow:self];
 	}
+}
+
+- (void)importQIFConfirmed:(ImportQIFController *)importQIFController
+{
+	int nDateFormat = [importQIFController dateFormat];
+	
+	DateStringFormat dateFormat = static_cast<DateStringFormat>(nDateFormat);
+	
+	NSString *sFile = [importQIFController file];
+	
+	std::string strFile = [sFile cStringUsingEncoding: NSASCIIStringEncoding];
+	
+	[importQIFController release];
+	
+	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat))
+		[self buildContentTree];	
 }
 
 - (IBAction)ExportQIF:(id)sender
