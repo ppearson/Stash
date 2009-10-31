@@ -46,8 +46,12 @@
 	
 	[fDateFormatPopup addItemWithTitle:@"dd/mm/YYYY"];
 	[fDateFormatPopup addItemWithTitle:@"dd/mm/YY"];
+	[fDateFormatPopup addItemWithTitle:@"dd-mm-YYYY"];
+	[fDateFormatPopup addItemWithTitle:@"dd-mm-YY"];
 	[fDateFormatPopup addItemWithTitle:@"mm/dd/YY"];
 	[fDateFormatPopup addItemWithTitle:@"mm/dd/YYYY"];
+	[fDateFormatPopup addItemWithTitle:@"mm-dd-YY"];
+	[fDateFormatPopup addItemWithTitle:@"mm-dd-YYYY"];
 		
 	[fDateFormatPopup selectItemAtIndex:0];
 }
@@ -61,16 +65,26 @@
 {
 	int nSelectedFormat = [fDateFormatPopup indexOfSelectedItem];
 	
+	// do the format
+	
+	nDateFormat = UK;
+	
+	if (nSelectedFormat > 3)
+		nDateFormat = US;
+		
 	switch (nSelectedFormat)
 	{
-		case 2:
-		case 3:
-			nDateFormat = US;
-			break;
 		case 0:
 		case 1:
-		default:
-			nDateFormat = UK;			
+		case 4:
+		case 5:
+			cSeparator = '/';
+			break;
+		case 2:
+		case 3:
+		case 6:
+		case 7:
+			cSeparator = '-';			
 	}
 		
 	[self confirmImport];
@@ -84,6 +98,11 @@
 - (int)dateFormat
 {
 	return nDateFormat;
+}
+
+- (char)separator
+{
+	return cSeparator;
 }
 				 
 - (NSString*)file

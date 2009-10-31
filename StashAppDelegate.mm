@@ -1080,16 +1080,17 @@ NSDate * convertToNSDate(Date *date)
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController
 {
 	int nDateFormat = [importQIFController dateFormat];
-	
 	DateStringFormat dateFormat = static_cast<DateStringFormat>(nDateFormat);
 	
-	NSString *sFile = [importQIFController file];
+	char cSeparator = [importQIFController separator];
 	
+	NSString *sFile = [importQIFController file];
+		
 	std::string strFile = [sFile cStringUsingEncoding: NSASCIIStringEncoding];
 	
 	[importQIFController release];
 	
-	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat))
+	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator))
 		[self buildContentTree];	
 }
 

@@ -21,10 +21,12 @@
 	StashAppDelegate *fMainController;
 	
 	NSString *sDesc, *sFile, *sSampleDate;
+	char cSeparator;
 	int nDateFormat;	
 }
 
 - (int)dateFormat;
+- (char)separator;
 - (NSString*)file;
 
 - (id)initWnd:(StashAppDelegate *)controller withFile:(NSString*)file sampleFormat:(NSString*)sFormat;
