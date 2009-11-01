@@ -24,7 +24,7 @@ enum TransactionType
 class Transaction
 {
 public:
-	Transaction() { m_Split = false; m_Reconciled = false; }
+	Transaction() { m_Split = false; m_Reconciled = false; m_Type = None; }
 	Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date);
 	
 	bool isReconciled() const { return m_Reconciled; }

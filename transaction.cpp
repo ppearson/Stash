@@ -23,7 +23,7 @@ void Transaction::Load(std::fstream &stream, int version)
 	LoadString(m_Category, stream);
 	m_Amount.Load(stream, version);
 	
-	stream.read((char *) &m_Type, sizeof(TransactionType));
+	stream.read((char *) &m_Type, sizeof(unsigned char));
 	
 	unsigned char cBitset = 0;
 	stream.read((char *) &cBitset, sizeof(unsigned char));
@@ -54,7 +54,7 @@ void Transaction::Store(std::fstream &stream)
 	StoreString(m_Category, stream);
 	m_Amount.Store(stream);
 	
-	stream.write((char *) &m_Type, sizeof(TransactionType));
+	stream.write((char *) &m_Type, sizeof(unsigned char));
 	
 	std::bitset<8> localset;	
 	localset[0] = m_Reconciled;

@@ -165,13 +165,18 @@ void Date::setDate(int Day, int Month, int Year)
 
 void Date::Load(std::fstream &stream, int version)
 {
-	stream.read((char *) &m_Time, sizeof(long));
+	// time_t is different sizes on 32/64 bit systems
+	long long tempTime = 0;
+	stream.read((char *) &tempTime, sizeof(long long));
+	m_Time = static_cast<time_t>(tempTime);
 	SetVarsFromTime();
 }
 
 void Date::Store(std::fstream &stream)
 {
-	stream.write((char *) &m_Time, sizeof(long));
+	// time_t is different sizes on 32/64 bit systems
+	long long tempTime = static_cast<long long>(m_Time);
+	stream.write((char *) &tempTime, sizeof(long long));
 }
 
 std::ostream & operator <<( std::ostream & os, const Date & d)

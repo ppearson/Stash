@@ -12,7 +12,7 @@
 
 Account::Account()
 {
-
+	m_type = Cash;
 }
 
 void Account::Load(std::fstream &stream, int version)
@@ -22,7 +22,7 @@ void Account::Load(std::fstream &stream, int version)
 	LoadString(m_number, stream);
 	LoadString(m_note, stream);
 	
-	stream.read((char *) &m_type, sizeof(AccountType));
+	stream.read((char *) &m_type, sizeof(unsigned char));
 	
 	unsigned int numTransactions = 0;
 	
@@ -44,7 +44,7 @@ void Account::Store(std::fstream &stream)
 	StoreString(m_number, stream);
 	StoreString(m_note, stream);
 	
-	stream.write((char *) &m_type, sizeof(AccountType));
+	stream.write((char *) &m_type, sizeof(unsigned char));
 	
 	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());
 	
