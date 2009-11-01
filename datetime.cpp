@@ -87,6 +87,7 @@ void Date::SetTimeFromVars()
 	time.tm_mday = m_Day;
 	time.tm_mon = m_Month - 1;
 	time.tm_year = m_Year - 1900;
+	time.tm_isdst = 0;
 
 	m_Time = mktime(&time);
 }
