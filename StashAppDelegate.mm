@@ -35,6 +35,8 @@
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
+	nShowTransactionsType = LAST_100;
+	
 	[window setDelegate:self];
 	
 	[indexView setFrameSize:[indexViewPlaceholder frame].size];
@@ -138,7 +140,6 @@
 	[indexTableView reloadData];	
 }
 
-
 - (void)buildContentTree
 {
 	[m_aContentItems removeAllObjects];
@@ -148,23 +149,47 @@
 	if (!m_pAccount)
 		return;
 	
-	int nTransactionsToShow = 100;
-	
 	std::vector<Transaction>::iterator it = m_pAccount->begin();
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
-	if (m_pAccount->getTransactionCount() > nTransactionsToShow)
+	if (nShowTransactionsType == LAST_100)
 	{
-		// calculate balance without outputting it
-		std::vector<Transaction>::iterator stopIt = m_pAccount->end() - nTransactionsToShow;
-		for (; it != stopIt; ++it, nTransaction++)
+		int nTransactionsToShow = 100;
+		if (m_pAccount->getTransactionCount() > nTransactionsToShow)
 		{
-			localBalance += (*it).Amount();
+			// calculate balance without outputting it
+			std::vector<Transaction>::iterator stopIt = m_pAccount->end() - nTransactionsToShow;
+			for (; it != stopIt; ++it, nTransaction++)
+			{
+				localBalance += (*it).Amount();
+			}
+			
+			m_nTransactionOffset = nTransaction;
+		}
+	}
+	else if (nShowTransactionsType == ALL_THIS_YEAR)
+	{
+		Date dateNow;
+		dateNow.Now();
+		
+		Date dateComp(1, 1, dateNow.Year());
+		
+		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
+		
+		for (; itTemp != m_pAccount->end(); ++itTemp)
+		{
+			if ((*itTemp).Date1() >= dateComp)
+				break;
+			
+			localBalance += (*itTemp).Amount();
+			nTransaction++;
 		}
 		
+		it = itTemp;
+		
 		m_nTransactionOffset = nTransaction;
-	}	
+	}
 	
 	for (; it != m_pAccount->end(); ++it, nTransaction++)
 	{
@@ -736,6 +761,24 @@
 	m_UnsavedChanges = true;
 	
 	[self updateUI];
+}
+
+- (IBAction)showLast100Transactions:(id)sender
+{
+	nShowTransactionsType = LAST_100;
+	[self buildContentTree];
+}
+
+- (IBAction)showAllTransactionsThisYear:(id)sender
+{
+	nShowTransactionsType = ALL_THIS_YEAR;
+	[self buildContentTree];
+}
+
+- (IBAction)showAllTransactions:(id)sender
+{
+	nShowTransactionsType = ALL;
+	[self buildContentTree];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item

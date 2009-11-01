@@ -15,6 +15,13 @@
 #import "ImportQIFController.h"
 #import "IndexItem.h"
 
+enum TransactionsToShow
+{
+	LAST_100,
+	ALL_THIS_YEAR,
+	ALL
+};
+
 @interface StashAppDelegate : NSObject// <NSApplicationDelegate>
 {
     NSWindow *window;
@@ -44,6 +51,8 @@
 	NSMutableArray *m_aIndexItems;
 	NSMutableArray *m_aContentItems;
 	
+	TransactionsToShow nShowTransactionsType;
+	
 	Document m_Document;
 	Account *m_pAccount;	
 	bool m_bEditing;
@@ -66,6 +75,10 @@
 - (IBAction)AddTransaction:(id)sender;
 - (IBAction)Delete:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
+
+- (IBAction)showLast100Transactions:(id)sender;
+- (IBAction)showAllTransactionsThisYear:(id)sender;
+- (IBAction)showAllTransactions:(id)sender;
 
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 
