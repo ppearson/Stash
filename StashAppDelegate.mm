@@ -7,7 +7,7 @@
 //
 
 #import "StashAppDelegate.h"
-
+#import "IndexItem.h"
 #include "storage.h"
 
 @implementation StashAppDelegate
@@ -16,6 +16,10 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
+	[self buildIndexTree];
+	[self buildContentTree];
+	[self updateUI];
+	
 	[window makeKeyAndOrderFront:self];
 }
 
@@ -46,7 +50,6 @@
 	[contentViewPlaceholder addSubview:contentView];
 	
 	m_aContentItems = [[NSMutableArray alloc] init];
-	m_aIndexItems = [[NSMutableArray alloc] init];
 	
 	NSDate *date1 = [NSDate date];
 	[DateCntl setDateValue:date1];
@@ -67,7 +70,6 @@
 	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
-	[nc addObserver:self selector:@selector(IndexSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:indexTableView];
 	
 	Account acc;
 	acc.setName("Main");
@@ -99,18 +101,15 @@
 		m_pAccount->addTransaction(t3);
 	}
 */	
-	
 	[transactionsTableView setDelegate:self];
-	[transactionsTableView setAutoresizesOutlineColumn:NO];
-	
-	[self buildIndexTree];
-	[self buildContentTree];
-	[self updateUI];
+	[transactionsTableView setAutoresizesOutlineColumn:NO];	
 }
 
 - (void)buildIndexTree
 {
-	[m_aIndexItems removeAllObjects];
+	[indexBar clearAllItems];
+	
+	[indexBar addSection:@"accounts" title:@"ACCOUNTS"];
 	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	
@@ -118,26 +117,42 @@
 	
 	for (; it != m_Document.AccountEnd(); ++it, nAccount++)
 	{
-		IndexItem *newAccount = [[IndexItem alloc] init];
-		
 		std::string strName = it->getName();
 		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
 		
-		std::string strBalance = it->getBalance(true);
-		NSString *sBalance = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
-		
-		[newAccount setValue:sName forKey:@"Name"];
-		[newAccount setValue:sBalance forKey:@"Balance"];
-		
-		[newAccount setIntValue:nAccount forKey:@"Account"];
-	
-		[m_aIndexItems addObject:newAccount];
+		NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccount];
+
+		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self];
 	}
+	
+	m_pAccount = 0;
 	
 	m_SelectedTransaction = 0; 
 	m_bEditing = false;
 	
-	[indexTableView reloadData];	
+	[indexBar reloadData];
+	
+	[indexBar expandSection:@"accounts"];
+}
+
+- (void)accountSelected:(id)sender
+{
+	int nAccount = [sender getItemIndex];
+		
+	m_pAccount = m_Document.getAccountPtr(nAccount);			
+	m_SelectedTransaction = 0;
+	
+	[Payee setStringValue:@""];
+	[Description setStringValue:@""];
+	[Category setStringValue:@""];
+	[Amount setStringValue:@""];
+	[Type selectItemAtIndex:0];
+	
+	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
+	
+	[self buildContentTree];
+	[self updateUI];
+	
 }
 
 - (void)buildContentTree
@@ -193,7 +208,7 @@
 	
 	for (; it != m_pAccount->end(); ++it, nTransaction++)
 	{
-		IndexItem *newTransaction = [[IndexItem alloc] init];
+		TransactionItem *newTransaction = [[TransactionItem alloc] init];
 		
 		std::string strPayee = it->Payee();
 		NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
@@ -239,7 +254,7 @@
 			{
 				SplitTransaction & split = it->getSplit(i);
 				
-				IndexItem *newSplit = [[IndexItem alloc] init];
+				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
 				std::string strPayee = split.Payee();
 				NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
@@ -267,13 +282,14 @@
 				splitValue -= split.Amount();
 				
 				[newTransaction addChild:newSplit];
+				[newSplit release];
 			}
 			
 			// add remainder as a temp editable row
 			
 			if (splitValue != 0.0)
 			{
-				IndexItem *newSplit = [[IndexItem alloc] init];
+				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
 				std::string strAmount = splitValue;
 				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
@@ -289,10 +305,12 @@
 				[newSplit setIntValue:-2 forKey:@"Split"];
 				
 				[newTransaction addChild:newSplit];
+				[newSplit release];
 			}
 		}		
 		
-		[m_aContentItems addObject:newTransaction];		
+		[m_aContentItems addObject:newTransaction];
+		[newTransaction release];
 	}
 	
 	[transactionsTableView reloadData];
@@ -341,11 +359,15 @@
 	
 	newAccount.addTransaction(newTransaction);
 	
-	m_Document.addAccount(newAccount);
+	int nAccountNum = m_Document.addAccount(newAccount);
+	
+	NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccountNum];
+	
+	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self];
 	
 	[addAccountController release];
 	
-	[self buildIndexTree];
+	[indexBar reloadData];
 }
 
 - (IBAction)AddTransaction:(id)sender
@@ -363,7 +385,7 @@
 	[Amount setStringValue:@""];
 	[Type selectItemAtIndex:0];
 	
-	IndexItem *newIndex = [[IndexItem alloc] init];
+	TransactionItem *newIndex = [[TransactionItem alloc] init];
 	
 	std::string strPayee = newTransaction.Payee();
 	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
@@ -402,6 +424,8 @@
 	[newIndex setIntValue:nTransaction forKey:@"Transaction"];
 	
 	[m_aContentItems addObject:newIndex];
+	[newIndex release];
+	
 	[transactionsTableView reloadData];
 	
 	NSInteger row = [transactionsTableView rowForItem:newIndex];
@@ -425,7 +449,7 @@
 		
 		while (row != NSNotFound)
 		{
-			IndexItem *item = [transactionsTableView itemAtRow:row];
+			TransactionItem *item = [transactionsTableView itemAtRow:row];
 			
 			int nSplit = [item intKeyValue:@"Split"];
 			int nTransaction = [item intKeyValue:@"Transaction"];
@@ -437,7 +461,7 @@
 			}
 			else if (nSplit != -2)
 			{
-				IndexItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction - m_nTransactionOffset];
+				TransactionItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction - m_nTransactionOffset];
 				Transaction &trans = m_pAccount->getTransaction(nTransaction);
 				
 				trans.deleteSplit(nSplit);
@@ -466,13 +490,13 @@
 	if (row == NSNotFound)
 		return;
 	
-	IndexItem *item = [transactionsTableView itemAtRow:row];
+	TransactionItem *item = [transactionsTableView itemAtRow:row];
 	
 	int nTransaction = [item intKeyValue:@"Transaction"];
 	Transaction &trans = m_pAccount->getTransaction(nTransaction);
 	
 	fixed splitValue = trans.Amount();
-	IndexItem *newSplit = [[IndexItem alloc] init];
+	TransactionItem *newSplit = [[TransactionItem alloc] init];
 	
 	std::string strAmount = splitValue;
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
@@ -502,40 +526,6 @@
 	m_UnsavedChanges = true;
 }
 
-- (void)IndexSelectionDidChange:(NSNotification *)notification
-{
-	if ([indexTableView numberOfRows] == 0)
-		return;
-	
-	NSIndexSet *rows = [indexTableView selectedRowIndexes];
-	
-	if ([rows count] == 1)
-	{
-		NSInteger row = [rows lastIndex];
-		
-		IndexItem *item = [indexTableView itemAtRow:row];
-		
-		int nAccount = [item intKeyValue:@"Account"];
-		
-		if (nAccount != -1)
-		{
-			m_pAccount = m_Document.getAccountPtr(nAccount);			
-			m_SelectedTransaction = 0;
-			
-			[Payee setStringValue:@""];
-			[Description setStringValue:@""];
-			[Category setStringValue:@""];
-			[Amount setStringValue:@""];
-			[Type selectItemAtIndex:0];
-			
-			[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
-			
-			[self buildContentTree];
-			[self updateUI];
-		}		
-	}	
-}
-
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
 {
 	if (!m_pAccount)
@@ -547,7 +537,7 @@
 	{
 		NSInteger row = [rows lastIndex];
 		
-		IndexItem *item = [transactionsTableView itemAtRow:row];
+		TransactionItem *item = [transactionsTableView itemAtRow:row];
 		
 		int nTrans = [item transaction];
 		int nSplit = [item splitTransaction];
@@ -739,9 +729,9 @@
 			
 			if (diff != 0.0)
 			{
-				IndexItem *transIndex = [m_aContentItems objectAtIndex:nTrans - m_nTransactionOffset];
+				TransactionItem *transIndex = [m_aContentItems objectAtIndex:nTrans - m_nTransactionOffset];
 				
-				IndexItem *newSplit = [[IndexItem alloc] init];
+				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
 				std::string strAmount = diff;
 				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
@@ -795,18 +785,11 @@
 {
 	if (item == nil)
 	{
-		if (outlineView == transactionsTableView)
-		{
-			return [m_aContentItems objectAtIndex:index];
-		}
-		else
-		{
-			return [m_aIndexItems objectAtIndex:index];
-		}
+		return [m_aContentItems objectAtIndex:index];
 	}
 	else
 	{
-		return [(IndexItem*)item childAtIndex:index];
+		return [(TransactionItem*)item childAtIndex:index];
     }
 }
 
@@ -822,10 +805,6 @@
 		if (outlineView == transactionsTableView)
 		{
 			return [m_aContentItems count];
-		}
-		else
-		{
-			return [m_aIndexItems count];
 		}
     }
 	

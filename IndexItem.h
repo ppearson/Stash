@@ -1,34 +1,43 @@
+//
+//  IndexItem.h
+//  Stash
+//
+//  Created by Peter Pearson on 01/11/2009.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//
+
 #import <Cocoa/Cocoa.h>
-#include "transaction.h"
-#include "split_transaction.h"
 
-
-@interface IndexItem : NSObject {
+@interface IndexItem : NSObject
+{
+	NSMutableArray *m_aChildren;
+	id parentKey;
+	id itemKey;
 	
-	NSMutableArray *children;
-	NSMutableDictionary *data;
+	NSString *title;
+	int itemIndex;
 	
-	int m_trans;
-	int m_split;
+	id actionTarget;
+	SEL action;
 }
 
-- (int)transaction;
-- (void)setTransaction:(int)transaction;
+@property (retain) NSString *title;
+//@property (assign) int itemIndex;
+@property (assign) id parentKey;
+@property (assign) id itemKey;
 
-- (int)splitTransaction;
-- (void)setSplitTransaction:(int)stransaction;
+@property (assign, readonly) id actionTarget;
+@property (assign, readonly) SEL action;
 
-- (NSString *)keyValue:(NSString *)key;
-- (void)setValue:(NSString *)value forKey:(NSString *)key;
+- (void)addChild:(IndexItem *)item;
 
-- (int)intKeyValue:(NSString *)key;
-- (void)setIntValue:(int)value forKey:(NSString *)key;
+- (IndexItem *)childAtIndex:(int)index;
+- (int)numberOfChildren;
 
-- (void)addChild:(IndexItem *)n;
-- (int)childrenCount;
-- (IndexItem *)childAtIndex:(int)i;
-- (void)deleteChild:(int)i;
+- (void)setItemIndex:(int)iIndex;
+- (int)getItemIndex;
 
-- (BOOL)expandable;
+- (void)setAction:(SEL)selector target:(id)target;
+- (BOOL)hasAction;
 
 @end

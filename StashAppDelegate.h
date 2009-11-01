@@ -13,7 +13,8 @@
 
 #import "AddAccountController.h"
 #import "ImportQIFController.h"
-#import "IndexItem.h"
+#import "TransactionItem.h"
+#import "IndexBar.h"
 
 enum TransactionsToShow
 {
@@ -31,7 +32,7 @@ enum TransactionsToShow
 	
 	// Index View
 	IBOutlet NSView *indexView;
-	IBOutlet NSOutlineView *indexTableView;
+	IBOutlet IndexBar *indexBar;
 	
 	// Content View
 	IBOutlet NSView *contentView;
@@ -48,7 +49,6 @@ enum TransactionsToShow
 	IBOutlet id DateCntl;
 	IBOutlet id Reconciled;
 	
-	NSMutableArray *m_aIndexItems;
 	NSMutableArray *m_aContentItems;
 	
 	TransactionsToShow nShowTransactionsType;
@@ -59,8 +59,8 @@ enum TransactionsToShow
 	
 	int m_nTransactionOffset;
 	
-	IndexItem *m_SelectedIndex;
-	IndexItem *m_SelectedTransaction;
+	TransactionItem *m_SelectedIndex;
+	TransactionItem *m_SelectedTransaction;
 	
 	std::string m_DocumentFile;
 	bool m_UnsavedChanges;
@@ -80,6 +80,8 @@ enum TransactionsToShow
 - (IBAction)showAllTransactionsThisYear:(id)sender;
 - (IBAction)showAllTransactions:(id)sender;
 
+- (void)accountSelected:(id)sender;
+
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 
 - (IBAction)OpenFile:(id)sender;
@@ -93,7 +95,6 @@ enum TransactionsToShow
 
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
-- (void)IndexSelectionDidChange:(NSNotification *)notification;
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;

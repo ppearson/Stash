@@ -1,7 +1,7 @@
 
-#import "IndexItem.h"
+#import "TransactionItem.h"
 
-@implementation IndexItem
+@implementation TransactionItem
 
 - (id)init
 {
@@ -61,12 +61,12 @@
 	[data setValue:[NSNumber numberWithInt:value] forKey:key];
 }
 
-- (void)addChild:(IndexItem *)n
+- (void)addChild:(TransactionItem *)n
 {
 	[children addObject:n];
 }
 
-- (IndexItem *)childAtIndex:(int)i
+- (TransactionItem *)childAtIndex:(int)i
 {
 	return [children objectAtIndex:i];
 }

@@ -12,6 +12,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D0100015109DE10E001BA24A /* IndexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D0100014109DE10E001BA24A /* IndexBar.m */; };
+		D010001C109DE5D7001BA24A /* IndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D010001B109DE5D7001BA24A /* IndexItem.m */; };
 		D02C0721109A291000155B13 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D02C0720109A291000155B13 /* AddAccount.xib */; };
 		D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.mm */; };
 		D06BDF5F109C7C17007437B6 /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06BDF5E109C7C17007437B6 /* ImportQIF.xib */; };
@@ -22,7 +24,7 @@
 		D086FCFE10931EE3001AE198 /* fixed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCF510931EE3001AE198 /* fixed.cpp */; };
 		D086FCFF10931EE3001AE198 /* split_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCF710931EE3001AE198 /* split_transaction.cpp */; };
 		D086FD0010931EE3001AE198 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D086FCFA10931EE3001AE198 /* transaction.cpp */; };
-		D086FD0710931F14001AE198 /* IndexItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* IndexItem.mm */; };
+		D086FD0710931F14001AE198 /* TransactionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* TransactionItem.mm */; };
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D097A594109A1025004FA992 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D097A592109A1025004FA992 /* storage.cpp */; };
@@ -44,6 +46,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Stash-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Stash-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0100013109DE10E001BA24A /* IndexBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBar.h; sourceTree = "<group>"; };
+		D0100014109DE10E001BA24A /* IndexBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexBar.m; sourceTree = "<group>"; };
+		D010001A109DE5D7001BA24A /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
+		D010001B109DE5D7001BA24A /* IndexItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexItem.m; sourceTree = "<group>"; };
 		D02C0720109A291000155B13 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
 		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
 		D02C0726109A2A4F00155B13 /* AddAccountController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AddAccountController.mm; sourceTree = "<group>"; };
@@ -62,8 +68,8 @@
 		D086FCF910931EE3001AE198 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		D086FCFA10931EE3001AE198 /* transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transaction.cpp; sourceTree = "<group>"; };
 		D086FCFB10931EE3001AE198 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
-		D086FD0510931F14001AE198 /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
-		D086FD0610931F14001AE198 /* IndexItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IndexItem.mm; sourceTree = "<group>"; };
+		D086FD0510931F14001AE198 /* TransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionItem.h; sourceTree = "<group>"; };
+		D086FD0610931F14001AE198 /* TransactionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransactionItem.mm; sourceTree = "<group>"; };
 		D08D8DBD1097831C004636BC /* Stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Stash.icns; sourceTree = "<group>"; };
 		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
@@ -92,10 +98,14 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D010001A109DE5D7001BA24A /* IndexItem.h */,
+				D010001B109DE5D7001BA24A /* IndexItem.m */,
+				D0100013109DE10E001BA24A /* IndexBar.h */,
+				D0100014109DE10E001BA24A /* IndexBar.m */,
 				D06BDF63109C7F48007437B6 /* ImportQIFController.h */,
 				D06BDF64109C7F48007437B6 /* ImportQIFController.mm */,
-				D086FD0510931F14001AE198 /* IndexItem.h */,
-				D086FD0610931F14001AE198 /* IndexItem.mm */,
+				D086FD0510931F14001AE198 /* TransactionItem.h */,
+				D086FD0610931F14001AE198 /* TransactionItem.mm */,
 				D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */,
 				D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */,
 				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
@@ -270,13 +280,15 @@
 				D086FCFE10931EE3001AE198 /* fixed.cpp in Sources */,
 				D086FCFF10931EE3001AE198 /* split_transaction.cpp in Sources */,
 				D086FD0010931EE3001AE198 /* transaction.cpp in Sources */,
-				D086FD0710931F14001AE198 /* IndexItem.mm in Sources */,
+				D086FD0710931F14001AE198 /* TransactionItem.mm in Sources */,
 				D09C02811098D76900764EC1 /* document.cpp in Sources */,
 				D097A594109A1025004FA992 /* storage.cpp in Sources */,
 				D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */,
 				D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */,
 				D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */,
 				D06BDF65109C7F48007437B6 /* ImportQIFController.mm in Sources */,
+				D0100015109DE10E001BA24A /* IndexBar.m in Sources */,
+				D010001C109DE5D7001BA24A /* IndexItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
