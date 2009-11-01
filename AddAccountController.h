@@ -8,19 +8,28 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class StashAppDelegate;
+#include "account.h"
 
+@class StashAppDelegate;
 
 @interface AddAccountController : NSWindowController
 {
-	IBOutlet NSTextField *fAccountName, *fStartingBalance;
+	IBOutlet NSTextField *fAccountName;
+	IBOutlet NSTextField *fStartingBalance;
+	IBOutlet NSTextField *fInstitution;
+	IBOutlet NSTextField *fNumber;
+	IBOutlet NSTextField *fNote;
 	
 	IBOutlet NSPopUpButton *fAccountType;
 	
 	StashAppDelegate *fMainController;
 	
-	NSString *sAccountName, *sStartingBalance;
-	int AccountType;
+	NSString *sAccountName;
+	NSString *sStartingBalance;
+	NSString *sInstitution;
+	NSString *sNumber;
+	NSString *sNote;
+	AccountType eAccountType;
 }
 
 - (id)initWnd:(StashAppDelegate *)controller;
@@ -30,6 +39,9 @@
 
 - (NSString *)accountName;
 - (NSString *)startingBalance;
-- (int)accountType;
+- (NSString *)institution;
+- (NSString *)number;
+- (NSString *)note;
+- (AccountType)accountType;
 
 @end

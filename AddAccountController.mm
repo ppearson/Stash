@@ -55,7 +55,13 @@
 	sAccountName = [fAccountName stringValue];
 	sStartingBalance = [fStartingBalance stringValue];
 	
-	AccountType = 0;
+	sInstitution = [fInstitution stringValue];
+	sNumber = [fNumber stringValue];
+	sNote = [fNote stringValue];
+	
+	int nSelectedType = [fAccountType indexOfSelectedItem];
+	
+	eAccountType = static_cast<AccountType>(nSelectedType);
 	
 	[self confirmAdd];
 }
@@ -75,9 +81,24 @@
 	return sStartingBalance;
 }
 
-- (int)accountType
+- (NSString *)institution
 {
-	return AccountType;
+	return sInstitution;
+}
+
+- (NSString *)number
+{
+	return sNumber;
+}
+
+- (NSString *)note
+{
+	return sNote;
+}
+
+- (AccountType)accountType
+{
+	return eAccountType;
 }
 
 @end

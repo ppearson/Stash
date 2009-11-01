@@ -13,7 +13,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		D02C0721109A291000155B13 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D02C0720109A291000155B13 /* AddAccount.xib */; };
-		D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.m */; };
+		D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.mm */; };
 		D06BDF5F109C7C17007437B6 /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06BDF5E109C7C17007437B6 /* ImportQIF.xib */; };
 		D06BDF65109C7F48007437B6 /* ImportQIFController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D06BDF64109C7F48007437B6 /* ImportQIFController.mm */; };
 		D077492B1093B3AB00EDC307 /* round_check.png in Resources */ = {isa = PBXBuildFile; fileRef = D077492A1093B3AB00EDC307 /* round_check.png */; };
@@ -46,7 +46,7 @@
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D02C0720109A291000155B13 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
 		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
-		D02C0726109A2A4F00155B13 /* AddAccountController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAccountController.m; sourceTree = "<group>"; };
+		D02C0726109A2A4F00155B13 /* AddAccountController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AddAccountController.mm; sourceTree = "<group>"; };
 		D06BDF5E109C7C17007437B6 /* ImportQIF.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportQIF.xib; sourceTree = "<group>"; };
 		D06BDF63109C7F48007437B6 /* ImportQIFController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportQIFController.h; sourceTree = "<group>"; };
 		D06BDF64109C7F48007437B6 /* ImportQIFController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImportQIFController.mm; sourceTree = "<group>"; };
@@ -99,7 +99,7 @@
 				D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */,
 				D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */,
 				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
-				D02C0726109A2A4F00155B13 /* AddAccountController.m */,
+				D02C0726109A2A4F00155B13 /* AddAccountController.mm */,
 				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
 				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 				256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */,
@@ -273,7 +273,7 @@
 				D086FD0710931F14001AE198 /* IndexItem.mm in Sources */,
 				D09C02811098D76900764EC1 /* document.cpp in Sources */,
 				D097A594109A1025004FA992 /* storage.cpp in Sources */,
-				D02C0727109A2A4F00155B13 /* AddAccountController.m in Sources */,
+				D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */,
 				D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */,
 				D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */,
 				D06BDF65109C7F48007437B6 /* ImportQIFController.mm in Sources */,

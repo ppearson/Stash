@@ -315,20 +315,30 @@
 {
 	NSString *sAccountName = [addAccountController accountName];
 	NSString *sStartingBalance = [addAccountController startingBalance];
+	NSString *sInstitution = [addAccountController institution];
+	NSString *sNumber = [addAccountController number];
+	NSString *sNote = [addAccountController note];
 	
-	int nType = [addAccountController accountType];
+	AccountType eType = [addAccountController accountType];
 	
 	std::string strName = [sAccountName cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strStartingBalance = [sStartingBalance cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strInstitution = [sInstitution cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strNumber = [sNumber cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strNote = [sNote cStringUsingEncoding:NSASCIIStringEncoding];
 	
 	fixed startingBalance(strStartingBalance, UKFormat);
 	
 	Account newAccount;
 	newAccount.setName(strName);
-	newAccount.setType(static_cast<AccountType>(nType));
+	newAccount.setType(eType);
+	newAccount.setInstitution(strInstitution);
+	newAccount.setNumber(strNumber);
+	newAccount.setNote(strNote);
 	
 	Transaction newTransaction("Starting balance", "", "", startingBalance, -1);
 	newTransaction.setReconciled(true);
+	
 	newAccount.addTransaction(newTransaction);
 	
 	m_Document.addAccount(newAccount);
