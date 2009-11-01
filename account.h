@@ -7,6 +7,7 @@ enum AccountType
 {
 	Cash,
 	Checking,
+	Savings,
 	CreditCard,
 	Investment,
 	Asset,

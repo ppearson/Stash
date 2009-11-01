@@ -34,6 +34,7 @@
 	
 	[fAccountType addItemWithTitle:@"Cash"];
 	[fAccountType addItemWithTitle:@"Checking"];
+	[fAccountType addItemWithTitle:@"Savings"];
 	[fAccountType addItemWithTitle:@"Credit Card"];
 	[fAccountType addItemWithTitle:@"Investment"];
 	[fAccountType addItemWithTitle:@"Asset"];
