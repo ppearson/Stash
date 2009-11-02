@@ -8,6 +8,7 @@
  */
 
 #include "document.h"
+#include "string.h"
 
 #define FILE_VERSION 0
 
@@ -42,6 +43,32 @@ bool Document::Load(std::fstream &stream)
 		m_aAccounts.push_back(tempAccount);
 	}
 	
+	m_aPayees.clear();
+	
+	unsigned int numPayees = 0;
+	stream.read((char *) &numPayees, sizeof(unsigned int));
+		
+	for (unsigned int i = 0; i < numPayees; i++)
+	{
+		std::string strPayee;
+		LoadString(strPayee, stream);
+		
+		m_aPayees.insert(strPayee);
+	}
+	
+	m_aCategories.clear();
+	
+	unsigned int numCategories = 0;
+	stream.read((char *) &numCategories, sizeof(unsigned int));
+	
+	for (unsigned int i = 0; i < numCategories; i++)
+	{
+		std::string strCategory;
+		LoadString(strCategory, stream);
+		
+		m_aCategories.insert(strCategory);
+	}
+	
 	return true;
 }
 
@@ -61,6 +88,22 @@ bool Document::Store(std::fstream &stream)
 		(*it).Store(stream);
 	}
 	
+	unsigned int numPayees = static_cast<unsigned int>(m_aPayees.size());
+	stream.write((char *) &numPayees, sizeof(unsigned int));
+	
+	for (std::set<std::string>::iterator it = m_aPayees.begin(); it != m_aPayees.end(); ++it)
+	{
+		StoreString((*it), stream);
+	}
+	
+	unsigned int numCategories = static_cast<unsigned int>(m_aCategories.size());
+	stream.write((char *) &numCategories, sizeof(unsigned int));
+	
+	for (std::set<std::string>::iterator it = m_aCategories.begin(); it != m_aCategories.end(); ++it)
+	{
+		StoreString((*it), stream);
+	}
+	
 	return true;
 }
 
@@ -76,4 +119,24 @@ fixed Document::getBalance(bool onlyReconciled)
 	}
 	
 	return balance;
+}
+
+bool Document::doesPayeeExist(std::string Payee)
+{
+	std::set<std::string>::iterator it = m_aPayees.find(Payee);
+	
+	if (it == m_aPayees.end())
+		return false;
+	
+	return true;
+}
+
+bool Document::doesCategoryExist(std::string Category)
+{
+	std::set<std::string>::iterator it = m_aCategories.find(Category);
+	
+	if (it == m_aCategories.end())
+		return false;
+	
+	return true;
 }

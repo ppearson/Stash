@@ -40,9 +40,9 @@ enum TransactionsToShow
 		
 	IBOutlet NSSplitView  *verticalSplitView;
 			
-	IBOutlet NSTextField *Payee;
+	IBOutlet NSComboBox *Payee;
+	IBOutlet NSComboBox *Category;
 	IBOutlet NSTextField *Description;
-	IBOutlet NSTextField *Category;
 	IBOutlet NSTextField *Amount;
 	
 	IBOutlet NSPopUpButton *Type;
@@ -68,6 +68,7 @@ enum TransactionsToShow
 
 - (void)buildIndexTree;
 - (void)buildContentTree;
+- (void)refreshLibraryItems;
 
 - (void)updateUI;
 

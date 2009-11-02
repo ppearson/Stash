@@ -9,6 +9,7 @@
 #ifndef DOCUMENT_H
 #define DOCUMENT_H
 
+#include <set>
 #include "account.h"
 
 class Document
@@ -23,16 +24,30 @@ public:
 	int getAccountCount() { return m_aAccounts.size(); }
 	void deleteAccount(int acc) { m_aAccounts.erase(m_aAccounts.begin() + acc); }
 	
+	bool doesPayeeExist(std::string Payee);
+	void addPayee(std::string Payee) { m_aPayees.insert(Payee); }
+	
+	bool doesCategoryExist(std::string Category);
+	void addCategory(std::string Category) { m_aCategories.insert(Category); }
+	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	
 	std::vector<Account>::iterator AccountBegin() { return m_aAccounts.begin(); }
 	std::vector<Account>::iterator AccountEnd() { return m_aAccounts.end(); }
 	
+	std::set<std::string>::iterator PayeeBegin() { return m_aPayees.begin(); }
+	std::set<std::string>::iterator PayeeEnd() { return m_aPayees.end(); }
+	
+	std::set<std::string>::iterator CategoryBegin() { return m_aCategories.begin(); }
+	std::set<std::string>::iterator CategoryEnd() { return m_aCategories.end(); }
+	
 	fixed getBalance(bool onlyReconciled);
 	
 protected:
 	std::vector<Account> m_aAccounts;	
+	std::set<std::string> m_aPayees;
+	std::set<std::string> m_aCategories;
 	
 };
 

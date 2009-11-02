@@ -337,6 +337,31 @@
 	[transactionsTableView reloadData];
 }
 
+- (void)refreshLibraryItems
+{
+	[Payee removeAllItems];
+	
+	std::set<std::string>::iterator it = m_Document.PayeeBegin();
+	
+	for (; it != m_Document.PayeeEnd(); ++it)
+	{
+		NSString *sPayee = [[NSString alloc] initWithUTF8String:(*it).c_str()];
+		
+		[Payee addItemWithObjectValue:sPayee];
+	}
+	
+	[Category removeAllItems];
+	
+	std::set<std::string>::iterator itCat = m_Document.CategoryBegin();
+	
+	for (; itCat != m_Document.CategoryEnd(); ++itCat)
+	{
+		NSString *sCategory = [[NSString alloc] initWithUTF8String:(*itCat).c_str()];
+		
+		[Category addItemWithObjectValue:sCategory];
+	}
+}
+
 - (void)updateUI
 {
 	if (!m_pAccount)
@@ -782,6 +807,18 @@
 		}		
 	}	
 	
+	if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
+	{
+		m_Document.addPayee(strPayee);
+		[Payee addItemWithObjectValue:[Payee stringValue]];
+	}
+	
+	if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
+	{
+		m_Document.addCategory(strCategory);
+		[Category addItemWithObjectValue:[Category stringValue]];
+	}
+	
 	[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
 	[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
 	[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
@@ -1023,6 +1060,7 @@ NSDate * convertToNSDate(Date *date)
 		
 		[self buildIndexTree];
 		[self buildContentTree];
+		[self refreshLibraryItems];
 		
 		[self updateUI];
 	}
@@ -1243,6 +1281,7 @@ NSDate * convertToNSDate(Date *date)
 	
 	[self buildIndexTree];
 	[self buildContentTree];
+	[self refreshLibraryItems];
 	
 	[self updateUI];
 
