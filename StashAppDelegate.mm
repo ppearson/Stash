@@ -123,6 +123,8 @@
 		NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccount];
 
 		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self];
+		
+		[sName release];
 	}
 	
 	m_pAccount = 0;
@@ -151,8 +153,7 @@
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 	
 	[self buildContentTree];
-	[self updateUI];
-	
+	[self updateUI];	
 }
 
 - (void)buildContentTree
@@ -162,6 +163,12 @@
 	fixed localBalance = 0.0;
 	
 	if (!m_pAccount)
+	{
+		[transactionsTableView reloadData];
+		return;
+	}
+	
+	if (m_pAccount->getTransactionCount() == 0)
 		return;
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin();
@@ -210,37 +217,37 @@
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
 		
-		std::string strPayee = it->Payee();
-		NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+		std::string strTPayee = it->Payee();
+		NSString *sTPayee = [[NSString alloc] initWithUTF8String:strTPayee.c_str()];
 		
-		std::string strDescription = it->Description();
-		NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+		std::string strTDescription = it->Description();
+		NSString *sTDescription = [[NSString alloc] initWithUTF8String:strTDescription.c_str()];
 		
-		std::string strCategory = it->Category();
-		NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+		std::string strTCategory = it->Category();
+		NSString *sTCategory = [[NSString alloc] initWithUTF8String:strTCategory.c_str()];
 		
-		std::string strAmount = it->Amount();
-		NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+		std::string strTAmount = it->Amount();
+		NSString *sTAmount = [[NSString alloc] initWithUTF8String:strTAmount.c_str()];
 		
-		std::string strDate = it->Date1().FormattedDate(UK);
-		NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
+		std::string strTDate = it->Date1().FormattedDate(UK);
+		NSString *sTDate = [[NSString alloc] initWithUTF8String:strTDate.c_str()];
 		
 		localBalance += it->Amount();
 		
-		std::string strBalance = localBalance;
-		NSString *sBalance = [[NSString alloc] initWithUTF8String:strBalance.c_str()];
+		std::string strTBalance = localBalance;
+		NSString *sTBalance = [[NSString alloc] initWithUTF8String:strTBalance.c_str()];
 		
 		[newTransaction setTransaction:nTransaction];
 		
 		int recon = it->isReconciled();
 		
 		[newTransaction setIntValue:recon forKey:@"Reconciled"];
-		[newTransaction setValue:sDate forKey:@"Date"];
-		[newTransaction setValue:sPayee forKey:@"Payee"];
-		[newTransaction setValue:sDescription forKey:@"Description"];
-		[newTransaction setValue:sCategory forKey:@"Category"];
-		[newTransaction setValue:sAmount forKey:@"Amount"];
-		[newTransaction setValue:sBalance forKey:@"Balance"];
+		[newTransaction setValue:sTDate forKey:@"Date"];
+		[newTransaction setValue:sTPayee forKey:@"Payee"];
+		[newTransaction setValue:sTDescription forKey:@"Description"];
+		[newTransaction setValue:sTCategory forKey:@"Category"];
+		[newTransaction setValue:sTAmount forKey:@"Amount"];
+		[newTransaction setValue:sTBalance forKey:@"Balance"];
 		
 		[newTransaction setIntValue:nTransaction forKey:@"Transaction"];
 		
@@ -256,22 +263,22 @@
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				std::string strPayee = split.Payee();
-				NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+				std::string strSPayee = split.Payee();
+				NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
 				
-				std::string strDescription = split.Description();
-				NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+				std::string strSDescription = split.Description();
+				NSString *sSDescription = [[NSString alloc] initWithUTF8String:strSDescription.c_str()];
 				
-				std::string strCategory = split.Category();
-				NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+				std::string strSCategory = split.Category();
+				NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 				
-				std::string strAmount = split.Amount();
-				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+				std::string strSAmount = split.Amount();
+				NSString *sSAmount = [[NSString alloc] initWithUTF8String:strSAmount.c_str()];
 				
-				[newSplit setValue:sPayee forKey:@"Payee"];
-				[newSplit setValue:sDescription forKey:@"Description"];
-				[newSplit setValue:sCategory forKey:@"Category"];
-				[newSplit setValue:sAmount forKey:@"Amount"];
+				[newSplit setValue:sSPayee forKey:@"Payee"];
+				[newSplit setValue:sSDescription forKey:@"Description"];
+				[newSplit setValue:sSCategory forKey:@"Category"];
+				[newSplit setValue:sSAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTransaction];
 				[newSplit setIntValue:nTransaction forKey:@"Transaction"];
@@ -282,7 +289,11 @@
 				splitValue -= split.Amount();
 				
 				[newTransaction addChild:newSplit];
-				[newSplit release];
+				
+				[sSPayee release];
+				[sSDescription release];
+				[sSCategory release];
+				[sSAmount release];
 			}
 			
 			// add remainder as a temp editable row
@@ -291,12 +302,12 @@
 			{
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				std::string strAmount = splitValue;
-				NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+				std::string strSAmount = splitValue;
+				NSString *sSAmount = [[NSString alloc] initWithUTF8String:strSAmount.c_str()];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Description"];
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
-				[newSplit setValue:sAmount forKey:@"Amount"];
+				[newSplit setValue:sSAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTransaction];
 				[newSplit setIntValue:nTransaction forKey:@"Transaction"];
@@ -305,12 +316,17 @@
 				[newSplit setIntValue:-2 forKey:@"Split"];
 				
 				[newTransaction addChild:newSplit];
-				[newSplit release];
+				[sSAmount release];
 			}
 		}		
 		
 		[m_aContentItems addObject:newTransaction];
-		[newTransaction release];
+		[sTPayee release];
+		[sTDescription release];
+		[sTCategory release];
+		[sTAmount release];
+		[sTDate release];
+		[sTBalance release];
 	}
 	
 	[transactionsTableView reloadData];
@@ -537,7 +553,7 @@
 	{
 		NSInteger row = [rows lastIndex];
 		
-		TransactionItem *item = [transactionsTableView itemAtRow:row];
+		TransactionItem *item = [[transactionsTableView itemAtRow:row] retain];
 		
 		int nTrans = [item transaction];
 		int nSplit = [item splitTransaction];
@@ -594,6 +610,11 @@
 			[Amount setStringValue:sAmount];
 			[DateCntl setDateValue:datetemp];
 			[Type selectItemAtIndex:eType];
+			
+			[sPayee release];
+			[sDescription release];
+			[sCategory release];
+			[sAmount release];
 		}
 		else if (trans && split && nSplit != -2)
 		{
@@ -605,7 +626,7 @@
 			std::string strDescription = split->Description();
 			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 			
-			std::string strCategory = trans->Category();
+			std::string strCategory = split->Category();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
 			std::string strAmount = split->Amount();
@@ -619,6 +640,11 @@
 			
 			[Reconciled setEnabled:NO];
 			[Type setEnabled:NO];
+			
+			[sPayee release];
+			[sDescription release];
+			[sCategory release];
+			[sAmount release];
 		}
 		else // Dummy Split
 		{
@@ -820,7 +846,7 @@
 		int temp = [item intKeyValue:identifier];
 		return [NSNumber numberWithInt:temp];
 	}
-	
+
     return [item keyValue:identifier];
 }
 
@@ -1210,6 +1236,7 @@ NSDate * convertToNSDate(Date *date)
 	m_DocumentFile = strFile;
 	m_UnsavedChanges = false;
 	
+	[self buildIndexTree];
 	[self buildContentTree];
 	
 	[self updateUI];
