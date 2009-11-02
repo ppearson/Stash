@@ -127,6 +127,11 @@
 		[sName release];
 	}
 	
+	[indexBar addSection:@"library" title:@"Library"];
+	[indexBar addItem:@"library" key:@"payees" title:@"Payees" item:0 action:nil target:nil];
+	[indexBar addItem:@"library" key:@"categories" title:@"Categories" item:0 action:nil target:nil];
+	[indexBar addItem:@"library" key:@"schedules" title:@"Schedules" item:0 action:nil target:nil];
+	
 	m_pAccount = 0;
 	
 	m_SelectedTransaction = 0; 
