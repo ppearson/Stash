@@ -48,6 +48,7 @@
 	[newItem setItemIndex:item];
 	
 	[newItem setAction:selector target:target];
+	[m_dItems setObject:newItem forKey:key];
 	
 	IndexItem *parentItem = [m_dItems objectForKey:parentKey];
 	
@@ -55,6 +56,19 @@
 	{
 		[parentItem addChild:newItem];
 	}
+}
+
+- (void)selectItem:(id)key
+{
+	IndexItem *itemToSelect = [m_dItems objectForKey:key];
+	
+	if (itemToSelect == nil)
+		return;
+	
+	if ([itemToSelect numberOfChildren] != 0)
+		return;
+	
+	[self selectRowIndexes:[NSIndexSet indexSetWithIndex:[self rowForItem:itemToSelect]] byExtendingSelection:NO];
 }
 
 - (void)expandSection:(id)itemKey

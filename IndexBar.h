@@ -20,7 +20,7 @@
 
 - (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target;
 
-
+- (void)selectItem:(id)key;
 - (void)expandSection:(id)itemKey;
 
 @end

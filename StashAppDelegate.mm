@@ -120,7 +120,7 @@
 		std::string strName = it->getName();
 		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
 		
-		NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccount];
+		NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccount];
 
 		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self];
 		
@@ -140,6 +140,9 @@
 	[indexBar reloadData];
 	
 	[indexBar expandSection:@"accounts"];
+	
+	// automatically select the first account
+	[indexBar selectItem:@"a0"];
 }
 
 - (void)accountSelected:(id)sender
@@ -823,6 +826,7 @@
 	[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
 	[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
 	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+	[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 	
 	[transactionsTableView reloadData];
 	
