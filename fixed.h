@@ -41,6 +41,7 @@ public:
 	bool operator==(const fixed & rhs) const;
 	bool operator!=(const fixed & rhs) const;
 	
+	bool IsZero() const;	
 	bool IsPositive() const;
 	
 	void Load(std::fstream &stream, int version);

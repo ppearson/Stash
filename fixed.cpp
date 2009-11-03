@@ -95,6 +95,11 @@ bool fixed::IsPositive() const
 	return m_positive;
 }
 
+bool fixed::IsZero() const
+{
+	return m_num == 0;
+}
+
 std::string fixed::ToString() const
 {
 	std::stringstream stream;

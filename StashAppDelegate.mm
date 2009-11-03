@@ -157,6 +157,7 @@
 	[Category setStringValue:@""];
 	[Amount setStringValue:@""];
 	[Type selectItemAtIndex:0];
+	[Reconciled setState:NSOffState];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 	
@@ -306,7 +307,7 @@
 			
 			// add remainder as a temp editable row
 			
-			if (splitValue != 0.0)
+			if (!splitValue.IsZero())
 			{
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
@@ -433,6 +434,7 @@
 	[Category setStringValue:@""];
 	[Amount setStringValue:@""];
 	[Type selectItemAtIndex:0];
+	[Reconciled setState:NSOffState];
 	
 	TransactionItem *newIndex = [[TransactionItem alloc] init];
 	
@@ -759,6 +761,13 @@
 		trans->setReconciled(bReconciled);
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
+		[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
+		[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
+		[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+		
+		[transactionsTableView reloadData];
 	}
 	else
 	{
@@ -768,9 +777,16 @@
 			split->setDescription(strDesc);
 			split->setCategory(strCategory);
 			split->setAmount(fAmount);
+			
+			[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
+			[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
+			[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+			[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+			
+			[transactionsTableView reloadData];
 		}
-		
-		if (nSplit == -2) // Dummy value, so convert to a real split
+		else if (nSplit == -2) // Dummy value, so convert to a real split
 		{
 			fixed transValue = trans->Amount();			
 			
@@ -779,6 +795,10 @@
 			int nSplitsNumber = trans->getSplitCount() - 1;
 			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
 			[m_SelectedTransaction setIntValue:nSplitsNumber forKey:@"Split"];
+			[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
+			[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
+			[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 			
 			fixed splitValue = trans->getSplitTotal();
 			
@@ -786,7 +806,7 @@
 			
 			// Then add a new dummy value if needed
 			
-			if (diff != 0.0)
+			if (!diff.IsZero())
 			{
 				TransactionItem *transIndex = [m_aContentItems objectAtIndex:nTrans - m_nTransactionOffset];
 				
@@ -806,7 +826,19 @@
 				[newSplit setIntValue:-2 forKey:@"Split"];
 				
 				[transIndex addChild:newSplit];
-			}			
+				
+				[transactionsTableView reloadData];
+				
+				NSInteger row = [transactionsTableView rowForItem:newSplit];
+				
+				[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+				
+				[window makeFirstResponder:Payee];
+			}
+			else
+			{
+				[transactionsTableView reloadData];
+			}
 		}		
 	}	
 	
@@ -821,14 +853,6 @@
 		m_Document.addCategory(strCategory);
 		[Category addItemWithObjectValue:[Category stringValue]];
 	}
-	
-	[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
-	[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
-	[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
-	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-	[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
-	
-	[transactionsTableView reloadData];
 	
 	m_UnsavedChanges = true;
 	
