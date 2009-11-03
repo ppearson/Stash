@@ -8,6 +8,8 @@
  */
 
 #include <algorithm>
+#include <iomanip>
+
 #include "datetime.h"
 
 Date::Date() : m_Separator('/')
@@ -192,11 +194,17 @@ std::string Date::FormattedDate(DateStringFormat format) const
 
 	if (format == UK)
 	{
-		sDate << m_Day << m_Separator << m_Month << m_Separator << m_Year;
+		sDate << std::setw(2) << std::setfill('0') << m_Day;
+		sDate << m_Separator;
+		sDate << std::setw(2) << std::setfill('0') << m_Month;
+		sDate << m_Separator << m_Year;
 	}
 	else if (format == US)
 	{
-		sDate << m_Month << m_Separator << m_Day << m_Separator << m_Year;
+		sDate << std::setw(2) << std::setfill('0') << m_Month;
+		sDate << m_Separator;
+		sDate << std::setw(2) << std::setfill('0') << m_Day;
+		sDate << m_Separator << m_Year;
 	}
 
 	sDate << std::ends;
