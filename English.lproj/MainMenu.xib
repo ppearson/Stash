@@ -12,8 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="567"/>
-			<integer value="533"/>
+			<integer value="717"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -996,7 +995,7 @@
 				<string key="NSClassName">NSFontManager</string>
 			</object>
 			<object class="NSCustomView" id="585576901">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1153,7 +1152,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{267, 386}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="834574435">
@@ -2448,14 +2446,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">Delete:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="437104165"/>
-					</object>
-					<int key="connectionID">620</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">SplitTransaction:</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="666464348"/>
@@ -2640,14 +2630,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">Delete:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="555646048"/>
-					</object>
-					<int key="connectionID">734</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">AddTransaction:</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="675085059"/>
@@ -2661,6 +2643,46 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 						<reference key="destination" ref="505180288"/>
 					</object>
 					<int key="connectionID">738</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">DeleteTransaction:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="555646048"/>
+					</object>
+					<int key="connectionID">744</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">DeleteTransaction:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="437104165"/>
+					</object>
+					<int key="connectionID">745</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">addTransaction</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="675085059"/>
+					</object>
+					<int key="connectionID">746</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">deleteTransaction</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="555646048"/>
+					</object>
+					<int key="connectionID">747</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">splitTransaction</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="505180288"/>
+					</object>
+					<int key="connectionID">748</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -4279,7 +4301,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{464, 810}, {261, 283}}</string>
+					<string>{{571, 553}, {261, 283}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{187, 434}, {243, 243}}</string>
@@ -4328,7 +4350,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{459, 888}, {510, 20}}</string>
+					<string>{{459, 836}, {510, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -4429,7 +4451,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{739, 845}, {235, 43}}</string>
+					<string>{{739, 793}, {235, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4454,7 +4476,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{361, 36}, {267, 386}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{329, 306}, {891, 609}}</string>
+					<string>{{329, 247}, {891, 609}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -4521,7 +4543,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">740</int>
+			<int key="maxID">748</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -4585,7 +4607,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>AddAccount:</string>
 							<string>AddTransaction:</string>
-							<string>Delete:</string>
+							<string>DeleteTransaction:</string>
 							<string>ExportQIF:</string>
 							<string>ImportQIF:</string>
 							<string>OpenFile:</string>
@@ -4627,11 +4649,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<string>Payee</string>
 							<string>Reconciled</string>
 							<string>Type</string>
+							<string>addTransaction</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
+							<string>deleteTransaction</string>
 							<string>indexBar</string>
 							<string>indexView</string>
 							<string>indexViewPlaceholder</string>
+							<string>splitTransaction</string>
 							<string>transactionsTableView</string>
 							<string>verticalSplitView</string>
 							<string>window</string>
@@ -4645,11 +4670,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA</b
 							<string>NSComboBox</string>
 							<string>id</string>
 							<string>NSPopUpButton</string>
+							<string>NSButton</string>
 							<string>NSView</string>
 							<string>NSView</string>
+							<string>NSButton</string>
 							<string>IndexBar</string>
 							<string>NSView</string>
 							<string>NSView</string>
+							<string>NSButton</string>
 							<string>NSOutlineView</string>
 							<string>NSSplitView</string>
 							<string>NSWindow</string>

@@ -49,6 +49,11 @@ enum TransactionsToShow
 	IBOutlet id DateCntl;
 	IBOutlet id Reconciled;
 	
+	// bottom buttons
+	IBOutlet NSButton *addTransaction;
+	IBOutlet NSButton *deleteTransaction;
+	IBOutlet NSButton *splitTransaction;
+	
 	NSMutableArray *m_aContentItems;
 	
 	TransactionsToShow nShowTransactionsType;
@@ -74,7 +79,7 @@ enum TransactionsToShow
 
 - (IBAction)AddAccount:(id)sender;
 - (IBAction)AddTransaction:(id)sender;
-- (IBAction)Delete:(id)sender;
+- (IBAction)DeleteTransaction:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
 
 - (IBAction)showLast100Transactions:(id)sender;

@@ -68,6 +68,13 @@
 	
 	[Type selectItemAtIndex:0];
 	
+	[addTransaction setToolTip:@"Add Transaction"];
+	[deleteTransaction setToolTip:@"Delete Transaction"];
+	[splitTransaction setToolTip:@"Split Transaction"];
+	
+	[deleteTransaction setEnabled:NO];
+	[splitTransaction setEnabled:NO];
+	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
 	
@@ -127,10 +134,10 @@
 		[sName release];
 	}
 	
-	[indexBar addSection:@"library" title:@"Library"];
-	[indexBar addItem:@"library" key:@"payees" title:@"Payees" item:0 action:nil target:nil];
-	[indexBar addItem:@"library" key:@"categories" title:@"Categories" item:0 action:nil target:nil];
-	[indexBar addItem:@"library" key:@"schedules" title:@"Schedules" item:0 action:nil target:nil];
+	[indexBar addSection:@"manage" title:@"MANAGE"];
+	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:nil target:nil];
+	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:nil target:nil];
+	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:nil target:nil];
 	
 	m_pAccount = 0;
 	
@@ -490,7 +497,7 @@
 	[self updateUI];
 }
 
-- (IBAction)Delete:(id)sender
+- (IBAction)DeleteTransaction:(id)sender
 {
 	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
 	
@@ -586,6 +593,8 @@
 	
 	if ([rows count] == 1)
 	{
+		[deleteTransaction setEnabled:YES];
+		
 		NSInteger row = [rows lastIndex];
 		
 		TransactionItem *item = [[transactionsTableView itemAtRow:row] retain];
@@ -606,6 +615,8 @@
 		
 		if (trans && !split && nSplit != -2) // A normal transaction
 		{
+			[splitTransaction setEnabled:YES];
+			
 			m_bEditing = true;			
 			
 			std::string strPayee = trans->Payee();
@@ -653,6 +664,8 @@
 		}
 		else if (trans && split && nSplit != -2)
 		{
+			[splitTransaction setEnabled:NO];
+			
 			m_bEditing = true;
 			
 			std::string strPayee = split->Payee();
@@ -683,6 +696,8 @@
 		}
 		else // Dummy Split
 		{
+			[splitTransaction setEnabled:NO];
+			
 			m_bEditing = true;
 			
 			NSString *sPayee = [item keyValue:@"Payee"];
@@ -701,6 +716,9 @@
 	}
 	else
 	{
+		[deleteTransaction setEnabled:NO];
+		[splitTransaction setEnabled:NO];
+		
 		m_SelectedTransaction = 0; 
 		m_bEditing = false;		
 	}
@@ -1242,10 +1260,10 @@ NSDate * convertToNSDate(Date *date)
 	}	
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem *)item
+/*- (BOOL)validateMenuItem:(NSMenuItem *)item
 {
     SEL action = [item action];
-    if (action == @selector(toggleVisibleControllerView:))
+    if (action == @selector(Delete:))
 	{
 		
 		
@@ -1253,7 +1271,7 @@ NSDate * convertToNSDate(Date *date)
 	
 	return YES;
 }
-
+*/
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
 	if (m_UnsavedChanges)
