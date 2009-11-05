@@ -38,6 +38,8 @@ public:
 	int getTransactionCount() { return m_aTransactions.size(); }
 	void deleteTransaction(int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
 	
+	void swapTransactions(int from, int to);
+	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	

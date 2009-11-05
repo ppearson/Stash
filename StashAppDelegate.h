@@ -53,6 +53,8 @@ enum TransactionsToShow
 	IBOutlet NSButton *addTransaction;
 	IBOutlet NSButton *deleteTransaction;
 	IBOutlet NSButton *splitTransaction;
+	IBOutlet NSButton *moveUp;
+	IBOutlet NSButton *moveDown;
 	
 	NSMutableArray *m_aContentItems;
 	
@@ -81,6 +83,10 @@ enum TransactionsToShow
 - (IBAction)AddTransaction:(id)sender;
 - (IBAction)DeleteTransaction:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
+
+- (IBAction)MoveUp:(id)sender;
+- (IBAction)MoveDown:(id)sender;
+- (void)SwapTransactions:(int)from to:(int)to;
 
 - (IBAction)showLast100Transactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;

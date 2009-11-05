@@ -56,6 +56,11 @@ void Account::Store(std::fstream &stream)
 	}
 }
 
+void Account::swapTransactions(int from, int to)
+{
+	iter_swap(m_aTransactions.begin() + from, m_aTransactions.begin() + to);
+}
+
 fixed Account::getBalance(bool onlyReconciled)
 {
 	fixed balance = 0.0;

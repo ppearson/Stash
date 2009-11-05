@@ -74,6 +74,8 @@
 	
 	[deleteTransaction setEnabled:NO];
 	[splitTransaction setEnabled:NO];
+	[moveUp setEnabled:NO];
+	[moveDown setEnabled:NO];
 	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
@@ -584,6 +586,83 @@
 	m_UnsavedChanges = true;
 }
 
+- (IBAction)MoveUp:(id)sender
+{
+	if (!m_pAccount)
+		return;
+	
+	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
+	
+	if ([rows count] == 1)
+	{
+		NSInteger row = [rows lastIndex];
+		
+		TransactionItem *thisItem = [transactionsTableView itemAtRow:row];
+		
+		int nSplit = [thisItem splitTransaction];
+		
+		if (nSplit >= 0)
+		{
+			return;
+		}
+		
+		// Swap them over
+		[self SwapTransactions:row to:row - 1];
+	}
+}
+
+- (IBAction)MoveDown:(id)sender
+{
+	if (!m_pAccount)
+		return;
+	
+	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
+	
+	if ([rows count] == 1)
+	{
+		NSInteger row = [rows lastIndex];
+		
+		TransactionItem *thisItem = [transactionsTableView itemAtRow:row];
+		
+		int nSplit = [thisItem splitTransaction];
+		
+		if (nSplit >= 0)
+		{
+			return;
+		}
+		
+		// Swap them over
+		[self SwapTransactions:row to:row + 1];
+	}
+}
+
+- (void)SwapTransactions:(int)from to:(int)to
+{
+	if (from < 0 || to < 0)
+		return;
+	
+	int nRealFrom = from + m_nTransactionOffset;
+	int nRealTo = to + m_nTransactionOffset;
+	
+	m_pAccount->swapTransactions(nRealFrom, nRealTo);
+	[m_aContentItems exchangeObjectAtIndex:from withObjectAtIndex:to];
+	
+	// TransactionItem values are still pointing in the wrong place, so fix them....
+	
+	TransactionItem *fromItem = [transactionsTableView itemAtRow:from];
+	TransactionItem *toItem = [transactionsTableView itemAtRow:to];
+	
+	[fromItem setTransaction:nRealTo];
+	[fromItem setIntValue:nRealTo forKey:@"Transaction"];
+	
+	[toItem setTransaction:nRealFrom];
+	[toItem setIntValue:nRealFrom forKey:@"Transaction"];
+		
+	[transactionsTableView reloadData];
+	
+	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:to] byExtendingSelection:NO];
+}
+
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
 {
 	if (!m_pAccount)
@@ -616,6 +695,8 @@
 		if (trans && !split && nSplit != -2) // A normal transaction
 		{
 			[splitTransaction setEnabled:YES];
+			[moveUp setEnabled:YES];
+			[moveDown setEnabled:YES];
 			
 			m_bEditing = true;			
 			
@@ -665,6 +746,8 @@
 		else if (trans && split && nSplit != -2)
 		{
 			[splitTransaction setEnabled:NO];
+			[moveUp setEnabled:NO];
+			[moveDown setEnabled:NO];
 			
 			m_bEditing = true;
 			
@@ -697,6 +780,8 @@
 		else // Dummy Split
 		{
 			[splitTransaction setEnabled:NO];
+			[moveUp setEnabled:NO];
+			[moveDown setEnabled:NO];
 			
 			m_bEditing = true;
 			
@@ -718,6 +803,8 @@
 	{
 		[deleteTransaction setEnabled:NO];
 		[splitTransaction setEnabled:NO];
+		[moveUp setEnabled:NO];
+		[moveDown setEnabled:NO];
 		
 		m_SelectedTransaction = 0; 
 		m_bEditing = false;		
