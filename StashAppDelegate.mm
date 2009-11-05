@@ -641,6 +641,11 @@
 	if (from < 0 || to < 0)
 		return;
 	
+	int maxTransactionIndex = [m_aContentItems count] - 1;
+	
+	if (from > maxTransactionIndex || to > maxTransactionIndex)
+		return;
+	
 	int nRealFrom = from + m_nTransactionOffset;
 	int nRealTo = to + m_nTransactionOffset;
 	
