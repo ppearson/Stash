@@ -884,6 +884,18 @@
 		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 		
+		if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
+		{
+			m_Document.addPayee(strPayee);
+			[Payee addItemWithObjectValue:[Payee stringValue]];
+		}
+		
+		if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
+		{
+			m_Document.addCategory(strCategory);
+			[Category addItemWithObjectValue:[Category stringValue]];
+		}
+		
 		[transactionsTableView reloadData];
 	}
 	else
@@ -901,6 +913,18 @@
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 			[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 			
+			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
+			{
+				m_Document.addPayee(strPayee);
+				[Payee addItemWithObjectValue:[Payee stringValue]];
+			}
+			
+			if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
+			{
+				m_Document.addCategory(strCategory);
+				[Category addItemWithObjectValue:[Category stringValue]];
+			}
+			
 			[transactionsTableView reloadData];
 		}
 		else if (nSplit == -2) // Dummy value, so convert to a real split
@@ -916,6 +940,18 @@
 			[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
 			[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+			
+			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
+			{
+				m_Document.addPayee(strPayee);
+				[Payee addItemWithObjectValue:[Payee stringValue]];
+			}
+			
+			if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
+			{
+				m_Document.addCategory(strCategory);
+				[Category addItemWithObjectValue:[Category stringValue]];
+			}
 			
 			fixed splitValue = trans->getSplitTotal();
 			
@@ -958,18 +994,6 @@
 			}
 		}		
 	}	
-	
-	if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
-	{
-		m_Document.addPayee(strPayee);
-		[Payee addItemWithObjectValue:[Payee stringValue]];
-	}
-	
-	if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
-	{
-		m_Document.addCategory(strCategory);
-		[Category addItemWithObjectValue:[Category stringValue]];
-	}
 	
 	m_UnsavedChanges = true;
 	
