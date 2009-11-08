@@ -87,6 +87,7 @@ enum TransactionsToShow
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;
 - (void)SwapTransactions:(int)from to:(int)to;
+- (void)RefreshView:(id)sender;
 
 - (IBAction)showLast100Transactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;

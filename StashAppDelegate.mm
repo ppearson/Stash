@@ -668,6 +668,13 @@
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:to] byExtendingSelection:NO];
 }
 
+- (void)RefreshView:(id)sender
+{
+	[self buildContentTree];
+	
+	[transactionsTableView reloadData];	
+}
+
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
 {
 	if (!m_pAccount)
