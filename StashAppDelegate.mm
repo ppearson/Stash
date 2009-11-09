@@ -16,11 +16,18 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
-	[self buildIndexTree];
-	[self buildContentTree];
-	[self updateUI];
+	m_HasFinishedLoading = true;
 	
-	[window makeKeyAndOrderFront:self];
+	if (m_sPendingOpenFile != nil)
+	{
+		[self application:nil openFile:m_sPendingOpenFile];
+	}
+	else
+	{
+		[self buildIndexTree];
+	
+		[window makeKeyAndOrderFront:self];
+	}
 }
 
 - (id)init
@@ -28,6 +35,9 @@
 	self = [super init];
 	if (self)
 	{
+		m_HasFinishedLoading = false;
+		m_sPendingOpenFile = nil;
+		
 		[NSApp setDelegate: self];
 	}
 	
@@ -1228,10 +1238,7 @@ NSDate * convertToNSDate(Date *date)
 		m_pAccount = 0;
 		
 		[self buildIndexTree];
-		[self buildContentTree];
 		[self refreshLibraryItems];
-		
-		[self updateUI];
 	}
 }
 
@@ -1426,6 +1433,15 @@ NSDate * convertToNSDate(Date *date)
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
 {
+	if (!m_HasFinishedLoading)
+	{
+		// App hasn't finished loading, and Cocoa gets sent this before the app's finished loading
+		// (via the command line), so we have to do things like this, otherwise things are out of sync
+		
+		m_sPendingOpenFile = filename;
+		return NO;
+	}
+	
 	if (m_UnsavedChanges)
     {
 		int choice = NSAlertDefaultReturn;
@@ -1449,10 +1465,7 @@ NSDate * convertToNSDate(Date *date)
 	m_UnsavedChanges = false;
 	
 	[self buildIndexTree];
-	[self buildContentTree];
 	[self refreshLibraryItems];
-	
-	[self updateUI];
 
 	return YES;
 }

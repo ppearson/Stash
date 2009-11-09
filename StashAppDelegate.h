@@ -71,6 +71,9 @@ enum TransactionsToShow
 	
 	std::string m_DocumentFile;
 	bool m_UnsavedChanges;
+	
+	NSString *m_sPendingOpenFile;
+	bool m_HasFinishedLoading;
 }
 
 - (void)buildIndexTree;
