@@ -34,40 +34,48 @@ enum TransactionsToShow
 	IBOutlet NSView *indexView;
 	IBOutlet IndexBar *indexBar;
 	
-	// Content View
+	// Content Views
 	IBOutlet NSView *contentView;
+	
+	IBOutlet NSView *vTransactionsView, *vPayeesView;
+	
+	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
-		
 	IBOutlet NSSplitView  *verticalSplitView;
-			
 	IBOutlet NSComboBox *Payee;
 	IBOutlet NSComboBox *Category;
 	IBOutlet NSTextField *Description;
 	IBOutlet NSTextField *Amount;
-	
 	IBOutlet NSPopUpButton *Type;
 	IBOutlet id DateCntl;
 	IBOutlet id Reconciled;
 	
-	// bottom buttons
 	IBOutlet NSButton *addTransaction;
 	IBOutlet NSButton *deleteTransaction;
 	IBOutlet NSButton *splitTransaction;
 	IBOutlet NSButton *moveUp;
 	IBOutlet NSButton *moveDown;
 	
-	NSMutableArray *m_aContentItems;
-	
 	TransactionsToShow nShowTransactionsType;
 	
-	Document m_Document;
-	Account *m_pAccount;	
+	NSMutableArray *m_aTransactionItems;
+	
 	bool m_bEditing;
 	
 	int m_nTransactionOffset;
 	
 	TransactionItem *m_SelectedIndex;
 	TransactionItem *m_SelectedTransaction;
+	
+	
+	// Payees
+	IBOutlet NSTableView *payeesTableView;
+	NSMutableArray *m_aPayeeItems;
+	
+	
+	Document m_Document;
+	Account *m_pAccount;	
+	
 	
 	std::string m_DocumentFile;
 	bool m_UnsavedChanges;
@@ -77,10 +85,13 @@ enum TransactionsToShow
 }
 
 - (void)buildIndexTree;
-- (void)buildContentTree;
+- (void)buildTransactionsTree;
+- (void)buildPayeesList;
 - (void)refreshLibraryItems;
 
 - (void)updateUI;
+
+// Transactions
 
 - (IBAction)AddAccount:(id)sender;
 - (IBAction)AddTransaction:(id)sender;
@@ -96,7 +107,13 @@ enum TransactionsToShow
 - (IBAction)showAllTransactionsThisYear:(id)sender;
 - (IBAction)showAllTransactions:(id)sender;
 
+
+// Payees
+
+- (IBAction)DeletePayee:(id)sender;
+
 - (void)accountSelected:(id)sender;
+- (void)payeesSelected:(id)sender;
 
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 

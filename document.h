@@ -26,6 +26,7 @@ public:
 	
 	bool doesPayeeExist(std::string Payee);
 	void addPayee(std::string Payee) { m_aPayees.insert(Payee); }
+	void deletePayee(std::string Payee);
 	
 	bool doesCategoryExist(std::string Category);
 	void addCategory(std::string Category) { m_aCategories.insert(Category); }

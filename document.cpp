@@ -131,6 +131,14 @@ bool Document::doesPayeeExist(std::string Payee)
 	return true;
 }
 
+void Document::deletePayee(std::string Payee)
+{
+	std::set<std::string>::iterator it = m_aPayees.find(Payee);
+	
+	if (it != m_aPayees.end())
+		m_aPayees.erase(it);
+}
+
 bool Document::doesCategoryExist(std::string Category)
 {
 	std::set<std::string>::iterator it = m_aCategories.find(Category);

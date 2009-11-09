@@ -56,10 +56,13 @@
 	[indexView setFrameSize:[indexViewPlaceholder frame].size];
 	[indexViewPlaceholder addSubview:indexView];
 	
-	[contentView setFrameSize:[contentViewPlaceholder frame].size];
-	[contentViewPlaceholder addSubview:contentView];
+	[vTransactionsView setFrameSize:[contentViewPlaceholder frame].size];
 	
-	m_aContentItems = [[NSMutableArray alloc] init];
+	[contentViewPlaceholder addSubview:vTransactionsView];
+	contentView = vTransactionsView;
+	
+	m_aTransactionItems = [[NSMutableArray alloc] init];
+	m_aPayeeItems = [[NSMutableArray alloc] init];
 	
 	NSDate *date1 = [NSDate date];
 	[DateCntl setDateValue:date1];
@@ -96,32 +99,10 @@
 	m_Document.addAccount(acc);
 	m_pAccount = m_Document.getAccountPtr(0);
 	
-/*	Transaction t0("Starting balance", "Desc", "Category", 2142.51, Date(13, 9, 2009));
-	Transaction t1("Tax", "Council", "Tax", -86.00, Date(13, 9, 2009));
-	Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
-	Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
-	
-	t1.addSplit("Test1", "Test1", "T1", -30);
-	t1.addSplit("Test2", "Test2", "T2", -21.44);
-	
-	m_pAccount->addTransaction(t0);
-	m_pAccount->addTransaction(t1);
-	m_pAccount->addTransaction(t2);
-	m_pAccount->addTransaction(t3);
-*/	
-/*	for (int i = 0; i < 5000; i++)
-	{
-		Transaction t1("Tax", "Council", "Tax", -2466.00, Date(13, 9, 2009));
-		Transaction t2("Food", "Sainsbury's", "Food", -13.44, Date(17, 9, 2009));
-		Transaction t3("Pay", "Work", "Pay", 2470.0, Date(29, 9, 2009));
-		
-		m_pAccount->addTransaction(t1);
-		m_pAccount->addTransaction(t2);
-		m_pAccount->addTransaction(t3);
-	}
-*/	
 	[transactionsTableView setDelegate:self];
-	[transactionsTableView setAutoresizesOutlineColumn:NO];	
+	[transactionsTableView setAutoresizesOutlineColumn:NO];
+	
+	[payeesTableView setDelegate:self];
 }
 
 - (void)buildIndexTree
@@ -147,7 +128,7 @@
 	}
 	
 	[indexBar addSection:@"manage" title:@"MANAGE"];
-	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:nil target:nil];
+	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self];
 	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:nil target:nil];
 	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:nil target:nil];
 	
@@ -171,6 +152,10 @@
 	m_pAccount = m_Document.getAccountPtr(nAccount);			
 	m_SelectedTransaction = 0;
 	
+	[vTransactionsView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder replaceSubview:contentView with:vTransactionsView];
+	contentView = vTransactionsView;
+	
 	[Payee setStringValue:@""];
 	[Description setStringValue:@""];
 	[Category setStringValue:@""];
@@ -180,13 +165,22 @@
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 	
-	[self buildContentTree];
+	[self buildTransactionsTree];
 	[self updateUI];	
 }
 
-- (void)buildContentTree
+- (void)payeesSelected:(id)sender
 {
-	[m_aContentItems removeAllObjects];
+	[vPayeesView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder replaceSubview:contentView with:vPayeesView];
+	contentView = vPayeesView;
+	
+	[self buildPayeesList];
+}
+
+- (void)buildTransactionsTree
+{
+	[m_aTransactionItems removeAllObjects];
 	
 	fixed localBalance = 0.0;
 	
@@ -348,7 +342,7 @@
 			}
 		}		
 		
-		[m_aContentItems addObject:newTransaction];
+		[m_aTransactionItems addObject:newTransaction];
 		[sTPayee release];
 		[sTDescription release];
 		[sTCategory release];
@@ -358,6 +352,24 @@
 	}
 	
 	[transactionsTableView reloadData];
+}
+
+- (void)buildPayeesList
+{
+	[m_aPayeeItems removeAllObjects];
+		
+	std::set<std::string>::iterator it = m_Document.PayeeBegin();
+	
+	for (; it != m_Document.PayeeEnd(); ++it)
+	{
+		std::string strPayee = (*it);
+		NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+			
+		[m_aPayeeItems addObject:sPayee];
+		[sPayee release];
+	}
+	
+	[payeesTableView reloadData];	
 }
 
 - (void)refreshLibraryItems
@@ -493,7 +505,7 @@
 	
 	[newIndex setIntValue:nTransaction forKey:@"Transaction"];
 	
-	[m_aContentItems addObject:newIndex];
+	[m_aTransactionItems addObject:newIndex];
 	[newIndex release];
 	
 	[transactionsTableView reloadData];
@@ -527,11 +539,11 @@
 			if (nSplit == -1)
 			{
 				m_pAccount->deleteTransaction(nTransaction);
-				[m_aContentItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
+				[m_aTransactionItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
 			}
 			else if (nSplit != -2)
 			{
-				TransactionItem *transactionItem = [m_aContentItems objectAtIndex:nTransaction - m_nTransactionOffset];
+				TransactionItem *transactionItem = [m_aTransactionItems objectAtIndex:nTransaction - m_nTransactionOffset];
 				Transaction &trans = m_pAccount->getTransaction(nTransaction);
 				
 				trans.deleteSplit(nSplit);
@@ -544,7 +556,6 @@
 		// TODO: for multiple selection this won't work, as indexes will get out of sync
 		//		 also, when removing items, the balance value of other objects will be wrong
 		
-//		[self buildContentTree];
 		[transactionsTableView reloadData];
 		
 		m_UnsavedChanges = true;
@@ -651,7 +662,7 @@
 	if (from < 0 || to < 0)
 		return;
 	
-	int maxTransactionIndex = [m_aContentItems count] - 1;
+	int maxTransactionIndex = [m_aTransactionItems count] - 1;
 	
 	if (from > maxTransactionIndex || to > maxTransactionIndex)
 		return;
@@ -660,7 +671,7 @@
 	int nRealTo = to + m_nTransactionOffset;
 	
 	m_pAccount->swapTransactions(nRealFrom, nRealTo);
-	[m_aContentItems exchangeObjectAtIndex:from withObjectAtIndex:to];
+	[m_aTransactionItems exchangeObjectAtIndex:from withObjectAtIndex:to];
 	
 	// TransactionItem values are still pointing in the wrong place, so fix them....
 	
@@ -680,7 +691,7 @@
 
 - (void)RefreshView:(id)sender
 {
-	[self buildContentTree];
+	[self buildTransactionsTree];
 	
 	[transactionsTableView reloadData];	
 }
@@ -971,7 +982,7 @@
 			
 			if (!diff.IsZero())
 			{
-				TransactionItem *transIndex = [m_aContentItems objectAtIndex:nTrans - m_nTransactionOffset];
+				TransactionItem *transIndex = [m_aTransactionItems objectAtIndex:nTrans - m_nTransactionOffset];
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
@@ -1013,26 +1024,48 @@
 - (IBAction)showLast100Transactions:(id)sender
 {
 	nShowTransactionsType = LAST_100;
-	[self buildContentTree];
+	[self buildTransactionsTree];
 }
 
 - (IBAction)showAllTransactionsThisYear:(id)sender
 {
 	nShowTransactionsType = ALL_THIS_YEAR;
-	[self buildContentTree];
+	[self buildTransactionsTree];
 }
 
 - (IBAction)showAllTransactions:(id)sender
 {
 	nShowTransactionsType = ALL;
-	[self buildContentTree];
+	[self buildTransactionsTree];
 }
+
+- (IBAction)DeletePayee:(id)sender
+{
+	NSInteger row = [payeesTableView selectedRow];
+	
+	if (row >= 0)
+	{
+		NSString *sPayee = [m_aPayeeItems objectAtIndex:row];
+		
+		std::string strPayee = [sPayee cStringUsingEncoding:NSASCIIStringEncoding];
+		
+		[m_aPayeeItems removeObjectAtIndex:row];
+		
+		m_Document.deletePayee(strPayee);
+		
+		[payeesTableView reloadData];
+		
+		m_UnsavedChanges = true;
+	}
+}
+
+// Transactions OutlineView Start
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
 	if (item == nil)
 	{
-		return [m_aContentItems objectAtIndex:index];
+		return [m_aTransactionItems objectAtIndex:index];
 	}
 	else
 	{
@@ -1051,7 +1084,7 @@
 	{
 		if (outlineView == transactionsTableView)
 		{
-			return [m_aContentItems count];
+			return [m_aTransactionItems count];
 		}
     }
 	
@@ -1165,6 +1198,33 @@
 	else
 		[cell setTextColor:fontColor];
 }
+
+// Transactions OutlineView End
+
+// Payees TableView Start
+
+- (id)tableView:(NSTableView *) aTableView objectValueForTableColumn:(NSTableColumn *) aTableColumn row:(NSInteger) rowIndex
+{
+	id result = @"";
+	
+	NSString *payee = [m_aPayeeItems objectAtIndex:rowIndex];
+	
+	NSString *identifier = [aTableColumn identifier];
+	
+	if ([identifier isEqualToString:@"payee"])
+	{		
+		result = payee;
+	}
+		
+	return result;
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	return [m_aPayeeItems count];
+}
+
+// Payees TableView End
 
 NSDate * convertToNSDate(Date *date)
 {
@@ -1368,7 +1428,7 @@ NSDate * convertToNSDate(Date *date)
 	[importQIFController release];
 	
 	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator))
-		[self buildContentTree];	
+		[self buildTransactionsTree];	
 }
 
 - (IBAction)ExportQIF:(id)sender
