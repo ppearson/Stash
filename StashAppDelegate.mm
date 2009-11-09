@@ -143,6 +143,7 @@
 	[indexBar reloadData];
 	
 	[indexBar expandSection:@"accounts"];
+	[indexBar expandSection:@"manage"];
 	
 	// automatically select the first account
 	[indexBar selectItem:@"a0"];
