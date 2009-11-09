@@ -63,6 +63,7 @@
 	
 	m_aTransactionItems = [[NSMutableArray alloc] init];
 	m_aPayeeItems = [[NSMutableArray alloc] init];
+	m_aCategoryItems = [[NSMutableArray alloc] init];
 	
 	NSDate *date1 = [NSDate date];
 	[DateCntl setDateValue:date1];
@@ -103,6 +104,8 @@
 	[transactionsTableView setAutoresizesOutlineColumn:NO];
 	
 	[payeesTableView setDelegate:self];
+	
+	[categoriesTableView setDelegate:self];
 }
 
 - (void)buildIndexTree
@@ -129,7 +132,7 @@
 	
 	[indexBar addSection:@"manage" title:@"MANAGE"];
 	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self];
-	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:nil target:nil];
+	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self];
 	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:nil target:nil];
 	
 	m_pAccount = 0;
@@ -176,6 +179,15 @@
 	contentView = vPayeesView;
 	
 	[self buildPayeesList];
+}
+
+- (void)categoriesSelected:(id)sender
+{
+	[vCategoriesView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder replaceSubview:contentView with:vCategoriesView];
+	contentView = vCategoriesView;
+	
+	[self buildCategoriesList];
 }
 
 - (void)buildTransactionsTree
@@ -370,6 +382,24 @@
 	}
 	
 	[payeesTableView reloadData];	
+}
+
+- (void)buildCategoriesList
+{
+	[m_aCategoryItems removeAllObjects];
+	
+	std::set<std::string>::iterator it = m_Document.CategoryBegin();
+	
+	for (; it != m_Document.CategoryEnd(); ++it)
+	{
+		std::string strCategory = (*it);
+		NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+		
+		[m_aCategoryItems addObject:sCategory];
+		[sCategory release];
+	}
+	
+	[categoriesTableView reloadData];	
 }
 
 - (void)refreshLibraryItems
@@ -1059,6 +1089,26 @@
 	}
 }
 
+- (IBAction)DeleteCategory:(id)sender
+{
+	NSInteger row = [categoriesTableView selectedRow];
+	
+	if (row >= 0)
+	{
+		NSString *sCategory = [m_aCategoryItems objectAtIndex:row];
+		
+		std::string strCategory = [sCategory cStringUsingEncoding:NSASCIIStringEncoding];
+		
+		[m_aCategoryItems removeObjectAtIndex:row];
+		
+		m_Document.deleteCategory(strCategory);
+		
+		[categoriesTableView reloadData];
+		
+		m_UnsavedChanges = true;
+	}
+}
+
 // Transactions OutlineView Start
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
@@ -1201,19 +1251,30 @@
 
 // Transactions OutlineView End
 
-// Payees TableView Start
+// Payees/Categories TableView Start
 
 - (id)tableView:(NSTableView *) aTableView objectValueForTableColumn:(NSTableColumn *) aTableColumn row:(NSInteger) rowIndex
 {
 	id result = @"";
-	
-	NSString *payee = [m_aPayeeItems objectAtIndex:rowIndex];
-	
 	NSString *identifier = [aTableColumn identifier];
 	
-	if ([identifier isEqualToString:@"payee"])
-	{		
-		result = payee;
+	if (aTableView == payeesTableView)
+	{
+		NSString *sPayee = [m_aPayeeItems objectAtIndex:rowIndex];
+		
+		if ([identifier isEqualToString:@"payee"])
+		{		
+			result = sPayee;
+		}
+	}
+	else if (aTableView == categoriesTableView)
+	{
+		NSString *sCategory = [m_aCategoryItems objectAtIndex:rowIndex];
+		
+		if ([identifier isEqualToString:@"category"])
+		{		
+			result = sCategory;
+		}
 	}
 		
 	return result;
@@ -1221,10 +1282,15 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	return [m_aPayeeItems count];
+	if (aTableView == payeesTableView)
+		return [m_aPayeeItems count];
+	else if (aTableView == categoriesTableView)
+		return [m_aCategoryItems count];
+	
+	return 0;
 }
 
-// Payees TableView End
+// Payees/Categories TableView End
 
 NSDate * convertToNSDate(Date *date)
 {

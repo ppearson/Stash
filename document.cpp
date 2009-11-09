@@ -148,3 +148,11 @@ bool Document::doesCategoryExist(std::string Category)
 	
 	return true;
 }
+
+void Document::deleteCategory(std::string Category)
+{
+	std::set<std::string>::iterator it = m_aCategories.find(Category);
+	
+	if (it != m_aCategories.end())
+		m_aCategories.erase(it);
+}

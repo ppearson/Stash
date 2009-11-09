@@ -30,6 +30,7 @@ public:
 	
 	bool doesCategoryExist(std::string Category);
 	void addCategory(std::string Category) { m_aCategories.insert(Category); }
+	void deleteCategory(std::string Category);
 	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);

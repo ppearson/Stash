@@ -37,7 +37,7 @@ enum TransactionsToShow
 	// Content Views
 	IBOutlet NSView *contentView;
 	
-	IBOutlet NSView *vTransactionsView, *vPayeesView;
+	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView;
 	
 	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
@@ -73,6 +73,10 @@ enum TransactionsToShow
 	NSMutableArray *m_aPayeeItems;
 	
 	
+	// Categories
+	IBOutlet NSTableView *categoriesTableView;
+	NSMutableArray *m_aCategoryItems;	
+	
 	Document m_Document;
 	Account *m_pAccount;	
 	
@@ -87,6 +91,7 @@ enum TransactionsToShow
 - (void)buildIndexTree;
 - (void)buildTransactionsTree;
 - (void)buildPayeesList;
+- (void)buildCategoriesList;
 - (void)refreshLibraryItems;
 
 - (void)updateUI;
@@ -112,8 +117,11 @@ enum TransactionsToShow
 
 - (IBAction)DeletePayee:(id)sender;
 
+- (IBAction)DeleteCategory:(id)sender;
+
 - (void)accountSelected:(id)sender;
 - (void)payeesSelected:(id)sender;
+- (void)categoriesSelected:(id)sender;
 
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 
