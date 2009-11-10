@@ -915,6 +915,13 @@
 		[moveUp setEnabled:NO];
 		[moveDown setEnabled:NO];
 		
+		[Payee setStringValue:@""];
+		[Description setStringValue:@""];
+		[Category setStringValue:@""];
+		[Type selectItemAtIndex:0];
+		[Amount setStringValue:@""];
+		[Reconciled setState:NSOffState];		
+		
 		m_SelectedTransaction = 0; 
 		m_bEditing = false;		
 	}
