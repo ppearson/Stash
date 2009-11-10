@@ -497,6 +497,8 @@
 	[addAccountController release];
 	[numberFormatter release];
 	
+	m_UnsavedChanges = true;
+	
 	[indexBar reloadData];
 }
 
