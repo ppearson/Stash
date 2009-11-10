@@ -316,7 +316,7 @@
 				std::string strSCategory = split.Category();
 				NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 				
-				NSNumber *nSAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
+				NSNumber *nSAmount = [NSNumber numberWithDouble:split.Amount().ToDouble()];
 				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 				
 				[newSplit setValue:sSPayee forKey:@"Payee"];
