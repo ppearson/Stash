@@ -142,7 +142,7 @@ enum TransactionsToShow
 
 - (IBAction)updateTransaction:(id)sender;
 
-NSDate *convertToNSDate(Date *date);
+NSDate *convertToNSDate(Date &date);
 
 @property (assign) IBOutlet NSWindow *window;
 

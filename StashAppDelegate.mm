@@ -248,6 +248,11 @@
 		m_nTransactionOffset = nTransaction;
 	}
 	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	
 	for (; it != m_pAccount->end(); ++it, nTransaction++)
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
@@ -264,8 +269,8 @@
 		std::string strTAmount = it->Amount();
 		NSString *sTAmount = [[NSString alloc] initWithUTF8String:strTAmount.c_str()];
 		
-		std::string strTDate = it->Date1().FormattedDate(UK);
-		NSString *sTDate = [[NSString alloc] initWithUTF8String:strTDate.c_str()];
+		NSDate *date = convertToNSDate(const_cast<Date&>(it->Date2()));
+		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
 		
 		localBalance += it->Amount();
 		
@@ -363,6 +368,8 @@
 		[sTDate release];
 		[sTBalance release];
 	}
+	
+	[dateFormatter release];
 	
 	[transactionsTableView reloadData];
 }
@@ -512,8 +519,15 @@
 	std::string strAmount = newTransaction.Amount();
 	NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
 	
-	std::string strDate = newTransaction.Date1().FormattedDate(UK);
-	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
+	NSDate *date = convertToNSDate(const_cast<Date&>(newTransaction.Date2()));
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	
+	[dateFormatter release];
 	
 	fixed localBalance = m_pAccount->getBalance(true);
 	
@@ -779,7 +793,7 @@
 			TransactionType eType = trans->Type();
 			
 			Date date1 = trans->Date1();
-			NSDate *datetemp = convertToNSDate(&date1);
+			NSDate *datetemp = convertToNSDate(date1);
 			
 			[Reconciled setEnabled:YES];
 			[Type setEnabled:YES];
@@ -888,8 +902,16 @@
 	int nDay = [CalDate dayOfMonth];
 	
 	Date date1(nDay, nMonth, nYear);
-	std::string strDate = date1.FormattedDate(UK);
-	NSString *sDate = [[NSString alloc] initWithUTF8String:strDate.c_str()];
+	
+	NSDate *date = convertToNSDate(const_cast<Date&>(date1));
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	
+	[dateFormatter release];
 	
 	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
@@ -1293,14 +1315,14 @@
 
 // Payees/Categories TableView End
 
-NSDate * convertToNSDate(Date *date)
+NSDate * convertToNSDate(Date &date)
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
     NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];
-    [dateComponents setYear:date->Year()];
-    [dateComponents setMonth:date->Month()];
-    [dateComponents setDay:date->Day()];
+    [dateComponents setYear:date.Year()];
+    [dateComponents setMonth:date.Month()];
+    [dateComponents setDay:date.Day()];
     
     [dateComponents setHour:0];
     [dateComponents setMinute:0];

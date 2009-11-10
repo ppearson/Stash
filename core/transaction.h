@@ -30,6 +30,7 @@ public:
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
 	Date Date1() const { return m_Date; }
+	const Date &Date2() { return m_Date; }
 	void setDate(Date date) { m_Date = date; }
 	std::string Category() const { return m_Category; }
 	void setCategory(std::string Category) { m_Category = Category; }
