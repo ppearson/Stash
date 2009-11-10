@@ -732,6 +732,8 @@
 	[transactionsTableView reloadData];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:to] byExtendingSelection:NO];
+	
+	m_UnsavedChanges = true;
 }
 
 - (void)RefreshView:(id)sender
