@@ -28,7 +28,13 @@
 
 - (void)awakeFromNib
 {
-	[fStartingBalance setStringValue:@"0.0"];
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	NSNumber *number = [NSNumber numberWithInt:0];
+	sStartingBalance = [numberFormatter stringFromNumber:number];
+	
+	[fStartingBalance setStringValue:sStartingBalance];
 	
 	[fAccountType removeAllItems];
 	
@@ -42,6 +48,8 @@
 	[fAccountType addItemWithTitle:@"Other"];
 	
 	[fAccountType selectItemAtIndex:0];
+	
+	[numberFormatter release];
 }
 
 - (void)dealloc

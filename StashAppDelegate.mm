@@ -346,8 +346,8 @@
 			{
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				std::string strSAmount = splitValue;
-				NSString *sSAmount = [[NSString alloc] initWithUTF8String:strSAmount.c_str()];
+				NSNumber *nSAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
+				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Description"];
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
@@ -464,12 +464,17 @@
 	AccountType eType = [addAccountController accountType];
 	
 	std::string strName = [sAccountName cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strStartingBalance = [sStartingBalance cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strInstitution = [sInstitution cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strNumber = [sNumber cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strNote = [sNote cStringUsingEncoding:NSASCIIStringEncoding];
 	
-	fixed startingBalance(strStartingBalance, UKFormat);
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
+	
+	NSNumber *nStartingBalance = [numberFormatter numberFromString:sStartingBalance];
+	
+	fixed startingBalance = [nStartingBalance doubleValue];
 	
 	Account newAccount;
 	newAccount.setName(strName);
@@ -490,6 +495,7 @@
 	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self];
 	
 	[addAccountController release];
+	[numberFormatter release];
 	
 	[indexBar reloadData];
 }
@@ -787,6 +793,10 @@
 		
 		m_SelectedTransaction = item;
 		
+		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		[numberFormatter setLenient:YES];
+		
 		if (trans && !split && nSplit != -2) // A normal transaction
 		{
 			[splitTransaction setEnabled:YES];
@@ -804,8 +814,8 @@
 			std::string strCategory = trans->Category();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			std::string strAmount = trans->Amount();
-			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+			NSNumber *nAmount = [NSNumber numberWithDouble:trans->Amount().ToDouble()];
+			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 			
 			TransactionType eType = trans->Type();
 			
@@ -855,8 +865,8 @@
 			std::string strCategory = split->Category();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			std::string strAmount = split->Amount();
-			NSString *sAmount = [[NSString alloc] initWithUTF8String:strAmount.c_str()];
+			NSNumber *nAmount = [NSNumber numberWithDouble:split->Amount().ToDouble()];
+			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 			
 			[Payee setStringValue:sPayee];
 			[Description setStringValue:sDescription];
@@ -892,7 +902,9 @@
 			
 			[Reconciled setEnabled:NO];
 			[Type setEnabled:NO];
-		}		
+		}
+		
+		[numberFormatter release];
 	}
 	else
 	{
@@ -910,6 +922,14 @@
 {
 	if (!m_bEditing || !m_SelectedTransaction)
 		return;
+	
+	if ([[Amount stringValue] length] == 0)
+	{
+		[window makeFirstResponder:Amount];
+		NSBeep();
+		
+		return;
+	}
 	
 	NSDate *ndate1 = [DateCntl dateValue];
 	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
@@ -933,13 +953,15 @@
 	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	std::string strCategory = [[Category stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strAmount = [[Amount stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
 	
-	fixed fAmount = strAmount;
-	NSNumber *nAmount = [NSNumber numberWithDouble:fAmount.ToDouble()];
+	NSNumber *nAmount = [numberFormatter numberFromString:[Amount stringValue]];	
+	fixed fAmount = [nAmount doubleValue];
+
+	// reformat the number again, in case an abbriviation was used
 	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 	
 	int nType = [Type indexOfSelectedItem];
@@ -1060,12 +1082,12 @@
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				std::string strSAmount = diff;
-				NSString *sAmount = [[NSString alloc] initWithUTF8String:strSAmount.c_str()];
+				NSNumber *nSAmount = [NSNumber numberWithDouble:diff.ToDouble()];
+				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
 				[newSplit setValue:@"Split Value" forKey:@"Description"];
-				[newSplit setValue:sAmount forKey:@"Amount"];
+				[newSplit setValue:sSAmount forKey:@"Amount"];
 				
 				[newSplit setTransaction:nTrans];
 				[newSplit setIntValue:nTrans forKey:@"Transaction"];
