@@ -19,7 +19,7 @@
 	contentSubView = [[self subviews] objectAtIndex:1];
 }
 
-- (float)dividerThickness
+- (CGFloat)dividerThickness
 {
 	return 1.0;
 }
@@ -30,7 +30,7 @@
 	NSRectFill(rect);
 }
 
-- (float)splitView:(NSSplitView *)sender constrainMinCoordinate:(float)proposedMin ofSubviewAt:(int)offset
+- (CGFloat)splitView:(NSSplitView *)sender constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)offset
 {
 	NSRect mainFrame = [[sender superview] frame];
 	return mainFrame.size.width - (mainFrame.size.width - 150.0);

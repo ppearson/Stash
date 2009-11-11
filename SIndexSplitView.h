@@ -15,6 +15,6 @@
 	id contentSubView;
 }
 
-- (float)dividerThickness;
+- (CGFloat)dividerThickness;
 
 @end

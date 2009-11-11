@@ -19,14 +19,24 @@
 	editSubView = [[self subviews] objectAtIndex:1];
 }
 
-- (float)splitView:(NSSplitView *)splitView constrainMinCoordinate:(float)proposedMin ofSubviewAt:(int)index
+- (CGFloat)dividerThickness
+{
+	return 1.0;
+}
+
+- (void)drawDividerInRect:(NSRect)rect
+{
+	[[NSColor grayColor] set];
+	NSRectFill(rect);
+}
+
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)index
 {
 	NSRect mainFrame = [[splitView superview] frame];
 	return mainFrame.size.height - (mainFrame.size.height - 100.0);
 }
 
-
-- (float)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(float)proposedMax ofSubviewAt:(int)index
+- (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)index
 {
 	NSRect mainFrame = [[splitView superview] frame];
 	return mainFrame.size.height - 200;

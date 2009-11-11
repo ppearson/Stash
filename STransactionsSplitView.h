@@ -15,4 +15,6 @@
 	id editSubView;
 }
 
+- (CGFloat)dividerThickness;
+
 @end
