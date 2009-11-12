@@ -85,6 +85,9 @@
 	[addTransaction setToolTip:@"Add Transaction"];
 	[deleteTransaction setToolTip:@"Delete Transaction"];
 	[splitTransaction setToolTip:@"Split Transaction"];
+	[moveDown setToolTip:@"Move Down"];
+	[moveUp setToolTip:@"Move Up"];
+	[refresh setToolTip:@"Refresh"];
 	
 	[deleteTransaction setEnabled:NO];
 	[splitTransaction setEnabled:NO];

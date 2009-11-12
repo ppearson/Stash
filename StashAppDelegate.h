@@ -55,6 +55,7 @@ enum TransactionsToShow
 	IBOutlet NSButton *splitTransaction;
 	IBOutlet NSButton *moveUp;
 	IBOutlet NSButton *moveDown;
+	IBOutlet NSButton *refresh;
 	
 	TransactionsToShow nShowTransactionsType;
 	
