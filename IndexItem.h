@@ -14,6 +14,8 @@
 	id parentKey;
 	id itemKey;
 	
+	BOOL m_section;
+	
 	NSString *title;
 	int itemIndex;
 	
@@ -22,7 +24,6 @@
 }
 
 @property (retain) NSString *title;
-//@property (assign) int itemIndex;
 @property (assign) id parentKey;
 @property (assign) id itemKey;
 
@@ -36,6 +37,9 @@
 
 - (void)setItemIndex:(int)iIndex;
 - (int)getItemIndex;
+
+- (void)setSection:(BOOL)bSection;
+- (BOOL)isSection;
 
 - (void)setAction:(SEL)selector target:(id)target;
 - (BOOL)hasAction;

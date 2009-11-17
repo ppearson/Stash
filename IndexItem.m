@@ -60,6 +60,16 @@
 	return itemIndex;
 }
 
+- (void)setSection:(BOOL)bSection
+{
+	m_section = bSection;
+}
+
+- (BOOL)isSection
+{
+	return m_section;
+}
+
 - (void)setAction:(SEL)selector target:(id)target
 {
 	actionTarget = target;

@@ -125,12 +125,6 @@
 	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
 	[nc addObserver:self selector:@selector(ScheduledSelectionDidChange:) name:NSTableViewSelectionDidChangeNotification object:scheduledTransactionsTableView];
 	
-	Account acc;
-	acc.setName("Main");
-	
-	m_Document.addAccount(acc);
-	m_pAccount = m_Document.getAccountPtr(0);
-	
 	[transactionsTableView setDelegate:self];
 	[transactionsTableView setAutoresizesOutlineColumn:NO];
 	[payeesTableView setDelegate:self];	
@@ -175,8 +169,11 @@
 	[indexBar expandSection:@"accounts"];
 	[indexBar expandSection:@"manage"];
 	
-	// automatically select the first account
-	[indexBar selectItem:@"a0"];
+	if (nAccount > 0)
+	{
+		// automatically select the first account
+		[indexBar selectItem:@"a0"];
+	}
 }
 
 - (void)accountSelected:(id)sender
@@ -618,6 +615,11 @@
 	m_UnsavedChanges = true;
 	
 	[indexBar reloadData];
+	
+	if (nAccountNum == 0) // if first account added, select it
+	{
+		[indexBar selectItem:sAccountKey];
+	}
 }
 
 - (IBAction)AddTransaction:(id)sender

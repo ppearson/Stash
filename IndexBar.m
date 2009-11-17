@@ -32,6 +32,7 @@
 	
 	[section setTitle:sTitle];
 	[section setItemKey:key];
+	[section setSection:YES];
 	
 	[m_dItems setObject:section forKey:key];
 	[m_aSections addObject:section];
@@ -95,17 +96,17 @@
 
 - (BOOL)outlineView:(NSOutlineView*)outlineView isGroupItem:(id)item
 {
-	return [item numberOfChildren] > 0;
+	return [item isSection];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
 {
-	return [item numberOfChildren] == 0;
+	return ![item isSection];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    return [item numberOfChildren] > 0;
+    return [item isSection];
 }
 
 -(NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
