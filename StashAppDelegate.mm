@@ -1851,7 +1851,7 @@ NSDate * convertToNSDate(Date &date)
 
 - (bool)SaveFileTo:(std::string)path
 {
-	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::binary);
+	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 	
 	if (!fileStream)
 	{
