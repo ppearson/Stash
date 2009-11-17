@@ -58,6 +58,23 @@ const Date& Date::operator=(time_t Time)
 	return *this;
 }
 
+void Date::IncrementDays(int days)
+{
+	m_Time += (SECONDS_IN_DAY * days);
+	
+	SetVarsFromTime();
+}
+
+void Date::IncrementMonths(int months)
+{
+	for (int i = 0; i < months; i++)
+	{
+		IncrementDays(daysInMonth[m_Month - 1]);		
+	}
+	
+	SetVarsFromTime();
+}
+
 void Date::Now()
 {
 	time(&m_Time);

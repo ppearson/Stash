@@ -27,10 +27,10 @@ bool Document::Load(std::fstream &stream)
 		return false;
 	}
 	
-	m_aAccounts.clear();
-	
 	unsigned char fileVersion = 0;
 	stream.read((char *) &fileVersion, sizeof(unsigned char));
+	
+	m_aAccounts.clear();
 	
 	unsigned int numAccounts = 0;	
 	stream.read((char *) &numAccounts, sizeof(unsigned int));
@@ -42,6 +42,19 @@ bool Document::Load(std::fstream &stream)
 		
 		m_aAccounts.push_back(tempAccount);
 	}
+	
+	m_aScheduledTransactions.clear();
+	
+	unsigned int numSchedTrans = 0;	
+	stream.read((char *) &numSchedTrans, sizeof(unsigned int));
+	
+	for (unsigned int i = 0; i < numSchedTrans; i++)
+	{
+		ScheduledTransaction tempSchedTrans;
+		tempSchedTrans.Load(stream, fileVersion);
+		
+		m_aScheduledTransactions.push_back(tempSchedTrans);
+	}	
 	
 	m_aPayees.clear();
 	
@@ -84,6 +97,14 @@ bool Document::Store(std::fstream &stream)
 	stream.write((char *) &numAccounts, sizeof(unsigned int));
 	
 	for (std::vector<Account>::iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
+	{
+		(*it).Store(stream);
+	}
+	
+	unsigned int numSchedTrans = static_cast<unsigned int>(m_aScheduledTransactions.size());	
+	stream.write((char *) &numSchedTrans, sizeof(unsigned int));
+	
+	for (std::vector<ScheduledTransaction>::iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
 	{
 		(*it).Store(stream);
 	}
@@ -156,3 +177,10 @@ void Document::deleteCategory(std::string Category)
 	if (it != m_aCategories.end())
 		m_aCategories.erase(it);
 }
+
+int Document::addScheduledTransaction(ScheduledTransaction &schedTransaction)
+{
+	m_aScheduledTransactions.push_back(schedTransaction);
+	return m_aScheduledTransactions.size() - 1;
+}
+

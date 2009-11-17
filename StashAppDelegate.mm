@@ -28,6 +28,8 @@
 	
 		[window makeKeyAndOrderFront:self];
 	}
+	
+	[self calculateAndShowScheduled];
 }
 
 - (id)init
@@ -64,23 +66,46 @@
 	m_aTransactionItems = [[NSMutableArray alloc] init];
 	m_aPayeeItems = [[NSMutableArray alloc] init];
 	m_aCategoryItems = [[NSMutableArray alloc] init];
+	m_aScheduledTransactions = [[NSMutableArray alloc] init];
 	
 	NSDate *date1 = [NSDate date];
-	[DateCntl setDateValue:date1];
+	[transactionsDateCntl setDateValue:date1];
 	
-	[Type removeAllItems];
+	[transactionsType removeAllItems];
 	
-	[Type addItemWithTitle:@"None"];
-	[Type addItemWithTitle:@"Deposit"];
-	[Type addItemWithTitle:@"Withdrawal"];
-	[Type addItemWithTitle:@"Transfer"];
-	[Type addItemWithTitle:@"Standing Order"];
-	[Type addItemWithTitle:@"Direct Debit"];
-	[Type addItemWithTitle:@"Point Of Sale"];
-	[Type addItemWithTitle:@"Charge"];
-	[Type addItemWithTitle:@"ATM"];
+	[transactionsType addItemWithTitle:@"None"];
+	[transactionsType addItemWithTitle:@"Deposit"];
+	[transactionsType addItemWithTitle:@"Withdrawal"];
+	[transactionsType addItemWithTitle:@"Transfer"];
+	[transactionsType addItemWithTitle:@"Standing Order"];
+	[transactionsType addItemWithTitle:@"Direct Debit"];
+	[transactionsType addItemWithTitle:@"Point Of Sale"];
+	[transactionsType addItemWithTitle:@"Charge"];
+	[transactionsType addItemWithTitle:@"ATM"];
 	
-	[Type selectItemAtIndex:0];
+	[scheduledType removeAllItems];
+	
+	[scheduledType addItemWithTitle:@"None"];
+	[scheduledType addItemWithTitle:@"Deposit"];
+	[scheduledType addItemWithTitle:@"Withdrawal"];
+	[scheduledType addItemWithTitle:@"Transfer"];
+	[scheduledType addItemWithTitle:@"Standing Order"];
+	[scheduledType addItemWithTitle:@"Direct Debit"];
+	[scheduledType addItemWithTitle:@"Point Of Sale"];
+	[scheduledType addItemWithTitle:@"Charge"];
+	[scheduledType addItemWithTitle:@"ATM"];
+	
+	[scheduledFrequency removeAllItems];
+	
+	[scheduledFrequency addItemWithTitle:@"Weekly"];
+	[scheduledFrequency addItemWithTitle:@"Two Weeks"];
+	[scheduledFrequency addItemWithTitle:@"Four Weeks"];
+	[scheduledFrequency addItemWithTitle:@"Monthly"];
+	[scheduledFrequency addItemWithTitle:@"Two Months"];
+	[scheduledFrequency addItemWithTitle:@"Quarterly"];
+	[scheduledFrequency addItemWithTitle:@"Annually"];
+	
+	[transactionsType selectItemAtIndex:0];
 	
 	[addTransaction setToolTip:@"Add Transaction"];
 	[deleteTransaction setToolTip:@"Delete Transaction"];
@@ -94,8 +119,11 @@
 	[moveUp setEnabled:NO];
 	[moveDown setEnabled:NO];
 	
+	[deleteScheduled setEnabled:NO];
+	
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(TransactionSelectionDidChange:) name:NSOutlineViewSelectionDidChangeNotification object:transactionsTableView];
+	[nc addObserver:self selector:@selector(ScheduledSelectionDidChange:) name:NSTableViewSelectionDidChangeNotification object:scheduledTransactionsTableView];
 	
 	Account acc;
 	acc.setName("Main");
@@ -105,10 +133,9 @@
 	
 	[transactionsTableView setDelegate:self];
 	[transactionsTableView setAutoresizesOutlineColumn:NO];
-	
-	[payeesTableView setDelegate:self];
-	
+	[payeesTableView setDelegate:self];	
 	[categoriesTableView setDelegate:self];
+	[scheduledTransactionsTableView setDelegate:self];
 }
 
 - (void)buildIndexTree
@@ -136,7 +163,7 @@
 	[indexBar addSection:@"manage" title:@"MANAGE"];
 	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self];
 	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self];
-	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:nil target:nil];
+	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self];
 	
 	m_pAccount = 0;
 	
@@ -154,6 +181,8 @@
 
 - (void)accountSelected:(id)sender
 {
+	m_bEditing = false;
+	
 	int nAccount = [sender getItemIndex];
 		
 	m_pAccount = m_Document.getAccountPtr(nAccount);			
@@ -163,12 +192,12 @@
 	[contentViewPlaceholder replaceSubview:contentView with:vTransactionsView];
 	contentView = vTransactionsView;
 	
-	[Payee setStringValue:@""];
-	[Description setStringValue:@""];
-	[Category setStringValue:@""];
-	[Amount setStringValue:@""];
-	[Type selectItemAtIndex:0];
-	[Reconciled setState:NSOffState];
+	[transactionsPayee setStringValue:@""];
+	[transactionsDescription setStringValue:@""];
+	[transactionsCategory setStringValue:@""];
+	[transactionsAmount setStringValue:@""];
+	[transactionsType selectItemAtIndex:0];
+	[transactionsReconciled setState:NSOffState];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 	
@@ -178,6 +207,8 @@
 
 - (void)payeesSelected:(id)sender
 {
+	m_bEditing = false;
+	
 	[vPayeesView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vPayeesView];
 	contentView = vPayeesView;
@@ -187,11 +218,39 @@
 
 - (void)categoriesSelected:(id)sender
 {
+	m_bEditing = false;
+	
 	[vCategoriesView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vCategoriesView];
 	contentView = vCategoriesView;
 	
 	[self buildCategoriesList];
+}
+
+- (void)scheduledSelected:(id)sender
+{
+	m_bEditing = false;
+	
+	[vScheduledView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder replaceSubview:contentView with:vScheduledView];
+	contentView = vScheduledView;
+	
+	// Update the list of Accounts
+	
+	[scheduledAccount removeAllItems];
+	
+	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	
+	for (; it != m_Document.AccountEnd(); ++it)
+	{
+		std::string strName = it->getName();
+		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+		[scheduledAccount addItemWithTitle:sName];
+		
+		[sName release];
+	}
+	
+	[self buildSchedTransList];
 }
 
 - (void)buildTransactionsTree
@@ -418,9 +477,65 @@
 	[categoriesTableView reloadData];	
 }
 
+- (void)buildSchedTransList
+{
+	[m_aScheduledTransactions removeAllObjects];
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	std::vector<ScheduledTransaction>::iterator it = m_Document.SchedTransBegin();
+	
+	int schedTransIndex = 0;
+	
+	for (; it != m_Document.SchedTransEnd(); ++it, schedTransIndex++)
+	{
+		NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
+		
+		std::string strSPayee = it->getPayee();
+		NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
+		
+		std::string strSCategory = it->getCategory();
+		NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
+		
+		NSNumber *nSAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
+		
+		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+		
+		NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
+		NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
+		
+		int nFreq = it->getFrequency();
+		NSString *sFrequency = [scheduledFrequency itemTitleAtIndex:nFreq];
+		
+		int nAccount = it->getAccount();
+		NSString *sAccount = [scheduledAccount itemTitleAtIndex:nAccount];
+		
+		[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
+		[item setValue:sSPayee forKey:@"payee"];
+		[item setValue:sSCategory forKey:@"category"];
+		[item setValue:sSAmount forKey:@"amount"];
+		[item setValue:sSDate forKey:@"nextdate"];
+		[item setValue:sFrequency forKey:@"frequency"];
+		[item setValue:sAccount forKey:@"account"];
+		
+		[m_aScheduledTransactions addObject:item];
+	}
+	
+	[dateFormatter release];
+	[numberFormatter release];
+	
+	[scheduledTransactionsTableView reloadData];
+}
+
 - (void)refreshLibraryItems
 {
-	[Payee removeAllItems];
+	[transactionsPayee removeAllItems];
 	
 	std::set<std::string>::iterator it = m_Document.PayeeBegin();
 	
@@ -428,10 +543,10 @@
 	{
 		NSString *sPayee = [[NSString alloc] initWithUTF8String:(*it).c_str()];
 		
-		[Payee addItemWithObjectValue:sPayee];
+		[transactionsPayee addItemWithObjectValue:sPayee];
 	}
 	
-	[Category removeAllItems];
+	[transactionsCategory removeAllItems];
 	
 	std::set<std::string>::iterator itCat = m_Document.CategoryBegin();
 	
@@ -439,7 +554,7 @@
 	{
 		NSString *sCategory = [[NSString alloc] initWithUTF8String:(*itCat).c_str()];
 		
-		[Category addItemWithObjectValue:sCategory];
+		[transactionsCategory addItemWithObjectValue:sCategory];
 	}
 }
 
@@ -514,12 +629,12 @@
 	
 	m_pAccount->addTransaction(newTransaction);
 	
-	[Payee setStringValue:@""];
-	[Description setStringValue:@""];
-	[Category setStringValue:@""];
-	[Amount setStringValue:@""];
-	[Type selectItemAtIndex:0];
-	[Reconciled setState:NSOffState];
+	[transactionsPayee setStringValue:@""];
+	[transactionsDescription setStringValue:@""];
+	[transactionsCategory setStringValue:@""];
+	[transactionsAmount setStringValue:@""];
+	[transactionsType selectItemAtIndex:0];
+	[transactionsReconciled setState:NSOffState];
 	
 	TransactionItem *newIndex = [[TransactionItem alloc] init];
 	
@@ -580,7 +695,7 @@
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
-	[window makeFirstResponder:Payee];
+	[window makeFirstResponder:transactionsPayee];
 	
 	m_UnsavedChanges = true;
 	
@@ -671,7 +786,7 @@
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	
-	[window makeFirstResponder:Payee];
+	[window makeFirstResponder:transactionsPayee];
 	
 	[numberFormatter release];
 	
@@ -827,26 +942,26 @@
 			Date date1 = trans->Date1();
 			NSDate *datetemp = convertToNSDate(date1);
 			
-			[Reconciled setEnabled:YES];
-			[Type setEnabled:YES];
+			[transactionsReconciled setEnabled:YES];
+			[transactionsType setEnabled:YES];
 			
 			bool bReconciled = trans->isReconciled();
 			
 			if (bReconciled)
 			{
-				[Reconciled setState:NSOnState];
+				[transactionsReconciled setState:NSOnState];
 			}
 			else
 			{
-				[Reconciled setState:NSOffState];
+				[transactionsReconciled setState:NSOffState];
 			}
 			
-			[Payee setStringValue:sPayee];
-			[Description setStringValue:sDescription];
-			[Category setStringValue:sCategory];
-			[Amount setStringValue:sAmount];
-			[DateCntl setDateValue:datetemp];
-			[Type selectItemAtIndex:eType];
+			[transactionsPayee setStringValue:sPayee];
+			[transactionsDescription setStringValue:sDescription];
+			[transactionsCategory setStringValue:sCategory];
+			[transactionsAmount setStringValue:sAmount];
+			[transactionsDateCntl setDateValue:datetemp];
+			[transactionsType selectItemAtIndex:eType];
 			
 			[sPayee release];
 			[sDescription release];
@@ -873,14 +988,14 @@
 			NSNumber *nAmount = [NSNumber numberWithDouble:split->Amount().ToDouble()];
 			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 			
-			[Payee setStringValue:sPayee];
-			[Description setStringValue:sDescription];
-			[Category setStringValue:sCategory];
-			[Amount setStringValue:sAmount];
-			[Type selectItemAtIndex:0];
+			[transactionsPayee setStringValue:sPayee];
+			[transactionsDescription setStringValue:sDescription];
+			[transactionsCategory setStringValue:sCategory];
+			[transactionsAmount setStringValue:sAmount];
+			[transactionsType selectItemAtIndex:0];
 			
-			[Reconciled setEnabled:NO];
-			[Type setEnabled:NO];
+			[transactionsReconciled setEnabled:NO];
+			[transactionsType setEnabled:NO];
 			
 			[sPayee release];
 			[sDescription release];
@@ -899,14 +1014,14 @@
 			NSString *sDescription = [item keyValue:@"Description"];
 			NSString *sAmount = [item keyValue:@"Amount"];
 			
-			[Payee setStringValue:sPayee];
-			[Description setStringValue:sDescription];
-			[Category setStringValue:@""];
-			[Amount setStringValue:sAmount];
-			[Type selectItemAtIndex:0];
+			[transactionsPayee setStringValue:sPayee];
+			[transactionsDescription setStringValue:sDescription];
+			[transactionsCategory setStringValue:@""];
+			[transactionsAmount setStringValue:sAmount];
+			[transactionsType selectItemAtIndex:0];
 			
-			[Reconciled setEnabled:NO];
-			[Type setEnabled:NO];
+			[transactionsReconciled setEnabled:NO];
+			[transactionsType setEnabled:NO];
 		}
 		
 		[numberFormatter release];
@@ -918,12 +1033,12 @@
 		[moveUp setEnabled:NO];
 		[moveDown setEnabled:NO];
 		
-		[Payee setStringValue:@""];
-		[Description setStringValue:@""];
-		[Category setStringValue:@""];
-		[Type selectItemAtIndex:0];
-		[Amount setStringValue:@""];
-		[Reconciled setState:NSOffState];		
+		[transactionsPayee setStringValue:@""];
+		[transactionsDescription setStringValue:@""];
+		[transactionsCategory setStringValue:@""];
+		[transactionsType selectItemAtIndex:0];
+		[transactionsAmount setStringValue:@""];
+		[transactionsReconciled setState:NSOffState];		
 		
 		m_SelectedTransaction = 0; 
 		m_bEditing = false;		
@@ -935,15 +1050,15 @@
 	if (!m_bEditing || !m_SelectedTransaction)
 		return;
 	
-	if ([[Amount stringValue] length] == 0)
+	if ([[transactionsAmount stringValue] length] == 0)
 	{
-		[window makeFirstResponder:Amount];
+		[window makeFirstResponder:transactionsAmount];
 		NSBeep();
 		
 		return;
 	}
 	
-	NSDate *ndate1 = [DateCntl dateValue];
+	NSDate *ndate1 = [transactionsDateCntl dateValue];
 	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
 	
 	int nYear = [CalDate yearOfCommonEra];
@@ -962,26 +1077,26 @@
 	
 	[dateFormatter release];
 	
-	std::string strPayee = [[Payee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strDesc = [[Description stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strCategory = [[Category stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strPayee = [[transactionsPayee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strDesc = [[transactionsDescription stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strCategory = [[transactionsCategory stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
 	
-	NSNumber *nAmount = [numberFormatter numberFromString:[Amount stringValue]];	
+	NSNumber *nAmount = [numberFormatter numberFromString:[transactionsAmount stringValue]];	
 	fixed fAmount = [nAmount doubleValue];
 
-	// reformat the number again, in case an abbriviation was used
+	// reformat the number again, in case an abbreviation was used
 	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 	
-	int nType = [Type indexOfSelectedItem];
+	int nType = [transactionsType indexOfSelectedItem];
 	TransactionType eType = static_cast<TransactionType>(nType);
 	
 	bool bReconciled = false;
 	
-	if ([Reconciled state] == NSOnState)
+	if ([transactionsReconciled state] == NSOnState)
 		bReconciled = true;
 	
 	int nTrans = [m_SelectedTransaction transaction];
@@ -1007,22 +1122,22 @@
 		trans->setReconciled(bReconciled);
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
-		[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
-		[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
-		[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+		[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
+		[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
+		[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 		
 		if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 		{
 			m_Document.addPayee(strPayee);
-			[Payee addItemWithObjectValue:[Payee stringValue]];
+			[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
 		}
 		
 		if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
 		{
 			m_Document.addCategory(strCategory);
-			[Category addItemWithObjectValue:[Category stringValue]];
+			[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
 		}
 		
 		[transactionsTableView reloadData];
@@ -1036,22 +1151,22 @@
 			split->setCategory(strCategory);
 			split->setAmount(fAmount);
 			
-			[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
-			[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
-			[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+			[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
+			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
+			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 			[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 			
 			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 			{
 				m_Document.addPayee(strPayee);
-				[Payee addItemWithObjectValue:[Payee stringValue]];
+				[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
 			}
 			
 			if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
 			{
 				m_Document.addCategory(strCategory);
-				[Category addItemWithObjectValue:[Category stringValue]];
+				[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
 			}
 			
 			[transactionsTableView reloadData];
@@ -1065,21 +1180,21 @@
 			int nSplitsNumber = trans->getSplitCount() - 1;
 			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
 			[m_SelectedTransaction setIntValue:nSplitsNumber forKey:@"Split"];
-			[m_SelectedTransaction setValue:[Payee stringValue] forKey:@"Payee"];
-			[m_SelectedTransaction setValue:[Description stringValue] forKey:@"Description"];
-			[m_SelectedTransaction setValue:[Category stringValue] forKey:@"Category"];
+			[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
+			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
+			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 			
 			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 			{
 				m_Document.addPayee(strPayee);
-				[Payee addItemWithObjectValue:[Payee stringValue]];
+				[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
 			}
 			
 			if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
 			{
 				m_Document.addCategory(strCategory);
-				[Category addItemWithObjectValue:[Category stringValue]];
+				[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
 			}
 			
 			fixed splitValue = trans->getSplitTotal();
@@ -1115,7 +1230,7 @@
 				
 				[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 				
-				[window makeFirstResponder:Payee];
+				[window makeFirstResponder:transactionsPayee];
 			}
 			else
 			{
@@ -1129,6 +1244,147 @@
 	m_UnsavedChanges = true;
 	
 	[self updateUI];
+}
+
+- (void)ScheduledSelectionDidChange:(NSNotification *)notification
+{	
+	NSIndexSet *rows = [scheduledTransactionsTableView selectedRowIndexes];
+	
+	if ([rows count] == 1)
+	{
+		[deleteScheduled setEnabled:YES];
+		
+		m_bEditing = true;
+		
+		NSInteger row = [rows lastIndex];
+
+		NSMutableDictionary *item = [[m_aScheduledTransactions objectAtIndex:row] retain];
+		
+		ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(row);
+		
+		TransactionType eType = schedTrans.getType();
+		
+		Date date1 = schedTrans.getNextDate();
+		NSDate *datetemp = convertToNSDate(date1);
+		
+		int account = schedTrans.getAccount();
+		
+		[scheduledPayee setStringValue:[item valueForKey:@"payee"]];
+		[scheduledCategory setStringValue:[item valueForKey:@"category"]];
+		
+		std::string strDescription = schedTrans.getDescription();
+		NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+		[scheduledDescription setStringValue:sDescription];
+		
+		[scheduledAmount setStringValue:[item valueForKey:@"amount"]];
+		
+		Frequency eFreq = schedTrans.getFrequency();
+		
+		[scheduledFrequency selectItemAtIndex:eFreq];
+		[scheduledType selectItemAtIndex:eType];
+		
+		[scheduledDateCntl setDateValue:datetemp];
+		
+		[scheduledAccount selectItemAtIndex:account];
+	}
+	else
+	{
+		m_bEditing = false;
+		
+		[deleteScheduled setEnabled:NO];
+		
+		[scheduledPayee setStringValue:@""];
+		[scheduledCategory setStringValue:@""];
+		[scheduledDescription setStringValue:@""];
+		[scheduledAmount setStringValue:@""];
+	}
+		
+}
+
+- (void)updateScheduled:(id)sender
+{
+	if (!m_bEditing)
+		return;
+	
+	NSIndexSet *rows = [scheduledTransactionsTableView selectedRowIndexes];
+	
+	if ([rows count] != 1)
+	{		
+		return;
+	}
+	
+	NSInteger row = [rows lastIndex];
+	
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(row);
+	
+	NSDate *ndate1 = [scheduledDateCntl dateValue];
+	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
+	
+	int nYear = [CalDate yearOfCommonEra];
+	int nMonth = [CalDate monthOfYear];
+	int nDay = [CalDate dayOfMonth];
+	
+	Date date1(nDay, nMonth, nYear);
+	
+	NSDate *date = convertToNSDate(const_cast<Date&>(date1));
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	
+	[dateFormatter release];
+	
+	std::string strPayee = [[scheduledPayee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strDesc = [[scheduledDescription stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strCategory = [[scheduledCategory stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
+	
+	NSNumber *nAmount = [numberFormatter numberFromString:[scheduledAmount stringValue]];	
+	fixed fAmount = [nAmount doubleValue];
+	
+	// reformat the number again, in case an abbreviation was used
+	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+	
+	int nType = [scheduledType indexOfSelectedItem];
+	TransactionType eType = static_cast<TransactionType>(nType);
+	
+	int nAccount = [scheduledAccount indexOfSelectedItem];
+	
+	int nFrequency = [scheduledFrequency indexOfSelectedItem];
+	Frequency eFreq = static_cast<Frequency>(nFrequency);
+	
+	// update the actual ScheduledTransaction
+	
+	schedTrans.setAccount(nAccount);
+	schedTrans.setPayee(strPayee);
+	schedTrans.setCategory(strCategory);
+	schedTrans.setDescription(strDesc);
+	schedTrans.setAmount(fAmount);
+	schedTrans.setFrequency(eFreq);
+	schedTrans.setNextDate(date1);
+	schedTrans.setType(eType);
+	
+	
+	NSMutableDictionary *oSchedTransItem = [m_aScheduledTransactions objectAtIndex:row];
+	
+	[oSchedTransItem setValue:[scheduledPayee stringValue] forKey:@"payee"];
+	[oSchedTransItem setValue:[scheduledDescription stringValue] forKey:@"description"];
+	[oSchedTransItem setValue:[scheduledCategory stringValue] forKey:@"category"];
+	[oSchedTransItem setValue:sAmount forKey:@"amount"];
+	[oSchedTransItem setValue:[scheduledFrequency titleOfSelectedItem] forKey:@"frequency"];
+	[oSchedTransItem setValue:sDate forKey:@"nextdate"];
+	[oSchedTransItem setValue:[scheduledAccount titleOfSelectedItem] forKey:@"account"];	
+	
+	[numberFormatter release];
+	
+	[scheduledTransactionsTableView reloadData];
+	
+	m_UnsavedChanges = true;	
 }
 
 - (IBAction)showLast100Transactions:(id)sender
@@ -1187,6 +1443,73 @@
 		
 		m_UnsavedChanges = true;
 	}
+}
+
+- (IBAction)AddScheduledTransaction:(id)sender
+{
+	ScheduledTransaction newST;
+	
+	int schedTransIndex = m_Document.addScheduledTransaction(newST);
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+
+	NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
+	
+	std::string strSPayee = newST.getPayee();
+	NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
+	
+	std::string strSCategory = newST.getCategory();
+	NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
+	
+	NSNumber *nSAmount = [NSNumber numberWithDouble:newST.getAmount().ToDouble()];
+	
+	NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+	
+	NSDate *date = convertToNSDate(const_cast<Date&>(newST.getNextDate2()));
+	NSString *sSDate = [[dateFormatter stringFromDate:date] retain];	
+	
+	[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
+	[item setValue:sSPayee forKey:@"payee"];
+	[item setValue:sSCategory forKey:@"category"];
+	[item setValue:sSAmount forKey:@"amount"];
+	[item setValue:sSDate forKey:@"nextdate"];
+	
+	[m_aScheduledTransactions addObject:item];
+	
+	[dateFormatter release];
+	[numberFormatter release];
+	
+	[scheduledTransactionsTableView reloadData];
+	
+	NSInteger row = schedTransIndex;
+	
+	[scheduledTransactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	
+	[window makeFirstResponder:scheduledPayee];
+	
+	m_UnsavedChanges = true;
+}
+
+- (IBAction)DeleteScheduledTransaction:(id)sender
+{
+	NSInteger row = [scheduledTransactionsTableView selectedRow];
+	
+	if (row >= 0)
+	{
+//		NSMutableDictionary *oObject = [scheduledTransactionsTableView objectAtIndex:row];
+		
+		[m_aScheduledTransactions removeObjectAtIndex:row];
+		m_Document.deleteScheduledTransaction(row);
+	}
+	
+	[scheduledTransactionsTableView reloadData];
+	m_UnsavedChanges = true;
 }
 
 // Transactions OutlineView Start
@@ -1331,7 +1654,7 @@
 
 // Transactions OutlineView End
 
-// Payees/Categories TableView Start
+// Payees/Categories/SchedTrans TableView Start
 
 - (id)tableView:(NSTableView *) aTableView objectValueForTableColumn:(NSTableColumn *) aTableColumn row:(NSInteger) rowIndex
 {
@@ -1356,6 +1679,12 @@
 			result = sCategory;
 		}
 	}
+	else if (aTableView == scheduledTransactionsTableView)
+	{
+		NSMutableDictionary *oObject = [m_aScheduledTransactions objectAtIndex:rowIndex];
+		
+		result = [oObject valueForKey:identifier];
+	}
 		
 	return result;
 }
@@ -1366,6 +1695,8 @@
 		return [m_aPayeeItems count];
 	else if (aTableView == categoriesTableView)
 		return [m_aCategoryItems count];
+	else if (aTableView == scheduledTransactionsTableView)
+		return [m_aScheduledTransactions count];
 	
 	return 0;
 }
@@ -1445,6 +1776,8 @@ NSDate * convertToNSDate(Date &date)
 		
 		[self buildIndexTree];
 		[self refreshLibraryItems];
+		
+		[self calculateAndShowScheduled];
 	}
 }
 
@@ -1530,6 +1863,91 @@ NSDate * convertToNSDate(Date &date)
 	fileStream.close();
 	
 	return true;
+}
+
+- (void)calculateAndShowScheduled
+{
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	
+	std::vector<ScheduledTransaction>::iterator it = m_Document.SchedTransBegin();
+	
+	int schedTransIndex = 0;
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	
+	Date today;
+	
+	for (; it != m_Document.SchedTransEnd(); ++it, schedTransIndex++)
+	{
+		if (it->getNextDate() <= today)
+		{
+			NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
+			
+			std::string strSPayee = it->getPayee();
+			NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
+			
+			NSNumber *nSAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
+			
+			NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+			
+			NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
+			NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
+			
+			int nAccount = it->getAccount();
+			
+			Account &oAccount = m_Document.getAccount(nAccount);
+			std::string strAccount = oAccount.getName();
+			NSString *sAccount = [[NSString alloc] initWithUTF8String:strAccount.c_str()];
+			
+			[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
+			[item setValue:sSPayee forKey:@"payee"];
+			[item setValue:sSAmount forKey:@"amount"];
+			[item setValue:sSDate forKey:@"date"];
+			[item setValue:sAccount forKey:@"account"];
+			
+			[array addObject:item];
+		}
+	}
+	
+	[numberFormatter release];
+	[dateFormatter release];
+	
+	if ([array count] > 0)
+	{
+		DueScheduledTransactionsController *dueSchedController = [[DueScheduledTransactionsController alloc] initWnd:self withArray:array];
+	
+		[dueSchedController showWindow:self];
+	}
+}
+
+- (void)AddDueScheduledTransaction:(int)index
+{
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
+	
+	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), -1);
+	
+	newTransaction.setType(schedTrans.getType());
+	
+	Account &oAccount = m_Document.getAccount(schedTrans.getAccount());
+	
+	oAccount.addTransaction(newTransaction);
+	
+	[self buildTransactionsTree];
+	
+	schedTrans.AdvanceNextDate();	
+}
+
+- (void)SkipDueScheduledTransaction:(int)index
+{
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
+	
+	schedTrans.AdvanceNextDate();	
 }
 
 - (IBAction)ImportQIF:(id)sender
@@ -1672,6 +2090,8 @@ NSDate * convertToNSDate(Date &date)
 	
 	[self buildIndexTree];
 	[self refreshLibraryItems];
+	
+	[self calculateAndShowScheduled];
 
 	return YES;
 }

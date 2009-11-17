@@ -30,8 +30,11 @@
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
+		D09435B010B08AB1009EC0D3 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */; };
+		D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
 		D0A460D110A224FD007CB217 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CF10A224FD007CB217 /* up.png */; };
+		D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
@@ -81,8 +84,13 @@
 		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
+		D09435AE10B08AB1009EC0D3 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DueScheduledTransactionsController.h; path = core/DueScheduledTransactionsController.h; sourceTree = "<group>"; };
+		D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DueScheduledTransactionsController.m; path = core/DueScheduledTransactionsController.m; sourceTree = "<group>"; };
+		D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DueScheduledTransactions.xib; sourceTree = "<group>"; };
 		D0A460CE10A224FD007CB217 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		D0A460CF10A224FD007CB217 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduled_transaction.cpp; sourceTree = "<group>"; };
+		D0C0116710ACC74900BFA7A1 /* scheduled_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduled_transaction.h; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
 		D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIndexSplitView.h; sourceTree = "<group>"; };
 		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
@@ -104,6 +112,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D09435AE10B08AB1009EC0D3 /* DueScheduledTransactionsController.h */,
+				D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */,
 				D010001A109DE5D7001BA24A /* IndexItem.h */,
 				D010001B109DE5D7001BA24A /* IndexItem.m */,
 				D0100013109DE10E001BA24A /* IndexBar.h */,
@@ -174,6 +184,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */,
 				D02C0720109A291000155B13 /* AddAccount.xib */,
 				D07749291093B3AB00EDC307 /* Images */,
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
@@ -196,6 +207,8 @@
 		D01984F510A8CA7F0040DD63 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */,
+				D0C0116710ACC74900BFA7A1 /* scheduled_transaction.h */,
 				D01984F610A8CA7F0040DD63 /* account.cpp */,
 				D01984F710A8CA7F0040DD63 /* account.h */,
 				D01984F810A8CA7F0040DD63 /* datetime.cpp */,
@@ -283,6 +296,7 @@
 				D09284CD10A0BCC10040EDF5 /* split.png in Resources */,
 				D0A460D010A224FD007CB217 /* down.png in Resources */,
 				D0A460D110A224FD007CB217 /* up.png in Resources */,
+				D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +323,8 @@
 				D019850910A8CA7F0040DD63 /* split_transaction.cpp in Sources */,
 				D019850A10A8CA7F0040DD63 /* storage.cpp in Sources */,
 				D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */,
+				D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */,
+				D09435B010B08AB1009EC0D3 /* DueScheduledTransactionsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,11 +1,5 @@
-/*
- *  date.h
- *  money
- *
- *  Created by Peter Pearson on 06/10/2009.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+#ifndef DATETIME_H
+#define DATETIME_H
 
 #include <iostream>
 #include <sstream>
@@ -18,6 +12,10 @@ enum DateStringFormat
 	US
 };
 
+static int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
+#define SECONDS_IN_DAY 86400
+
 class Date
 {
 public:
@@ -29,6 +27,9 @@ public:
 
 	const Date& operator=(const Date& rhs);
 	const Date& operator=(time_t Time);
+	
+	void IncrementDays(int days);
+	void IncrementMonths(int months);
 	
 	void Now();
 	
@@ -72,3 +73,5 @@ private:
 
 	char m_Separator;
 };
+
+#endif

@@ -11,6 +11,7 @@
 
 #include <set>
 #include "account.h"
+#include "scheduled_transaction.h"
 
 class Document
 {
@@ -32,6 +33,10 @@ public:
 	void addCategory(std::string Category) { m_aCategories.insert(Category); }
 	void deleteCategory(std::string Category);
 	
+	int addScheduledTransaction(ScheduledTransaction &schedTransaction);
+	ScheduledTransaction &getScheduledTransaction(int schedTrans) { return m_aScheduledTransactions[schedTrans]; }
+	void deleteScheduledTransaction(int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
+	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	
@@ -44,12 +49,16 @@ public:
 	std::set<std::string>::iterator CategoryBegin() { return m_aCategories.begin(); }
 	std::set<std::string>::iterator CategoryEnd() { return m_aCategories.end(); }
 	
+	std::vector<ScheduledTransaction>::iterator SchedTransBegin() { return m_aScheduledTransactions.begin(); }
+	std::vector<ScheduledTransaction>::iterator SchedTransEnd() { return m_aScheduledTransactions.end(); }
+	
 	fixed getBalance(bool onlyReconciled);
 	
 protected:
 	std::vector<Account> m_aAccounts;	
 	std::set<std::string> m_aPayees;
 	std::set<std::string> m_aCategories;
+	std::vector<ScheduledTransaction> m_aScheduledTransactions;
 	
 };
 

@@ -15,6 +15,7 @@
 #import "ImportQIFController.h"
 #import "TransactionItem.h"
 #import "IndexBar.h"
+#import "DueScheduledTransactionsController.h"
 
 enum TransactionsToShow
 {
@@ -37,18 +38,18 @@ enum TransactionsToShow
 	// Content Views
 	IBOutlet NSView *contentView;
 	
-	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView;
+	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView, *vScheduledView;
 	
 	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
-	IBOutlet NSSplitView  *verticalSplitView;
-	IBOutlet NSComboBox *Payee;
-	IBOutlet NSComboBox *Category;
-	IBOutlet NSTextField *Description;
-	IBOutlet NSTextField *Amount;
-	IBOutlet NSPopUpButton *Type;
-	IBOutlet id DateCntl;
-	IBOutlet id Reconciled;
+	IBOutlet NSSplitView  *transactionsverticalSplitView;
+	IBOutlet NSComboBox *transactionsPayee;
+	IBOutlet NSComboBox *transactionsCategory;
+	IBOutlet NSTextField *transactionsDescription;
+	IBOutlet NSTextField *transactionsAmount;
+	IBOutlet NSPopUpButton *transactionsType;
+	IBOutlet id transactionsDateCntl;
+	IBOutlet id transactionsReconciled;
 	
 	IBOutlet NSButton *addTransaction;
 	IBOutlet NSButton *deleteTransaction;
@@ -76,7 +77,25 @@ enum TransactionsToShow
 	
 	// Categories
 	IBOutlet NSTableView *categoriesTableView;
-	NSMutableArray *m_aCategoryItems;	
+	NSMutableArray *m_aCategoryItems;
+	
+	
+	// Scheduled Transactions
+	IBOutlet NSTableView *scheduledTransactionsTableView;
+	IBOutlet NSSplitView  *scheduledverticalSplitView;
+	IBOutlet NSComboBox *scheduledPayee;
+	IBOutlet NSComboBox *scheduledCategory;
+	IBOutlet NSTextField *scheduledDescription;
+	IBOutlet NSTextField *scheduledAmount;
+	IBOutlet NSPopUpButton *scheduledAccount;
+	IBOutlet NSPopUpButton *scheduledType;
+	IBOutlet NSPopUpButton *scheduledFrequency;
+	IBOutlet id scheduledDateCntl;
+	
+	IBOutlet NSButton *deleteScheduled;
+	
+	NSMutableArray *m_aScheduledTransactions;
+	
 	
 	Document m_Document;
 	Account *m_pAccount;	
@@ -93,9 +112,14 @@ enum TransactionsToShow
 - (void)buildTransactionsTree;
 - (void)buildPayeesList;
 - (void)buildCategoriesList;
+- (void)buildSchedTransList;
 - (void)refreshLibraryItems;
 
 - (void)updateUI;
+
+- (void)calculateAndShowScheduled;
+- (void)AddDueScheduledTransaction:(int)index;
+- (void)SkipDueScheduledTransaction:(int)index;
 
 // Transactions
 
@@ -120,9 +144,13 @@ enum TransactionsToShow
 
 - (IBAction)DeleteCategory:(id)sender;
 
+- (IBAction)AddScheduledTransaction:(id)sender;
+- (IBAction)DeleteScheduledTransaction:(id)sender;
+
 - (void)accountSelected:(id)sender;
 - (void)payeesSelected:(id)sender;
 - (void)categoriesSelected:(id)sender;
+- (void)scheduledSelected:(id)sender;
 
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 
@@ -138,10 +166,13 @@ enum TransactionsToShow
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
+- (IBAction)updateTransaction:(id)sender;
+
+- (void)ScheduledSelectionDidChange:(NSNotification *)notification;
+- (IBAction)updateScheduled:(id)sender;
+
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;
-
-- (IBAction)updateTransaction:(id)sender;
 
 NSDate *convertToNSDate(Date &date);
 
