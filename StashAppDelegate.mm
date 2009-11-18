@@ -1606,12 +1606,7 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
-	BOOL result = YES;
-	
-	NSString *identifier = [tableColumn identifier];
-	
-	if ([identifier caseInsensitiveCompare:@"balance"] == 0)
-		result = NO;
+	BOOL result = NO;
 	
 	return result;
 }
