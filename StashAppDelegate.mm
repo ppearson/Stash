@@ -1777,6 +1777,8 @@ NSDate * convertToNSDate(Date &date)
 			return;
 		}
 		
+		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileToOpen]];
+		
 		m_DocumentFile = strFile;
 		m_UnsavedChanges = false;
 		
@@ -2093,6 +2095,8 @@ NSDate * convertToNSDate(Date &date)
 	{
 		return NO;
 	}
+	
+	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
 	
 	m_DocumentFile = strFile;
 	m_UnsavedChanges = false;
