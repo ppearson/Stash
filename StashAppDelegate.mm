@@ -199,6 +199,7 @@
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 	
 	[self buildTransactionsTree];
+	[self refreshLibraryItems];
 	[self updateUI];	
 }
 
@@ -246,6 +247,8 @@
 		
 		[sName release];
 	}
+	
+	[self refreshLibraryItems];
 	
 	[self buildSchedTransList];
 }
@@ -533,6 +536,7 @@
 - (void)refreshLibraryItems
 {
 	[transactionsPayee removeAllItems];
+	[scheduledPayee removeAllItems];
 	
 	std::set<std::string>::iterator it = m_Document.PayeeBegin();
 	
@@ -541,9 +545,11 @@
 		NSString *sPayee = [[NSString alloc] initWithUTF8String:(*it).c_str()];
 		
 		[transactionsPayee addItemWithObjectValue:sPayee];
+		[scheduledPayee addItemWithObjectValue:sPayee];
 	}
 	
 	[transactionsCategory removeAllItems];
+	[scheduledCategory removeAllItems];
 	
 	std::set<std::string>::iterator itCat = m_Document.CategoryBegin();
 	
@@ -552,6 +558,7 @@
 		NSString *sCategory = [[NSString alloc] initWithUTF8String:(*itCat).c_str()];
 		
 		[transactionsCategory addItemWithObjectValue:sCategory];
+		[scheduledCategory addItemWithObjectValue:sCategory];
 	}
 }
 
