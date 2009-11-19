@@ -30,6 +30,7 @@
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
+		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D09435B010B08AB1009EC0D3 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */; };
 		D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
@@ -84,6 +85,7 @@
 		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
+		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D09435AE10B08AB1009EC0D3 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DueScheduledTransactionsController.h; path = core/DueScheduledTransactionsController.h; sourceTree = "<group>"; };
 		D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DueScheduledTransactionsController.m; path = core/DueScheduledTransactionsController.m; sourceTree = "<group>"; };
 		D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DueScheduledTransactions.xib; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D093D47410B5C6890087D5BB /* Credits.html */,
 				D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */,
 				D02C0720109A291000155B13 /* AddAccount.xib */,
 				D07749291093B3AB00EDC307 /* Images */,
@@ -297,6 +300,7 @@
 				D0A460D010A224FD007CB217 /* down.png in Resources */,
 				D0A460D110A224FD007CB217 /* up.png in Resources */,
 				D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */,
+				D093D47510B5C6890087D5BB /* Credits.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
