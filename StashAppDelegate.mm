@@ -46,21 +46,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[m_aTransactionItems removeAllObjects];
-	[m_aPayeeItems removeAllObjects];
-	[m_aCategoryItems removeAllObjects];
-	[m_aScheduledTransactions removeAllObjects];
-	
-	[m_aTransactionItems release];
-	[m_aPayeeItems release];
-	[m_aCategoryItems release];
-	[m_aScheduledTransactions release];
-	
-	[super dealloc];
-}
-
 - (void)awakeFromNib
 {
 	m_bEditing = false;	
@@ -2085,7 +2070,10 @@ NSDate * convertToNSDate(Date &date)
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-	
+	[m_aTransactionItems release];
+	[m_aPayeeItems release];
+	[m_aCategoryItems release];
+	[m_aScheduledTransactions release];
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
