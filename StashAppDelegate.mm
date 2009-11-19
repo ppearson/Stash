@@ -46,6 +46,21 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[m_aTransactionItems removeAllObjects];
+	[m_aPayeeItems removeAllObjects];
+	[m_aCategoryItems removeAllObjects];
+	[m_aScheduledTransactions removeAllObjects];
+	
+	[m_aTransactionItems release];
+	[m_aPayeeItems release];
+	[m_aCategoryItems release];
+	[m_aScheduledTransactions release];
+	
+	[super dealloc];
+}
+
 - (void)awakeFromNib
 {
 	m_bEditing = false;	
@@ -346,6 +361,7 @@
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->Date2()));
 		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
+		[date release];
 		
 		localBalance += it->Amount();
 		
@@ -518,6 +534,7 @@
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 		NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
+		[date release];
 		
 		int nFreq = it->getFrequency();
 		NSString *sFrequency = [scheduledFrequency itemTitleAtIndex:nFreq];
@@ -679,6 +696,7 @@
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
 	
+	[date release];
 	[dateFormatter release];
 	
 	fixed localBalance = m_pAccount->getBalance(true);
@@ -985,6 +1003,7 @@
 			[sDescription release];
 			[sCategory release];
 			[sAmount release];
+//			[datetemp release];
 		}
 		else if (trans && split && nSplit != -2)
 		{
@@ -1084,14 +1103,12 @@
 	int nDay = [CalDate dayOfMonth];
 	
 	Date date1(nDay, nMonth, nYear);
-	
-	NSDate *date = convertToNSDate(const_cast<Date&>(date1));
-	
+		
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	NSString *sDate = [[dateFormatter stringFromDate:ndate1] retain];
 	
 	[dateFormatter release];
 	
@@ -1344,13 +1361,11 @@
 	
 	Date date1(nDay, nMonth, nYear);
 	
-	NSDate *date = convertToNSDate(const_cast<Date&>(date1));
-	
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	NSString *sDate = [[dateFormatter stringFromDate:ndate1] retain];
 	
 	[dateFormatter release];
 	
@@ -1386,7 +1401,6 @@
 	schedTrans.setFrequency(eFreq);
 	schedTrans.setNextDate(date1);
 	schedTrans.setType(eType);
-	
 	
 	NSMutableDictionary *oSchedTransItem = [m_aScheduledTransactions objectAtIndex:row];
 	
@@ -1914,6 +1928,8 @@ NSDate * convertToNSDate(Date &date)
 			NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 			NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
 			
+			[date release];
+			
 			int nAccount = it->getAccount();
 			
 			Account &oAccount = m_Document.getAccount(nAccount);
@@ -1939,6 +1955,8 @@ NSDate * convertToNSDate(Date &date)
 	
 		[dueSchedController showWindow:self];
 	}
+	
+	[array release];
 }
 
 - (void)AddDueScheduledTransaction:(int)index

@@ -20,6 +20,14 @@
 	[self setDelegate:self];	
 }
 
+- (void)dealloc
+{
+	[m_aSections release];
+	[m_dItems release];
+	
+	[super dealloc];
+}
+
 - (void)clearAllItems
 {
 	[m_aSections removeAllObjects];
