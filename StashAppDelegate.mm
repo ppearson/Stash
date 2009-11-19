@@ -51,7 +51,7 @@
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
-	nShowTransactionsType = LAST_100;
+	nShowTransactionsType = LAST_30DAYS;
 	
 	[window setDelegate:self];
 	
@@ -272,20 +272,27 @@
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
-	if (nShowTransactionsType == LAST_100)
+	if (nShowTransactionsType == LAST_30DAYS)
 	{
-		int nTransactionsToShow = 100;
-		if (m_pAccount->getTransactionCount() > nTransactionsToShow)
+		Date dateNow;
+		dateNow.Now();
+		
+		dateNow.DecrementDays(30);
+		
+		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
+		
+		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
-			// calculate balance without outputting it
-			std::vector<Transaction>::iterator stopIt = m_pAccount->end() - nTransactionsToShow;
-			for (; it != stopIt; ++it, nTransaction++)
-			{
-				localBalance += (*it).Amount();
-			}
+			if ((*itTemp).Date1() >= dateNow)
+				break;
 			
-			m_nTransactionOffset = nTransaction;
+			localBalance += (*itTemp).Amount();
+			nTransaction++;
 		}
+		
+		it = itTemp;
+		
+		m_nTransactionOffset = nTransaction;
 	}
 	else if (nShowTransactionsType == ALL_THIS_YEAR)
 	{
@@ -1396,9 +1403,9 @@
 	m_UnsavedChanges = true;	
 }
 
-- (IBAction)showLast100Transactions:(id)sender
+- (IBAction)showLast30DaysTransactions:(id)sender
 {
-	nShowTransactionsType = LAST_100;
+	nShowTransactionsType = LAST_30DAYS;
 	[self buildTransactionsTree];
 }
 

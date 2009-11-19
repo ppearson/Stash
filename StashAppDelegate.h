@@ -19,7 +19,7 @@
 
 enum TransactionsToShow
 {
-	LAST_100,
+	LAST_30DAYS,
 	ALL_THIS_YEAR,
 	ALL
 };
@@ -133,7 +133,7 @@ enum TransactionsToShow
 - (void)SwapTransactions:(int)from to:(int)to;
 - (void)RefreshView:(id)sender;
 
-- (IBAction)showLast100Transactions:(id)sender;
+- (IBAction)showLast30DaysTransactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;
 - (IBAction)showAllTransactions:(id)sender;
 

@@ -14,6 +14,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="567"/>
 			<integer value="848"/>
+			<integer value="296"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -782,7 +783,7 @@
 								</object>
 								<object class="NSMenuItem" id="29370033">
 									<reference key="NSMenu" ref="466310130"/>
-									<string key="NSTitle">Last 100 Transactions</string>
+									<string key="NSTitle">Transactions from last 30 days</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -2145,6 +2146,7 @@
 								</object>
 								<string key="NSFrame">{{0, 17}, {664, 453}}</string>
 								<reference key="NSSuperview" ref="670279043"/>
+								<reference key="NSNextKeyView" ref="468108066"/>
 								<reference key="NSDocView" ref="468108066"/>
 								<reference key="NSBGColor" ref="584327073"/>
 								<int key="NScvFlags">4</int>
@@ -2178,6 +2180,7 @@
 								</object>
 								<string key="NSFrameSize">{664, 17}</string>
 								<reference key="NSSuperview" ref="670279043"/>
+								<reference key="NSNextKeyView" ref="141756667"/>
 								<reference key="NSDocView" ref="141756667"/>
 								<reference key="NSBGColor" ref="584327073"/>
 								<int key="NScvFlags">4</int>
@@ -2186,6 +2189,7 @@
 						</object>
 						<string key="NSFrame">{{0, 20}, {664, 470}}</string>
 						<reference key="NSSuperview" ref="202832758"/>
+						<reference key="NSNextKeyView" ref="446742286"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="894813368"/>
 						<reference key="NSHScroller" ref="773575041"/>
@@ -2241,7 +2245,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="798685624">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">4370</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2260,14 +2264,12 @@
 										<int key="NSvFlags">4352</int>
 										<string key="NSFrameSize">{678, 469}</string>
 										<reference key="NSSuperview" ref="352219819"/>
-										<reference key="NSWindow"/>
 										<bool key="NSEnabled">YES</bool>
 										<object class="NSTableHeaderView" key="NSHeaderView" id="771626764">
 											<reference key="NSNextResponder" ref="554357293"/>
 											<int key="NSvFlags">256</int>
 											<string key="NSFrameSize">{678, 17}</string>
 											<reference key="NSSuperview" ref="554357293"/>
-											<reference key="NSWindow"/>
 											<reference key="NSTableView" ref="214919357"/>
 										</object>
 										<object class="_NSCornerView" key="NSCornerView" id="69000495">
@@ -2275,7 +2277,6 @@
 											<int key="NSvFlags">-2147483392</int>
 											<string key="NSFrame">{{224, 0}, {16, 17}}</string>
 											<reference key="NSSuperview" ref="818087869"/>
-											<reference key="NSWindow"/>
 										</object>
 										<object class="NSMutableArray" key="NSTableColumns">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2326,7 +2327,6 @@
 								</object>
 								<string key="NSFrame">{{0, 17}, {678, 469}}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="214919357"/>
 								<reference key="NSDocView" ref="214919357"/>
 								<reference key="NSBGColor" ref="584327073"/>
@@ -2337,7 +2337,6 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSWindow"/>
 								<reference key="NSTarget" ref="818087869"/>
 								<string key="NSAction">_doScroller:</string>
 								<double key="NSCurValue">37</double>
@@ -2348,7 +2347,6 @@
 								<int key="NSvFlags">-2147483392</int>
 								<string key="NSFrame">{{1, 119}, {223, 15}}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSWindow"/>
 								<int key="NSsFlags">1</int>
 								<reference key="NSTarget" ref="818087869"/>
 								<string key="NSAction">_doScroller:</string>
@@ -2363,7 +2361,6 @@
 								</object>
 								<string key="NSFrameSize">{678, 17}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="771626764"/>
 								<reference key="NSDocView" ref="771626764"/>
 								<reference key="NSBGColor" ref="584327073"/>
@@ -2373,7 +2370,6 @@
 						</object>
 						<string key="NSFrame">{{0, 20}, {678, 486}}</string>
 						<reference key="NSSuperview" ref="798685624"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="352219819"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="475835809"/>
@@ -2388,7 +2384,6 @@
 						<int key="NSvFlags">256</int>
 						<string key="NSFrame">{{29, -2}, {31, 23}}</string>
 						<reference key="NSSuperview" ref="798685624"/>
-						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="861834030">
 							<int key="NSCellFlags">67239424</int>
@@ -2410,7 +2405,6 @@
 						<int key="NSvFlags">256</int>
 						<string key="NSFrame">{{-1, -2}, {31, 23}}</string>
 						<reference key="NSSuperview" ref="798685624"/>
-						<reference key="NSWindow"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="424452444">
 							<int key="NSCellFlags">604110336</int>
@@ -2429,8 +2423,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{678, 506}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="68987311">
@@ -3812,14 +3804,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">showLast100Transactions:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="29370033"/>
-					</object>
-					<int key="connectionID">723</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">showAllTransactions:</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="967952364"/>
@@ -4281,6 +4265,14 @@
 						<reference key="destination" ref="488282237"/>
 					</object>
 					<int key="connectionID">907</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showLast30DaysTransactions:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="29370033"/>
+					</object>
+					<int key="connectionID">908</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -6794,7 +6786,7 @@
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{615, 775}, {265, 113}}</string>
+					<string>{{615, 723}, {298, 113}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{475, 832}, {234, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -7083,7 +7075,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">907</int>
+			<int key="maxID">908</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7167,7 +7159,7 @@
 							<string>scheduledSelected:</string>
 							<string>showAllTransactions:</string>
 							<string>showAllTransactionsThisYear:</string>
-							<string>showLast100Transactions:</string>
+							<string>showLast30DaysTransactions:</string>
 							<string>updateScheduled:</string>
 							<string>updateTransaction:</string>
 						</object>

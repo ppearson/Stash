@@ -75,6 +75,23 @@ void Date::IncrementMonths(int months)
 	SetVarsFromTime();
 }
 
+void Date::DecrementDays(int days)
+{
+	m_Time -= (SECONDS_IN_DAY * days);
+	
+	SetVarsFromTime();
+}
+
+void Date::DecrementMonths(int months)
+{
+	for (int i = 0; i < months; i++)
+	{
+		DecrementDays(daysInMonth[m_Month - 1]);		
+	}
+	
+	SetVarsFromTime();
+}
+
 void Date::Now()
 {
 	time(&m_Time);

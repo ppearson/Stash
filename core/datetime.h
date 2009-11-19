@@ -31,6 +31,9 @@ public:
 	void IncrementDays(int days);
 	void IncrementMonths(int months);
 	
+	void DecrementDays(int days);
+	void DecrementMonths(int months);
+	
 	void Now();
 	
 	void setDate(int Day, int Month, int Year = -1);
