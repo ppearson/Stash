@@ -196,7 +196,7 @@
 	[transactionsType selectItemAtIndex:0];
 	[transactionsReconciled setState:NSOffState];
 	
-	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
+	[transactionsTableView deselectAll:self];
 	
 	[self buildTransactionsTree];
 	[self refreshLibraryItems];
@@ -247,6 +247,8 @@
 		
 		[sName release];
 	}
+	
+	[scheduledTransactionsTableView deselectAll:self];
 	
 	[self refreshLibraryItems];
 	
