@@ -346,7 +346,6 @@
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->Date2()));
 		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
-		[date release];
 		
 		localBalance += it->Amount();
 		
@@ -519,7 +518,6 @@
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 		NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
-		[date release];
 		
 		int nFreq = it->getFrequency();
 		NSString *sFrequency = [scheduledFrequency itemTitleAtIndex:nFreq];
@@ -681,7 +679,6 @@
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
 	
-	[date release];
 	[dateFormatter release];
 	
 	fixed localBalance = m_pAccount->getBalance(true);
@@ -988,7 +985,6 @@
 			[sDescription release];
 			[sCategory release];
 			[sAmount release];
-//			[datetemp release];
 		}
 		else if (trans && split && nSplit != -2)
 		{
@@ -1719,7 +1715,7 @@ NSDate * convertToNSDate(Date &date)
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
-    NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
     [dateComponents setYear:date.Year()];
     [dateComponents setMonth:date.Month()];
     [dateComponents setDay:date.Day()];
@@ -1729,7 +1725,8 @@ NSDate * convertToNSDate(Date &date)
     [dateComponents setSecond:0];
 	
 	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
-	[gregorian release];
+//	[dateComponents release];
+//	[gregorian release];
 	
     return nsDate;
 }
@@ -1912,8 +1909,6 @@ NSDate * convertToNSDate(Date &date)
 			
 			NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 			NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
-			
-			[date release];
 			
 			int nAccount = it->getAccount();
 			
