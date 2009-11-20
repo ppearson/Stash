@@ -33,13 +33,13 @@
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)index
 {
 	NSRect mainFrame = [[splitView superview] frame];
-	return mainFrame.size.height - (mainFrame.size.height - 100.0);
+	return mainFrame.size.height - (mainFrame.size.height - 120.0);
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMax ofSubviewAt:(NSInteger)index
 {
 	NSRect mainFrame = [[splitView superview] frame];
-	return mainFrame.size.height - 200;
+	return mainFrame.size.height - 175;
 }
 
 - (BOOL)splitView:(id)sender canCollapseSubview:(NSView *)subview
@@ -59,6 +59,7 @@
 	newFrame = [transactionsSubView frame];
 	newFrame.size.width = newWidth;
 	newFrame.size.height = newHeight;
+	
 	[transactionsSubView setFrame:newFrame];
 	
 	[sender adjustSubviews];
