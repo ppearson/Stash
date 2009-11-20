@@ -31,7 +31,6 @@
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
-		D09435B010B08AB1009EC0D3 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */; };
 		D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
 		D0A460D110A224FD007CB217 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CF10A224FD007CB217 /* up.png */; };
@@ -39,6 +38,7 @@
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
+		D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,8 +86,6 @@
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
-		D09435AE10B08AB1009EC0D3 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DueScheduledTransactionsController.h; path = core/DueScheduledTransactionsController.h; sourceTree = "<group>"; };
-		D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DueScheduledTransactionsController.m; path = core/DueScheduledTransactionsController.m; sourceTree = "<group>"; };
 		D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DueScheduledTransactions.xib; sourceTree = "<group>"; };
 		D0A460CE10A224FD007CB217 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		D0A460CF10A224FD007CB217 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
@@ -97,6 +95,8 @@
 		D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIndexSplitView.h; sourceTree = "<group>"; };
 		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
 		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
+		D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueScheduledTransactionsController.h; sourceTree = "<group>"; };
+		D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueScheduledTransactionsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,8 +114,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D09435AE10B08AB1009EC0D3 /* DueScheduledTransactionsController.h */,
-				D09435AF10B08AB1009EC0D3 /* DueScheduledTransactionsController.m */,
+				D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */,
+				D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */,
 				D010001A109DE5D7001BA24A /* IndexItem.h */,
 				D010001B109DE5D7001BA24A /* IndexItem.m */,
 				D0100013109DE10E001BA24A /* IndexBar.h */,
@@ -328,7 +328,7 @@
 				D019850A10A8CA7F0040DD63 /* storage.cpp in Sources */,
 				D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */,
 				D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */,
-				D09435B010B08AB1009EC0D3 /* DueScheduledTransactionsController.m in Sources */,
+				D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
