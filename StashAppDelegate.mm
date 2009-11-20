@@ -643,7 +643,16 @@
 	if (!m_pAccount)
 		return;
 	
-	Transaction newTransaction("", "", "", 0.0, -1);
+	NSDate *ndate1 = [transactionsDateCntl dateValue];
+	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
+	
+	int nYear = [CalDate yearOfCommonEra];
+	int nMonth = [CalDate monthOfYear];
+	int nDay = [CalDate dayOfMonth];
+	
+	Date date1(nDay, nMonth, nYear);
+	
+	Transaction newTransaction("", "", "", 0.0, date1);
 	
 	m_pAccount->addTransaction(newTransaction);
 	
@@ -670,14 +679,12 @@
 	
 	NSNumber *nAmount = [NSNumber numberWithDouble:newTransaction.Amount().ToDouble()];
 	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
-	
-	NSDate *date = convertToNSDate(const_cast<Date&>(newTransaction.Date2()));
-	
+		
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *sDate = [[dateFormatter stringFromDate:date] retain];
+	NSString *sDate = [[dateFormatter stringFromDate:ndate1] retain];
 	
 	[dateFormatter release];
 	

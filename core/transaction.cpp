@@ -9,10 +9,10 @@
 #include "string.h"
 
 Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
-	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Split(false), m_Reconciled(false),
+	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Reconciled(false),
 	m_Type(None)
 {
-	m_Date.Now();
+	
 }
 
 void Transaction::Load(std::fstream &stream, int version)
