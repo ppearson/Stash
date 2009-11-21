@@ -23,6 +23,8 @@
 		D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D019850310A8CA7F0040DD63 /* transaction.cpp */; };
 		D02C0721109A291000155B13 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D02C0720109A291000155B13 /* AddAccount.xib */; };
 		D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.mm */; };
+		D0677DF810B8244C005D783C /* AccountInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0677DF710B8244C005D783C /* AccountInfo.xib */; };
+		D0677E0B10B82563005D783C /* AccountInfoController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0677E0A10B82563005D783C /* AccountInfoController.mm */; };
 		D06BDF5F109C7C17007437B6 /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06BDF5E109C7C17007437B6 /* ImportQIF.xib */; };
 		D06BDF65109C7F48007437B6 /* ImportQIFController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D06BDF64109C7F48007437B6 /* ImportQIFController.mm */; };
 		D077492B1093B3AB00EDC307 /* round_check.png in Resources */ = {isa = PBXBuildFile; fileRef = D077492A1093B3AB00EDC307 /* round_check.png */; };
@@ -75,6 +77,9 @@
 		D02C0720109A291000155B13 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAccount.xib; sourceTree = "<group>"; };
 		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
 		D02C0726109A2A4F00155B13 /* AddAccountController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AddAccountController.mm; sourceTree = "<group>"; };
+		D0677DF710B8244C005D783C /* AccountInfo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountInfo.xib; sourceTree = "<group>"; };
+		D0677E0910B82563005D783C /* AccountInfoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInfoController.h; sourceTree = "<group>"; };
+		D0677E0A10B82563005D783C /* AccountInfoController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AccountInfoController.mm; sourceTree = "<group>"; };
 		D06BDF5E109C7C17007437B6 /* ImportQIF.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportQIF.xib; sourceTree = "<group>"; };
 		D06BDF63109C7F48007437B6 /* ImportQIFController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportQIFController.h; sourceTree = "<group>"; };
 		D06BDF64109C7F48007437B6 /* ImportQIFController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImportQIFController.mm; sourceTree = "<group>"; };
@@ -132,6 +137,8 @@
 				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 				256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
+				D0677E0910B82563005D783C /* AccountInfoController.h */,
+				D0677E0A10B82563005D783C /* AccountInfoController.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -186,6 +193,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D0677DF710B8244C005D783C /* AccountInfo.xib */,
 				D093D47410B5C6890087D5BB /* Credits.html */,
 				D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */,
 				D02C0720109A291000155B13 /* AddAccount.xib */,
@@ -301,6 +309,7 @@
 				D0A460D110A224FD007CB217 /* up.png in Resources */,
 				D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */,
 				D093D47510B5C6890087D5BB /* Credits.html in Resources */,
+				D0677DF810B8244C005D783C /* AccountInfo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +338,7 @@
 				D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */,
 				D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */,
 				D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */,
+				D0677E0B10B82563005D783C /* AccountInfoController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

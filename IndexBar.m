@@ -41,13 +41,14 @@
 	[section setTitle:sTitle];
 	[section setItemKey:key];
 	[section setSection:YES];
+	[section setType:0];
 	
 	[m_dItems setObject:section forKey:key];
 	[m_aSections addObject:section];
 	[section release];	
 }
 
-- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target
+- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type
 {
 	IndexItem *newItem = [[IndexItem alloc] init];
 	
@@ -55,6 +56,7 @@
 	[newItem setItemKey:key];
 	[newItem setParentKey:parentKey];
 	[newItem setItemIndex:item];
+	[newItem setType:type];
 	
 	[newItem setAction:selector target:target];
 	[m_dItems setObject:newItem forKey:key];
@@ -151,5 +153,38 @@
 	}	
 }
 
+- (NSMenu*)menuForEvent:(NSEvent*)event
+{
+    int row = [self rowAtPoint: [self convertPoint: [event locationInWindow] fromView: nil]];
+	
+    if (row >= 0)
+    {
+        if ([self isRowSelected:row])
+		{
+			IndexItem *selectedItem = [self itemAtRow:row];
+			
+			if (selectedItem == nil)
+				return nil;
+			
+			int type = [selectedItem type];
+			
+			if (type == 1) // account
+			{
+				return fAccountMenu;
+			}
+		}
+    }
+	
+	return nil;
+}
+
+- (int)getItemIndex
+{
+	IndexItem *selectedItem = [self itemAtRow:[self selectedRow]];
+	if (selectedItem == nil)
+		return -1;
+	
+	return [selectedItem getItemIndex];
+}
 
 @end

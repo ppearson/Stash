@@ -21,11 +21,14 @@
 	
 	id actionTarget;
 	SEL action;
+	
+	int type;
 }
 
 @property (retain) NSString *title;
 @property (assign) id parentKey;
 @property (assign) id itemKey;
+@property (assign) int type;
 
 @property (assign, readonly) id actionTarget;
 @property (assign, readonly) SEL action;

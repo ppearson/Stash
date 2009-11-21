@@ -9,6 +9,7 @@
 #import "StashAppDelegate.h"
 #import "IndexItem.h"
 #include "storage.h"
+#import "AccountInfoController.h"
 
 @implementation StashAppDelegate
 
@@ -150,15 +151,15 @@
 		
 		NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccount];
 
-		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self];
+		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self type:1];
 		
 		[sName release];
 	}
 	
 	[indexBar addSection:@"manage" title:@"MANAGE"];
-	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self];
-	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self];
-	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self];
+	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self type:2];
+	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self type:2];
+	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self type:2];
 	
 	m_pAccount = 0;
 	
@@ -626,7 +627,7 @@
 	
 	NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccountNum];
 	
-	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self];
+	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self type:1];
 	
 	[addAccountController release];
 	[numberFormatter release];
@@ -638,6 +639,78 @@
 	if (nAccountNum == 0) // if first account added, select it
 	{
 		[indexBar selectItem:sAccountKey];
+	}
+}
+
+- (IBAction)AccountInfo:(id)sender
+{
+	int nAccount = [indexBar getItemIndex];
+	
+	if (nAccount >= 0)
+	{
+		Account &oAccount = m_Document.getAccount(nAccount);
+		
+		NSString *sName = [[NSString alloc] initWithUTF8String:oAccount.getName().c_str()];
+		NSString *sInstitution = [[NSString alloc] initWithUTF8String:oAccount.getInstitution().c_str()];
+		NSString *sNumber = [[NSString alloc] initWithUTF8String:oAccount.getNumber().c_str()];
+		NSString *sNote = [[NSString alloc] initWithUTF8String:oAccount.getNote().c_str()];
+		AccountType eType = oAccount.getType();
+		
+		
+		AccountInfoController *accountInfoController = [[AccountInfoController alloc] initWnd:self withAccount:nAccount name:sName institution:sInstitution number:sNumber
+																					 note:sNote type:eType];
+		[accountInfoController showWindow:self];
+		
+		[sName release];
+		[sInstitution release];
+		[sNumber release];
+		[sNote release];
+	}	
+}
+
+- (void)updateAccountInfo:(int)account name:(NSString*)name institution:(NSString*)institution
+				   number:(NSString*)number note:(NSString*)note type:(AccountType)type
+{
+	Account &oAccount = m_Document.getAccount(account);
+	
+	std::string strName = [name cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strInstitution = [institution cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strNumber = [number cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strNote = [note cStringUsingEncoding:NSASCIIStringEncoding];
+		
+	oAccount.setName(strName);
+	oAccount.setType(type);
+	oAccount.setInstitution(strInstitution);
+	oAccount.setNumber(strNumber);
+	oAccount.setNote(strNote);
+	
+	m_UnsavedChanges = true;
+	
+	[self buildIndexTree];
+}
+
+- (IBAction)DeleteAccount:(id)sender
+{
+	m_bEditing = false;
+	
+	int nAccount = [indexBar getItemIndex];
+	
+	if (nAccount >= 0)
+	{
+		NSString * message = @"The Account and all transactions in it will be deleted. Are you sure?";
+		
+		int choice = NSAlertDefaultReturn;
+		
+		choice = NSRunAlertPanel(@"Delete Account?", message, @"Delete", @"Cancel", nil);
+		
+		if (choice != NSAlertDefaultReturn)
+			return;
+		
+		m_Document.deleteAccount(nAccount);
+		
+		m_UnsavedChanges = true;
+		
+		[self buildIndexTree];
 	}
 }
 

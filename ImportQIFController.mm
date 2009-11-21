@@ -92,7 +92,7 @@
 
 - (void)cancel:(id)sender
 {
-	[[self window] performClose:sender];	
+	[[self window] performClose:sender];
 }
 
 - (int)dateFormat

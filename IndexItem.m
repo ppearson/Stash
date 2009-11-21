@@ -12,6 +12,7 @@
 
 @synthesize parentKey;
 @synthesize itemKey;
+@synthesize type;
 @synthesize title;
 
 @synthesize actionTarget;

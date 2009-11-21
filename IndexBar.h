@@ -12,13 +12,17 @@
 {
 	NSMutableArray *m_aSections;
 	NSMutableDictionary *m_dItems;
+	
+	IBOutlet NSMenu *fAccountMenu;
 }
+
+- (int)getItemIndex;
 
 - (void)clearAllItems;
 
 - (void)addSection:(id)key title:(NSString*)sTitle;
 
-- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target;
+- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type;
 
 - (void)selectItem:(id)key;
 - (void)expandSection:(id)itemKey;

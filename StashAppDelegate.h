@@ -124,6 +124,12 @@ enum TransactionsToShow
 // Transactions
 
 - (IBAction)AddAccount:(id)sender;
+- (IBAction)AccountInfo:(id)sender;
+
+- (void)updateAccountInfo:(int)account name:(NSString*)name institution:(NSString*)institution
+				   number:(NSString*)number note:(NSString*)note type:(AccountType)type;
+
+- (IBAction)DeleteAccount:(id)sender;
 - (IBAction)AddTransaction:(id)sender;
 - (IBAction)DeleteTransaction:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
