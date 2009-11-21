@@ -9,19 +9,19 @@ inline void StoreString(const std::string& string, std::fstream& stream)
 	
 	if (size <= 512)
 	{
-		const unsigned char size = (unsigned char)size;
+		const unsigned char csize = (unsigned char)size;
 		
-		stream.write((char *) &size, sizeof(unsigned char));
-		stream.write(string.c_str(), size);
+		stream.write((char *) &csize, sizeof(unsigned char));
+		stream.write(string.c_str(), csize);
 	}
 	else // cap the string at 512
 	{
 		std::string strLimitedString = string.substr(0, 512);
 		
-		const unsigned char size = (unsigned char)512;
+		const unsigned char csize = (unsigned char)512;
 		
-		stream.write((char *) &size, sizeof(unsigned char));
-		stream.write(strLimitedString.c_str(), size);
+		stream.write((char *) &csize, sizeof(unsigned char));
+		stream.write(strLimitedString.c_str(), csize);
 	}
 }
 
