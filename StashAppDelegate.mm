@@ -70,6 +70,7 @@
 	
 	NSDate *date1 = [NSDate date];
 	[transactionsDateCntl setDateValue:date1];
+	[scheduledDateCntl setDateValue:date1];
 	
 	[transactionsType removeAllItems];
 	
@@ -614,7 +615,9 @@
 	newAccount.setNumber(strNumber);
 	newAccount.setNote(strNote);
 	
-	Transaction newTransaction("Starting balance", "", "", startingBalance, -1);
+	Date currentDate;
+	currentDate.Now();
+	Transaction newTransaction("Starting balance", "", "", startingBalance, currentDate);
 	newTransaction.setReconciled(true);
 	
 	newAccount.addTransaction(newTransaction);
@@ -1320,8 +1323,7 @@
 		[scheduledCategory setStringValue:@""];
 		[scheduledDescription setStringValue:@""];
 		[scheduledAmount setStringValue:@""];
-	}
-		
+	}		
 }
 
 - (void)updateScheduled:(id)sender
@@ -1467,7 +1469,17 @@
 
 - (IBAction)AddScheduledTransaction:(id)sender
 {
+	NSDate *ndate1 = [scheduledDateCntl dateValue];
+	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
+	
+	int nYear = [CalDate yearOfCommonEra];
+	int nMonth = [CalDate monthOfYear];
+	int nDay = [CalDate dayOfMonth];
+	
+	Date date1(nDay, nMonth, nYear);
+	
 	ScheduledTransaction newST;
+	newST.setNextDate(date1);
 	
 	int schedTransIndex = m_Document.addScheduledTransaction(newST);
 	
@@ -1491,8 +1503,7 @@
 	
 	NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 	
-	NSDate *date = convertToNSDate(const_cast<Date&>(newST.getNextDate2()));
-	NSString *sSDate = [[dateFormatter stringFromDate:date] retain];	
+	NSString *sSDate = [[dateFormatter stringFromDate:ndate1] retain];	
 	
 	[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
 	[item setValue:sSPayee forKey:@"payee"];
