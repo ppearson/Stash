@@ -5,12 +5,24 @@
 
 inline void StoreString(const std::string& string, std::fstream& stream)
 {
-	const unsigned char size = (unsigned char)string.size();
+	int size = string.size();
 	
-	stream.write((char *) &size, sizeof(unsigned char));
-	stream.write(string.c_str(), size);
-
-//	if (!out) throw serialization_error("Error serializing object of type std::string");
+	if (size <= 512)
+	{
+		const unsigned char size = (unsigned char)size;
+		
+		stream.write((char *) &size, sizeof(unsigned char));
+		stream.write(string.c_str(), size);
+	}
+	else // cap the string at 512
+	{
+		std::string strLimitedString = string.substr(0, 512);
+		
+		const unsigned char size = (unsigned char)512;
+		
+		stream.write((char *) &size, sizeof(unsigned char));
+		stream.write(strLimitedString.c_str(), size);
+	}
 }
 
 inline void LoadString(std::string& string, std::fstream& stream)
