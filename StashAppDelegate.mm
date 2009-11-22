@@ -35,10 +35,6 @@
 				
 				[self application:nil openFile:[url path]];
 				
-				[window makeKeyAndOrderFront:self];
-				
-				[self calculateAndShowScheduled];
-				
 				return;
 			}
 		}
