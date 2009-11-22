@@ -1,0 +1,21 @@
+Version 0.2
+-----------
+
+* Views now have smaller text, so more rows can fit into the same screen height
+* Changed last 100 transactions view to Last 30 days, which shows all transactions from the last
+  30 days
+* Rearranged controls in edit views, so they take up less space and re-arrange based on main window
+  size
+* New transactions now get added with the date selected on the date picker control
+* Added more info to the About window
+* Added right-click context menu for Accounts in the Index Bar, allowing details of account to be
+  viewed/edited and the account to be deleted
+* Scheduled Transactions can now be enabled or disabled
+* Added preferences window
+* Added option to allow the most recent document to be automatically opened on startup
+* Added option to make backup files when saving
+
+Version 0.1
+-----------
+
+* Initial Version
