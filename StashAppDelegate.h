@@ -16,6 +16,7 @@
 #import "TransactionItem.h"
 #import "IndexBar.h"
 #import "DueScheduledTransactionsController.h"
+#import "PreferencesController.h"
 
 enum TransactionsToShow
 {
@@ -95,6 +96,8 @@ enum TransactionsToShow
 	IBOutlet NSButton *deleteScheduled;
 	
 	NSMutableArray *m_aScheduledTransactions;
+	
+	PreferencesController *prefController;
 	
 	
 	Document m_Document;
@@ -179,6 +182,8 @@ enum TransactionsToShow
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;
+
+- (IBAction)showPreferencesWindow:(id)sender;
 
 NSDate *convertToNSDate(Date &date);
 

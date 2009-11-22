@@ -38,6 +38,8 @@
 	self = [super init];
 	if (self)
 	{
+		prefController = [[PreferencesController alloc] init];
+		
 		m_HasFinishedLoading = false;
 		m_sPendingOpenFile = nil;
 		
@@ -45,6 +47,27 @@
 	}
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	[prefController release];
+	
+	NSNotificationCenter *nc;
+	nc = [NSNotificationCenter defaultCenter];
+	[nc removeObserver:self];
+	
+	[super dealloc];
+}
+
++ (void)initialize
+{
+	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
+	
+	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralOpenLastFile"];
+	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
+		
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 }
 
 - (void)awakeFromNib
@@ -230,6 +253,8 @@
 - (void)scheduledSelected:(id)sender
 {
 	m_bEditing = false;
+	
+	m_pAccount = 0;
 	
 	[vScheduledView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vScheduledView];
@@ -2178,18 +2203,15 @@ NSDate * convertToNSDate(Date &date)
 	}	
 }
 
-/*- (BOOL)validateMenuItem:(NSMenuItem *)item
+- (IBAction)showPreferencesWindow:(id)sender
 {
-    SEL action = [item action];
-    if (action == @selector(Delete:))
-	{
-		
-		
-	}
+	NSWindow *window1 = [prefController window];
+    if (![window1 isVisible])
+        [window1 center];
 	
-	return YES;
+    [window1 makeKeyAndOrderFront:self];
 }
-*/
+
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
 	if (m_UnsavedChanges)

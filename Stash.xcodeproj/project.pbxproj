@@ -12,6 +12,9 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D005349D10B95A99000F9B23 /* PreferencesWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D005349C10B95A99000F9B23 /* PreferencesWindow.m */; };
+		D00534A510B95B3D000F9B23 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = D00534A410B95B3D000F9B23 /* PreferencesController.m */; };
+		D00534AE10B95C18000F9B23 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D00534AD10B95C18000F9B23 /* Preferences.xib */; };
 		D0100015109DE10E001BA24A /* IndexBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D0100014109DE10E001BA24A /* IndexBar.m */; };
 		D010001C109DE5D7001BA24A /* IndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D010001B109DE5D7001BA24A /* IndexItem.m */; };
 		D019850510A8CA7F0040DD63 /* account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D01984F610A8CA7F0040DD63 /* account.cpp */; };
@@ -55,6 +58,11 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Stash-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Stash-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D005349B10B95A99000F9B23 /* PreferencesWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindow.h; sourceTree = "<group>"; };
+		D005349C10B95A99000F9B23 /* PreferencesWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindow.m; sourceTree = "<group>"; };
+		D00534A310B95B3D000F9B23 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
+		D00534A410B95B3D000F9B23 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		D00534AD10B95C18000F9B23 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Preferences.xib; sourceTree = "<group>"; };
 		D0100013109DE10E001BA24A /* IndexBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBar.h; sourceTree = "<group>"; };
 		D0100014109DE10E001BA24A /* IndexBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexBar.m; sourceTree = "<group>"; };
 		D010001A109DE5D7001BA24A /* IndexItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexItem.h; sourceTree = "<group>"; };
@@ -119,6 +127,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D005349B10B95A99000F9B23 /* PreferencesWindow.h */,
+				D005349C10B95A99000F9B23 /* PreferencesWindow.m */,
+				D00534A310B95B3D000F9B23 /* PreferencesController.h */,
+				D00534A410B95B3D000F9B23 /* PreferencesController.m */,
 				D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */,
 				D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */,
 				D010001A109DE5D7001BA24A /* IndexItem.h */,
@@ -193,6 +205,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D00534AD10B95C18000F9B23 /* Preferences.xib */,
 				D0677DF710B8244C005D783C /* AccountInfo.xib */,
 				D093D47410B5C6890087D5BB /* Credits.html */,
 				D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */,
@@ -310,6 +323,7 @@
 				D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */,
 				D093D47510B5C6890087D5BB /* Credits.html in Resources */,
 				D0677DF810B8244C005D783C /* AccountInfo.xib in Resources */,
+				D00534AE10B95C18000F9B23 /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +353,8 @@
 				D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */,
 				D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */,
 				D0677E0B10B82563005D783C /* AccountInfoController.mm in Sources */,
+				D005349D10B95A99000F9B23 /* PreferencesWindow.m in Sources */,
+				D00534A510B95B3D000F9B23 /* PreferencesController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
