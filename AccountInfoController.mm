@@ -8,7 +8,6 @@
 
 #import "AccountInfoController.h"
 
-
 @implementation AccountInfoController
 
 - (id)initWnd:(StashAppDelegate *)controller withAccount:(int)account name:(NSString*)name institution:(NSString*)institution
@@ -56,14 +55,11 @@
 	[fAccountName setStringValue:sAccountName];
 	[fInstitution setStringValue:sInstitution];
 	[fNumber setStringValue:sNumber];
-	[fNote setStringValue:sNote];
-	
+	[fNote setStringValue:sNote];	
 }
 
 - (void)dealloc
 {
-	//	[sAccountName release];
-	
 	[super dealloc];
 }
 

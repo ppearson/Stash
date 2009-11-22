@@ -10,7 +10,7 @@
 #include "document.h"
 #include "string.h"
 
-#define FILE_VERSION 0
+#define FILE_VERSION 1
 
 Document::Document()
 {
@@ -182,5 +182,31 @@ int Document::addScheduledTransaction(ScheduledTransaction &schedTransaction)
 {
 	m_aScheduledTransactions.push_back(schedTransaction);
 	return m_aScheduledTransactions.size() - 1;
+}
+
+void Document::disabledScheduledTransactionsForAccount(int nAccount)
+{
+	for (std::vector<ScheduledTransaction>::iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
+	{
+		if (it->getAccount() == nAccount)
+		{
+			it->setAccount(-1);
+			it->setEnabled(false);
+		}
+		
+		// also try to re-set the accounts if there's a hole because of the removal
+		
+		if (it->isEnabled())
+		{
+			int nLocalAccount = it->getAccount();
+			
+			if (nLocalAccount > nAccount)
+			{
+				nLocalAccount--;
+				
+				it->setAccount(nLocalAccount);
+			}
+		}		
+	}
 }
 

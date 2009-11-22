@@ -37,6 +37,8 @@ public:
 	ScheduledTransaction &getScheduledTransaction(int schedTrans) { return m_aScheduledTransactions[schedTrans]; }
 	void deleteScheduledTransaction(int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
 	
+	void disabledScheduledTransactionsForAccount(int nAccount);
+	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	

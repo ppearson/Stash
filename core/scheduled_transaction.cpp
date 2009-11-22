@@ -1,7 +1,8 @@
 #include "string.h"
+#include <bitset>
 #include "scheduled_transaction.h"
 
-ScheduledTransaction::ScheduledTransaction() : m_frequency(Weekly), m_account(0), m_type(None), m_dateFallsOn(ExactDate)
+ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(None), m_dateFallsOn(ExactDate)
 {
 	m_nextDate.Now();
 }
@@ -11,6 +12,21 @@ void ScheduledTransaction::Load(std::fstream &stream, int version)
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 512 accounts...
 	stream.read((char *) &m_account, sizeof(unsigned char));
+	
+	if (version == 0)
+	{
+		m_enabled = true;
+	}
+	else
+	{
+		unsigned char cBitset = 0;
+		stream.read((char *) &cBitset, sizeof(unsigned char));
+	
+		std::bitset<8> localset(static_cast<unsigned long>(cBitset));
+	
+		m_enabled = localset[0];
+	}
+	
 	LoadString(m_payee, stream);
 	m_amount.Load(stream, version);
 	LoadString(m_category, stream);
@@ -28,6 +44,13 @@ void ScheduledTransaction::Store(std::fstream &stream)
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 512 accounts...
 	stream.write((char *) &m_account, sizeof(unsigned char));
+	
+	std::bitset<8> localset;	
+	localset[0] = m_enabled;
+	
+	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
+	stream.write((char *) &cBitset, sizeof(unsigned char));
+	
 	StoreString(m_payee, stream);
 	m_amount.Store(stream);
 	StoreString(m_category, stream);

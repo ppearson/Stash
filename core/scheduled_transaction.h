@@ -32,6 +32,7 @@ public:
 	~ScheduledTransaction() {};
 	
 	int getAccount() { return m_account; }
+	bool isEnabled() { return m_enabled; }
 	std::string getPayee() { return m_payee; }
 	fixed getAmount() { return m_amount; }
 	std::string getCategory() { return m_category; }
@@ -42,6 +43,7 @@ public:
 	TransactionType getType() { return m_type; }
 	
 	void setAccount(int account) { m_account = account; }
+	void setEnabled(bool enabled) { m_enabled = enabled; }
 	void setPayee(std::string payee) { m_payee = payee; }
 	void setAmount(fixed amount) { m_amount = amount; }
 	void setCategory(std::string category) { m_category = category; }
@@ -57,6 +59,7 @@ public:
 	
 protected:
 	int m_account;
+	bool m_enabled;
 	std::string m_payee;
 	fixed m_amount;
 	std::string m_category;

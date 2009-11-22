@@ -525,8 +525,17 @@
 		NSString *sFrequency = [scheduledFrequency itemTitleAtIndex:nFreq];
 		
 		int nAccount = it->getAccount();
-		NSString *sAccount = [scheduledAccount itemTitleAtIndex:nAccount];
+		int nNumAccounts = [scheduledAccount numberOfItems];
 		
+		NSString *sAccount = @"";
+		if (nAccount >= 0 && nAccount < nNumAccounts)
+		{
+			sAccount = [scheduledAccount itemTitleAtIndex:nAccount];
+		}
+		
+		bool isEnabled = it->isEnabled();
+		
+		[item setValue:[NSNumber numberWithBool:isEnabled] forKey:@"enabled"];
 		[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
 		[item setValue:sSPayee forKey:@"payee"];
 		[item setValue:sSCategory forKey:@"category"];
@@ -707,6 +716,8 @@
 			return;
 		
 		m_Document.deleteAccount(nAccount);
+		
+		m_Document.disabledScheduledTransactionsForAccount(nAccount);
 		
 		m_UnsavedChanges = true;
 		
@@ -1384,7 +1395,10 @@
 		
 		[scheduledDateCntl setDateValue:datetemp];
 		
-		[scheduledAccount selectItemAtIndex:account];
+		if (account >= 0)
+		{
+			[scheduledAccount selectItemAtIndex:account];
+		}
 	}
 	else
 	{
@@ -1583,6 +1597,7 @@
 	[item setValue:sSCategory forKey:@"category"];
 	[item setValue:sSAmount forKey:@"amount"];
 	[item setValue:sSDate forKey:@"nextdate"];
+	[item setValue:[NSNumber numberWithBool:true] forKey:@"enabled"];
 	
 	[m_aScheduledTransactions addObject:item];
 	
@@ -1654,8 +1669,8 @@
 	
 	if ([identifier caseInsensitiveCompare:@"reconciled"] == NSOrderedSame)
 	{
-		int temp = [item intKeyValue:identifier];
-		return [NSNumber numberWithInt:temp];
+		int nReconciled = [item intKeyValue:identifier];
+		return [NSNumber numberWithInt:nReconciled];
 	}
 
     return [item keyValue:identifier];
@@ -1755,7 +1770,7 @@
 
 // Payees/Categories/SchedTrans TableView Start
 
-- (id)tableView:(NSTableView *) aTableView objectValueForTableColumn:(NSTableColumn *) aTableColumn row:(NSInteger) rowIndex
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
 	id result = @"";
 	NSString *identifier = [aTableColumn identifier];
@@ -1782,6 +1797,12 @@
 	{
 		NSMutableDictionary *oObject = [m_aScheduledTransactions objectAtIndex:rowIndex];
 		
+		if ([identifier caseInsensitiveCompare:@"enabled"] == NSOrderedSame)
+		{
+			int nEnabled = [[oObject valueForKey:@"enabled"] intValue];
+			return [NSNumber numberWithInt:nEnabled];
+		}
+		
 		result = [oObject valueForKey:identifier];
 	}
 		
@@ -1798,6 +1819,42 @@
 		return [m_aScheduledTransactions count];
 	
 	return 0;
+}
+
+- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)rowIndex
+{
+	NSString *identifier = [tableColumn identifier];
+	
+	if (aTableView == scheduledTransactionsTableView)
+	{
+		if ([identifier isEqualToString:@"enabled"])
+		{
+			int nRow = rowIndex;
+			
+			if (nRow < 0)
+				return;
+			
+			NSMutableDictionary *nsSchedTrans = [m_aScheduledTransactions objectAtIndex:nRow];
+			
+			if (nsSchedTrans == nil)
+				return;
+			
+			[nsSchedTrans setValue:[NSNumber numberWithBool:[object boolValue]] forKey:@"enabled"];
+			
+			ScheduledTransaction &oSchedTrans = m_Document.getScheduledTransaction(nRow);
+			
+			if ([object boolValue] == YES)
+			{
+				oSchedTrans.setEnabled(true);					
+			}
+			else
+			{
+				oSchedTrans.setEnabled(false);
+			}
+			
+			m_UnsavedChanges = true;
+		}			
+	}
 }
 
 // Payees/Categories TableView End
@@ -1987,7 +2044,7 @@ NSDate * convertToNSDate(Date &date)
 	
 	for (; it != m_Document.SchedTransEnd(); ++it, schedTransIndex++)
 	{
-		if (it->getNextDate() <= today)
+		if (it->isEnabled() && it->getNextDate() <= today)
 		{
 			NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
 			
@@ -2003,17 +2060,20 @@ NSDate * convertToNSDate(Date &date)
 			
 			int nAccount = it->getAccount();
 			
-			Account &oAccount = m_Document.getAccount(nAccount);
-			std::string strAccount = oAccount.getName();
-			NSString *sAccount = [[NSString alloc] initWithUTF8String:strAccount.c_str()];
-			
-			[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
-			[item setValue:sSPayee forKey:@"payee"];
-			[item setValue:sSAmount forKey:@"amount"];
-			[item setValue:sSDate forKey:@"date"];
-			[item setValue:sAccount forKey:@"account"];
-			
-			[array addObject:item];
+			if (nAccount >= 0)
+			{
+				Account &oAccount = m_Document.getAccount(nAccount);
+				std::string strAccount = oAccount.getName();
+				NSString *sAccount = [[NSString alloc] initWithUTF8String:strAccount.c_str()];
+				
+				[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
+				[item setValue:sSPayee forKey:@"payee"];
+				[item setValue:sSAmount forKey:@"amount"];
+				[item setValue:sSDate forKey:@"date"];
+				[item setValue:sAccount forKey:@"account"];
+				
+				[array addObject:item];
+			}
 		}
 	}
 	
