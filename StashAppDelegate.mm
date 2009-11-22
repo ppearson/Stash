@@ -25,6 +25,24 @@
 	}
 	else
 	{
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"GeneralOpenLastFile"] == YES)
+		{
+			NSArray *aDocuments = [[NSDocumentController sharedDocumentController] recentDocumentURLs];
+			
+			if ([aDocuments count] > 0)
+			{
+				NSURL *url = [aDocuments objectAtIndex:0];
+				
+				[self application:nil openFile:[url path]];
+				
+				[window makeKeyAndOrderFront:self];
+				
+				[self calculateAndShowScheduled];
+				
+				return;
+			}
+		}
+		
 		[self buildIndexTree];
 	
 		[window makeKeyAndOrderFront:self];
