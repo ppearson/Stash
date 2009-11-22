@@ -2053,6 +2053,14 @@ NSDate * convertToNSDate(Date &date)
 
 - (bool)SaveFileTo:(std::string)path
 {
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"GeneralCreateBackupOnSave"] == YES)
+	{
+		std::string strPathBackup = path;
+		strPathBackup += ".bak";
+		
+		rename(path.c_str(), strPathBackup.c_str());
+	}
+	
 	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 	
 	if (!fileStream)
