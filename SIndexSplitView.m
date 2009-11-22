@@ -47,7 +47,7 @@
 - (CGFloat)splitView:(NSSplitView *)sender constrainMinCoordinate:(CGFloat)proposedMin ofSubviewAt:(NSInteger)offset
 {
 	NSRect mainFrame = [[sender superview] frame];
-	return mainFrame.size.width - (mainFrame.size.width - 140.0);
+	return mainFrame.size.width - (mainFrame.size.width - 120.0);
 }
 
 - (BOOL)splitView:(id)sender canCollapseSubview:(NSView *)subview
