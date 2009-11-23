@@ -859,6 +859,7 @@
 	NSInteger row = [transactionsTableView rowForItem:newIndex];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	[transactionsTableView scrollRowToVisible:row];
 	
 	[window makeFirstResponder:transactionsPayee];
 	
@@ -950,6 +951,7 @@
 	row = [transactionsTableView rowForItem:newSplit];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	[transactionsTableView scrollRowToVisible:row];
 	
 	[window makeFirstResponder:transactionsPayee];
 	
@@ -1038,6 +1040,7 @@
 	[transactionsTableView reloadData];
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:to] byExtendingSelection:NO];
+	[transactionsTableView scrollRowToVisible:to];
 	
 	m_UnsavedChanges = true;
 }
@@ -1392,6 +1395,7 @@
 				NSInteger row = [transactionsTableView rowForItem:newSplit];
 				
 				[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+				[transactionsTableView scrollRowToVisible:row];
 				
 				[window makeFirstResponder:transactionsPayee];
 			}
@@ -1662,6 +1666,7 @@
 	NSInteger row = schedTransIndex;
 	
 	[scheduledTransactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+	[scheduledTransactionsTableView scrollRowToVisible:row];
 	
 	[window makeFirstResponder:scheduledPayee];
 	
