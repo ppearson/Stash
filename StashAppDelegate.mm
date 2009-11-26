@@ -93,6 +93,7 @@
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralOpenLastFile"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"GeneralScrollToLatest"];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
@@ -503,6 +504,12 @@
 	[numberFormatter release];
 	
 	[transactionsTableView reloadData];
+	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"GeneralScrollToLatest"] == YES)
+	{
+		int latest = [transactionsTableView numberOfRows];
+		[transactionsTableView scrollRowToVisible:latest - 1];
+	}
 }
 
 - (void)buildPayeesList
