@@ -2158,15 +2158,19 @@ NSDate * convertToNSDate(Date &date)
 
 - (void)AddDueScheduledTransaction:(int)index
 {
+	Date today;
+	
 	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
 	
-	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), -1);
+	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), today);
 	
 	newTransaction.setType(schedTrans.getType());
 	
 	Account &oAccount = m_Document.getAccount(schedTrans.getAccount());
 	
 	oAccount.addTransaction(newTransaction);
+	
+	m_UnsavedChanges = true;
 	
 	[self buildTransactionsTree];
 	
