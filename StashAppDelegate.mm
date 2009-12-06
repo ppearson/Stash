@@ -1739,6 +1739,32 @@
 	m_UnsavedChanges = true;	
 }
 
+- (IBAction)deleteMisc:(id)sender
+{
+	m_bEditing = false;
+	
+	int nGraph = [indexBar getItemIndex];
+	
+	if (nGraph >= 0)
+	{
+		NSString * message = @"The Graph will be deleted. Are you sure?";
+		
+		int choice = NSAlertDefaultReturn;
+		
+		choice = NSRunAlertPanel(@"Delete Graph?", message, @"Delete", @"Cancel", nil);
+		
+		if (choice != NSAlertDefaultReturn)
+			return;
+		
+		m_Document.deleteGraph(nGraph);
+		
+		m_UnsavedChanges = true;
+		
+		[self buildIndexTree];
+	}
+	
+}
+
 - (IBAction)updateGraph:(id)sender
 {
 	if (!m_pGraph)

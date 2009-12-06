@@ -219,6 +219,10 @@
 			{
 				return fAccountMenu;
 			}
+			else if (type == 3) // graph
+			{
+				return fMiscMenu;
+			}
 		}
     }
 	

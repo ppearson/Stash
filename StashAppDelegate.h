@@ -191,6 +191,8 @@ enum TransactionsToShow
 - (void)accountRenamed:(id)sender;
 - (void)graphRenamed:(id)sender;
 
+- (IBAction)deleteMisc:(id)sender;
+
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
 
 - (IBAction)AddGraph:(id)sender;

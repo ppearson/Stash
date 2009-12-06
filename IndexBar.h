@@ -28,6 +28,7 @@
 	NSMutableDictionary *m_dItems;
 	
 	IBOutlet NSMenu *fAccountMenu;
+	IBOutlet NSMenu *fMiscMenu;
 }
 
 - (int)getItemIndex;
