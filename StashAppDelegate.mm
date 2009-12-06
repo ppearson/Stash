@@ -246,6 +246,7 @@
 	
 	[indexBar expandSection:@"accounts"];
 	[indexBar expandSection:@"manage"];
+	[indexBar expandSection:@"graphs"];
 	
 	if (nAccount > 0)
 	{
