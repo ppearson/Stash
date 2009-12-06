@@ -1,3 +1,12 @@
+Version 0.3
+-----------
+
+* Added Graphs, allowing Pie Charts to be displayed of Expense/Deposit Categories/Payees
+* Fixed issue with adding a due scheduled transaction in certain situations
+* When adding new transactions, the transaction list now scrolls down so that the new item is visible
+* Added option to preferences to automatically scroll to the latest transaction when viewing an account
+* Accounts and Graphs can be renamed by double-clicking the item in the IndexBar on the left
+
 Version 0.2
 -----------
 
