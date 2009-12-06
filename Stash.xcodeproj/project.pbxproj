@@ -37,12 +37,15 @@
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */; };
+		D09E91E210CAB982001DE73F /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09E91E110CAB982001DE73F /* graph.cpp */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
 		D0A460D110A224FD007CB217 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CF10A224FD007CB217 /* up.png */; };
 		D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
+		D0DE686310CAF30D0066699B /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0DE686210CAF30D0066699B /* analysis.cpp */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
+		D0F9453C10CA9B05003CA8A8 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F9453B10CA9B05003CA8A8 /* PieChartView.m */; };
 		D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +103,8 @@
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DueScheduledTransactions.xib; sourceTree = "<group>"; };
+		D09E91E010CAB982001DE73F /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
+		D09E91E110CAB982001DE73F /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		D0A460CE10A224FD007CB217 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		D0A460CF10A224FD007CB217 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduled_transaction.cpp; sourceTree = "<group>"; };
@@ -107,7 +112,11 @@
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
 		D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIndexSplitView.h; sourceTree = "<group>"; };
 		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
+		D0DE686110CAF30D0066699B /* analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analysis.h; sourceTree = "<group>"; };
+		D0DE686210CAF30D0066699B /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
 		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
+		D0F9453A10CA9B05003CA8A8 /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
+		D0F9453B10CA9B05003CA8A8 /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
 		D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueScheduledTransactionsController.h; sourceTree = "<group>"; };
 		D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueScheduledTransactionsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,6 +136,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D0F9453A10CA9B05003CA8A8 /* PieChartView.h */,
+				D0F9453B10CA9B05003CA8A8 /* PieChartView.m */,
 				D005349B10B95A99000F9B23 /* PreferencesWindow.h */,
 				D005349C10B95A99000F9B23 /* PreferencesWindow.m */,
 				D00534A310B95B3D000F9B23 /* PreferencesController.h */,
@@ -231,6 +242,10 @@
 		D01984F510A8CA7F0040DD63 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D09E91E010CAB982001DE73F /* graph.h */,
+				D09E91E110CAB982001DE73F /* graph.cpp */,
+				D0DE686110CAF30D0066699B /* analysis.h */,
+				D0DE686210CAF30D0066699B /* analysis.cpp */,
 				D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */,
 				D0C0116710ACC74900BFA7A1 /* scheduled_transaction.h */,
 				D01984F610A8CA7F0040DD63 /* account.cpp */,
@@ -355,6 +370,9 @@
 				D0677E0B10B82563005D783C /* AccountInfoController.mm in Sources */,
 				D005349D10B95A99000F9B23 /* PreferencesWindow.m in Sources */,
 				D00534A510B95B3D000F9B23 /* PreferencesController.m in Sources */,
+				D0F9453C10CA9B05003CA8A8 /* PieChartView.m in Sources */,
+				D09E91E210CAB982001DE73F /* graph.cpp in Sources */,
+				D0DE686310CAF30D0066699B /* analysis.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

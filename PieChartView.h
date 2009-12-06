@@ -22,52 +22,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IndexItem : NSObject
+@interface PieChartView : NSView
 {
-	NSMutableArray *m_aChildren;
-	id parentKey;
-	id itemKey;
+	NSMutableArray *m_aData;
+	NSMutableArray *m_aColours;
 	
-	BOOL m_section;
-	
-	NSString *title;
-	int itemIndex;
-	
-	id actionTarget;
-	SEL action;
-	
-	id renameTarget;
-	SEL rename;
-	
-	int type;
+	NSString *m_total;
 }
 
-@property (retain) NSString *title;
-@property (assign) id parentKey;
-@property (assign) id itemKey;
-@property (assign) int type;
-
-@property (assign, readonly) id actionTarget;
-@property (assign, readonly) SEL action;
-
-@property (assign, readonly) id renameTarget;
-@property (assign, readonly) SEL rename;
-
-- (void)addChild:(IndexItem *)item;
-
-- (IndexItem *)childAtIndex:(int)index;
-- (int)numberOfChildren;
-
-- (void)setItemIndex:(int)iIndex;
-- (int)getItemIndex;
-
-- (void)setSection:(BOOL)bSection;
-- (BOOL)isSection;
-
-- (void)setAction:(SEL)selector target:(id)target;
-- (BOOL)hasAction;
-
-- (void)setRename:(SEL)selector target:(id)target;
-- (BOOL)hasRename;
+- (void)setData:(NSMutableArray*)data;
+- (void)setTotal:(NSString*)total;
 
 @end

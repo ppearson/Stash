@@ -24,6 +24,7 @@
 #import "IndexItem.h"
 #include "storage.h"
 #import "AccountInfoController.h"
+#include "analysis.h"
 
 @implementation StashAppDelegate
 
@@ -159,6 +160,13 @@
 	[scheduledFrequency addItemWithTitle:@"Quarterly"];
 	[scheduledFrequency addItemWithTitle:@"Annually"];
 	
+	[graphType removeAllItems];
+	
+	[graphType addItemWithTitle:@"Expense Categories"];
+	[graphType addItemWithTitle:@"Expense Payees"];
+	[graphType addItemWithTitle:@"Desposit Categories"];
+	[graphType addItemWithTitle:@"Deposit Payees"];
+	
 	[transactionsType selectItemAtIndex:0];
 	
 	[addTransaction setToolTip:@"Add Transaction"];
@@ -193,7 +201,6 @@
 	[indexBar addSection:@"accounts" title:@"ACCOUNTS"];
 	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
-	
 	int nAccount = 0;
 	
 	for (; it != m_Document.AccountEnd(); ++it, nAccount++)
@@ -203,15 +210,32 @@
 		
 		NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccount];
 
-		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self type:1];
+		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
 		
 		[sName release];
 	}
 	
 	[indexBar addSection:@"manage" title:@"MANAGE"];
-	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self type:2];
-	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self type:2];
-	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self type:2];
+	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self type:2 rename:nil renameTarget:nil];
+	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self type:2 rename:nil renameTarget:nil];
+	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self type:2 rename:nil renameTarget:nil];
+	
+	[indexBar addSection:@"graphs" title:@"GRAPHS"];
+	
+	std::vector<Graph>::iterator itGraph = m_Document.GraphBegin();
+	int nGraph = 0;
+	
+	for (; itGraph != m_Document.GraphEnd(); ++itGraph, nGraph++)
+	{
+		std::string strName = itGraph->getName();
+		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+		
+		NSString *sGraphKey = [NSString stringWithFormat:@"g%d", nGraph];
+		
+		[indexBar addItem:@"graphs" key:sGraphKey title:sName item:nGraph action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
+		
+		[sName release];
+	}
 	
 	m_pAccount = 0;
 	
@@ -309,6 +333,94 @@
 	[self refreshLibraryItems];
 	
 	[self buildSchedTransList];
+}
+
+- (void)graphSelected:(id)sender
+{
+	m_bEditing = false;
+	
+	m_pAccount = 0;
+	
+	int nGraph = [sender getItemIndex];
+	
+	m_pGraph = m_Document.getGraphPtr(nGraph);
+	
+	[vGraphView setFrameSize:[contentViewPlaceholder frame].size];
+	[contentViewPlaceholder replaceSubview:contentView with:vGraphView];
+	contentView = vGraphView;
+	
+	// Update the list of Accounts
+	
+	[graphAccount removeAllItems];
+	
+	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	
+	for (; it != m_Document.AccountEnd(); ++it)
+	{
+		std::string strName = it->getName();
+		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+		[graphAccount addItemWithTitle:sName];
+		
+		[sName release];
+	}
+	
+	int nAccount = m_pGraph->getAccount();
+	
+	[graphAccount selectItemAtIndex:nAccount];
+	
+	NSDate *nsStartDate = convertToNSDate(const_cast<Date&>(m_pGraph->getStartDate1()));
+	[graphStartDateCntrl setDateValue:nsStartDate];
+	
+	NSDate *nsEndDate = convertToNSDate(const_cast<Date&>(m_pGraph->getEndDate1()));
+	[graphEndDateCntrl setDateValue:nsEndDate];
+	
+	GraphType eType = m_pGraph->getType();
+	
+	[graphType selectItemAtIndex:eType];
+	
+	// for some reason, the above sets/selects don't always update the controls properly
+	[graphAccount setNeedsDisplay:YES];
+	[graphStartDateCntrl setNeedsDisplay:YES];
+	[graphEndDateCntrl setNeedsDisplay:YES];
+	
+	[self buildGraph];
+}
+
+// handle renames in the IndexBar
+
+- (void)accountRenamed:(id)sender
+{
+	int nAccount = [sender getItemIndex];
+	
+	m_pAccount = m_Document.getAccountPtr(nAccount);
+	
+	NSString *title = [sender title];
+	
+	std::string strName = [title cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	m_pAccount->setName(strName);
+	
+	m_UnsavedChanges = true;
+	
+	[indexBar reloadData];
+	[indexBar setNeedsDisplay:YES];
+}
+
+- (void)graphRenamed:(id)sender
+{
+	int nGraph = [sender getItemIndex];
+	
+	m_pGraph = m_Document.getGraphPtr(nGraph);
+	
+	NSString *title = [sender title];
+	
+	std::string strName = [title cStringUsingEncoding:NSASCIIStringEncoding];
+	
+	m_pGraph->setName(strName);
+	
+	m_UnsavedChanges = true;
+	
+	[indexBar reloadData];
 }
 
 - (void)buildTransactionsTree
@@ -613,6 +725,73 @@
 	[scheduledTransactionsTableView reloadData];
 }
 
+- (void)buildGraph
+{
+	if (!m_pGraph)
+		return;
+	
+	int nAccount = m_pGraph->getAccount();
+	
+	if (nAccount < 0)
+		return;
+	
+	Account *pAccount = m_Document.getAccountPtr(nAccount);
+	
+	GraphType eType = m_pGraph->getType();
+		
+	Date startDate = m_pGraph->getStartDate();
+	Date endDate = m_pGraph->getEndDate();
+	
+	std::vector<GraphValue> aGraphItems;
+	
+	fixed overallTotal = 0.0;
+	
+	if (eType == ExpenseCategories)
+		buildItemsForExpenseCategories(pAccount, aGraphItems, startDate, endDate, overallTotal);
+	else if (eType == ExpensePayees)
+		buildItemsForExpensePayees(pAccount, aGraphItems, startDate, endDate, overallTotal);
+	else if (eType == DepositCategories)
+		buildItemsForDepositCategories(pAccount, aGraphItems, startDate, endDate, overallTotal);
+	else if (eType == DepositPayees)
+		buildItemsForDepositPayees(pAccount, aGraphItems, startDate, endDate, overallTotal);
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
+	
+	NSMutableArray *aItems = [[NSMutableArray alloc] init];
+	
+	std::vector<GraphValue>::iterator it = aGraphItems.begin();
+	
+	for (; it != aGraphItems.end(); ++it)
+	{
+		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+		
+		std::string strTitle = (*it).getTitle();
+		fixed amount = (*it).getAmount();
+		double angle = (*it).getAngle();
+		
+		NSString *sTitle = [[NSString alloc] initWithUTF8String:strTitle.c_str()];
+		
+		NSNumber *nSAmount = [NSNumber numberWithDouble:amount.ToDouble()];		
+		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+		
+		[dict setValue:[NSNumber numberWithDouble:angle] forKey:@"angle"];
+		[dict setValue:sTitle forKey:@"title"];
+		[dict setValue:sSAmount forKey:@"amount"];
+				
+		[aItems addObject:dict];		
+	}
+	
+	NSNumber *nTotal = [NSNumber numberWithDouble:overallTotal.ToDouble()];
+	NSString *sTotal = [[numberFormatter stringFromNumber:nTotal] retain];
+	
+	[numberFormatter release];
+	
+	[chartView setTotal:sTotal];
+	[chartView setData:aItems];	
+}
+
 - (void)refreshLibraryItems
 {
 	[transactionsPayee removeAllItems];
@@ -696,7 +875,7 @@
 	
 	NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccountNum];
 	
-	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self type:1];
+	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
 	
 	[addAccountController release];
 	[numberFormatter release];
@@ -1560,6 +1739,44 @@
 	m_UnsavedChanges = true;	
 }
 
+- (IBAction)updateGraph:(id)sender
+{
+	if (!m_pGraph)
+		return;
+	
+	int nAccount = [graphAccount indexOfSelectedItem];
+	
+	NSDate *nsStartDate = [graphStartDateCntrl dateValue];
+	NSCalendarDate *nsCalStartDate = [nsStartDate dateWithCalendarFormat:0 timeZone:0];
+	
+	int nStartYear = [nsCalStartDate yearOfCommonEra];
+	int nStartMonth = [nsCalStartDate monthOfYear];
+	int nStartDay = [nsCalStartDate dayOfMonth];
+	
+	Date startDate(nStartDay, nStartMonth, nStartYear);
+	
+	NSDate *nsEndDate = [graphEndDateCntrl dateValue];
+	NSCalendarDate *nsCalEndDate = [nsEndDate dateWithCalendarFormat:0 timeZone:0];
+	
+	int nEndYear = [nsCalEndDate yearOfCommonEra];
+	int nEndMonth = [nsCalEndDate monthOfYear];
+	int nEndDay = [nsCalEndDate dayOfMonth];
+	
+	Date endDate(nEndDay, nEndMonth, nEndYear);
+	
+	int nType = [graphType indexOfSelectedItem];
+	GraphType eType = static_cast<GraphType>(nType);
+	
+	m_pGraph->setAccount(nAccount);
+	m_pGraph->setStartDate(startDate);
+	m_pGraph->setEndDate(endDate);
+	m_pGraph->setType(eType);
+	
+	m_UnsavedChanges = true;
+	
+	[self buildGraph];
+}
+
 - (IBAction)showLast30DaysTransactions:(id)sender
 {
 	nShowTransactionsType = LAST_30DAYS;
@@ -1686,14 +1903,37 @@
 	
 	if (row >= 0)
 	{
-//		NSMutableDictionary *oObject = [scheduledTransactionsTableView objectAtIndex:row];
-		
 		[m_aScheduledTransactions removeObjectAtIndex:row];
 		m_Document.deleteScheduledTransaction(row);
 	}
 	
 	[scheduledTransactionsTableView reloadData];
 	m_UnsavedChanges = true;
+}
+
+- (IBAction)AddGraph:(id)sender
+{
+	Graph newGraph;
+	newGraph.setName("New Graph");
+	newGraph.setAccount(0);
+	
+	Date currentDate;
+	currentDate.Now();
+	
+	newGraph.setStartDate(currentDate);
+	
+	currentDate.setDay(1);
+	newGraph.setEndDate(currentDate);
+	
+	int nGraphNum = m_Document.addGraph(newGraph);
+	
+	NSString *sGraphKey = [NSString stringWithFormat:@"g@s", nGraphNum];
+	
+	[indexBar addItem:@"graphs" key:sGraphKey title:@"New Graph" item:nGraphNum action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
+	
+	m_UnsavedChanges = true;
+	
+	[indexBar reloadData];
 }
 
 // Transactions OutlineView Start

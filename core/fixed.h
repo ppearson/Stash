@@ -44,6 +44,8 @@ public:
 	bool IsZero() const;	
 	bool IsPositive() const;
 	
+	void setPositive() { m_positive = true; }
+	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	

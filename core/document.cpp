@@ -23,7 +23,7 @@
 #include "document.h"
 #include "string.h"
 
-#define FILE_VERSION 1
+#define FILE_VERSION 2
 
 Document::Document()
 {
@@ -95,6 +95,22 @@ bool Document::Load(std::fstream &stream)
 		m_aCategories.insert(strCategory);
 	}
 	
+	m_aGraphs.clear();
+	
+	if (fileVersion > 1)
+	{
+		unsigned int numGraphs = 0;
+		stream.read((char *) &numGraphs, sizeof(unsigned int));
+		
+		for (unsigned int i = 0; i < numGraphs; i++)
+		{
+			Graph tempGraph;
+			tempGraph.Load(stream, fileVersion);
+			
+			m_aGraphs.push_back(tempGraph);
+		}
+	}
+	
 	return true;
 }
 
@@ -136,6 +152,14 @@ bool Document::Store(std::fstream &stream)
 	for (std::set<std::string>::iterator it = m_aCategories.begin(); it != m_aCategories.end(); ++it)
 	{
 		StoreString((*it), stream);
+	}
+	
+	unsigned int numGraphs = static_cast<unsigned int>(m_aGraphs.size());	
+	stream.write((char *) &numGraphs, sizeof(unsigned int));
+	
+	for (std::vector<Graph>::iterator it = m_aGraphs.begin(); it != m_aGraphs.end(); ++it)
+	{
+		(*it).Store(stream);
 	}
 	
 	return true;

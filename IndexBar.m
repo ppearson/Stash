@@ -62,7 +62,7 @@
 	[section release];	
 }
 
-- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type
+- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget
 {
 	IndexItem *newItem = [[IndexItem alloc] init];
 	
@@ -74,6 +74,8 @@
 	
 	[newItem setAction:selector target:target];
 	[m_dItems setObject:newItem forKey:key];
+	
+	[newItem setRename:renamer target:reTarget];
 	
 	IndexItem *parentItem = [m_dItems objectForKey:parentKey];
 	
@@ -148,6 +150,37 @@
 	return [item title];
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	BOOL result = NO;
+	
+	result = [item hasRename];
+	
+	return result;
+}
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{	
+	if (item)
+	{
+		SEL action = NULL;
+		id target = nil;
+		
+		if ([item hasRename])
+		{
+			action = [item rename];
+			target = [item renameTarget];
+			
+			[item setTitle:object];
+			
+			if (action != NULL)
+			{
+				[target performSelector:action withObject:item];
+			}
+		}
+	}
+}
+
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
 	IndexItem *selectedItem = [self itemAtRow:[self selectedRow]];
@@ -163,8 +196,8 @@
 		target = [selectedItem actionTarget];
 		
 		if (action != NULL)
-			[NSThread detachNewThreadSelector:action toTarget:target withObject:selectedItem];
-	}	
+			[target performSelector:action withObject:selectedItem];
+	}
 }
 
 - (NSMenu*)menuForEvent:(NSEvent*)event

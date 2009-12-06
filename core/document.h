@@ -34,6 +34,7 @@
 #include <set>
 #include "account.h"
 #include "scheduled_transaction.h"
+#include "graph.h"
 
 class Document
 {
@@ -61,6 +62,12 @@ public:
 	
 	void disabledScheduledTransactionsForAccount(int nAccount);
 	
+	int addGraph(Graph &graph) { m_aGraphs.push_back(graph); return m_aGraphs.size() - 1; }
+	Graph &getGraph(int graph) { return m_aGraphs[graph]; }
+	Graph *getGraphPtr(int graph) { return &m_aGraphs[graph]; }
+	int getGraphCount() { return m_aGraphs.size(); }
+	void deleteGraph(int graph) { m_aGraphs.erase(m_aGraphs.begin() + graph); }
+	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	
@@ -76,6 +83,9 @@ public:
 	std::vector<ScheduledTransaction>::iterator SchedTransBegin() { return m_aScheduledTransactions.begin(); }
 	std::vector<ScheduledTransaction>::iterator SchedTransEnd() { return m_aScheduledTransactions.end(); }
 	
+	std::vector<Graph>::iterator GraphBegin() { return m_aGraphs.begin(); }
+	std::vector<Graph>::iterator GraphEnd() { return m_aGraphs.end(); }
+	
 	fixed getBalance(bool onlyReconciled);
 	
 protected:
@@ -83,6 +93,7 @@ protected:
 	std::set<std::string> m_aPayees;
 	std::set<std::string> m_aCategories;
 	std::vector<ScheduledTransaction> m_aScheduledTransactions;
+	std::vector<Graph> m_aGraphs;
 	
 };
 

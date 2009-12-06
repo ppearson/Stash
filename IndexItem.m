@@ -32,6 +32,9 @@
 @synthesize actionTarget;
 @synthesize action;
 
+@synthesize renameTarget;
+@synthesize rename;
+
 - (id)init
 {
 	if ((self = [super init]))
@@ -94,6 +97,17 @@
 - (BOOL)hasAction
 {
 	return action != NULL;
+}
+
+- (void)setRename:(SEL)selector target:(id)target
+{
+	renameTarget = target;
+	rename = selector;
+}
+
+- (BOOL)hasRename
+{
+	return rename != NULL;
 }
 
 

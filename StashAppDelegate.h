@@ -31,6 +31,7 @@
 #import "IndexBar.h"
 #import "DueScheduledTransactionsController.h"
 #import "PreferencesController.h"
+#import "PieChartView.h"
 
 enum TransactionsToShow
 {
@@ -53,7 +54,7 @@ enum TransactionsToShow
 	// Content Views
 	IBOutlet NSView *contentView;
 	
-	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView, *vScheduledView;
+	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView, *vScheduledView, *vGraphView;
 	
 	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
@@ -111,12 +112,22 @@ enum TransactionsToShow
 	
 	NSMutableArray *m_aScheduledTransactions;
 	
+	
+	// Graphs
+	
+	IBOutlet PieChartView *chartView;
+	IBOutlet NSPopUpButton *graphAccount;
+	IBOutlet NSPopUpButton *graphType;
+	IBOutlet id graphStartDateCntrl;
+	IBOutlet id graphEndDateCntrl;
+	
 	PreferencesController *prefController;
 	
 	
 	Document m_Document;
-	Account *m_pAccount;	
+	Account *m_pAccount;
 	
+	Graph *m_pGraph;	
 	
 	std::string m_DocumentFile;
 	bool m_UnsavedChanges;
@@ -130,6 +141,7 @@ enum TransactionsToShow
 - (void)buildPayeesList;
 - (void)buildCategoriesList;
 - (void)buildSchedTransList;
+- (void)buildGraph;
 - (void)refreshLibraryItems;
 
 - (void)updateUI;
@@ -174,8 +186,15 @@ enum TransactionsToShow
 - (void)payeesSelected:(id)sender;
 - (void)categoriesSelected:(id)sender;
 - (void)scheduledSelected:(id)sender;
+- (void)graphSelected:(id)sender;
+
+- (void)accountRenamed:(id)sender;
+- (void)graphRenamed:(id)sender;
 
 - (void)addAccountConfirmed:(AddAccountController *)addAccountController;
+
+- (IBAction)AddGraph:(id)sender;
+
 
 - (IBAction)OpenFile:(id)sender;
 - (IBAction)SaveFile:(id)sender;
@@ -193,6 +212,8 @@ enum TransactionsToShow
 
 - (void)ScheduledSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateScheduled:(id)sender;
+
+- (IBAction)updateGraph:(id)sender;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;
