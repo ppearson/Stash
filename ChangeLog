@@ -6,6 +6,7 @@ Version 0.3
 * When adding new transactions, the transaction list now scrolls down so that the new item is visible
 * Added option to preferences to automatically scroll to the latest transaction when viewing an account
 * Accounts and Graphs can be renamed by double-clicking the item in the IndexBar on the left
+* Improve QIF file import slightly
 
 Version 0.2
 -----------
