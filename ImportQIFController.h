@@ -36,7 +36,7 @@
 	
 	NSString *sDesc, *sFile, *sSampleDate;
 	char cSeparator;
-	int nDateFormat;	
+	int nDateFormat;
 }
 
 - (int)dateFormat;

@@ -29,10 +29,10 @@
 
 #include "account.h"
 
-
 bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringFormat dateFormat);
 bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep);
-bool getDateFormatSampleFromQIFFile(std::string path, std::string &sample);
+bool getDateFormatSampleFromQIFFile(const std::string path, std::string &sample);
+bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFormat);
 
 void clearTransaction(Transaction &trans);
 void clearSplitTransaction(SplitTransaction &split);

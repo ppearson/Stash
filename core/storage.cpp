@@ -88,37 +88,13 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 
 bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep)
 {
-	// work out what type of line endings we have
-
-	std::fstream testStream(path.c_str(), std::ios::in);
-	if (!testStream)
-	{
+	bool bDOSFormat = false;
+	char lineEndings;
+	if (!getLineEndingsFromFile(path, lineEndings, bDOSFormat))
 		return false;
-	}
 
 	char buf[1024];
 	memset(buf, 0, 1024);
-
-	testStream.get(buf, 1024, -1);
-	std::string strTest(buf);
-
-	char lineEndings = '\n';
-	bool bDOSFormat = false;
-	if (strTest.find("\r\n") != -1)
-	{
-		bDOSFormat = true;
-		lineEndings = '\r';
-	}
-	else if (strTest.find('\r') != -1)
-	{
-		lineEndings = '\r';
-	}
-	else if (strTest.find('\n') != -1)
-	{
-		lineEndings = '\n';
-	}
-	
-	testStream.close();
 
 	std::fstream fileStream(path.c_str(), std::ios::in);
 	
@@ -127,10 +103,10 @@ bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringForma
 
 	std::string line;
 
-	memset(buf, 0, 1024);
-
 	Transaction newTransaction;
 	SplitTransaction newSplit;
+	
+	bool bPastHeader = false;
 
 	while (fileStream.getline(buf, 1024, lineEndings))
 	{
@@ -211,7 +187,14 @@ bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringForma
 		{
 			if (code == '^')
 			{
-				pAccount->addTransaction(newTransaction);
+				if (!bPastHeader)
+				{
+					bPastHeader = true;
+					continue;
+				}				
+				
+				if (bPastHeader)
+					pAccount->addTransaction(newTransaction);
 
 				clearTransaction(newTransaction);
 				clearSplitTransaction(newSplit);
@@ -228,45 +211,16 @@ bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringForma
 
 bool getDateFormatSampleFromQIFFile(std::string path, std::string &sample)
 {
-	// work out what type of line endings we have
-	
-	std::fstream testStream(path.c_str(), std::ios::in);
-	if (!testStream)
-	{
-		return false;
-	}
-	
-	char buf[1024];
-	memset(buf, 0, 1024);
-	
-	testStream.get(buf, 1024, -1);
-	std::string strTest(buf);
-	
-	char lineEndings = '\n';
 	bool bDOSFormat = false;
-	if (strTest.find("\r\n") != -1)
-	{
-		bDOSFormat = true;
-		lineEndings = '\r';
-	}
-	else if (strTest.find('\r') != -1)
-	{
-		lineEndings = '\r';
-	}
-	else if (strTest.find('\n') != -1)
-	{
-		lineEndings = '\n';
-	}
-	
-	testStream.close();
+	char lineEndings;
+	if (!getLineEndingsFromFile(path, lineEndings, bDOSFormat))
+		return false;
 	
 	std::fstream fileStream(path.c_str(), std::ios::in);
 	
-	// we currently only support importing data into the requested Account and don't create
-	// new accounts as needed, so we don't need to bother with the account stuff yet
-	
 	std::string line;
 	
+	char buf[1024];
 	memset(buf, 0, 1024);
 	
 	while (fileStream.getline(buf, 1024, lineEndings))
@@ -356,4 +310,39 @@ void clearSplitTransaction(SplitTransaction &split)
 	split.setCategory("");
 	split.setDescription("");
 	split.setPayee("");
+}
+
+bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFormat)
+{
+	std::fstream testStream(path.c_str(), std::ios::in);
+	if (!testStream)
+	{
+		return false;
+	}
+	
+	char buf[1024];
+	memset(buf, 0, 1024);
+	
+	testStream.get(buf, 1024, -1);
+	std::string strTest(buf);
+	
+	endChar = '\n';
+	bDOSFormat = false;
+	if (strTest.find("\r\n") != -1)
+	{
+		bDOSFormat = true;
+		endChar = '\r';
+	}
+	else if (strTest.find('\r') != -1)
+	{
+		endChar = '\r';
+	}
+	else if (strTest.find('\n') != -1)
+	{
+		endChar = '\n';
+	}
+	
+	testStream.close();
+	
+	return true;
 }
