@@ -120,6 +120,7 @@ enum TransactionsToShow
 	IBOutlet NSPopUpButton *graphType;
 	IBOutlet id graphStartDateCntrl;
 	IBOutlet id graphEndDateCntrl;
+	IBOutlet id graphIgnoreTransfers;
 	
 	PreferencesController *prefController;
 	

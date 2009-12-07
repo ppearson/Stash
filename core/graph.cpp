@@ -20,10 +20,11 @@
  *
  */
 
+#include <bitset>
 #include "graph.h"
 #include "string.h"
 
-Graph::Graph() : m_name(""), m_account(0), m_type(ExpenseCategories)
+Graph::Graph() : m_name(""), m_account(0), m_type(ExpenseCategories), m_ignoreTransfers(false)
 {
 
 }
@@ -40,6 +41,13 @@ void Graph::Load(std::fstream &stream, int version)
 	m_endDate.Load(stream, version);
 	
 	stream.read((char *) &m_type, sizeof(unsigned char));
+	
+	unsigned char cBitset = 0;
+	stream.read((char *) &cBitset, sizeof(unsigned char));
+	
+	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
+	
+	m_ignoreTransfers = localset[0];
 }
 
 void Graph::Store(std::fstream &stream)
@@ -54,4 +62,10 @@ void Graph::Store(std::fstream &stream)
 	m_endDate.Store(stream);
 	
 	stream.write((char *) &m_type, sizeof(unsigned char));
+	
+	std::bitset<8> localset;	
+	localset[0] = m_ignoreTransfers;
+	
+	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
+	stream.write((char *) &cBitset, sizeof(unsigned char));
 }

@@ -238,6 +238,7 @@
 	}
 	
 	m_pAccount = 0;
+	m_pGraph = 0;
 	
 	m_SelectedTransaction = 0; 
 	m_bEditing = false;
@@ -378,6 +379,15 @@
 	GraphType eType = m_pGraph->getType();
 	
 	[graphType selectItemAtIndex:eType];
+	
+	if (m_pGraph->getIgnoreTransfers())
+	{
+		[graphIgnoreTransfers setState:NSOnState];
+	}
+	else
+	{
+		[graphIgnoreTransfers setState:NSOffState];
+	}
 	
 	// for some reason, the above sets/selects don't always update the controls properly
 	[graphAccount setNeedsDisplay:YES];
@@ -743,18 +753,20 @@
 	Date startDate = m_pGraph->getStartDate();
 	Date endDate = m_pGraph->getEndDate();
 	
+	bool bIgnoreTransfers = m_pGraph->getIgnoreTransfers();
+	
 	std::vector<GraphValue> aGraphItems;
 	
 	fixed overallTotal = 0.0;
 	
 	if (eType == ExpenseCategories)
-		buildItemsForExpenseCategories(pAccount, aGraphItems, startDate, endDate, overallTotal);
+		buildItemsForExpenseCategories(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
 	else if (eType == ExpensePayees)
-		buildItemsForExpensePayees(pAccount, aGraphItems, startDate, endDate, overallTotal);
+		buildItemsForExpensePayees(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
 	else if (eType == DepositCategories)
-		buildItemsForDepositCategories(pAccount, aGraphItems, startDate, endDate, overallTotal);
+		buildItemsForDepositCategories(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
 	else if (eType == DepositPayees)
-		buildItemsForDepositPayees(pAccount, aGraphItems, startDate, endDate, overallTotal);
+		buildItemsForDepositPayees(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1794,10 +1806,16 @@
 	int nType = [graphType indexOfSelectedItem];
 	GraphType eType = static_cast<GraphType>(nType);
 	
+	bool bIgnoreTransfers = false;
+	
+	if ([graphIgnoreTransfers state] == NSOnState)
+		bIgnoreTransfers = true;
+	
 	m_pGraph->setAccount(nAccount);
 	m_pGraph->setStartDate(startDate);
 	m_pGraph->setEndDate(endDate);
 	m_pGraph->setType(eType);
+	m_pGraph->setIgnoreTransfers(bIgnoreTransfers);
 	
 	m_UnsavedChanges = true;
 	

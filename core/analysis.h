@@ -52,9 +52,9 @@ protected:
 };
 
 
-bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal);
-bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal);
-bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal);
-bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal);
+bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
 
 void copyItemsToVector(std::map<std::string, fixed> &aMap, std::vector<GraphValue> &aVector, fixed &overallTotal);

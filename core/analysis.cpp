@@ -30,7 +30,7 @@ GraphValue::GraphValue(std::string title, double angle, fixed amount) : m_title(
 
 }
 
-bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal)
+bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
 {
 	if (!pAccount)
 		return false;
@@ -48,6 +48,9 @@ bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &
 			continue;
 		
 		if ((*it).Amount().IsPositive())
+			continue;
+		
+		if (ignoreTransfers && (*it).Type() == Transfer)
 			continue;
 		
 		if ((*it).Split() && (*it).getSplitCount() > 0)
@@ -106,7 +109,7 @@ bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &
 	return true;
 }
 
-bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal)
+bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
 {
 	if (!pAccount)
 		return false;
@@ -124,6 +127,9 @@ bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aVal
 			continue;
 		
 		if ((*it).Amount().IsPositive())
+			continue;
+		
+		if (ignoreTransfers && (*it).Type() == Transfer)
 			continue;
 		
 		if ((*it).Split() && (*it).getSplitCount() > 0)
@@ -182,7 +188,7 @@ bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aVal
 	return true;
 }
 
-bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal)
+bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
 {
 	if (!pAccount)
 		return false;
@@ -200,6 +206,9 @@ bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &
 			continue;
 		
 		if (!(*it).Amount().IsPositive())
+			continue;
+		
+		if (ignoreTransfers && (*it).Type() == Transfer)
 			continue;
 		
 		if ((*it).Split() && (*it).getSplitCount() > 0)
@@ -254,7 +263,7 @@ bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &
 	return true;	
 }
 
-bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal)
+bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
 {
 	if (!pAccount)
 		return false;
@@ -272,6 +281,9 @@ bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aVal
 			continue;
 		
 		if (!(*it).Amount().IsPositive())
+			continue;
+		
+		if (ignoreTransfers && (*it).Type() == Transfer)
 			continue;
 		
 		if ((*it).Split() && (*it).getSplitCount() > 0)

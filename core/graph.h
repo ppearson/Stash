@@ -44,6 +44,7 @@ public:
 	void setStartDate(Date startDate) { m_startDate = startDate; }
 	void setEndDate(Date endDate) { m_endDate = endDate; }
 	void setType(GraphType type) { m_type = type; }
+	void setIgnoreTransfers(bool igTransfers) { m_ignoreTransfers = igTransfers; }
 	
 	std::string	getName() { return m_name; }
 	int			getAccount() { return m_account; }
@@ -52,6 +53,7 @@ public:
 	const Date &getStartDate1() { return m_startDate; }
 	const Date &getEndDate1() { return m_endDate; }
 	GraphType	getType() { return m_type; }
+	bool		getIgnoreTransfers() { return m_ignoreTransfers; }
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
@@ -62,7 +64,7 @@ protected:
 	Date		m_startDate;
 	Date		m_endDate;
 	GraphType	m_type;
-
+	bool		m_ignoreTransfers;
 };
 
 #endif

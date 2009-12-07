@@ -35,7 +35,7 @@
         m_aData = [[NSMutableArray alloc] init];
 		m_aColours = [[NSMutableArray alloc] init];
 		
-		[m_aColours addObject:[NSColor cyanColor]];
+		[m_aColours addObject:[NSColor blueColor]];
 		[m_aColours addObject:[NSColor redColor]];
 		[m_aColours addObject:[NSColor yellowColor]];
 		[m_aColours addObject:[NSColor greenColor]];
