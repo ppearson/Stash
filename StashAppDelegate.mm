@@ -129,7 +129,7 @@
 		NSScreen *mainScreen = [NSScreen mainScreen];
 		NSRect screenRect = [mainScreen frame];
 		
-		if (fWidth <= screenRect.size.width || fHeight <= screenRect.size.height)
+		if (fWidth <= screenRect.size.width && fHeight <= screenRect.size.height)
 		{
 			NSRect windowRect = NSMakeRect(fPosX, fPosY, fWidth, fHeight);
 			
