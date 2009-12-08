@@ -136,6 +136,14 @@
 		dStartX -= (extent.width / 2.0);
 		dStartY -= (extent.height / 2.0);
 		
+		// check to see if we're going to fall off the end - if so, move the text
+		// left a bit
+		
+		if ((dStartX + extent.width) >= bounds.size.width)
+		{
+			dStartX -= (dStartX + extent.width) - bounds.size.width;
+		}
+		
 		NSPoint labelPosition = NSMakePoint(dStartX, dStartY);		
 		
 		[strText drawAtPoint:labelPosition withAttributes:attributes1];
@@ -143,12 +151,11 @@
 		dStartAngle += dAngle;	
 	}
 	
-	
 	if (m_total)
 	{
 		NSString *strText = [NSString stringWithFormat:@"Total amount:  %@", m_total];
 		[strText drawAtPoint:NSMakePoint(5.0, 5.0) withAttributes:attributes1];
-	}	
+	}
 }
 
 - (void)setData:(NSMutableArray*)data
