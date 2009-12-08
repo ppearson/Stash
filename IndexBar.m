@@ -238,4 +238,14 @@
 	return [selectedItem getItemIndex];
 }
 
+- (IBAction)renameItem:(id)sender
+{
+	int row = [self selectedRow];
+	
+	if (row >= 0)
+	{
+		[self editColumn:0 row:row withEvent:nil select:YES];		
+	}	
+}
+
 @end

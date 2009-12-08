@@ -36,10 +36,11 @@
 - (void)clearAllItems;
 
 - (void)addSection:(id)key title:(NSString*)sTitle;
-
 - (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget;
 
 - (void)selectItem:(id)key;
 - (void)expandSection:(id)itemKey;
+
+- (IBAction)renameItem:(id)sender;
 
 @end
