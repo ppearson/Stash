@@ -124,7 +124,7 @@
 	float fWidth = [[defs objectForKey:@"MainWndWidth"] floatValue];
 	float fHeight = [[defs objectForKey:@"MainWndHeight"] floatValue];
 	
-	if (fPosX >= 0.0 && fPosY >= 0.0)
+	if (fPosX >= 0.0 && fPosY >= 0.0 && fWidth > 0.0 && fHeight > 0.0)
 	{
 		NSScreen *mainScreen = [NSScreen mainScreen];
 		NSRect screenRect = [mainScreen frame];
