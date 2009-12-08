@@ -1,3 +1,11 @@
+Version 0.4
+-----------
+
+* If a Bar Chart graph segment title is going to fall off the edge of the window, move
+  it back so it fits in correctly
+* Stash now saves the last size/position of the main window, and restores that size/position the
+  next time it loads
+
 Version 0.3
 -----------
 

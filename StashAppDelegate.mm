@@ -117,6 +117,26 @@
 	[contentViewPlaceholder addSubview:vTransactionsView];
 	contentView = vTransactionsView;
 	
+	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+	
+	float fPosX = [[defs objectForKey:@"MainWndPosX"] floatValue];
+	float fPosY = [[defs objectForKey:@"MainWndPosY"] floatValue];
+	float fWidth = [[defs objectForKey:@"MainWndWidth"] floatValue];
+	float fHeight = [[defs objectForKey:@"MainWndHeight"] floatValue];
+	
+	if (fPosX >= 0.0 && fPosY >= 0.0)
+	{
+		NSScreen *mainScreen = [NSScreen mainScreen];
+		NSRect screenRect = [mainScreen frame];
+		
+		if (fWidth <= screenRect.size.width || fHeight <= screenRect.size.height)
+		{
+			NSRect windowRect = NSMakeRect(fPosX, fPosY, fWidth, fHeight);
+			
+			[window setFrame:windowRect display:YES animate:NO];
+		}
+	}
+	
 	m_aTransactionItems = [[NSMutableArray alloc] init];
 	m_aPayeeItems = [[NSMutableArray alloc] init];
 	m_aCategoryItems = [[NSMutableArray alloc] init];
@@ -2575,6 +2595,14 @@ NSDate * convertToNSDate(Date &date)
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
+	// save the window size and position
+	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+	
+	[defs setFloat:[window frame].origin.x forKey:@"MainWndPosX"];
+	[defs setFloat:[window frame].origin.y forKey:@"MainWndPosY"];
+	[defs setFloat:[window frame].size.width forKey:@"MainWndWidth"];
+	[defs setFloat:[window frame].size.height forKey:@"MainWndHeight"];
+	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];
 	[m_aCategoryItems release];
