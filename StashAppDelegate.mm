@@ -142,6 +142,19 @@
 	m_aCategoryItems = [[NSMutableArray alloc] init];
 	m_aScheduledTransactions = [[NSMutableArray alloc] init];
 	
+	// Load Transactions view OutlineView column sizes
+	int nCol = 0;
+	for (NSTableColumn *tc in [transactionsTableView tableColumns])
+	{
+		NSString *sColKey = [NSString stringWithFormat:@"TransactionColWidth%i", nCol++];
+		float fWidth = [[defs objectForKey:sColKey] floatValue];
+		
+		if (fWidth > 0.0)
+		{
+			[tc setWidth:fWidth];
+		}
+	}
+	
 	NSDate *date1 = [NSDate date];
 	[transactionsDateCntl setDateValue:date1];
 	[scheduledDateCntl setDateValue:date1];
@@ -2602,6 +2615,16 @@ NSDate * convertToNSDate(Date &date)
 	[defs setFloat:[window frame].origin.y forKey:@"MainWndPosY"];
 	[defs setFloat:[window frame].size.width forKey:@"MainWndWidth"];
 	[defs setFloat:[window frame].size.height forKey:@"MainWndHeight"];
+	
+	// Save Transactions view OutlineView column sizes
+	int nCol = 0;
+	for (NSTableColumn *tc in [transactionsTableView tableColumns])
+	{
+		float fWidth = [tc width];
+		NSString *sColKey = [NSString stringWithFormat:@"TransactionColWidth%i", nCol++];
+		
+		[defs setFloat:fWidth forKey:sColKey];
+	}
 	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];
