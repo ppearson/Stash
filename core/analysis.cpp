@@ -354,6 +354,12 @@ void copyItemsToVector(std::map<std::string, fixed> &aMap, std::vector<GraphValu
 		
 		fixed amount = (*itMap).second;
 		
+		if (title.empty())
+		{
+			leftovers += amount;
+			continue;
+		}
+		
 		double dPieAngle = (amount.ToDouble() / dOverallTotal) * 360.0;
 		
 		if (dPieAngle > 4.0)
