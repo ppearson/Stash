@@ -561,6 +561,8 @@
 		
 		localBalance += it->Amount();
 		
+		m_aBalance.push_back(localBalance);
+		
 		NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
 		NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
 		
@@ -959,8 +961,7 @@
 		NSString *sInstitution = [[NSString alloc] initWithUTF8String:oAccount.getInstitution().c_str()];
 		NSString *sNumber = [[NSString alloc] initWithUTF8String:oAccount.getNumber().c_str()];
 		NSString *sNote = [[NSString alloc] initWithUTF8String:oAccount.getNote().c_str()];
-		AccountType eType = oAccount.getType();
-		
+		AccountType eType = oAccount.getType();		
 		
 		AccountInfoController *accountInfoController = [[AccountInfoController alloc] initWnd:self withAccount:nAccount name:sName institution:sInstitution number:sNumber
 																					 note:sNote type:eType];
@@ -1071,7 +1072,17 @@
 	
 	[dateFormatter release];
 	
-	fixed localBalance = m_pAccount->getBalance(true);
+	fixed localBalance;
+	
+	if (!m_aBalance.empty())
+	{
+		
+		localBalance = m_aBalance.back();
+	}
+	else
+	{
+		localBalance = m_pAccount->getBalance(true);
+	}
 	
 	NSNumber *nBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
 	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
@@ -1130,6 +1141,8 @@
 			{
 				m_pAccount->deleteTransaction(nTransaction);
 				[m_aTransactionItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
+				
+				[self updateBalancesFromTransactionIndex:row ];
 			}
 			else if (nSplit != -2)
 			{
@@ -1142,9 +1155,6 @@
 			
 			row = [rows indexLessThanIndex:row];			
 		}
-		
-		// TODO: for multiple selection this won't work, as indexes will get out of sync
-		//		 also, when removing items, the balance value of other objects will be wrong
 		
 		[transactionsTableView reloadData];
 		
@@ -1279,6 +1289,15 @@
 	
 	[toItem setTransaction:nRealFrom];
 	[toItem setIntValue:nRealFrom forKey:@"Transaction"];
+	
+	if (from < to)
+	{
+		[self updateBalancesFromTransactionIndex:from];
+	}
+	else
+	{
+		[self updateBalancesFromTransactionIndex:to];
+	}
 		
 	[transactionsTableView reloadData];
 	
@@ -1526,9 +1545,16 @@
 		trans->setPayee(strPayee);
 		trans->setDescription(strDesc);
 		trans->setCategory(strCategory);
-		trans->setAmount(fAmount);
 		trans->setType(eType);
 		trans->setReconciled(bReconciled);
+		
+		fixed oldAmount = trans->Amount();
+		
+		if (oldAmount != fAmount)
+		{
+			trans->setAmount(fAmount);
+			[self updateBalancesFromTransactionIndex:nTrans];
+		}
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
 		[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
@@ -2684,6 +2710,48 @@ NSDate * convertToNSDate(Date &date)
 	[self calculateAndShowScheduled];
 
 	return YES;
+}
+
+- (void)updateBalancesFromTransactionIndex:(int)nIndex
+{
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	fixed localBalance = 0.0;
+	
+	nIndex -= m_nTransactionOffset;
+	
+	m_aBalance.erase(m_aBalance.begin() + nIndex, m_aBalance.end());
+	
+	if (nIndex == 0)
+	{
+		localBalance = m_pAccount->getBalance(true, m_nTransactionOffset);
+	}
+	else
+	{
+		localBalance = m_aBalance.back();
+	}
+	
+	std::vector<Transaction>::iterator it = m_pAccount->begin() + m_nTransactionOffset + nIndex;
+	
+	int nTransItemIndex = nIndex;
+	for (; it != m_pAccount->end(); ++it, nTransItemIndex++)
+	{
+		TransactionItem *aTransaction = [m_aTransactionItems objectAtIndex:nTransItemIndex];
+		
+		localBalance += it->Amount();
+		
+		m_aBalance.push_back(localBalance);
+		
+		NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
+		NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
+				
+		[aTransaction setValue:sTBalance forKey:@"Balance"];		
+	
+		[sTBalance release];
+	}	
+
+	[numberFormatter release];
 }
 
 @end

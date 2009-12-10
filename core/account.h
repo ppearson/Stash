@@ -68,7 +68,7 @@ public:
 	std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }
 	std::vector<Transaction>::iterator end() { return m_aTransactions.end(); }
 	
-	fixed getBalance(bool onlyReconciled);
+	fixed getBalance(bool onlyReconciled, int endIndex = -1);
 
 protected:
 	std::string m_name;

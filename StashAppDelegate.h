@@ -128,6 +128,8 @@ enum TransactionsToShow
 	Document m_Document;
 	Account *m_pAccount;
 	
+	std::vector<fixed> m_aBalance;
+	
 	Graph *m_pGraph;	
 	
 	std::string m_DocumentFile;
@@ -224,6 +226,8 @@ enum TransactionsToShow
 - (IBAction)showPreferencesWindow:(id)sender;
 
 NSDate *convertToNSDate(Date &date);
+
+- (void)updateBalancesFromTransactionIndex:(int)nIndex;
 
 @property (assign) IBOutlet NSWindow *window;
 

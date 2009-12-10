@@ -74,15 +74,22 @@ void Account::swapTransactions(int from, int to)
 	iter_swap(m_aTransactions.begin() + from, m_aTransactions.begin() + to);
 }
 
-fixed Account::getBalance(bool onlyReconciled)
+fixed Account::getBalance(bool onlyReconciled, int endIndex)
 {
 	fixed balance = 0.0;
 	
 	std::vector<Transaction>::iterator it = m_aTransactions.begin();
 	
+	std::vector<Transaction>::iterator itEnd = m_aTransactions.end();
+	
+	if (endIndex != -1)
+	{
+		itEnd = m_aTransactions.begin() + endIndex;
+	}
+	
 	if (onlyReconciled)
 	{
-		for (; it != m_aTransactions.end(); ++it)
+		for (; it != itEnd; ++it)
 		{
 			if ((*it).isReconciled())
 			{
@@ -92,7 +99,7 @@ fixed Account::getBalance(bool onlyReconciled)
 	}
 	else
 	{
-		for (; it != m_aTransactions.end(); ++it)
+		for (; it != itEnd; ++it)
 		{			
 			balance += (*it).Amount();
 		}
