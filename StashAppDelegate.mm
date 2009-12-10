@@ -531,6 +531,8 @@
 		m_nTransactionOffset = nTransaction;
 	}
 	
+	m_aBalance.clear();
+	
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
