@@ -5,6 +5,16 @@ Version 0.4
   it back so it fits in correctly
 * Stash now saves the last size/position of the main window, and restores that size/position the
   next time it loads
+* Accounts and Graphs can now be renamed by selecting Rename from the right-click context menu for
+  them in the Index Bar
+* Stash now remembers the widths of the columns for the Transactions view between sessions
+* When drawing Pie Chart graphs, and segment item with no title gets placed under "Other"
+* Pie Chart graph segments can now be selected, and the cumulative amount of these segment(s) is
+  now shown above the total amount
+* When changing the amount of a transaction, the balance for that item, as well as all the transactions
+  after it is now updated accordingly
+* When removing or moving a transaction up/down, the balance for affected transactions and the
+  transactions following it are now updated
 
 Version 0.3
 -----------
