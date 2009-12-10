@@ -28,6 +28,9 @@
 	NSMutableArray *m_aColours;
 	
 	NSString *m_total;
+	
+	double m_dMainRadius;
+	NSPoint m_centrepoint;
 }
 
 - (void)setData:(NSMutableArray*)data;

@@ -45,7 +45,7 @@
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0DE686310CAF30D0066699B /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0DE686210CAF30D0066699B /* analysis.cpp */; };
 		D0EC53B810978AFE006E67CA /* StashDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0EC53B710978AFE006E67CA /* StashDocument.icns */; };
-		D0F9453C10CA9B05003CA8A8 /* PieChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F9453B10CA9B05003CA8A8 /* PieChartView.m */; };
+		D0F9453C10CA9B05003CA8A8 /* PieChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */; };
 		D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */; };
 /* End PBXBuildFile section */
 
@@ -116,7 +116,7 @@
 		D0DE686210CAF30D0066699B /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
 		D0EC53B710978AFE006E67CA /* StashDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = StashDocument.icns; sourceTree = "<group>"; };
 		D0F9453A10CA9B05003CA8A8 /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
-		D0F9453B10CA9B05003CA8A8 /* PieChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieChartView.m; sourceTree = "<group>"; };
+		D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PieChartView.mm; sourceTree = "<group>"; };
 		D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueScheduledTransactionsController.h; sourceTree = "<group>"; };
 		D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DueScheduledTransactionsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,7 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				D0F9453A10CA9B05003CA8A8 /* PieChartView.h */,
-				D0F9453B10CA9B05003CA8A8 /* PieChartView.m */,
+				D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */,
 				D005349B10B95A99000F9B23 /* PreferencesWindow.h */,
 				D005349C10B95A99000F9B23 /* PreferencesWindow.m */,
 				D00534A310B95B3D000F9B23 /* PreferencesController.h */,
@@ -370,7 +370,7 @@
 				D0677E0B10B82563005D783C /* AccountInfoController.mm in Sources */,
 				D005349D10B95A99000F9B23 /* PreferencesWindow.m in Sources */,
 				D00534A510B95B3D000F9B23 /* PreferencesController.m in Sources */,
-				D0F9453C10CA9B05003CA8A8 /* PieChartView.m in Sources */,
+				D0F9453C10CA9B05003CA8A8 /* PieChartView.mm in Sources */,
 				D09E91E210CAB982001DE73F /* graph.cpp in Sources */,
 				D0DE686310CAF30D0066699B /* analysis.cpp in Sources */,
 			);

@@ -809,6 +809,8 @@
 	
 	std::vector<GraphValue>::iterator it = aGraphItems.begin();
 	
+	double startAngle = 0.0;
+	
 	for (; it != aGraphItems.end(); ++it)
 	{
 		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -823,8 +825,17 @@
 		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 		
 		[dict setValue:[NSNumber numberWithDouble:angle] forKey:@"angle"];
+		
+		[dict setValue:[NSNumber numberWithDouble:startAngle] forKey:@"startangle"];
+		
+		startAngle += angle;
+		
+		[dict setValue:[NSNumber numberWithDouble:startAngle] forKey:@"endangle"];		 
+		
 		[dict setValue:sTitle forKey:@"title"];
 		[dict setValue:sSAmount forKey:@"amount"];
+		
+		[dict setValue:nSAmount forKey:@"numamount"];
 				
 		[aItems addObject:dict];		
 	}
