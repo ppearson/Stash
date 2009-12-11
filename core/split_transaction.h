@@ -32,13 +32,13 @@ public:
 	SplitTransaction() { }
 	SplitTransaction(std::string Description, std::string Payee, std::string Category, fixed Amount);
 	
-	std::string Description() const { return m_Description; }
+	std::string getDescription() const { return m_Description; }
 	void setDescription(std::string Description) { m_Description = Description; }
-	std::string Payee() const { return m_Payee; }
+	std::string getPayee() const { return m_Payee; }
 	void setPayee(std::string Payee) { m_Payee = Payee; }
-	std::string Category() const { return m_Category; }
+	std::string getCategory() const { return m_Category; }
 	void setCategory(std::string Category) { m_Category = Category; }
-	fixed Amount() const { return m_Amount; }
+	fixed getAmount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	
 	void Load(std::fstream &stream, int version);

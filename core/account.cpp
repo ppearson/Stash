@@ -93,7 +93,7 @@ fixed Account::getBalance(bool onlyReconciled, int endIndex)
 		{
 			if ((*it).isReconciled())
 			{
-				balance += (*it).Amount();
+				balance += (*it).getAmount();
 			}
 		}
 	}
@@ -101,7 +101,7 @@ fixed Account::getBalance(bool onlyReconciled, int endIndex)
 	{
 		for (; it != itEnd; ++it)
 		{			
-			balance += (*it).Amount();
+			balance += (*it).getAmount();
 		}
 	}
 	

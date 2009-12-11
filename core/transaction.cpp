@@ -108,7 +108,7 @@ fixed Transaction::getSplitTotal()
 	
 	for (std::vector<SplitTransaction>::iterator it = m_aSplits.begin(); it != m_aSplits.end(); ++it)
 	{
-		total += (*it).Amount();
+		total += (*it).getAmount();
 	}
 	
 	return total;	

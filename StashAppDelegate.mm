@@ -497,10 +497,10 @@
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
-			if ((*itTemp).Date1() >= dateNow)
+			if ((*itTemp).getDate() >= dateNow)
 				break;
 			
-			localBalance += (*itTemp).Amount();
+			localBalance += (*itTemp).getAmount();
 			nTransaction++;
 		}
 		
@@ -513,16 +513,16 @@
 		Date dateNow;
 		dateNow.Now();
 		
-		Date dateComp(1, 1, dateNow.Year());
+		Date dateComp(1, 1, dateNow.getYear());
 		
 		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
-			if ((*itTemp).Date1() >= dateComp)
+			if ((*itTemp).getDate() >= dateComp)
 				break;
 			
-			localBalance += (*itTemp).Amount();
+			localBalance += (*itTemp).getAmount();
 			nTransaction++;
 		}
 		
@@ -545,23 +545,23 @@
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
 		
-		std::string strTPayee = it->Payee();
+		std::string strTPayee = it->getPayee();
 		NSString *sTPayee = [[NSString alloc] initWithUTF8String:strTPayee.c_str()];
 		
-		std::string strTDescription = it->Description();
+		std::string strTDescription = it->getDescription();
 		NSString *sTDescription = [[NSString alloc] initWithUTF8String:strTDescription.c_str()];
 		
-		std::string strTCategory = it->Category();
+		std::string strTCategory = it->getCategory();
 		NSString *sTCategory = [[NSString alloc] initWithUTF8String:strTCategory.c_str()];
 		
-		NSNumber *nTAmount = [NSNumber numberWithDouble:it->Amount().ToDouble()];
+		NSNumber *nTAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
 		
 		NSString *sTAmount = [[numberFormatter stringFromNumber:nTAmount] retain];
 		
-		NSDate *date = convertToNSDate(const_cast<Date&>(it->Date2()));
+		NSDate *date = convertToNSDate(const_cast<Date&>(it->getDate1()));
 		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
 		
-		localBalance += it->Amount();
+		localBalance += it->getAmount();
 		
 		m_aBalance.push_back(localBalance);
 		
@@ -582,11 +582,11 @@
 		
 		[newTransaction setIntValue:nTransaction forKey:@"Transaction"];
 		
-		if (it->Split())
+		if (it->isSplit())
 		{
 			int nSplits = it->getSplitCount();
 			
-			fixed splitValue = it->Amount();
+			fixed splitValue = it->getAmount();
 			
 			for (int i = 0; i < nSplits; i++)
 			{
@@ -594,16 +594,16 @@
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				std::string strSPayee = split.Payee();
+				std::string strSPayee = split.getPayee();
 				NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
 				
-				std::string strSDescription = split.Description();
+				std::string strSDescription = split.getDescription();
 				NSString *sSDescription = [[NSString alloc] initWithUTF8String:strSDescription.c_str()];
 				
-				std::string strSCategory = split.Category();
+				std::string strSCategory = split.getCategory();
 				NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 				
-				NSNumber *nSAmount = [NSNumber numberWithDouble:split.Amount().ToDouble()];
+				NSNumber *nSAmount = [NSNumber numberWithDouble:split.getAmount().ToDouble()];
 				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 				
 				[newSplit setValue:sSPayee forKey:@"Payee"];
@@ -617,7 +617,7 @@
 				[newSplit setSplitTransaction:i];
 				[newSplit setIntValue:i forKey:@"Split"];
 				
-				splitValue -= split.Amount();
+				splitValue -= split.getAmount();
 				
 				[newTransaction addChild:newSplit];
 				
@@ -1051,19 +1051,19 @@
 	
 	TransactionItem *newIndex = [[TransactionItem alloc] init];
 	
-	std::string strPayee = newTransaction.Payee();
+	std::string strPayee = newTransaction.getPayee();
 	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
 	
-	std::string strDescription = newTransaction.Description();
+	std::string strDescription = newTransaction.getDescription();
 	NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 	
-	std::string strCategory = newTransaction.Category();
+	std::string strCategory = newTransaction.getCategory();
 	NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	
-	NSNumber *nAmount = [NSNumber numberWithDouble:newTransaction.Amount().ToDouble()];
+	NSNumber *nAmount = [NSNumber numberWithDouble:newTransaction.getAmount().ToDouble()];
 	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 		
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -1178,7 +1178,7 @@
 	int nTransaction = [item intKeyValue:@"Transaction"];
 	Transaction &trans = m_pAccount->getTransaction(nTransaction);
 	
-	fixed splitValue = trans.Amount();
+	fixed splitValue = trans.getAmount();
 	TransactionItem *newSplit = [[TransactionItem alloc] init];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
@@ -1357,21 +1357,21 @@
 			
 			m_bEditing = true;			
 			
-			std::string strPayee = trans->Payee();
+			std::string strPayee = trans->getPayee();
 			NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
 			
-			std::string strDescription = trans->Description();
+			std::string strDescription = trans->getDescription();
 			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 			
-			std::string strCategory = trans->Category();
+			std::string strCategory = trans->getCategory();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			NSNumber *nAmount = [NSNumber numberWithDouble:trans->Amount().ToDouble()];
+			NSNumber *nAmount = [NSNumber numberWithDouble:trans->getAmount().ToDouble()];
 			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 			
-			TransactionType eType = trans->Type();
+			TransactionType eType = trans->getType();
 			
-			Date date1 = trans->Date1();
+			Date date1 = trans->getDate();
 			NSDate *datetemp = convertToNSDate(date1);
 			
 			[transactionsReconciled setEnabled:YES];
@@ -1408,16 +1408,16 @@
 			
 			m_bEditing = true;
 			
-			std::string strPayee = split->Payee();
+			std::string strPayee = split->getPayee();
 			NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
 			
-			std::string strDescription = split->Description();
+			std::string strDescription = split->getDescription();
 			NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
 			
-			std::string strCategory = split->Category();
+			std::string strCategory = split->getCategory();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			NSNumber *nAmount = [NSNumber numberWithDouble:split->Amount().ToDouble()];
+			NSNumber *nAmount = [NSNumber numberWithDouble:split->getAmount().ToDouble()];
 			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
 			
 			[transactionsPayee setStringValue:sPayee];
@@ -1550,7 +1550,7 @@
 		trans->setType(eType);
 		trans->setReconciled(bReconciled);
 		
-		fixed oldAmount = trans->Amount();
+		fixed oldAmount = trans->getAmount();
 		
 		if (oldAmount != fAmount)
 		{
@@ -1610,7 +1610,7 @@
 		}
 		else if (nSplit == -2) // Dummy value, so convert to a real split
 		{
-			fixed transValue = trans->Amount();			
+			fixed transValue = trans->getAmount();			
 			
 			trans->addSplit(strDesc, strPayee, strCategory, fAmount);
 			
@@ -2286,9 +2286,9 @@ NSDate * convertToNSDate(Date &date)
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    [dateComponents setYear:date.Year()];
-    [dateComponents setMonth:date.Month()];
-    [dateComponents setDay:date.Day()];
+    [dateComponents setYear:date.getYear()];
+    [dateComponents setMonth:date.getMonth()];
+    [dateComponents setDay:date.getDay()];
     
     [dateComponents setHour:0];
     [dateComponents setMinute:0];
@@ -2741,7 +2741,7 @@ NSDate * convertToNSDate(Date &date)
 	{
 		TransactionItem *aTransaction = [m_aTransactionItems objectAtIndex:nTransItemIndex];
 		
-		localBalance += it->Amount();
+		localBalance += it->getAmount();
 		
 		m_aBalance.push_back(localBalance);
 		

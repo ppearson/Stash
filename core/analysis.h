@@ -39,6 +39,7 @@ public:
 	bool operator<(const GraphValue &rhs) const
 	{
 		return this->m_angle < rhs.m_angle;
+//		return rhs.m_angle < this->m_angle;
 	}
 	
 	std::string		getTitle() { return m_title; }

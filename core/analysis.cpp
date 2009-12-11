@@ -44,23 +44,23 @@ bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &
 
 	for (; it != pAccount->end(); ++it)
 	{
-		if ((*it).Date1() < startDate || (*it).Date1() > endDate)
+		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
 			continue;
 		
-		if ((*it).Amount().IsPositive())
+		if ((*it).getAmount().IsPositive())
 			continue;
 		
-		if (ignoreTransfers && (*it).Type() == Transfer)
+		if (ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
-		if ((*it).Split() && (*it).getSplitCount() > 0)
+		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string category = split.Category();
-				fixed amount = split.Amount();
+				std::string category = split.getCategory();
+				fixed amount = split.getAmount();
 				
 				amount.setPositive();
 				
@@ -82,8 +82,8 @@ bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &
 		}
 		else
 		{
-			std::string category = (*it).Category();
-			fixed amount = (*it).Amount();
+			std::string category = (*it).getCategory();
+			fixed amount = (*it).getAmount();
 			
 			amount.setPositive();
 			
@@ -123,23 +123,23 @@ bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aVal
 	
 	for (; it != pAccount->end(); ++it)
 	{
-		if ((*it).Date1() < startDate || (*it).Date1() > endDate)
+		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
 			continue;
 		
-		if ((*it).Amount().IsPositive())
+		if ((*it).getAmount().IsPositive())
 			continue;
 		
-		if (ignoreTransfers && (*it).Type() == Transfer)
+		if (ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
-		if ((*it).Split() && (*it).getSplitCount() > 0)
+		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string payee = split.Payee();
-				fixed amount = split.Amount();
+				std::string payee = split.getPayee();
+				fixed amount = split.getAmount();
 				
 				amount.setPositive();
 				
@@ -161,8 +161,8 @@ bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aVal
 		}
 		else
 		{
-			std::string payee = (*it).Payee();
-			fixed amount = (*it).Amount();
+			std::string payee = (*it).getPayee();
+			fixed amount = (*it).getAmount();
 			
 			amount.setPositive();
 			
@@ -202,23 +202,23 @@ bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &
 
 	for (; it != pAccount->end(); ++it)
 	{
-		if ((*it).Date1() < startDate || (*it).Date1() > endDate)
+		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
 			continue;
 		
-		if (!(*it).Amount().IsPositive())
+		if (!(*it).getAmount().IsPositive())
 			continue;
 		
-		if (ignoreTransfers && (*it).Type() == Transfer)
+		if (ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
-		if ((*it).Split() && (*it).getSplitCount() > 0)
+		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string category = split.Category();
-				fixed amount = split.Amount();
+				std::string category = split.getCategory();
+				fixed amount = split.getAmount();
 				
 				itFind = aMap.find(category);
 				
@@ -238,8 +238,8 @@ bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &
 		}
 		else
 		{
-			std::string category = (*it).Category();
-			fixed amount = (*it).Amount();
+			std::string category = (*it).getCategory();
+			fixed amount = (*it).getAmount();
 			
 			itFind = aMap.find(category);
 			
@@ -277,23 +277,23 @@ bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aVal
 	
 	for (; it != pAccount->end(); ++it)
 	{
-		if ((*it).Date1() < startDate || (*it).Date1() > endDate)
+		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
 			continue;
 		
-		if (!(*it).Amount().IsPositive())
+		if (!(*it).getAmount().IsPositive())
 			continue;
 		
-		if (ignoreTransfers && (*it).Type() == Transfer)
+		if (ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
-		if ((*it).Split() && (*it).getSplitCount() > 0)
+		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string payee = split.Payee();
-				fixed amount = split.Amount();
+				std::string payee = split.getPayee();
+				fixed amount = split.getAmount();
 				
 				itFind = aMap.find(payee);
 				
@@ -313,8 +313,8 @@ bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aVal
 		}
 		else
 		{
-			std::string payee = (*it).Payee();
-			fixed amount = (*it).Amount();
+			std::string payee = (*it).getPayee();
+			fixed amount = (*it).getAmount();
 			
 			itFind = aMap.find(payee);
 			

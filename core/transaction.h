@@ -51,22 +51,22 @@ public:
 	
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
-	Date Date1() const { return m_Date; }
-	const Date &Date2() { return m_Date; }
+	Date getDate() const { return m_Date; }
+	const Date &getDate1() { return m_Date; }
 	void setDate(Date date) { m_Date = date; }
-	std::string Category() const { return m_Category; }
+	std::string getCategory() const { return m_Category; }
 	void setCategory(std::string Category) { m_Category = Category; }
-	std::string Description() const { return m_Description; }
+	std::string getDescription() const { return m_Description; }
 	void setDescription(std::string Description) { m_Description = Description; }
-	std::string Payee() const { return m_Payee; }
+	std::string getPayee() const { return m_Payee; }
 	void setPayee(std::string Payee) { m_Payee = Payee; }
-	fixed Amount() const { return m_Amount; }
+	fixed getAmount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
-	TransactionType Type() const { return m_Type; }
+	TransactionType getType() const { return m_Type; }
 	void setType(TransactionType type) { m_Type = type; }
 	
 	void setSplit(bool split) { m_Split = split; }
-	bool Split() { return m_Split; }
+	bool isSplit() { return m_Split; }
 	
 	void addSplit(SplitTransaction &split) { m_aSplits.push_back(split); }
 	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);

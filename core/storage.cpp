@@ -43,16 +43,16 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 	std::vector<Transaction>::iterator it = pAccount->begin();
 	for (; it != pAccount->end(); ++it)
 	{
-		Date date = it->Date1();
-		fixed amount = it->Amount();
+		Date date = it->getDate();
+		fixed amount = it->getAmount();
 
 		fileStream << "D" << date.FormattedDate(dateFormat) << "\n";
-		fileStream << "P" << it->Payee() << "\n";
+		fileStream << "P" << it->getPayee() << "\n";
 		fileStream << "T" << amount << "\n";
 
-		if (!it->Description().empty())
+		if (!it->getDescription().empty())
 		{
-			fileStream << "M" << it->Description() << "\n";
+			fileStream << "M" << it->getDescription() << "\n";
 		}
 
 		if (it->isReconciled())
@@ -60,9 +60,9 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 			fileStream << "C" << "R\n";
 		}
 
-		if (!it->Category().empty())
+		if (!it->getCategory().empty())
 		{
-			fileStream << "L" << it->Category() << "\n";
+			fileStream << "L" << it->getCategory() << "\n";
 		}
 
 		// now do splits
@@ -73,9 +73,9 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 		{
 			SplitTransaction split = it->getSplit(i);
 
-			fileStream << "S" << split.Category() << "\n";
-			fileStream << "E" << split.Payee() << "\n";
-			fileStream << "$" << split.Amount() << "\n";
+			fileStream << "S" << split.getCategory() << "\n";
+			fileStream << "E" << split.getPayee() << "\n";
+			fileStream << "$" << split.getAmount() << "\n";
 		}
 
 		fileStream << "^\n";
@@ -296,7 +296,7 @@ void clearTransaction(Transaction &trans)
 	trans.setType(None);
 	trans.setSplit(false);
 
-	int numSplits = trans.getSplitCount() - 1;
+	int numSplits = trans.getSplitCount();
 
 	for (int i = 0; i < numSplits; i++)
 	{
