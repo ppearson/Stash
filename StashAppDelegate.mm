@@ -25,6 +25,7 @@
 #include "storage.h"
 #import "AccountInfoController.h"
 #include "analysis.h"
+#import "SplitViewEx.h"
 
 #define TOOLBAR_ADDACCOUNT		@"TOOLBAR_ADDACCOUNT"
 #define TOOLBAR_ADDGRAPH		@"TOOLBAR_ADDGRAPH"
@@ -127,6 +128,11 @@
     [toolbar setSizeMode:NSToolbarSizeModeRegular];
     [[self window] setToolbar:toolbar];
     [toolbar release];
+	
+	// Load the splitter positions
+	[indexBarSplitView loadLayoutFromDefault:@"indexSplitter"];
+	[transactionsverticalSplitView loadLayoutFromDefault:@"transactionsSplitter"];
+	[scheduledverticalSplitView loadLayoutFromDefault:@"schedtransSplitter"];
 	
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 	
@@ -2714,6 +2720,11 @@ NSDate * convertToNSDate(Date &date)
 		
 		[defs setFloat:fWidth forKey:sColKey];
 	}
+	
+	// Save the splitter positions
+	[indexBarSplitView saveLayoutToDefault:@"indexSplitter"];
+	[transactionsverticalSplitView saveLayoutToDefault:@"transactionsSplitter"];
+	[scheduledverticalSplitView saveLayoutToDefault:@"schedtransSplitter"];
 	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];

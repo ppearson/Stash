@@ -12,9 +12,12 @@ Version 0.4
 * Pie Chart graph segments can now be selected, and the cumulative amount of these segment(s) is
   now shown above the total amount
 * When changing the amount of a transaction, the balance for that item, as well as all the transactions
-  after it is now updated accordingly
+  after it are now updated accordingly
 * When removing or moving a transaction up/down, the balance for affected transactions and the
   transactions following it are now updated
+* Fix bug which imported split transaction items wrongly from QIF files
+* Added Toolbar to main window with Add Account and Add Graph buttons
+* Splitter Views now save their sizes, so index bar should remember its size between sessions
 
 Version 0.3
 -----------

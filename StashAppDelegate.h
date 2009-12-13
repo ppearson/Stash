@@ -51,6 +51,8 @@ enum TransactionsToShow
 	IBOutlet NSView *indexView;
 	IBOutlet IndexBar *indexBar;
 	
+	IBOutlet NSSplitView *indexBarSplitView;
+	
 	// Content Views
 	IBOutlet NSView *contentView;
 	
@@ -58,7 +60,7 @@ enum TransactionsToShow
 	
 	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
-	IBOutlet NSSplitView  *transactionsverticalSplitView;
+	IBOutlet NSSplitView *transactionsverticalSplitView;
 	IBOutlet NSComboBox *transactionsPayee;
 	IBOutlet NSComboBox *transactionsCategory;
 	IBOutlet NSTextField *transactionsDescription;
