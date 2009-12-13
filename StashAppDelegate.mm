@@ -1083,7 +1083,10 @@
 - (IBAction)AddTransaction:(id)sender
 {
 	if (!m_pAccount)
+	{
+		NSRunAlertPanel(@"No Active Account", @"You must have an active account in order to add a new transaction.", @"OK", nil, nil);
 		return;
+	}
 	
 	NSDate *ndate1 = [transactionsDateCntl dateValue];
 	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
