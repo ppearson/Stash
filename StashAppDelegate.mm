@@ -369,7 +369,6 @@
 	
 	[self buildTransactionsTree];
 	[self refreshLibraryItems];
-	[self updateUI];	
 }
 
 - (void)payeesSelected:(id)sender
@@ -938,13 +937,6 @@
 	}
 }
 
-- (void)updateUI
-{
-	if (!m_pAccount)
-		return;
-	
-}
-
 - (IBAction)AddAccount:(id)sender
 {
 	AddAccountController *addAccountController = [[AddAccountController alloc] initWnd:self];
@@ -1137,7 +1129,6 @@
 	
 	if (!m_aBalance.empty())
 	{
-		
 		localBalance = m_aBalance.back();
 	}
 	else
@@ -1179,8 +1170,6 @@
 	[window makeFirstResponder:transactionsPayee];
 	
 	m_UnsavedChanges = true;
-	
-	[self updateUI];
 }
 
 - (IBAction)DeleteTransaction:(id)sender
@@ -1220,8 +1209,6 @@
 		[transactionsTableView reloadData];
 		
 		m_UnsavedChanges = true;
-		
-		[self updateUI];
 	}	
 }
 
@@ -1739,8 +1726,6 @@
 	[numberFormatter release];
 	
 	m_UnsavedChanges = true;
-	
-	[self updateUI];
 }
 
 - (void)ScheduledSelectionDidChange:(NSNotification *)notification
@@ -2168,10 +2153,8 @@
 			[item setValue:object forKey:identifier];
 			
 			int nTrans = [item transaction];
-			//		int nSplit = [m_SelectedItem splitTransaction];
-			
+	
 			Transaction *trans = NULL;
-			//		SplitTransaction *split = NULL;
 			
 			if (nTrans >= 0)
 				trans = &m_pAccount->getTransaction(nTrans);
@@ -2188,8 +2171,6 @@
 				}
 				
 				m_UnsavedChanges = true;
-				
-				[self updateUI];
 			}
 		}
 	}

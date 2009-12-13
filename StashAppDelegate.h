@@ -149,8 +149,6 @@ enum TransactionsToShow
 - (void)buildGraph;
 - (void)refreshLibraryItems;
 
-- (void)updateUI;
-
 - (void)calculateAndShowScheduled;
 - (void)AddDueScheduledTransaction:(int)index;
 - (void)SkipDueScheduledTransaction:(int)index;
