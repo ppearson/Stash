@@ -26,6 +26,9 @@
 #import "AccountInfoController.h"
 #include "analysis.h"
 
+#define TOOLBAR_ADDACCOUNT		@"TOOLBAR_ADDACCOUNT"
+#define TOOLBAR_ADDGRAPH		@"TOOLBAR_ADDGRAPH"
+
 @implementation StashAppDelegate
 
 @synthesize window;
@@ -116,6 +119,14 @@
 	
 	[contentViewPlaceholder addSubview:vTransactionsView];
 	contentView = vTransactionsView;
+	
+	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier: @"Toolbar"];
+    [toolbar setDelegate:self];
+    [toolbar setAllowsUserCustomization:NO];
+    [toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
+    [toolbar setSizeMode:NSToolbarSizeModeRegular];
+    [[self window] setToolbar:toolbar];
+    [toolbar release];
 	
 	NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
 	
@@ -225,6 +236,45 @@
 	[payeesTableView setDelegate:self];	
 	[categoriesTableView setDelegate:self];
 	[scheduledTransactionsTableView setDelegate:self];
+}
+
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
+{
+    NSToolbarItem * item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
+	
+    if ([ident isEqualToString:TOOLBAR_ADDACCOUNT])
+    {
+        [item setLabel:@"Add Account"];
+        [item setImage:[NSImage imageNamed:@"add_account.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(AddAccount:)];
+        [item setAutovalidates:NO];
+    }
+    else if ([ident isEqualToString:TOOLBAR_ADDGRAPH])
+    {
+        [item setLabel:@"Add Graph"];
+        [item setImage:[NSImage imageNamed:@"add_graph.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(AddGraph:)];
+        [item setAutovalidates:NO];
+    }
+	else
+    {
+        [item release];
+        return nil;
+    }
+	
+    return [item autorelease];
+}
+
+- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [self toolbarAllowedItemIdentifiers:toolbar];
+}
+
+- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, nil];
 }
 
 - (void)buildIndexTree
