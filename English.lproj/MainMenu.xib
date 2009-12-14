@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
+			<integer value="81"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -954,7 +954,7 @@
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<object class="NSView" key="NSWindowView" id="439893737">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -984,7 +984,6 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{1019, 616}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -1113,6 +1112,7 @@
 								</object>
 								<string key="NSFrameSize">{267, 386}</string>
 								<reference key="NSSuperview" ref="471500386"/>
+								<reference key="NSNextKeyView" ref="211320460"/>
 								<reference key="NSDocView" ref="211320460"/>
 								<reference key="NSBGColor" ref="584327073"/>
 								<int key="NScvFlags">4</int>
@@ -1140,6 +1140,7 @@
 						</object>
 						<string key="NSFrameSize">{267, 386}</string>
 						<reference key="NSSuperview" ref="585576901"/>
+						<reference key="NSNextKeyView" ref="219118730"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="406246405"/>
 						<reference key="NSHScroller" ref="539316953"/>
@@ -3937,14 +3938,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">newDocument:</string>
-						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="705341025"/>
-					</object>
-					<int key="connectionID">373</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">terminate:</string>
 						<reference key="source" ref="1050"/>
 						<reference key="destination" ref="632727374"/>
@@ -4806,6 +4799,14 @@
 						<reference key="destination" ref="73944182"/>
 					</object>
 					<int key="connectionID">971</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">NewFile:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="705341025"/>
+					</object>
+					<int key="connectionID">972</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7970,7 +7971,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">971</int>
+			<int key="maxID">972</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -8078,6 +8079,7 @@
 							<string>ImportQIF:</string>
 							<string>MoveDown:</string>
 							<string>MoveUp:</string>
+							<string>NewFile:</string>
 							<string>OpenFile:</string>
 							<string>RefreshView:</string>
 							<string>SaveFile:</string>
@@ -8101,6 +8103,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>

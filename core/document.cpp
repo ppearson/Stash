@@ -165,6 +165,15 @@ bool Document::Store(std::fstream &stream)
 	return true;
 }
 
+void Document::clear()
+{
+	m_aAccounts.clear();
+	m_aScheduledTransactions.clear();
+	m_aPayees.clear();
+	m_aCategories.clear();
+	m_aGraphs.clear();
+}
+
 fixed Document::getBalance(bool onlyReconciled)
 {
 	fixed balance = 0.0;

@@ -200,7 +200,7 @@ enum TransactionsToShow
 
 - (IBAction)AddGraph:(id)sender;
 
-
+- (IBAction)NewFile:(id)sender;
 - (IBAction)OpenFile:(id)sender;
 - (IBAction)SaveFile:(id)sender;
 - (IBAction)SaveFileAs:(id)sender;

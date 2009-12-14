@@ -2341,6 +2341,40 @@ NSDate * convertToNSDate(Date &date)
     return nsDate;
 }
 
+- (IBAction)NewFile:(id)sender
+{
+	if (m_UnsavedChanges)
+    {
+		int choice = NSAlertDefaultReturn;
+		
+		NSString *message = @"Do you want to save the changes you made in this document?";
+		
+		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
+		
+		if (choice == NSAlertDefaultReturn) // Save file
+		{
+			[self SaveFile:sender];
+		}
+		else if (choice == NSAlertOtherReturn) // Cancel
+		{
+			return;
+		}
+    }
+	
+	m_UnsavedChanges = false;
+	m_DocumentFile = "";
+	
+	m_SelectedTransaction = 0;
+	m_pAccount = 0;
+	
+	m_Document.clear();
+	
+	[self buildIndexTree];
+	[self buildTransactionsTree];
+	[self buildSchedTransList];
+	[self refreshLibraryItems];
+}
+
 - (IBAction)OpenFile:(id)sender
 {
 	if (m_UnsavedChanges)

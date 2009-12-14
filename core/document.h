@@ -68,6 +68,8 @@ public:
 	int getGraphCount() { return m_aGraphs.size(); }
 	void deleteGraph(int graph) { m_aGraphs.erase(m_aGraphs.begin() + graph); }
 	
+	void clear();
+	
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	
