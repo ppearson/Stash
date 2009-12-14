@@ -25,6 +25,8 @@
 
 #include "datetime.h"
 
+static int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+
 Date::Date() : m_Separator('/')
 {
 	Now();

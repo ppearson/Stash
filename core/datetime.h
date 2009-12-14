@@ -34,8 +34,6 @@ enum DateStringFormat
 	US
 };
 
-static int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
-
 #define SECONDS_IN_DAY 86400
 
 class Date
