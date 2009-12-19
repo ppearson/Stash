@@ -54,9 +54,10 @@ enum TransactionsToShow
 	IBOutlet NSSplitView *indexBarSplitView;
 	
 	// Content Views
-	IBOutlet NSView *contentView;
-	
+	IBOutlet NSView *contentView;	
 	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView, *vScheduledView, *vGraphView;
+	
+	int nViewType;
 	
 	// Transactions	
 	IBOutlet NSOutlineView *transactionsTableView;
@@ -141,6 +142,8 @@ enum TransactionsToShow
 	bool m_HasFinishedLoading;
 }
 
+@property (assign) TransactionsToShow nShowTransactionsType;
+
 - (void)buildIndexTree;
 - (void)buildTransactionsTree;
 - (void)buildPayeesList;
@@ -174,6 +177,8 @@ enum TransactionsToShow
 - (IBAction)showRecentTransactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;
 - (IBAction)showAllTransactions:(id)sender;
+
+- (void)viewToolbarClicked:(id)sender;
 
 
 // Payees
@@ -219,6 +224,8 @@ enum TransactionsToShow
 - (IBAction)updateScheduled:(id)sender;
 
 - (IBAction)updateGraph:(id)sender;
+
+- (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;

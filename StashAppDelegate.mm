@@ -20,19 +20,33 @@
  *
  */
 
+#include "storage.h"
+#include "analysis.h"
+
 #import "StashAppDelegate.h"
 #import "IndexItem.h"
-#include "storage.h"
 #import "AccountInfoController.h"
-#include "analysis.h"
 #import "SplitViewEx.h"
+#import "ToolbarItemEx.h"
 
 #define TOOLBAR_ADDACCOUNT		@"TOOLBAR_ADDACCOUNT"
 #define TOOLBAR_ADDGRAPH		@"TOOLBAR_ADDGRAPH"
+#define TOOLBAR_VIEWRECENT		@"TOOLBAR_VIEWRECENT"
+#define TOOLBAR_VIEWTHISYEAR	@"TOOLBAR_VIEWTHISYEAR"
+#define TOOLBAR_VIEWALL			@"TOOLBAR_VIEWALL"
+#define TOOLBAR_VIEWTYPE		@"TOOLBAR_VIEWTYPE"
+
+typedef enum
+{
+    TOOLBAR_VIEW_RECENT_TAG = 0,
+    TOOLBAR_VIEW_THISYEAR_TAG = 1,
+	TOOLBAR_VIEW_ALL_TAG = 2
+}
+toolbarViewGroupTag;
 
 @implementation StashAppDelegate
 
-@synthesize window;
+@synthesize window, nShowTransactionsType;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
@@ -120,6 +134,8 @@
 	
 	[contentViewPlaceholder addSubview:vTransactionsView];
 	contentView = vTransactionsView;
+	
+	nViewType = 0;
 	
 	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier: @"Toolbar"];
     [toolbar setDelegate:self];
@@ -264,6 +280,45 @@
         [item setAction:@selector(AddGraph:)];
         [item setAutovalidates:NO];
     }
+	else if ([ident isEqualToString: TOOLBAR_VIEWTYPE])
+    {
+        ToolbarItemEx *groupItem = [[ToolbarItemEx alloc] initWithItemIdentifier:ident];
+        
+        NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] initWithFrame:NSZeroRect];
+        [segmentedControl setCell:[[[NSSegmentedCell alloc] init] autorelease]];
+        [groupItem setView:segmentedControl];
+        NSSegmentedCell *segmentedCell = (NSSegmentedCell *)[segmentedControl cell];
+        
+        [segmentedControl setSegmentCount:3];
+        [segmentedCell setTrackingMode:NSSegmentSwitchTrackingSelectOne];
+        
+        const NSSize groupSize = NSMakeSize(200.0, 25.0);
+        [groupItem setMinSize:groupSize];
+        [groupItem setMaxSize:groupSize];
+        
+        [groupItem setLabel:@"View Type"];
+        [groupItem setPaletteLabel:@"View Type"];
+        [groupItem setTarget:self];
+        [groupItem setAction:@selector(viewToolbarClicked:)];
+        
+        [segmentedCell setTag:TOOLBAR_VIEW_RECENT_TAG forSegment:TOOLBAR_VIEW_RECENT_TAG];
+		[segmentedControl setLabel:@"Recent" forSegment:TOOLBAR_VIEW_RECENT_TAG];
+		
+        [segmentedCell setToolTip:@"Show recent Transactions" forSegment:TOOLBAR_VIEW_RECENT_TAG];
+        
+        [segmentedCell setTag:TOOLBAR_VIEW_THISYEAR_TAG forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+		[segmentedControl setLabel:@"This Year" forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+        [segmentedCell setToolTip:@"Show Transactions from this year" forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+		
+		[segmentedCell setTag: TOOLBAR_VIEW_ALL_TAG forSegment:TOOLBAR_VIEW_ALL_TAG];
+		[segmentedControl setLabel: @"All" forSegment:TOOLBAR_VIEW_ALL_TAG];
+        [segmentedCell setToolTip: @"Show all" forSegment:TOOLBAR_VIEW_ALL_TAG];
+		
+		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"nShowTransactionsType" options:0];
+        
+        [segmentedControl release];
+        return [groupItem autorelease];
+    }
 	else
     {
         [item release];
@@ -280,7 +335,7 @@
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, nil];
+    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, TOOLBAR_VIEWTYPE, nil];
 }
 
 - (void)buildIndexTree
@@ -358,6 +413,8 @@
 	[contentViewPlaceholder replaceSubview:contentView with:vTransactionsView];
 	contentView = vTransactionsView;
 	
+	nViewType = 0;
+	
 	[transactionsPayee setStringValue:@""];
 	[transactionsDescription setStringValue:@""];
 	[transactionsCategory setStringValue:@""];
@@ -379,6 +436,8 @@
 	[contentViewPlaceholder replaceSubview:contentView with:vPayeesView];
 	contentView = vPayeesView;
 	
+	nViewType = 1;
+	
 	[self buildPayeesList];
 }
 
@@ -389,6 +448,8 @@
 	[vCategoriesView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vCategoriesView];
 	contentView = vCategoriesView;
+	
+	nViewType = 2;
 	
 	[self buildCategoriesList];
 }
@@ -402,6 +463,8 @@
 	[vScheduledView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vScheduledView];
 	contentView = vScheduledView;
+	
+	nViewType = 3;
 	
 	// Update the list of Accounts
 	
@@ -438,6 +501,8 @@
 	[vGraphView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vGraphView];
 	contentView = vGraphView;
+	
+	nViewType = 4;
 	
 	// Update the list of Accounts
 	
@@ -1956,6 +2021,25 @@
 	[self buildTransactionsTree];
 }
 
+- (void)viewToolbarClicked:(id)sender
+{
+	NSInteger tagValue = [sender isKindOfClass: [NSSegmentedControl class]]
+	? [(NSSegmentedCell *)[sender cell] tagForSegment: [sender selectedSegment]] : [sender tag];
+	
+    switch (tagValue)
+    {
+        case TOOLBAR_VIEW_RECENT_TAG:
+            [self showRecentTransactions: sender];
+            break;
+        case TOOLBAR_VIEW_THISYEAR_TAG:
+            [self showAllTransactionsThisYear: sender];
+            break;
+		case TOOLBAR_VIEW_ALL_TAG:
+            [self showAllTransactions: sender];
+            break;
+    }	
+}
+
 - (IBAction)DeletePayee:(id)sender
 {
 	NSInteger row = [payeesTableView selectedRow];
@@ -2720,6 +2804,16 @@ NSDate * convertToNSDate(Date &date)
         [menuItem setState:nShowTransactionsType == ALL ? NSOnState : NSOffState];
         return YES;
     }
+	return YES;
+}
+
+- (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem
+{
+    NSString *ident = [toolbarItem itemIdentifier];
+    
+    if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
+        return nViewType == 0;
+	
 	return YES;
 }
 
