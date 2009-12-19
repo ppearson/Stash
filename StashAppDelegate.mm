@@ -2624,6 +2624,12 @@ NSDate * convertToNSDate(Date &date)
 
 - (IBAction)ImportQIF:(id)sender
 {
+	if (!m_pAccount)
+	{
+		NSRunAlertPanel(@"No Active Account", @"You must have an active account in order to import QIF file data.", @"OK", nil, nil);
+		return;
+	}
+	
 	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
 	NSString *fileToOpen;
 	std::string strFile = "";
