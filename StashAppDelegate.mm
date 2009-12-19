@@ -109,7 +109,7 @@
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
-	nShowTransactionsType = LAST_30DAYS;
+	nShowTransactionsType = RECENT;
 	
 	[window setDelegate:self];
 	
@@ -541,7 +541,7 @@
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
-	if (nShowTransactionsType == LAST_30DAYS)
+	if (nShowTransactionsType == RECENT)
 	{
 		Date dateNow;
 		dateNow.Now();
@@ -552,7 +552,7 @@
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
-			if ((*itTemp).getDate() >= dateNow)
+			if ((*itTemp).getDate1() >= dateNow)
 				break;
 			
 			localBalance += (*itTemp).getAmount();
@@ -574,7 +574,7 @@
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
-			if ((*itTemp).getDate() >= dateComp)
+			if ((*itTemp).getDate1() >= dateComp)
 				break;
 			
 			localBalance += (*itTemp).getAmount();
@@ -1938,9 +1938,9 @@
 	[self buildGraph];
 }
 
-- (IBAction)showLast30DaysTransactions:(id)sender
+- (IBAction)showRecentTransactions:(id)sender
 {
-	nShowTransactionsType = LAST_30DAYS;
+	nShowTransactionsType = RECENT;
 	[self buildTransactionsTree];
 }
 
@@ -2699,6 +2699,28 @@ NSDate * convertToNSDate(Date &date)
         [window1 center];
 	
     [window1 makeKeyAndOrderFront:self];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    SEL action = [menuItem action];
+	
+    if (action == @selector(showRecentTransactions:))
+    {
+        [menuItem setState:nShowTransactionsType == RECENT ? NSOnState : NSOffState];
+        return YES;
+    }
+	if (action == @selector(showAllTransactionsThisYear:))
+    {
+        [menuItem setState:nShowTransactionsType == ALL_THIS_YEAR ? NSOnState : NSOffState];
+        return YES;
+    }
+	if (action == @selector(showAllTransactions:))
+    {
+        [menuItem setState:nShowTransactionsType == ALL ? NSOnState : NSOffState];
+        return YES;
+    }
+	return YES;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender

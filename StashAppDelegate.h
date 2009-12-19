@@ -35,12 +35,12 @@
 
 enum TransactionsToShow
 {
-	LAST_30DAYS,
+	RECENT,
 	ALL_THIS_YEAR,
 	ALL
 };
 
-@interface StashAppDelegate : NSObject// <NSApplicationDelegate>
+@interface StashAppDelegate : NSObject
 {
     NSWindow *window;
 	
@@ -171,7 +171,7 @@ enum TransactionsToShow
 - (void)SwapTransactions:(int)from to:(int)to;
 - (void)RefreshView:(id)sender;
 
-- (IBAction)showLast30DaysTransactions:(id)sender;
+- (IBAction)showRecentTransactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;
 - (IBAction)showAllTransactions:(id)sender;
 
