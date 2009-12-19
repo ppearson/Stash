@@ -186,6 +186,10 @@
 		{
 			dStartX -= (dStartX + extent.width) - bounds.size.width;
 		}
+		else if (dStartX < bounds.origin.x)
+		{
+			dStartX = 0.0;//(dStartX - extent.width);
+		}
 		
 		NSPoint labelPosition = NSMakePoint(dStartX, dStartY);		
 		
