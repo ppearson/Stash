@@ -46,7 +46,7 @@ toolbarViewGroupTag;
 
 @implementation StashAppDelegate
 
-@synthesize window, nShowTransactionsType;
+@synthesize window, ShowTransactionsViewType;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {	
@@ -123,8 +123,6 @@ toolbarViewGroupTag;
 	m_bEditing = false;	
 	m_SelectedTransaction = 0;
 	
-	nShowTransactionsType = RECENT;
-	
 	[window setDelegate:self];
 	
 	[indexView setFrameSize:[indexViewPlaceholder frame].size];
@@ -168,6 +166,17 @@ toolbarViewGroupTag;
 			
 			[window setFrame:windowRect display:YES animate:NO];
 		}
+	}
+	
+	int nTransactionsViewType = [[defs objectForKey:@"TransactionsViewType"] intValue];
+	
+	if (nTransactionsViewType >= 0 && nTransactionsViewType < 3)
+	{
+		self.ShowTransactionsViewType = nTransactionsViewType;
+	}
+	else
+	{
+		self.ShowTransactionsViewType = RECENT;
 	}
 	
 	m_aTransactionItems = [[NSMutableArray alloc] init];
@@ -291,6 +300,8 @@ toolbarViewGroupTag;
         
         [segmentedControl setSegmentCount:3];
         [segmentedCell setTrackingMode:NSSegmentSwitchTrackingSelectOne];
+		
+		[segmentedControl setSegmentStyle:NSSegmentStyleTexturedSquare];
         
         const NSSize groupSize = NSMakeSize(200.0, 25.0);
         [groupItem setMinSize:groupSize];
@@ -303,7 +314,6 @@ toolbarViewGroupTag;
         
         [segmentedCell setTag:TOOLBAR_VIEW_RECENT_TAG forSegment:TOOLBAR_VIEW_RECENT_TAG];
 		[segmentedControl setLabel:@"Recent" forSegment:TOOLBAR_VIEW_RECENT_TAG];
-		
         [segmentedCell setToolTip:@"Show recent Transactions" forSegment:TOOLBAR_VIEW_RECENT_TAG];
         
         [segmentedCell setTag:TOOLBAR_VIEW_THISYEAR_TAG forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
@@ -314,7 +324,7 @@ toolbarViewGroupTag;
 		[segmentedControl setLabel: @"All" forSegment:TOOLBAR_VIEW_ALL_TAG];
         [segmentedCell setToolTip: @"Show all" forSegment:TOOLBAR_VIEW_ALL_TAG];
 		
-		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"nShowTransactionsType" options:0];
+		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"ShowTransactionsViewType" options:0];
         
         [segmentedControl release];
         return [groupItem autorelease];
@@ -606,7 +616,7 @@ toolbarViewGroupTag;
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
-	if (nShowTransactionsType == RECENT)
+	if (ShowTransactionsViewType == RECENT)
 	{
 		Date dateNow;
 		dateNow.Now();
@@ -628,7 +638,7 @@ toolbarViewGroupTag;
 		
 		m_nTransactionOffset = nTransaction;
 	}
-	else if (nShowTransactionsType == ALL_THIS_YEAR)
+	else if (ShowTransactionsViewType == ALL_THIS_YEAR)
 	{
 		Date dateNow;
 		dateNow.Now();
@@ -2005,19 +2015,19 @@ toolbarViewGroupTag;
 
 - (IBAction)showRecentTransactions:(id)sender
 {
-	nShowTransactionsType = RECENT;
+	self.ShowTransactionsViewType = RECENT;
 	[self buildTransactionsTree];
 }
 
 - (IBAction)showAllTransactionsThisYear:(id)sender
 {
-	nShowTransactionsType = ALL_THIS_YEAR;
+	self.ShowTransactionsViewType = ALL_THIS_YEAR;
 	[self buildTransactionsTree];
 }
 
 - (IBAction)showAllTransactions:(id)sender
 {
-	nShowTransactionsType = ALL;
+	self.ShowTransactionsViewType = ALL;
 	[self buildTransactionsTree];
 }
 
@@ -2791,17 +2801,17 @@ NSDate * convertToNSDate(Date &date)
 	
     if (action == @selector(showRecentTransactions:))
     {
-        [menuItem setState:nShowTransactionsType == RECENT ? NSOnState : NSOffState];
+        [menuItem setState:ShowTransactionsViewType == RECENT ? NSOnState : NSOffState];
         return YES;
     }
 	if (action == @selector(showAllTransactionsThisYear:))
     {
-        [menuItem setState:nShowTransactionsType == ALL_THIS_YEAR ? NSOnState : NSOffState];
+        [menuItem setState:ShowTransactionsViewType == ALL_THIS_YEAR ? NSOnState : NSOffState];
         return YES;
     }
 	if (action == @selector(showAllTransactions:))
     {
-        [menuItem setState:nShowTransactionsType == ALL ? NSOnState : NSOffState];
+        [menuItem setState:ShowTransactionsViewType == ALL ? NSOnState : NSOffState];
         return YES;
     }
 	return YES;
@@ -2865,6 +2875,8 @@ NSDate * convertToNSDate(Date &date)
 	[indexBarSplitView saveLayoutToDefault:@"indexSplitter"];
 	[transactionsverticalSplitView saveLayoutToDefault:@"transactionsSplitter"];
 	[scheduledverticalSplitView saveLayoutToDefault:@"schedtransSplitter"];
+	
+	[defs setInteger:self.ShowTransactionsViewType forKey:@"TransactionsViewType"];
 	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];

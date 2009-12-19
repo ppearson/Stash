@@ -77,7 +77,7 @@ enum TransactionsToShow
 	IBOutlet NSButton *moveDown;
 	IBOutlet NSButton *refresh;
 	
-	TransactionsToShow nShowTransactionsType;
+	int ShowTransactionsViewType;
 	
 	NSMutableArray *m_aTransactionItems;
 	
@@ -142,7 +142,7 @@ enum TransactionsToShow
 	bool m_HasFinishedLoading;
 }
 
-@property (assign) TransactionsToShow nShowTransactionsType;
+@property (assign) int ShowTransactionsViewType;
 
 - (void)buildIndexTree;
 - (void)buildTransactionsTree;
