@@ -322,7 +322,7 @@ toolbarViewGroupTag;
 		
 		[segmentedCell setTag: TOOLBAR_VIEW_ALL_TAG forSegment:TOOLBAR_VIEW_ALL_TAG];
 		[segmentedControl setLabel: @"All" forSegment:TOOLBAR_VIEW_ALL_TAG];
-        [segmentedCell setToolTip: @"Show all" forSegment:TOOLBAR_VIEW_ALL_TAG];
+        [segmentedCell setToolTip: @"Show all Transactions" forSegment:TOOLBAR_VIEW_ALL_TAG];
 		
 		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"ShowTransactionsViewType" options:0];
         
@@ -1394,7 +1394,11 @@ toolbarViewGroupTag;
 	int maxTransactionIndex = [m_aTransactionItems count] - 1;
 	
 	if (from > maxTransactionIndex || to > maxTransactionIndex)
+	{
+		NSRunAlertPanel(@"Couldn't swap transactions", 
+						@"Stash can't currently move transactions up or down if items are expanded so that the split transactions are visible. Close all open Transaction items and try again.", @"OK", nil, nil);
 		return;
+	}
 	
 	int nRealFrom = from + m_nTransactionOffset;
 	int nRealTo = to + m_nTransactionOffset;
@@ -2933,8 +2937,6 @@ NSDate * convertToNSDate(Date &date)
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	
 	fixed localBalance = 0.0;
-	
-	nIndex -= m_nTransactionOffset;
 	
 	m_aBalance.erase(m_aBalance.begin() + nIndex, m_aBalance.end());
 	
