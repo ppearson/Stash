@@ -1275,7 +1275,7 @@ toolbarViewGroupTag;
 				m_pAccount->deleteTransaction(nTransaction);
 				[m_aTransactionItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
 				
-				[self updateBalancesFromTransactionIndex:row ];
+				[self updateBalancesFromTransactionIndex:row];
 			}
 			else if (nSplit != -2)
 			{
@@ -1357,6 +1357,8 @@ toolbarViewGroupTag;
 		
 		TransactionItem *thisItem = [transactionsTableView itemAtRow:row];
 		
+		int nExactItemIndex = [thisItem transaction];
+		
 		int nSplit = [thisItem splitTransaction];
 		
 		if (nSplit >= 0)
@@ -1365,7 +1367,7 @@ toolbarViewGroupTag;
 		}
 		
 		// Swap them over
-		[self SwapTransactions:row to:row - 1];
+		[self SwapTransactions:nExactItemIndex to:nExactItemIndex - 1];
 	}
 }
 
@@ -1382,6 +1384,8 @@ toolbarViewGroupTag;
 		
 		TransactionItem *thisItem = [transactionsTableView itemAtRow:row];
 		
+		int nExactItemIndex = [thisItem transaction];
+		
 		int nSplit = [thisItem splitTransaction];
 		
 		if (nSplit >= 0)
@@ -1390,7 +1394,7 @@ toolbarViewGroupTag;
 		}
 		
 		// Swap them over
-		[self SwapTransactions:row to:row + 1];
+		[self SwapTransactions:nExactItemIndex to:nExactItemIndex + 1];
 	}
 }
 
@@ -1399,45 +1403,42 @@ toolbarViewGroupTag;
 	if (from < 0 || to < 0)
 		return;
 	
-	int maxTransactionIndex = [m_aTransactionItems count] - 1;
+	int top = m_pAccount->getTransactionCount();
 	
-	if (from > maxTransactionIndex || to > maxTransactionIndex)
-	{
-		NSRunAlertPanel(@"Couldn't swap transactions", 
-						@"Stash can't currently move transactions up or down if items are expanded so that the split transactions are visible. Close all open Transaction items and try again.", @"OK", nil, nil);
+	if (from >= top || to >= top)
 		return;
-	}
 	
-	int nRealFrom = from + m_nTransactionOffset;
-	int nRealTo = to + m_nTransactionOffset;
+	int nItemFrom = from - m_nTransactionOffset;
+	int nItemTo = to - m_nTransactionOffset;
 	
-	m_pAccount->swapTransactions(nRealFrom, nRealTo);
-	[m_aTransactionItems exchangeObjectAtIndex:from withObjectAtIndex:to];
+	m_pAccount->swapTransactions(from, to);
+	[m_aTransactionItems exchangeObjectAtIndex:nItemFrom withObjectAtIndex:nItemTo];
 	
 	// TransactionItem values are still pointing in the wrong place, so fix them....
 	
-	TransactionItem *fromItem = [transactionsTableView itemAtRow:from];
-	TransactionItem *toItem = [transactionsTableView itemAtRow:to];
+	TransactionItem *fromItem = [m_aTransactionItems objectAtIndex:nItemFrom];
+	TransactionItem *toItem = [m_aTransactionItems objectAtIndex:nItemTo];
 	
-	[fromItem setTransaction:nRealTo];
-	[fromItem setIntValue:nRealTo forKey:@"Transaction"];
+	[fromItem setTransaction:from];
+	[fromItem setIntValue:from forKey:@"Transaction"];
 	
-	[toItem setTransaction:nRealFrom];
-	[toItem setIntValue:nRealFrom forKey:@"Transaction"];
+	[toItem setTransaction:to];
+	[toItem setIntValue:to forKey:@"Transaction"];
 	
 	if (from < to)
 	{
-		[self updateBalancesFromTransactionIndex:from];
+		[self updateBalancesFromTransactionIndex:nItemFrom];
 	}
 	else
 	{
-		[self updateBalancesFromTransactionIndex:to];
+		[self updateBalancesFromTransactionIndex:nItemTo];
 	}
-		
+	
 	[transactionsTableView reloadData];
 	
-	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:to] byExtendingSelection:NO];
-	[transactionsTableView scrollRowToVisible:to];
+	int nNewRow = [transactionsTableView rowForItem:toItem];
+	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:nNewRow] byExtendingSelection:NO];
+	[transactionsTableView scrollRowToVisible:nNewRow];
 	
 	m_UnsavedChanges = true;
 }
@@ -1688,7 +1689,7 @@ toolbarViewGroupTag;
 		if (oldAmount != fAmount)
 		{
 			trans->setAmount(fAmount);
-			[self updateBalancesFromTransactionIndex:nTrans];
+			[self updateBalancesFromTransactionIndex:nTrans - m_nTransactionOffset];
 		}
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
