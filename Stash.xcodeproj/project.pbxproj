@@ -36,6 +36,7 @@
 		D077492B1093B3AB00EDC307 /* round_check.png in Resources */ = {isa = PBXBuildFile; fileRef = D077492A1093B3AB00EDC307 /* round_check.png */; };
 		D086FD0710931F14001AE198 /* TransactionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* TransactionItem.mm */; };
 		D08B025910D461AA006152CD /* SplitViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B025810D461AA006152CD /* SplitViewEx.m */; };
+		D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */; };
 		D08D8DBE1097831C004636BC /* Stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D08D8DBD1097831C004636BC /* Stash.icns */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
@@ -107,6 +108,8 @@
 		D086FD0610931F14001AE198 /* TransactionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransactionItem.mm; sourceTree = "<group>"; };
 		D08B025710D461AA006152CD /* SplitViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitViewEx.h; sourceTree = "<group>"; };
 		D08B025810D461AA006152CD /* SplitViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitViewEx.m; sourceTree = "<group>"; };
+		D08D8ADF10E2C5B000BE3AC6 /* NSDateEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateEx.h; sourceTree = "<group>"; };
+		D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateEx.m; sourceTree = "<group>"; };
 		D08D8DBD1097831C004636BC /* Stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Stash.icns; sourceTree = "<group>"; };
 		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
@@ -146,6 +149,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D08D8ADF10E2C5B000BE3AC6 /* NSDateEx.h */,
+				D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */,
 				D00C4BC410DD18FB00651282 /* ToolbarItemEx.h */,
 				D00C4BC510DD18FB00651282 /* ToolbarItemEx.m */,
 				D0F9453A10CA9B05003CA8A8 /* PieChartView.h */,
@@ -393,6 +398,7 @@
 				D0DE686310CAF30D0066699B /* analysis.cpp in Sources */,
 				D08B025910D461AA006152CD /* SplitViewEx.m in Sources */,
 				D00C4BC610DD18FB00651282 /* ToolbarItemEx.m in Sources */,
+				D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

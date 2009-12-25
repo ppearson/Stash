@@ -114,10 +114,10 @@ enum TransactionsToShow
 	IBOutlet NSButton *deleteScheduled;
 	
 	NSMutableArray *m_aScheduledTransactions;
-	
-	
+		
 	// Graphs
 	
+	IBOutlet NSSegmentedControl* viewingPeriodSegmentControl;
 	IBOutlet PieChartView *chartView;
 	IBOutlet NSPopUpButton *graphAccount;
 	IBOutlet NSPopUpButton *graphType;
@@ -149,7 +149,7 @@ enum TransactionsToShow
 - (void)buildPayeesList;
 - (void)buildCategoriesList;
 - (void)buildSchedTransList;
-- (void)buildGraph;
+- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers;
 - (void)refreshLibraryItems;
 
 - (void)calculateAndShowScheduled;
@@ -222,6 +222,10 @@ enum TransactionsToShow
 
 - (void)ScheduledSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateScheduled:(id)sender;
+
+- (IBAction)redrawGraph:(id)sender;
+- (IBAction)dateBarClicked:(id)sender;
+- (IBAction)graphDatesManuallyChanged:(id)sender;
 
 - (IBAction)updateGraph:(id)sender;
 

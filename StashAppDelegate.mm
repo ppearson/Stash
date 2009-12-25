@@ -28,6 +28,7 @@
 #import "AccountInfoController.h"
 #import "SplitViewEx.h"
 #import "ToolbarItemEx.h"
+#import "NSDateEx.h"
 
 #define TOOLBAR_ADDACCOUNT		@"TOOLBAR_ADDACCOUNT"
 #define TOOLBAR_ADDGRAPH		@"TOOLBAR_ADDGRAPH"
@@ -557,7 +558,7 @@ toolbarViewGroupTag;
 	[graphStartDateCntrl setNeedsDisplay:YES];
 	[graphEndDateCntrl setNeedsDisplay:YES];
 	
-	[self buildGraph];
+	[self buildGraph:nAccount startDate:nsStartDate endDate:nsEndDate type:eType ignoreTransfers:m_pGraph->getIgnoreTransfers()];
 }
 
 // handle renames in the IndexBar
@@ -903,37 +904,44 @@ toolbarViewGroupTag;
 	[scheduledTransactionsTableView reloadData];
 }
 
-- (void)buildGraph
+- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers
 {
 	if (!m_pGraph)
 		return;
-	
-	int nAccount = m_pGraph->getAccount();
-	
-	if (nAccount < 0)
+		
+	if (account < 0)
 		return;
 	
-	Account *pAccount = m_Document.getAccountPtr(nAccount);
+	Account *pAccount = m_Document.getAccountPtr(account);
+			
+	NSCalendarDate *nsCalStartDate = [startDate dateWithCalendarFormat:0 timeZone:0];
 	
-	GraphType eType = m_pGraph->getType();
-		
-	Date startDate = m_pGraph->getStartDate();
-	Date endDate = m_pGraph->getEndDate();
+	int nStartYear = [nsCalStartDate yearOfCommonEra];
+	int nStartMonth = [nsCalStartDate monthOfYear];
+	int nStartDay = [nsCalStartDate dayOfMonth];
 	
-	bool bIgnoreTransfers = m_pGraph->getIgnoreTransfers();
+	Date mainStartDate(nStartDay, nStartMonth, nStartYear);
+	
+	NSCalendarDate *nsCalEndDate = [endDate dateWithCalendarFormat:0 timeZone:0];
+	
+	int nEndYear = [nsCalEndDate yearOfCommonEra];
+	int nEndMonth = [nsCalEndDate monthOfYear];
+	int nEndDay = [nsCalEndDate dayOfMonth];
+	
+	Date mainEndDate(nEndDay, nEndMonth, nEndYear);
 	
 	std::vector<GraphValue> aGraphItems;
 	
 	fixed overallTotal = 0.0;
 	
-	if (eType == ExpenseCategories)
-		buildItemsForExpenseCategories(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
-	else if (eType == ExpensePayees)
-		buildItemsForExpensePayees(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
-	else if (eType == DepositCategories)
-		buildItemsForDepositCategories(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
-	else if (eType == DepositPayees)
-		buildItemsForDepositPayees(pAccount, aGraphItems, startDate, endDate, overallTotal, bIgnoreTransfers);
+	if (type == ExpenseCategories)
+		buildItemsForExpenseCategories(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+	else if (type == ExpensePayees)
+		buildItemsForExpensePayees(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+	else if (type == DepositCategories)
+		buildItemsForDepositCategories(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+	else if (type == DepositPayees)
+		buildItemsForDepositPayees(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1969,8 +1977,118 @@ toolbarViewGroupTag;
 		m_UnsavedChanges = true;
 		
 		[self buildIndexTree];
+	}	
+}
+
+- (IBAction)redrawGraph:(id)sender
+{
+	bool bIgnoreTransfers = false;
+	
+	if ([graphIgnoreTransfers state] == NSOnState)
+		bIgnoreTransfers = true;
+	
+	int nAccount = [graphAccount indexOfSelectedItem];
+	
+	NSDate *nsStartDate = [graphStartDateCntrl dateValue];
+	NSDate *nsEndDate = [graphEndDateCntrl dateValue];
+	
+	int nType = [graphType indexOfSelectedItem];
+	GraphType eType = static_cast<GraphType>(nType);
+	
+	[self buildGraph:nAccount startDate:nsStartDate endDate:nsEndDate type:eType ignoreTransfers:bIgnoreTransfers];
+}
+
+- (IBAction)graphDatesManuallyChanged:(id)sender
+{
+	[viewingPeriodSegmentControl setEnabled:NO forSegment:0];
+	[viewingPeriodSegmentControl setEnabled:NO forSegment:5];
+	
+	[viewingPeriodSegmentControl setSelectedSegment:4];
+	
+	[self redrawGraph:self];
+}
+
+- (IBAction)dateBarClicked:(id)sender
+{
+	if (![sender isKindOfClass:[NSSegmentedControl class]])
+		return;
+	
+	static int nCurrentSegment = 4;
+	
+	int nSegment = [sender selectedSegment];
+	
+	if (nSegment == 0 || nSegment == 5)
+	{
+		int diff = 1;
+		
+		if (nSegment == 0)
+			diff = -1;
+		
+		NSDate *nsStartDate = [graphStartDateCntrl dateValue];
+		NSDate *nsEndDate = [graphEndDateCntrl dateValue];
+		
+		switch(nCurrentSegment)
+		{
+			case 1:
+				nsStartDate = [nsStartDate addWeeks:diff];
+				nsEndDate = [nsEndDate addWeeks:diff];
+				break;
+			case 2:
+				nsStartDate = [nsStartDate addMonths:diff];
+				nsStartDate = [nsStartDate firstDayOfMonth];
+				nsEndDate = [nsStartDate lastDayOfMonth];
+				break;
+			case 3:
+				nsStartDate = [nsStartDate addYears:diff];
+				nsStartDate = [nsStartDate firstDayOfYear];
+				nsEndDate = [nsStartDate lastDayOfYear];
+				break;
+		}
+		
+		[graphStartDateCntrl setDateValue:nsStartDate];
+		[graphEndDateCntrl setDateValue:nsEndDate];
+		
+		[viewingPeriodSegmentControl setSelectedSegment:nCurrentSegment];
+	}
+	else
+	{
+		nCurrentSegment = [viewingPeriodSegmentControl selectedSegment];
+		
+		NSDate *nsStartDate = [graphStartDateCntrl dateValue];
+		NSDate *nsEndDate = [graphEndDateCntrl dateValue];
+		
+		switch(nCurrentSegment)
+		{
+			case 1:
+				nsEndDate = [nsStartDate addWeeks:1];
+				break;
+			case 2:
+				nsStartDate = [nsStartDate firstDayOfMonth];
+				nsEndDate = [nsStartDate lastDayOfMonth];
+				break;
+			case 3:
+				nsStartDate = [nsStartDate firstDayOfYear];
+				nsEndDate = [nsStartDate lastDayOfYear];
+				break;
+		}
+		
+		// enable/disable left/right arrows based on whether User defined segment is selected
+		if (nCurrentSegment == 4)
+		{
+			[viewingPeriodSegmentControl setEnabled:NO forSegment:0];
+			[viewingPeriodSegmentControl setEnabled:NO forSegment:5];
+		}
+		else
+		{
+			[viewingPeriodSegmentControl setEnabled:YES forSegment:0];
+			[viewingPeriodSegmentControl setEnabled:YES forSegment:5];
+		}
+		
+		[graphStartDateCntrl setDateValue:nsStartDate];
+		[graphEndDateCntrl setDateValue:nsEndDate];
 	}
 	
+	[self redrawGraph:self];
 }
 
 - (IBAction)updateGraph:(id)sender
@@ -2014,7 +2132,7 @@ toolbarViewGroupTag;
 	
 	m_UnsavedChanges = true;
 	
-	[self buildGraph];
+	[self redrawGraph:self];
 }
 
 - (IBAction)showRecentTransactions:(id)sender
