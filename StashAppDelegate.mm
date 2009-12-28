@@ -3003,13 +3003,19 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	char cSeparator = [importQIFController separator];
 	
+	BOOL bMarkReconciled = [importQIFController markAsReconciled];
+	
 	NSString *sFile = [importQIFController file];
 		
 	std::string strFile = [sFile cStringUsingEncoding: NSASCIIStringEncoding];
 	
 	[importQIFController release];
 	
-	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator))
+	bool bMR = true;
+	if (bMarkReconciled == NO)
+		bMR = false;
+	
+	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator, bMR))
 		[self buildTransactionsTree];	
 }
 

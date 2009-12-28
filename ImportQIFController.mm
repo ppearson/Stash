@@ -100,6 +100,11 @@
 		case 7:
 			cSeparator = '-';			
 	}
+	
+	if ([fSetAsReconciled state] == NSOnState)
+		bMarkReconciled = YES;
+	else
+		bMarkReconciled = NO;
 		
 	[self confirmImport];
 }
@@ -124,6 +129,11 @@
 	[sFile retain];
 	
 	return sFile;
+}
+
+- (BOOL)markAsReconciled
+{
+	return bMarkReconciled;
 }
 
 @end

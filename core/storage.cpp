@@ -86,7 +86,7 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 	return true;
 }
 
-bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep)
+bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep, bool bMarkReconciled)
 {
 	bool bDOSFormat = false;
 	char lineEndings;
@@ -191,7 +191,10 @@ bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringForma
 				{
 					bPastHeader = true;
 					continue;
-				}				
+				}
+				
+				if (bMarkReconciled)
+					newTransaction.setReconciled(true);
 				
 				if (bPastHeader)
 					pAccount->addTransaction(newTransaction);
