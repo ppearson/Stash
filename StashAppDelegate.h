@@ -242,6 +242,7 @@ NSDate *convertToNSDate(Date &date);
 NSDate *convertToNSDate(MonthYear &date);
 
 - (void)updateBalancesFromTransactionIndex:(int)nIndex;
+- (void)updateTransactionsFromTransactionIndex:(int)nIndex;
 
 @property (assign) IBOutlet NSWindow *window;
 

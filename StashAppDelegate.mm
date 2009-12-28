@@ -1336,16 +1336,25 @@ toolbarViewGroupTag;
 {
 	NSIndexSet *rows = [transactionsTableView selectedRowIndexes];
 	
-	if ([rows count] > 0)
+	int nCount = [rows count];
+	
+	if (nCount > 0)
 	{
 		NSInteger row = [rows lastIndex];
 		
+		int nRow = row;
+		
+		int nSplit = -1;
+		int nTransaction = -1;
+		
 		while (row != NSNotFound)
 		{
+			nRow = row;
+			
 			TransactionItem *item = [transactionsTableView itemAtRow:row];
 			
-			int nSplit = [item intKeyValue:@"Split"];
-			int nTransaction = [item intKeyValue:@"Transaction"];
+			nSplit = [item intKeyValue:@"Split"];
+			nTransaction = [item intKeyValue:@"Transaction"];
 			
 			if (nSplit == -1)
 			{
@@ -1363,10 +1372,19 @@ toolbarViewGroupTag;
 				[transactionItem deleteChild:nSplit];
 			}
 			
+			if (nSplit == -1 && nTransaction >= 0)
+			{
+				[self updateBalancesFromTransactionIndex:nTransaction - m_nTransactionOffset];
+				
+				[self updateTransactionsFromTransactionIndex:nTransaction - m_nTransactionOffset];
+			}
+			
 			row = [rows indexLessThanIndex:row];			
-		}
+		}		
 		
 		[transactionsTableView reloadData];
+		
+		[transactionsTableView deselectAll:self];
 		
 		m_UnsavedChanges = true;
 	}	
@@ -1671,7 +1689,15 @@ toolbarViewGroupTag;
 	}
 	else
 	{
-		[deleteTransaction setEnabled:NO];
+		if ([rows count] > 1)
+		{
+			[deleteTransaction setEnabled:YES];
+		}
+		else
+		{
+			[deleteTransaction setEnabled:NO];
+		}
+		
 		[splitTransaction setEnabled:NO];
 		[moveUp setEnabled:NO];
 		[moveDown setEnabled:NO];
@@ -3147,6 +3173,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	return YES;
 }
 
+// update the balances of all transactions from the given index down
 - (void)updateBalancesFromTransactionIndex:(int)nIndex
 {
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
@@ -3185,6 +3212,25 @@ NSDate *convertToNSDate(MonthYear &date)
 	}	
 
 	[numberFormatter release];
+}
+
+// update the transaction indexes after a deletion
+- (void)updateTransactionsFromTransactionIndex:(int)nIndex
+{
+	int nTotalItems = [m_aTransactionItems count];
+	
+	int nTransItemIndex = nIndex;
+	for (; nTransItemIndex < nTotalItems; nTransItemIndex++)
+	{
+		TransactionItem *aTransaction = [m_aTransactionItems objectAtIndex:nTransItemIndex];
+		
+		int nTransIndex = [aTransaction transaction];
+		
+		nTransIndex--;
+		
+		[aTransaction setTransaction:nTransIndex];
+		[aTransaction setIntValue:nTransIndex forKey:@"Transaction"];
+	}	
 }
 
 @end

@@ -12,6 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="567"/>
 			<integer value="974"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -1152,7 +1153,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="834574435">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1557,7 +1558,7 @@
 												<reference key="NSBackgroundColor" ref="584327073"/>
 												<reference key="NSGridColor" ref="57620723"/>
 												<double key="NSRowHeight">16</double>
-												<int key="NSTvFlags">-222298112</int>
+												<int key="NSTvFlags">-88080384</int>
 												<reference key="NSDelegate"/>
 												<reference key="NSDataSource"/>
 												<int key="NSGridStyleMask">3</int>
@@ -2056,6 +2057,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{854, 609}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSUserDefaultsController" id="616500614">
