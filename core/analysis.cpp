@@ -32,17 +32,48 @@ PieChartItem::PieChartItem(std::string title, double angle, fixed amount) : m_ti
 
 }
 
-AreaChartItem::AreaChartItem(std::string title) : m_title(title), m_maxValue(0.0)
+AreaChartItem::AreaChartItem(std::string title) : m_title(title), m_maxValue(0.0), m_blank(true)
 {
 
 }
 
 void AreaChartItem::addAmountToValue(fixed amount)
 {	
+	m_blank = false;
+	
 	m_amounts.push_back(amount);
 	
 	if (m_maxValue < amount)
 		m_maxValue = amount;
+}
+
+void AreaChartItem::combineItem(AreaChartItem &item)
+{
+	std::vector<fixed>::iterator thisIt = m_amounts.begin();
+	std::vector<fixed>::iterator itemIt = item.m_amounts.begin();
+	
+	if (m_blank)
+	{
+		for (; itemIt != item.m_amounts.end(); ++itemIt)
+		{
+			fixed &itemValue = (*itemIt);
+			
+			m_amounts.push_back(itemValue);
+		}
+		
+		m_blank = false;
+	}
+	else
+	{
+		for (; thisIt != m_amounts.end(); ++thisIt, ++itemIt)
+		{
+			fixed &thisValue = (*thisIt);
+			
+			fixed &itemValue = (*itemIt);
+			
+			thisValue += itemValue;
+		}
+	}
 }
 
 bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
@@ -997,19 +1028,27 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	double dPurgeValue = overallMax.ToDouble();
 	dPurgeValue *= 0.02;
 	
+	bool bAddOther = false;
+	AreaChartItem otherItem("Other");
+	
 	std::vector<AreaChartItem>::iterator itPurgeItem = aItems.begin();
 	
 	while (itPurgeItem != aItems.end())
 	{
 		if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
 		{
+			otherItem.combineItem(*itPurgeItem);
 			itPurgeItem = aItems.erase(itPurgeItem);
+			bAddOther = true;
 		}
 		else
 		{
 			++itPurgeItem;
 		}
 	}
+	
+	if (bAddOther)
+		aItems.push_back(otherItem);
 	
 	// add dateitems to vector
 	

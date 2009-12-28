@@ -65,10 +65,13 @@ public:
 	fixed			getItemAmount(int item) { return m_amounts.at(item); }
 	fixed			getMaxValue() { return m_maxValue; }
 	
+	void			combineItem(AreaChartItem &item);
+	
 protected:
 	std::string m_title;
 	std::vector<fixed> m_amounts;
 	fixed m_maxValue;
+	bool m_blank;
 };
 
 bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
