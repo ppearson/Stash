@@ -265,3 +265,8 @@ time_t Date::GetDate() const
 {
 	return m_Time;
 }
+
+MonthYear::MonthYear(int Month, int Year) : m_month(Month), m_year(Year)
+{
+
+}

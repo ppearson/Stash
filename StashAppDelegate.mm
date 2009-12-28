@@ -930,40 +930,42 @@ toolbarViewGroupTag;
 	
 	Date mainEndDate(nEndDay, nEndMonth, nEndYear);
 	
-	std::vector<GraphValue> aGraphItems;
+	// Pie Chart Items
+	
+	std::vector<PieChartItem> aPieChartItems;
 	
 	fixed overallTotal = 0.0;
 	
 	if (type == ExpenseCategories)
-		buildItemsForExpenseCategories(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForExpenseCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
 	else if (type == ExpensePayees)
-		buildItemsForExpensePayees(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForExpensePayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
 	else if (type == DepositCategories)
-		buildItemsForDepositCategories(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForDepositCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
 	else if (type == DepositPayees)
-		buildItemsForDepositPayees(pAccount, aGraphItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForDepositPayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
 	
-	NSMutableArray *aItems = [[NSMutableArray alloc] init];
+	NSMutableArray *aPieItems = [[NSMutableArray alloc] init];
 	
-	std::vector<GraphValue>::iterator it = aGraphItems.begin();
+	std::vector<PieChartItem>::iterator itPie = aPieChartItems.begin();
 	
 	double startAngle = 0.0;
 	
-	for (; it != aGraphItems.end(); ++it)
+	for (; itPie != aPieChartItems.end(); ++itPie)
 	{
 		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 		
-		std::string strTitle = (*it).getTitle();
-		fixed amount = (*it).getAmount();
-		double angle = (*it).getAngle();
+		std::string strTitle = (*itPie).getTitle();
+		fixed amount = (*itPie).getAmount();
+		double angle = (*itPie).getAngle();
 		
 		NSString *sTitle = [[NSString alloc] initWithUTF8String:strTitle.c_str()];
 		
-		NSNumber *nSAmount = [NSNumber numberWithDouble:amount.ToDouble()];		
+		NSNumber *nSAmount = [NSNumber numberWithDouble:amount.ToDouble()];
 		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 		
 		[dict setValue:[NSNumber numberWithDouble:angle] forKey:@"angle"];
@@ -979,7 +981,7 @@ toolbarViewGroupTag;
 		
 		[dict setValue:nSAmount forKey:@"numamount"];
 				
-		[aItems addObject:dict];		
+		[aPieItems addObject:dict];		
 	}
 	
 	NSNumber *nTotal = [NSNumber numberWithDouble:overallTotal.ToDouble()];
@@ -987,8 +989,83 @@ toolbarViewGroupTag;
 	
 	[numberFormatter release];
 	
-	[chartView setTotal:sTotal];
-	[chartView setData:aItems];	
+	[pieChartView setTotal:sTotal];
+	[pieChartView setData:aPieItems];
+	
+	// Area Chart Items
+	
+	std::vector<AreaChartItem> aAreaChartItems;
+	std::vector<MonthYear> aDateItems;
+	
+	fixed overallMax = 0.0;
+	
+	if (type == ExpenseCategories)
+		buildAreaChartItemsForExpenseCategories(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	else if (type == ExpensePayees)
+		buildAreaChartItemsForExpensePayees(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	else if (type == DepositCategories)
+		buildAreaChartItemsForDepositCategories(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	else if (type == DepositPayees)
+		buildAreaChartItemsForDepositPayees(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+			
+	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
+	
+	std::vector<AreaChartItem>::iterator itArea = aAreaChartItems.begin();
+	
+	for (; itArea != aAreaChartItems.end(); ++itArea)
+	{
+		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+		
+		std::string strTitle = (*itArea).getTitle();
+		NSString *sTitle = [[NSString alloc] initWithUTF8String:strTitle.c_str()];
+		
+		[dict setValue:sTitle forKey:@"title"];
+		
+		NSMutableArray *aAmounts = [[NSMutableArray alloc] init];
+		
+		int nNumItems = (*itArea).getNumItems();
+		
+		for (int i = 0; i < nNumItems; i++)
+		{
+			fixed amount = (*itArea).getItemAmount(i);
+			NSNumber *nsAmount = [NSNumber numberWithDouble:amount.ToDouble()];
+			
+			[aAmounts addObject:nsAmount];			
+		}
+		
+		[dict setValue:aAmounts forKey:@"amounts"];
+		
+		[aAreaItems addObject:dict];		
+	}
+	
+	NSMutableArray *aDates = [[NSMutableArray alloc] init];
+	
+	std::vector<MonthYear>::iterator itDate = aDateItems.begin();
+	
+	int nLongestDateLength = 0;
+	int nLongestDateIndex = -1;
+	
+	int nIndex = 0;
+	
+	for (; itDate != aDateItems.end(); ++itDate, nIndex++)
+	{
+		NSDate *thisDate = convertToNSDate(*itDate);
+		
+		NSString *sDate = [thisDate descriptionWithCalendarFormat:@"%B\n%Y" timeZone:nil locale:nil];
+		
+		if ([sDate length] > nLongestDateLength)
+		{
+			nLongestDateLength = [sDate length];
+			nLongestDateIndex = nIndex;
+		}
+		
+		[aDates addObject:sDate];
+	}
+	
+	[areaChartView setLongestDate:[aDates objectAtIndex:nLongestDateIndex]];
+	[areaChartView setDates:aDates];
+	[areaChartView setMaxValue:overallMax.ToDouble()];
+	[areaChartView setData:aAreaItems];	
 }
 
 - (void)refreshLibraryItems
@@ -2538,7 +2615,7 @@ toolbarViewGroupTag;
 
 // Payees/Categories TableView End
 
-NSDate * convertToNSDate(Date &date)
+NSDate *convertToNSDate(Date &date)
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
@@ -2556,6 +2633,26 @@ NSDate * convertToNSDate(Date &date)
 //	[gregorian release];
 	
     return nsDate;
+}
+
+NSDate *convertToNSDate(MonthYear &date)
+{
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setYear:date.getYear()];
+    [dateComponents setMonth:date.getMonth()];
+    [dateComponents setDay:1];
+    
+    [dateComponents setHour:0];
+    [dateComponents setMinute:0];
+    [dateComponents setSecond:0];
+	
+	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
+	//	[dateComponents release];
+	//	[gregorian release];
+	
+    return nsDate;	
 }
 
 - (IBAction)NewFile:(id)sender

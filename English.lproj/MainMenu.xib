@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="978"/>
+			<integer value="974"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3476,7 +3476,17 @@
 								<object class="NSView" key="NSView" id="882678032">
 									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{10, 33}, {573, 510}}</string>
+									<object class="NSMutableArray" key="NSSubviews">
+										<bool key="EncodedWithXMLCoder">YES</bool>
+										<object class="NSCustomView" id="328060707">
+											<reference key="NSNextResponder" ref="882678032"/>
+											<int key="NSvFlags">274</int>
+											<string key="NSFrame">{{3, 2}, {717, 555}}</string>
+											<reference key="NSSuperview" ref="882678032"/>
+											<string key="NSClassName">AreaChartView</string>
+										</object>
+									</object>
+									<string key="NSFrame">{{10, 33}, {717, 558}}</string>
 								</object>
 								<string key="NSLabel">Over Time</string>
 								<reference key="NSColor" ref="660767409"/>
@@ -4796,14 +4806,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">chartView</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="196219503"/>
-					</object>
-					<int key="connectionID">937</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">graphAccount</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="1024009950"/>
@@ -4961,6 +4963,22 @@
 						<reference key="destination" ref="322048669"/>
 					</object>
 					<int key="connectionID">988</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">pieChartView</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="196219503"/>
+					</object>
+					<int key="connectionID">989</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">areaChartView</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="328060707"/>
+					</object>
+					<int key="connectionID">991</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7273,6 +7291,10 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">977</int>
 						<reference key="object" ref="882678032"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="328060707"/>
+						</object>
 						<reference key="parent" ref="129401384"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -7312,6 +7334,11 @@
 						<int key="objectID">980</int>
 						<reference key="object" ref="902994622"/>
 						<reference key="parent" ref="81505167"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">990</int>
+						<reference key="object" ref="328060707"/>
+						<reference key="parent" ref="882678032"/>
 					</object>
 				</object>
 			</object>
@@ -7740,6 +7767,7 @@
 					<string>965.IBPluginDependency</string>
 					<string>967.IBPluginDependency</string>
 					<string>968.IBPluginDependency</string>
+					<string>974.IBAttributePlaceholdersKey</string>
 					<string>974.IBPluginDependency</string>
 					<string>975.IBPluginDependency</string>
 					<string>976.IBPluginDependency</string>
@@ -7750,6 +7778,7 @@
 					<string>979.IBSegmentedControlTracker.WasGrowing</string>
 					<string>980.IBPluginDependency</string>
 					<string>980.IBSegmentedControlInspectorSelectedSegmentMetadataKey</string>
+					<string>990.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -8138,7 +8167,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{383, 225}, {920, 606}}</string>
+					<string>{{225, 134}, {920, 606}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8174,6 +8203,14 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">InitialTabViewItem</string>
+						<object class="IBInitialTabViewItemAttribute" key="NS.object.0">
+							<string key="name">InitialTabViewItem</string>
+							<reference key="object" ref="872192110"/>
+							<reference key="initialTabViewItem" ref="760957740"/>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8184,6 +8221,7 @@
 					<integer value="0"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -8202,11 +8240,19 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">988</int>
+			<int key="maxID">991</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">AreaChartView</string>
+					<string key="superclassName">NSView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">AreaChartView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">IndexBar</string>
 					<string key="superclassName">NSOutlineView</string>
@@ -8384,8 +8430,8 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addTransaction</string>
+							<string>areaChartView</string>
 							<string>categoriesTableView</string>
-							<string>chartView</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
 							<string>deleteScheduled</string>
@@ -8402,6 +8448,7 @@
 							<string>moveDown</string>
 							<string>moveUp</string>
 							<string>payeesTableView</string>
+							<string>pieChartView</string>
 							<string>refresh</string>
 							<string>scheduledAccount</string>
 							<string>scheduledAmount</string>
@@ -8434,8 +8481,8 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSButton</string>
+							<string>AreaChartView</string>
 							<string>NSTableView</string>
-							<string>PieChartView</string>
 							<string>NSView</string>
 							<string>NSView</string>
 							<string>NSButton</string>
@@ -8452,6 +8499,7 @@
 							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSTableView</string>
+							<string>PieChartView</string>
 							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSTextField</string>

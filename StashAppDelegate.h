@@ -32,6 +32,7 @@
 #import "DueScheduledTransactionsController.h"
 #import "PreferencesController.h"
 #import "PieChartView.h"
+#import "AreaChartView.h"
 
 enum TransactionsToShow
 {
@@ -118,7 +119,8 @@ enum TransactionsToShow
 	// Graphs
 	
 	IBOutlet NSSegmentedControl* viewingPeriodSegmentControl;
-	IBOutlet PieChartView *chartView;
+	IBOutlet PieChartView *pieChartView;
+	IBOutlet AreaChartView *areaChartView;
 	IBOutlet NSPopUpButton *graphAccount;
 	IBOutlet NSPopUpButton *graphType;
 	IBOutlet id graphStartDateCntrl;
@@ -237,6 +239,7 @@ enum TransactionsToShow
 - (IBAction)showPreferencesWindow:(id)sender;
 
 NSDate *convertToNSDate(Date &date);
+NSDate *convertToNSDate(MonthYear &date);
 
 - (void)updateBalancesFromTransactionIndex:(int)nIndex;
 

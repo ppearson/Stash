@@ -97,4 +97,21 @@ private:
 	char m_Separator;
 };
 
+class MonthYear
+{
+public:
+	MonthYear(int month, int year);
+	
+	int getMonth() { return m_month; }
+	int getYear() { return m_year; }
+	
+	bool operator==(MonthYear my) const { return m_month == my.m_month && m_year == my.m_year; }
+	bool operator!=(MonthYear my) const { return m_month != my.m_month || m_year != my.m_year; }
+	bool operator<(MonthYear my) const { return m_year < my.m_year || (m_month < my.m_month && m_year == my.m_year); }
+protected:
+	int m_month;
+	int m_year;	
+	
+};
+
 #endif

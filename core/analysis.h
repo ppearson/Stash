@@ -26,20 +26,19 @@
 #include "fixed.h"
 #include "Account.h"
 
-class GraphValue
+class PieChartItem
 {
 public:
-	GraphValue(std::string title, double angle, fixed amount);
-	~GraphValue() { };
+	PieChartItem(std::string title, double angle, fixed amount);
+	~PieChartItem() { };
 	
 	void setTitle(std::string title) { m_title = title; }
 	void setAngle(double angle) { m_angle = angle; }
 	void setAmount(fixed amount) { m_amount = amount; }
 	
-	bool operator<(const GraphValue &rhs) const
+	bool operator<(const PieChartItem &rhs) const
 	{
 		return this->m_angle < rhs.m_angle;
-//		return rhs.m_angle < this->m_angle;
 	}
 	
 	std::string		getTitle() { return m_title; }
@@ -52,10 +51,40 @@ protected:
 	fixed		m_amount;
 };
 
+class AreaChartItem
+{
+public:
+	AreaChartItem(std::string title);
+	~AreaChartItem() { }
+	
+	void setTitle(std::string title) { m_title = title; }
+	void addAmountToValue(fixed amount);	
+	
+	std::string		getTitle() { return m_title; }
+	int				getNumItems() { return m_amounts.size(); }
+	fixed			getItemAmount(int item) { return m_amounts.at(item); }
+	fixed			getMaxValue() { return m_maxValue; }
+	
+protected:
+	std::string m_title;
+	std::vector<fixed> m_amounts;
+	fixed m_maxValue;
+};
 
-bool buildItemsForExpenseCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildItemsForExpensePayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildItemsForDepositCategories(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildItemsForDepositPayees(Account *pAccount, std::vector<GraphValue> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
 
-void copyItemsToVector(std::map<std::string, fixed> &aMap, std::vector<GraphValue> &aVector, fixed &overallTotal);
+bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
+											 fixed &overallMax, bool ignoreTransfers);
+bool buildAreaChartItemsForExpensePayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
+											 fixed &overallMax, bool ignoreTransfers);
+bool buildAreaChartItemsForDepositCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
+											 fixed &overallMax, bool ignoreTransfers);
+bool buildAreaChartItemsForDepositPayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
+											 fixed &overallMax, bool ignoreTransfers);
+
+void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal);
+void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, std::vector<AreaChartItem> &aItems,
+						   std::vector<MonthYear> &aDates, fixed &overallMax);
