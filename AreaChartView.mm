@@ -117,8 +117,11 @@
 	double dLeftStart = plotArea.origin.x;
 	double dBottomStart = plotArea.origin.y;
 	
+	// try and generate a "nice" number which divides easily
+	double dCeilMaxValue = ceil(ceil(m_dMaxValue / 10.0) * 10.0);
+	
 	double dXIncrement = plotArea.size.width / (nNumXValues - 1);
-	double dYScale = plotArea.size.height / m_dMaxValue;
+	double dYScale = plotArea.size.height / dCeilMaxValue;
 	
 	double aBaseItems[36];
 	
@@ -168,9 +171,13 @@
 	
 	// draw Y gridlines and labels
 	
-	int numYGrids = plotArea.size.height / 50;
+	// work out number of y gridlines
+	int numYGrids = 0.4 * sqrt(plotArea.size.height);
+	int nRem = numYGrids % 2;
+	// enforce even numbers so that the scale will look nicer
+	numYGrids += nRem;
 	
-	double dYInc = m_dMaxValue / numYGrids;
+	double dYInc = dCeilMaxValue / numYGrids;
 	
 	numYGrids++;
 	
