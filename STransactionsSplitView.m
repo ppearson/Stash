@@ -26,7 +26,6 @@
 
 - (void)awakeFromNib
 {
-	[super awakeFromNib];
 	[self setDelegate:self];
 	
 	transactionsSubView = [[self subviews] objectAtIndex:0];

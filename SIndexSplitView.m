@@ -27,7 +27,6 @@
 
 - (void)awakeFromNib
 {
-	[super awakeFromNib];
 	[self setDelegate:self];
 	indexSubView = [[self subviews] objectAtIndex:0];
 	contentSubView = [[self subviews] objectAtIndex:1];
