@@ -553,6 +553,35 @@ toolbarViewGroupTag;
 		[graphIgnoreTransfers setState:NSOffState];
 	}
 	
+	GraphDateType eDateType = m_pGraph->getDateType();
+	
+	int nDatePeriodSegment = 0;
+	
+	switch (eDateType)
+	{
+		case DateWeek:
+			nDatePeriodSegment = 1;
+			break;
+		case DateMonth:
+			nDatePeriodSegment = 2;
+			break;
+		case DateYear:
+			nDatePeriodSegment = 3;
+			break;
+		default:
+			nDatePeriodSegment = 4;
+			break;
+	}
+	
+	m_nGraphDateSegment = nDatePeriodSegment;
+	[viewingPeriodSegmentControl setSelectedSegment:nDatePeriodSegment];
+	
+	if (nDatePeriodSegment == 4)
+	{
+		[viewingPeriodSegmentControl setEnabled:NO forSegment:0];
+		[viewingPeriodSegmentControl setEnabled:NO forSegment:5];
+	}
+	
 	// for some reason, the above sets/selects don't always update the controls properly
 	[graphAccount setNeedsDisplay:YES];
 	[graphStartDateCntrl setNeedsDisplay:YES];
@@ -2117,7 +2146,7 @@ toolbarViewGroupTag;
 	if (![sender isKindOfClass:[NSSegmentedControl class]])
 		return;
 	
-	static int nCurrentSegment = 4;
+	static int nCurrentSegment = m_nGraphDateSegment;
 	
 	int nSegment = [sender selectedSegment];
 	
@@ -2228,11 +2257,32 @@ toolbarViewGroupTag;
 	if ([graphIgnoreTransfers state] == NSOnState)
 		bIgnoreTransfers = true;
 	
+	int nDatePeriodSegment = [viewingPeriodSegmentControl selectedSegment];
+	
+	GraphDateType eDateType;
+	
+	switch (nDatePeriodSegment)
+	{
+		case 1:
+			eDateType = DateWeek;
+			break;
+		case 2:
+			eDateType = DateMonth;
+			break;
+		case 3:
+			eDateType = DateYear;
+			break;
+		default:
+			eDateType = DateCustom;
+			break;
+	}
+	
 	m_pGraph->setAccount(nAccount);
 	m_pGraph->setStartDate(startDate);
 	m_pGraph->setEndDate(endDate);
 	m_pGraph->setType(eType);
 	m_pGraph->setIgnoreTransfers(bIgnoreTransfers);
+	m_pGraph->setDateType(eDateType);
 	
 	m_UnsavedChanges = true;
 	

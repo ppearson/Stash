@@ -33,6 +33,14 @@ enum GraphType
 	DepositPayees
 };
 
+enum GraphDateType
+{
+	DateWeek,
+	DateMonth,
+	DateYear,
+	DateCustom
+};
+
 class Graph
 {
 public:
@@ -45,26 +53,29 @@ public:
 	void setEndDate(Date endDate) { m_endDate = endDate; }
 	void setType(GraphType type) { m_type = type; }
 	void setIgnoreTransfers(bool igTransfers) { m_ignoreTransfers = igTransfers; }
+	void setDateType(GraphDateType type) { m_dateType = type; }
 	
-	std::string	getName() { return m_name; }
-	int			getAccount() { return m_account; }
-	Date		getStartDate() { return m_startDate; }
-	Date		getEndDate() { return m_endDate; }
-	const Date &getStartDate1() { return m_startDate; }
-	const Date &getEndDate1() { return m_endDate; }
-	GraphType	getType() { return m_type; }
-	bool		getIgnoreTransfers() { return m_ignoreTransfers; }
+	std::string		getName() { return m_name; }
+	int				getAccount() { return m_account; }
+	Date			getStartDate() { return m_startDate; }
+	Date			getEndDate() { return m_endDate; }
+	const Date	   &getStartDate1() { return m_startDate; }
+	const Date     &getEndDate1() { return m_endDate; }
+	GraphType		getType() { return m_type; }
+	bool			getIgnoreTransfers() { return m_ignoreTransfers; }
+	GraphDateType	getDateType() { return m_dateType; }
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	
 protected:
-	std::string m_name;
-	int			m_account;
-	Date		m_startDate;
-	Date		m_endDate;
-	GraphType	m_type;
-	bool		m_ignoreTransfers;
+	std::string		m_name;
+	int				m_account;
+	Date			m_startDate;
+	Date			m_endDate;
+	GraphType		m_type;
+	bool			m_ignoreTransfers;
+	GraphDateType	m_dateType;
 };
 
 #endif

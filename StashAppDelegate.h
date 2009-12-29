@@ -135,7 +135,8 @@ enum TransactionsToShow
 	
 	std::vector<fixed> m_aBalance;
 	
-	Graph *m_pGraph;	
+	Graph *m_pGraph;
+	int m_nGraphDateSegment;
 	
 	std::string m_DocumentFile;
 	bool m_UnsavedChanges;
