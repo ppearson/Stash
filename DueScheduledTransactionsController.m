@@ -44,6 +44,7 @@
 
 - (void)dealloc
 {
+	[m_aTransactions release];
 	
 	[super dealloc];
 }
@@ -111,6 +112,11 @@
 	{
 		[[self window] performClose:sender];
 	}
+}
+
+- (void)closeWindow:(id)sender
+{
+	[[self window] performClose:sender];
 }
 
 @end

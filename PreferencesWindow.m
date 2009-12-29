@@ -22,10 +22,9 @@
 
 #import "PreferencesWindow.h"
 
-
 @implementation PreferencesWindow
 
-- (void) keyDown: (NSEvent *) event
+- (void)keyDown:(NSEvent *)event
 {
     if ([event keyCode] == 53) // esc key
         [self close];
@@ -33,7 +32,7 @@
         [super keyDown: event];
 }
 
-- (void) close
+- (void)close
 {
     [self makeFirstResponder: nil];
     [super close];

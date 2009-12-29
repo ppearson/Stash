@@ -37,5 +37,6 @@
 
 - (void)addTransaction:(id)sender;
 - (void)skipTransaction:(id)sender;
+- (void)closeWindow:(id)sender;
 
 @end
