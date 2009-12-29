@@ -261,15 +261,14 @@
 		
 		if (m_selectedPlot == nPlot)
 		{
-			[NSGraphicsContext saveGraphicsState];
+			[[NSColor grayColor] set];
+			CGFloat pattern[2] = {4.0, 4.0};
 			
-			NSSetFocusRingStyle(NSFocusRingOnly);
-			
+			[plotShape setLineDash:pattern count:2 phase:0.0];
 			[plotShape setLineWidth:3.0];
-			
 			[plotShape stroke];
 			
-			[NSGraphicsContext restoreGraphicsState];
+			[plotShape setLineDash:NULL count:0 phase:0.0];
 			
 			colour = [[m_aColours objectAtIndex:nColourIndex] colorWithAlphaComponent:0.2f];
 			

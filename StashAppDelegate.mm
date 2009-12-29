@@ -509,6 +509,9 @@ toolbarViewGroupTag;
 	
 	m_pGraph = m_Document.getGraphPtr(nGraph);
 	
+	if (!m_pGraph)
+		return;
+	
 	[vGraphView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vGraphView];
 	contentView = vGraphView;
