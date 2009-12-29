@@ -69,7 +69,33 @@
 	
 	NSMutableDictionary *attributes1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12], NSFontAttributeName, nil];
 	
-	if ([m_aData count] <= 1)
+	bool bProblem = false;
+	
+	NSMutableDictionary *plotItem = 0;
+	NSMutableArray *itemValues = 0;
+	int nNumXValues = 0;
+	
+	if ([m_aData count] > 0)
+	{
+		plotItem = [m_aData objectAtIndex:0];
+		itemValues = [plotItem objectForKey:@"amounts"];
+		
+		nNumXValues = [itemValues count];
+		
+		if (nNumXValues > 36)
+			nNumXValues = 36;
+		
+		if (nNumXValues < 2)
+		{
+			bProblem = true;
+		}
+	}
+	else
+	{
+		bProblem = true;
+	}
+	
+	if (bProblem)
 	{
 		NSString *sMessage = @"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months.";
 		
@@ -90,14 +116,6 @@
 	
 	double dLeftStart = plotArea.origin.x;
 	double dBottomStart = plotArea.origin.y;
-	
-	NSMutableDictionary *plotItem = [m_aData objectAtIndex:0];
-	NSMutableArray *itemValues = [plotItem objectForKey:@"amounts"];
-	
-	int nNumXValues = [itemValues count];
-	
-	if (nNumXValues > 36)
-		nNumXValues = 36;
 	
 	double dXIncrement = plotArea.size.width / (nNumXValues - 1);
 	double dYScale = plotArea.size.height / m_dMaxValue;
