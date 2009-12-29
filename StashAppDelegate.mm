@@ -240,7 +240,7 @@ toolbarViewGroupTag;
 	
 	[graphType addItemWithTitle:@"Expense Categories"];
 	[graphType addItemWithTitle:@"Expense Payees"];
-	[graphType addItemWithTitle:@"Desposit Categories"];
+	[graphType addItemWithTitle:@"Deposit Categories"];
 	[graphType addItemWithTitle:@"Deposit Payees"];
 	
 	[transactionsType selectItemAtIndex:0];
