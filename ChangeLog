@@ -1,3 +1,16 @@
+Version 0.5
+-----------
+
+* Added segment control to the toolbar, allowing easy switching of what transactions to show
+* Added support for Area Chart graphs, plotting items over time
+* Added segment control to the Pie Chart view, allowing common timeframes to be easily selected and 
+  decremented/incremented
+* Graphs are now updated on-the-fly, based on changes to their settings
+* Multiple transactions can now be deleted at once
+* Expanded transactions (showing their split items) can now be moved up/down
+* When importing QIF files, there is now an option to mark all imported transactions as reconciled
+* Fix issue with running under OS X 10.5.
+
 Version 0.4
 -----------
 
