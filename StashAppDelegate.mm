@@ -603,7 +603,7 @@ toolbarViewGroupTag;
 	
 	NSString *title = [sender title];
 	
-	std::string strName = [title cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strName = [title cStringUsingEncoding:NSUTF8StringEncoding];
 	
 	m_pAccount->setName(strName);
 	
@@ -621,7 +621,7 @@ toolbarViewGroupTag;
 	
 	NSString *title = [sender title];
 	
-	std::string strName = [title cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strName = [title cStringUsingEncoding:NSUTF8StringEncoding];
 	
 	m_pGraph->setName(strName);
 	
@@ -1145,10 +1145,10 @@ toolbarViewGroupTag;
 	
 	AccountType eType = [addAccountController accountType];
 	
-	std::string strName = [sAccountName cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strInstitution = [sInstitution cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strNumber = [sNumber cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strNote = [sNote cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strName = [sAccountName cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strInstitution = [sInstitution cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strNumber = [sNumber cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strNote = [sNote cStringUsingEncoding:NSUTF8StringEncoding];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1221,10 +1221,10 @@ toolbarViewGroupTag;
 {
 	Account &oAccount = m_Document.getAccount(account);
 	
-	std::string strName = [name cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strInstitution = [institution cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strNumber = [number cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strNote = [note cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strName = [name cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strInstitution = [institution cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strNumber = [number cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strNote = [note cStringUsingEncoding:NSUTF8StringEncoding];
 		
 	oAccount.setName(strName);
 	oAccount.setType(type);
@@ -1776,9 +1776,9 @@ toolbarViewGroupTag;
 	
 	[dateFormatter release];
 	
-	std::string strPayee = [[transactionsPayee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strDesc = [[transactionsDescription stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strCategory = [[transactionsCategory stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strPayee = [[transactionsPayee stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strDesc = [[transactionsDescription stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strCategory = [[transactionsCategory stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -2041,9 +2041,9 @@ toolbarViewGroupTag;
 	
 	[dateFormatter release];
 	
-	std::string strPayee = [[scheduledPayee stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strDesc = [[scheduledDescription stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
-	std::string strCategory = [[scheduledCategory stringValue] cStringUsingEncoding:NSASCIIStringEncoding];
+	std::string strPayee = [[scheduledPayee stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strDesc = [[scheduledDescription stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strCategory = [[scheduledCategory stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -2337,7 +2337,7 @@ toolbarViewGroupTag;
 	{
 		NSString *sPayee = [m_aPayeeItems objectAtIndex:row];
 		
-		std::string strPayee = [sPayee cStringUsingEncoding:NSASCIIStringEncoding];
+		std::string strPayee = [sPayee cStringUsingEncoding:NSUTF8StringEncoding];
 		
 		[m_aPayeeItems removeObjectAtIndex:row];
 		
@@ -2357,7 +2357,7 @@ toolbarViewGroupTag;
 	{
 		NSString *sCategory = [m_aCategoryItems objectAtIndex:row];
 		
-		std::string strCategory = [sCategory cStringUsingEncoding:NSASCIIStringEncoding];
+		std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
 		
 		[m_aCategoryItems removeObjectAtIndex:row];
 		
@@ -2799,7 +2799,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	if ([oPanel runModal] == NSOKButton)
 	{
 		fileToOpen = [oPanel filename];
-		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
+		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		if ([self OpenFileAt:strFile] == false)
 		{
@@ -2857,7 +2857,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	if ([sPanel runModal] == NSOKButton)
 	{
 		fileToSave = [sPanel filename];
-		strFile = [fileToSave cStringUsingEncoding: NSASCIIStringEncoding];
+		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		if ([self SaveFileTo:strFile] == false)
 		{
@@ -3034,7 +3034,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	if ([oPanel runModal] == NSOKButton)
 	{
 		fileToOpen = [oPanel filename];
-		strFile = [fileToOpen cStringUsingEncoding: NSASCIIStringEncoding];
+		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		std::string strDateSample = "";
 		NSString *sDateSample = @"";
@@ -3060,7 +3060,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	NSString *sFile = [importQIFController file];
 		
-	std::string strFile = [sFile cStringUsingEncoding: NSASCIIStringEncoding];
+	std::string strFile = [sFile cStringUsingEncoding: NSUTF8StringEncoding];
 	
 	[importQIFController release];
 	
@@ -3085,7 +3085,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	if ([sPanel runModal] == NSOKButton)
 	{
 		fileToSave = [sPanel filename];
-		strFile = [fileToSave cStringUsingEncoding: NSASCIIStringEncoding];
+		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		exportAccountToQIFFile(m_pAccount, strFile, UK);
 	}	
@@ -3212,7 +3212,7 @@ NSDate *convertToNSDate(MonthYear &date)
 			return NO;
     }
 	
-	std::string strFile = [filename cStringUsingEncoding: NSASCIIStringEncoding];
+	std::string strFile = [filename cStringUsingEncoding: NSUTF8StringEncoding];
 	
 	if ([self OpenFileAt:strFile] == false)
 	{
