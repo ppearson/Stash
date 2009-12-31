@@ -264,7 +264,7 @@
 			[separatorLine lineToPoint:NSMakePoint(dLeftStart + (nAmountIndex * dXIncrement), dBottomStart + dYValue)];
 		}
 		
-		[plotShape moveToPoint:NSMakePoint(dXStart, dYStart)];
+		[plotShape lineToPoint:NSMakePoint(dXStart, dYStart)];
 		
 		if (m_selectedPlot == nPlot)
 		{
@@ -280,9 +280,7 @@
 			colour = [[m_aColours objectAtIndex:nColourIndex] colorWithAlphaComponent:0.2f];
 			
 			// draw selected item title
-			
 			NSString *sSelectedItem = [NSString stringWithFormat:@"Selected item: %@", [plotItem objectForKey:@"title"]];
-			
 			NSSize extent = [sSelectedItem sizeWithAttributes:attributes1];
 			
 			[sSelectedItem drawAtPoint:NSMakePoint(5, bounds.size.height - 5 - extent.height) withAttributes:attributes1];
@@ -295,10 +293,10 @@
 			[[NSColor blackColor] set];
 			
 			[separatorLine stroke];			
-		}		
+		}
 		
 		[colour set];
-		[plotShape fill];		
+		[plotShape fill];
 		
 		[m_aPlotShapes addObject:plotShape];
 		[separatorLine removeAllPoints];
