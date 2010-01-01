@@ -85,10 +85,9 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 	}
 }
 
-bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
+bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense)
 {
-	if (!pAccount)
+	if (!criteria.m_pAccount)
 		return false;
 	
 	// build up map of categories and the cumulative amount for each
@@ -96,17 +95,20 @@ bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieCh
 	std::map<std::string, fixed> aMap;
 	std::map<std::string, fixed>::iterator itFind = aMap.end();
 	
-	std::vector<Transaction>::iterator it = pAccount->begin();
+	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
 
-	for (; it != pAccount->end(); ++it)
+	for (; it != criteria.m_pAccount->end(); ++it)
 	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
+		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if ((*it).getAmount().IsPositive())
+		if (expense && (*it).getAmount().IsPositive() ||
+			!expense && !(*it).getAmount().IsPositive())
+		{
 			continue;
+		}
 		
-		if (ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
 		if ((*it).isSplit() && (*it).getSplitCount() > 0)
@@ -133,7 +135,7 @@ bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieCh
 					catTotal += amount;			
 				}
 				
-				overallTotal += amount;
+				criteria.m_overallTotal += amount;
 			}			
 		}
 		else
@@ -156,19 +158,18 @@ bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieCh
 				catTotal += amount;			
 			}
 			
-			overallTotal += amount;
+			criteria.m_overallTotal += amount;
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
+	copyPieItemsToVector(aMap, criteria);
 
 	return true;
 }
 
-bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
+bool buildPieChartItemsForPayees(PieChartCriteria &criteria, bool expense)
 {
-	if (!pAccount)
+	if (!criteria.m_pAccount)
 		return false;
 	
 	// build up map of categories and the cumulative amount for each
@@ -176,17 +177,20 @@ bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartI
 	std::map<std::string, fixed> aMap;
 	std::map<std::string, fixed>::iterator itFind = aMap.end();
 	
-	std::vector<Transaction>::iterator it = pAccount->begin();
+	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
 	
-	for (; it != pAccount->end(); ++it)
+	for (; it != criteria.m_pAccount->end(); ++it)
 	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
+		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if ((*it).getAmount().IsPositive())
+		if (expense && (*it).getAmount().IsPositive() ||
+			!expense && !(*it).getAmount().IsPositive())
+		{
 			continue;
+		}
 		
-		if (ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
 		if ((*it).isSplit() && (*it).getSplitCount() > 0)
@@ -213,7 +217,7 @@ bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartI
 					payeeTotal += amount;			
 				}
 				
-				overallTotal += amount;
+				criteria.m_overallTotal += amount;
 			}			
 		}
 		else
@@ -236,169 +240,16 @@ bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartI
 				payeeTotal += amount;			
 			}
 			
-			overallTotal += amount;
+			criteria.m_overallTotal += amount;
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
-	
-	return true;
-}
-
-bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
-{
-	if (!pAccount)
-		return false;
-	
-	// build up map of categories and the cumulative amount for each
-	
-	std::map<std::string, fixed> aMap;
-	std::map<std::string, fixed>::iterator itFind = aMap.end();
-	
-	std::vector<Transaction>::iterator it = pAccount->begin();
-
-	for (; it != pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
-			continue;
-		
-		if (!(*it).getAmount().IsPositive())
-			continue;
-		
-		if (ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string category = split.getCategory();
-				fixed amount = split.getAmount();
-				
-				itFind = aMap.find(category);
-				
-				if (itFind == aMap.end())
-				{
-					aMap[category] = amount;
-				}
-				else
-				{
-					fixed &catTotal = (*itFind).second;
-					
-					catTotal += amount;			
-				}
-				
-				overallTotal += amount;
-			}			
-		}
-		else
-		{
-			std::string category = (*it).getCategory();
-			fixed amount = (*it).getAmount();
-			
-			itFind = aMap.find(category);
-			
-			if (itFind == aMap.end())
-			{
-				aMap[category] = amount;
-			}
-			else
-			{
-				fixed &catTotal = (*itFind).second;
-				
-				catTotal += amount;			
-			}
-			
-			overallTotal += amount;
-		}
-	}
-	
-	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
+	copyPieItemsToVector(aMap, criteria);
 	
 	return true;	
 }
 
-bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
-{
-	if (!pAccount)
-		return false;
-	
-	// build up map of categories and the cumulative amount for each
-	
-	std::map<std::string, fixed> aMap;
-	std::map<std::string, fixed>::iterator itFind = aMap.end();
-	
-	std::vector<Transaction>::iterator it = pAccount->begin();
-	
-	for (; it != pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
-			continue;
-		
-		if (!(*it).getAmount().IsPositive())
-			continue;
-		
-		if (ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string payee = split.getPayee();
-				fixed amount = split.getAmount();
-				
-				itFind = aMap.find(payee);
-				
-				if (itFind == aMap.end())
-				{
-					aMap[payee] = amount;
-				}
-				else
-				{
-					fixed &payeeTotal = (*itFind).second;
-					
-					payeeTotal += amount;			
-				}
-				
-				overallTotal += amount;
-			}			
-		}
-		else
-		{
-			std::string payee = (*it).getPayee();
-			fixed amount = (*it).getAmount();
-			
-			itFind = aMap.find(payee);
-			
-			if (itFind == aMap.end())
-			{
-				aMap[payee] = amount;
-			}
-			else
-			{
-				fixed &payeeTotal = (*itFind).second;
-				
-				payeeTotal += amount;			
-			}
-			
-			overallTotal += amount;
-		}
-	}
-	
-	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
-	
-	return true;	
-}
-
-bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate,
-											 fixed &overallMax, bool ignoreTransfers)
+bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 {
 	// make temporary cache of all items on a month/day basis
 	std::map<MonthYear, fixed> aDateMap;
@@ -410,17 +261,20 @@ bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<Area
 	std::map<MonthYear, fixed> aDateTotals;
 	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
 	
-	std::vector<Transaction>::iterator it = pAccount->begin();
+	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
 	
-	for (; it != pAccount->end(); ++it)
+	for (; it != criteria.m_pAccount->end(); ++it)
 	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
+		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if ((*it).getAmount().IsPositive())
+		if (expense && (*it).getAmount().IsPositive() ||
+			!expense && !(*it).getAmount().IsPositive())
+		{
 			continue;
+		}
 		
-		if (ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
 		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
@@ -528,13 +382,12 @@ bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<Area
 		}
 	}
 
-	copyAreaItemsToVector(aItemMap, aDateTotals, aItems, aDates, overallMax);
+	copyAreaItemsToVector(aItemMap, aDateTotals, criteria);
 	
 	return true;
 }
 
-bool buildAreaChartItemsForExpensePayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate,
-											 fixed &overallMax, bool ignoreTransfers)
+bool buildAreaChartItemsForPayees(AreaChartCriteria &criteria, bool expense)
 {
 	// make temporary cache of all items on a month/day basis
 	std::map<MonthYear, fixed> aDateMap;
@@ -546,17 +399,20 @@ bool buildAreaChartItemsForExpensePayees(Account *pAccount, std::vector<AreaChar
 	std::map<MonthYear, fixed> aDateTotals;
 	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
 	
-	std::vector<Transaction>::iterator it = pAccount->begin();
+	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
 	
-	for (; it != pAccount->end(); ++it)
+	for (; it != criteria.m_pAccount->end(); ++it)
 	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
+		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if ((*it).getAmount().IsPositive())
+		if (expense && (*it).getAmount().IsPositive() ||
+			!expense && !(*it).getAmount().IsPositive())
+		{
 			continue;
+		}
 		
-		if (ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
 			continue;
 		
 		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
@@ -664,287 +520,14 @@ bool buildAreaChartItemsForExpensePayees(Account *pAccount, std::vector<AreaChar
 		}
 	}
 	
-	copyAreaItemsToVector(aItemMap, aDateTotals, aItems, aDates, overallMax);
+	copyAreaItemsToVector(aItemMap, aDateTotals, criteria);
 	
 	return true;
 }
 
-bool buildAreaChartItemsForDepositCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate,
-											 fixed &overallMax, bool ignoreTransfers)
+void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &criteria)
 {
-	// make temporary cache of all items on a month/day basis
-	std::map<MonthYear, fixed> aDateMap;
-	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
-	
-	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
-	std::map<MonthYear, fixed>::iterator itDateFind = NULL;
-	
-	std::map<MonthYear, fixed> aDateTotals;
-	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
-	
-	std::vector<Transaction>::iterator it = pAccount->begin();
-	
-	for (; it != pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
-			continue;
-		
-		if (!(*it).getAmount().IsPositive())
-			continue;
-		
-		if (ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string category = split.getCategory();
-				fixed amount = split.getAmount();
-				
-				amount.setPositive();
-				
-				itDateTotal = aDateTotals.find(my);
-				
-				if (itDateTotal == aDateTotals.end())
-				{
-					aDateTotals[my] = amount;
-				}
-				else
-				{
-					fixed &dateTotal = (*itDateTotal).second;
-					
-					dateTotal += amount;
-				}
-				
-				itItemFind = aItemMap.find(category);
-				
-				if (itItemFind == aItemMap.end())
-				{
-					std::map<MonthYear, fixed> dateMap;
-					
-					dateMap[my] = amount;
-					
-					aItemMap[category] = dateMap;
-				}
-				else
-				{
-					std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-					
-					std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-					
-					if (itDateFind == dateMap.end())
-					{
-						dateMap[my] = amount;						
-					}
-					else
-					{
-						fixed &itemTotal = (*itDateFind).second;
-						
-						itemTotal += amount;
-					}		
-				}
-			}			
-		}
-		else
-		{
-			std::string category = (*it).getCategory();
-			fixed amount = (*it).getAmount();
-			
-			amount.setPositive();
-			
-			itDateTotal = aDateTotals.find(my);
-			
-			if (itDateTotal == aDateTotals.end())
-			{
-				aDateTotals[my] = amount;
-			}
-			else
-			{
-				fixed &dateTotal = (*itDateTotal).second;
-				
-				dateTotal += amount;
-			}
-			
-			itItemFind = aItemMap.find(category);
-			
-			if (itItemFind == aItemMap.end())
-			{
-				std::map<MonthYear, fixed> dateMap;
-				
-				dateMap[my] = amount;
-				
-				aItemMap[category] = dateMap;
-			}
-			else
-			{
-				std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-				
-				std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-				
-				if (itDateFind == dateMap.end())
-				{
-					dateMap[my] = amount;				
-				}
-				else
-				{
-					fixed &itemTotal = (*itDateFind).second;
-					
-					itemTotal += amount;
-				}
-			}
-		}
-	}
-	
-	copyAreaItemsToVector(aItemMap, aDateTotals, aItems, aDates, overallMax);
-	
-	return true;
-}
-
-bool buildAreaChartItemsForDepositPayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate,
-										 fixed &overallMax, bool ignoreTransfers)
-{
-	// make temporary cache of all items on a month/day basis
-	std::map<MonthYear, fixed> aDateMap;
-	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
-	
-	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
-	std::map<MonthYear, fixed>::iterator itDateFind = NULL;
-	
-	std::map<MonthYear, fixed> aDateTotals;
-	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
-	
-	std::vector<Transaction>::iterator it = pAccount->begin();
-	
-	for (; it != pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < startDate || (*it).getDate() > endDate)
-			continue;
-		
-		if (!(*it).getAmount().IsPositive())
-			continue;
-		
-		if (ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string payee = split.getPayee();
-				fixed amount = split.getAmount();
-				
-				amount.setPositive();
-				
-				itDateTotal = aDateTotals.find(my);
-				
-				if (itDateTotal == aDateTotals.end())
-				{
-					aDateTotals[my] = amount;
-				}
-				else
-				{
-					fixed &dateTotal = (*itDateTotal).second;
-					
-					dateTotal += amount;
-				}
-				
-				itItemFind = aItemMap.find(payee);
-				
-				if (itItemFind == aItemMap.end())
-				{
-					std::map<MonthYear, fixed> dateMap;
-					
-					dateMap[my] = amount;
-					
-					aItemMap[payee] = dateMap;
-				}
-				else
-				{
-					std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-					
-					std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-					
-					if (itDateFind == dateMap.end())
-					{
-						dateMap[my] = amount;						
-					}
-					else
-					{
-						fixed &itemTotal = (*itDateFind).second;
-						
-						itemTotal += amount;
-					}		
-				}
-			}			
-		}
-		else
-		{
-			std::string payee = (*it).getPayee();
-			fixed amount = (*it).getAmount();
-			
-			amount.setPositive();
-			
-			itDateTotal = aDateTotals.find(my);
-			
-			if (itDateTotal == aDateTotals.end())
-			{
-				aDateTotals[my] = amount;
-			}
-			else
-			{
-				fixed &dateTotal = (*itDateTotal).second;
-				
-				dateTotal += amount;
-			}
-			
-			itItemFind = aItemMap.find(payee);
-			
-			if (itItemFind == aItemMap.end())
-			{
-				std::map<MonthYear, fixed> dateMap;
-				
-				dateMap[my] = amount;
-				
-				aItemMap[payee] = dateMap;
-			}
-			else
-			{
-				std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-				
-				std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-				
-				if (itDateFind == dateMap.end())
-				{
-					dateMap[my] = amount;				
-				}
-				else
-				{
-					fixed &itemTotal = (*itDateFind).second;
-					
-					itemTotal += amount;
-				}
-			}
-		}
-	}
-	
-	copyAreaItemsToVector(aItemMap, aDateTotals, aItems, aDates, overallMax);
-	
-	return true;
-}
-
-void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal, int groupSmaller, std::string &groupSmallerName,
-						  PieChartSort eSort)
-{
-	double dOverallTotal = overallTotal.ToDouble();
+	double dOverallTotal = criteria.m_overallTotal.ToDouble();
 	
 	fixed leftovers = 0.0;
 	
@@ -952,7 +535,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 	
 	std::map<std::string, fixed>::iterator itMap = aMap.begin();
 	
-	double dGroupSmaller = static_cast<double>(groupSmaller);
+	double dGroupSmaller = static_cast<double>(criteria.m_groupSmaller);
 	
 	for (; itMap != aMap.end(); ++itMap)
 	{
@@ -960,7 +543,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 		
 		fixed amount = (*itMap).second;
 		
-		if (title.empty() || title == groupSmallerName)
+		if (title.empty() || title == criteria.m_groupSmallerName)
 		{
 			leftovers += amount;
 			continue;
@@ -968,11 +551,11 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 		
 		double dPieAngle = (amount.ToDouble() / dOverallTotal) * 360.0;
 		
-		if (groupSmaller == -1 || dPieAngle > dGroupSmaller)
+		if (criteria.m_groupSmaller == -1 || dPieAngle > dGroupSmaller)
 		{
 			PieChartItem newGraphValue(title, dPieAngle, amount);
 			
-			aVector.push_back(newGraphValue);
+			criteria.m_aValues.push_back(newGraphValue);
 		}
 		else
 		{
@@ -982,13 +565,13 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 	
 	// sort the values
 	
-	if (eSort == PieChartSortTitle)
+	if (criteria.m_eSort == PieChartSortTitle)
 	{
-		std::sort(aVector.begin(), aVector.end(), PieChartItem::PieChartSortTitle);
+		std::sort(criteria.m_aValues.begin(), criteria.m_aValues.end(), PieChartItem::PieChartSortTitle);
 	}
 	else
 	{
-		std::sort(aVector.begin(), aVector.end(), PieChartItem::PieChartSortAngle);
+		std::sort(criteria.m_aValues.begin(), criteria.m_aValues.end(), PieChartItem::PieChartSortAngle);
 	}
 	
 	// add other category with any leftovers that are too small to bother showing
@@ -997,14 +580,13 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 	{
 		double dPieAngle = (leftovers.ToDouble() / dOverallTotal) * 360.0;
 		
-		PieChartItem newGraphValue(groupSmallerName, dPieAngle, leftovers);
+		PieChartItem newGraphValue(criteria.m_groupSmallerName, dPieAngle, leftovers);
 		
-		aVector.push_back(newGraphValue);
+		criteria.m_aValues.push_back(newGraphValue);
 	}	
 }
 
-void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, std::vector<AreaChartItem> &aItems,
-						   std::vector<MonthYear> &aDates, fixed &overallMax)
+void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria)
 {
 	//	for each item, for each date that exists in the aDates set, create an AreaChartItem for that date and the item
 		
@@ -1026,8 +608,8 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 			
 			fixed &dateTotal = (*itDate).second;
 			
-			if (overallMax < dateTotal)
-				overallMax = dateTotal;
+			if (criteria.m_overallMax < dateTotal)
+				criteria.m_overallMax = dateTotal;
 			
 			std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(myDate);
 			
@@ -1043,25 +625,25 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 			}
 		}
 		
-		aItems.push_back(newItem);
+		criteria.m_aValues.push_back(newItem);
 	}
 	
 	// now work out what's 2% of the max overall value and if the item's less than that, remove it
 	
-	double dPurgeValue = overallMax.ToDouble();
+	double dPurgeValue = criteria.m_overallMax.ToDouble();
 	dPurgeValue *= 0.02;
 	
 	bool bAddOther = false;
 	AreaChartItem otherItem("Other");
 	
-	std::vector<AreaChartItem>::iterator itPurgeItem = aItems.begin();
+	std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
 	
-	while (itPurgeItem != aItems.end())
+	while (itPurgeItem != criteria.m_aValues.end())
 	{
 		if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
 		{
 			otherItem.combineItem(*itPurgeItem);
-			itPurgeItem = aItems.erase(itPurgeItem);
+			itPurgeItem = criteria.m_aValues.erase(itPurgeItem);
 			bAddOther = true;
 		}
 		else
@@ -1071,11 +653,11 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	}
 	
 	if (bAddOther)
-		aItems.push_back(otherItem);
+		criteria.m_aValues.push_back(otherItem);
 	
 	// sort the items so that items with fewer actual values (most likely occasional expenditures) get done last
 	// so they won't affect the more regular items, and will stand out more 
-	std::sort(aItems.begin(), aItems.end());
+	std::sort(criteria.m_aValues.begin(), criteria.m_aValues.end());
 		
 	// add dateitems to vector
 	std::map<MonthYear, fixed>::iterator itDate2 = aDateTotals.begin();
@@ -1084,6 +666,6 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	{
 		MonthYear myDate = (*itDate2).first;
 		
-		aDates.push_back(myDate);		
+		criteria.m_aDates.push_back(myDate);		
 	}
 }

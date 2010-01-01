@@ -990,15 +990,17 @@ toolbarViewGroupTag;
 	}
 	
 	PieChartSort ePieChartSort = static_cast<PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
+	
+	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
 		
 	if (type == ExpenseCategories)
-		buildPieChartItemsForExpenseCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
+		buildPieChartItemsForCategories(pieCriteria, true);
 	else if (type == ExpensePayees)
-		buildPieChartItemsForExpensePayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
+		buildPieChartItemsForPayees(pieCriteria, true);
 	else if (type == DepositCategories)
-		buildPieChartItemsForDepositCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
+		buildPieChartItemsForCategories(pieCriteria, false);
 	else if (type == DepositPayees)
-		buildPieChartItemsForDepositPayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
+		buildPieChartItemsForPayees(pieCriteria, false);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1054,14 +1056,16 @@ toolbarViewGroupTag;
 	
 	fixed overallMax = 0.0;
 	
+	AreaChartCriteria areaCriteria(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	
 	if (type == ExpenseCategories)
-		buildAreaChartItemsForExpenseCategories(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+		buildAreaChartItemsForCategories(areaCriteria, true);
 	else if (type == ExpensePayees)
-		buildAreaChartItemsForExpensePayees(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+		buildAreaChartItemsForPayees(areaCriteria, true);
 	else if (type == DepositCategories)
-		buildAreaChartItemsForDepositCategories(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+		buildAreaChartItemsForCategories(areaCriteria, false);
 	else if (type == DepositPayees)
-		buildAreaChartItemsForDepositPayees(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+		buildAreaChartItemsForPayees(areaCriteria, false);
 			
 	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
 	

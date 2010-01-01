@@ -91,25 +91,48 @@ protected:
 	int m_activeEntries;
 };
 
-bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
-bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
-bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
-bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
-										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
+struct PieChartCriteria
+{
+	PieChartCriteria(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+					 bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort) :
+		m_pAccount(pAccount), m_aValues(aValues), m_startDate(startDate), m_endDate(endDate), m_overallTotal(overallTotal), m_ignoreTransfers(ignoreTransfers),
+		m_groupSmaller(groupSmaller), m_groupSmallerName(groupSmallerName), m_eSort(eSort)
+	{
+	}
+	
+	Account *m_pAccount;
+	std::vector<PieChartItem> &m_aValues;
+	Date &m_startDate;
+	Date &m_endDate;
+	fixed &m_overallTotal;
+	bool m_ignoreTransfers;
+	int m_groupSmaller;
+	std::string &m_groupSmallerName;
+	PieChartSort m_eSort;
+};
 
-bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
-											 fixed &overallMax, bool ignoreTransfers);
-bool buildAreaChartItemsForExpensePayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
-											 fixed &overallMax, bool ignoreTransfers);
-bool buildAreaChartItemsForDepositCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
-											 fixed &overallMax, bool ignoreTransfers);
-bool buildAreaChartItemsForDepositPayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
-											 fixed &overallMax, bool ignoreTransfers);
+bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense);
+bool buildPieChartItemsForPayees(PieChartCriteria &criteria, bool expense);
 
-void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal, int groupSmaller, std::string &groupSmallerName,
-									PieChartSort eSort);
-void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, std::vector<AreaChartItem> &aItems,
-						   std::vector<MonthYear> &aDates, fixed &overallMax);
+void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &criteria);
+
+struct AreaChartCriteria
+{
+	AreaChartCriteria(Account *pAccount, std::vector<AreaChartItem> &aValues, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
+		m_pAccount(pAccount), m_aValues(aValues), m_aDates(aDates), m_startDate(startDate), m_endDate(endDate), m_overallMax(overallMax), m_ignoreTransfers(ignoreTransfers)
+	{
+	}
+	
+	Account *m_pAccount;
+	std::vector<AreaChartItem> &m_aValues;
+	std::vector<MonthYear> &m_aDates;
+	Date &m_startDate;
+	Date &m_endDate;
+	fixed &m_overallMax;
+	bool m_ignoreTransfers;	
+};
+
+bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense);
+bool buildAreaChartItemsForPayees(AreaChartCriteria &criteria, bool expense);
+
+void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
