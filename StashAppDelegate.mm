@@ -88,6 +88,10 @@ toolbarViewGroupTag;
 	{
 		prefController = [[PreferencesController alloc] init];
 		
+		NSNotificationCenter *nc;
+		nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(handleGraphSettingsUpdate:) name:@"GraphSettingsUpdate" object:nil];
+		
 		m_HasFinishedLoading = false;
 		m_sPendingOpenFile = nil;
 		
@@ -113,8 +117,14 @@ toolbarViewGroupTag;
 	NSMutableDictionary *defaultValues = [NSMutableDictionary dictionary];
 	
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralOpenLastFile"];
-	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"GeneralScrollToLatest"];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
+	
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsScrollToLatest"];
+	
+	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"PieChartGroupSmallerItems"];
+	[defaultValues setObject:[NSNumber numberWithInt:3] forKey:@"PieChartGroupSmallerItemsSize"];
+	[defaultValues setValue:@"Other" forKey:@"PieChartGroupSmallerItemsName"];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 }
@@ -136,7 +146,7 @@ toolbarViewGroupTag;
 	
 	nViewType = 0;
 	
-	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier: @"Toolbar"];
+	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier:@"Toolbar"];
     [toolbar setDelegate:self];
     [toolbar setAllowsUserCustomization:NO];
     [toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
@@ -828,7 +838,7 @@ toolbarViewGroupTag;
 	
 	[transactionsTableView reloadData];
 	
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"GeneralScrollToLatest"] == YES)
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsScrollToLatest"] == YES)
 	{
 		int latest = [transactionsTableView numberOfRows];
 		[transactionsTableView scrollRowToVisible:latest - 1];
@@ -968,14 +978,27 @@ toolbarViewGroupTag;
 	
 	fixed overallTotal = 0.0;
 	
+	int pieSmallerThanValue = -1;
+	std::string groupSmallerName = "";
+	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PieChartGroupSmallerItems"] == YES)
+	{
+		pieSmallerThanValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartGroupSmallerItemsSize"];
+		NSString *sGroupOtherName = [[NSUserDefaults standardUserDefaults] valueForKey:@"PieChartGroupSmallerItemsName"];
+		
+		groupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
+	}
+	
+	PieChartSort ePieChartSort = static_cast<PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
+		
 	if (type == ExpenseCategories)
-		buildPieChartItemsForExpenseCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForExpenseCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
 	else if (type == ExpensePayees)
-		buildPieChartItemsForExpensePayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForExpensePayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
 	else if (type == DepositCategories)
-		buildPieChartItemsForDepositCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForDepositCategories(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
 	else if (type == DepositPayees)
-		buildPieChartItemsForDepositPayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers);
+		buildPieChartItemsForDepositPayees(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -3290,6 +3313,11 @@ NSDate *convertToNSDate(MonthYear &date)
 		[aTransaction setTransaction:nTransIndex];
 		[aTransaction setIntValue:nTransIndex forKey:@"Transaction"];
 	}	
+}
+
+- (void)handleGraphSettingsUpdate:(NSNotification *)note
+{
+	[self redrawGraph:self];	
 }
 
 @end

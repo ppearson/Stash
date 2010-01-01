@@ -26,6 +26,12 @@
 #include "fixed.h"
 #include "Account.h"
 
+enum PieChartSort
+{
+	PieChartSortAngle,
+	PieChartSortTitle
+};
+
 class PieChartItem
 {
 public:
@@ -36,9 +42,14 @@ public:
 	void setAngle(double angle) { m_angle = angle; }
 	void setAmount(fixed amount) { m_amount = amount; }
 	
-	bool operator<(const PieChartItem &rhs) const
+	static bool PieChartSortAngle(const PieChartItem& v1, const PieChartItem& v2)
 	{
-		return this->m_angle < rhs.m_angle;
+		return v1.m_angle < v2.m_angle;
+	}
+	
+	static bool PieChartSortTitle(const PieChartItem& v1, const PieChartItem& v2)
+	{
+		return v1.m_title < v2.m_title;
 	}
 	
 	std::string		getTitle() { return m_title; }
@@ -58,7 +69,12 @@ public:
 	~AreaChartItem() { }
 	
 	void setTitle(std::string title) { m_title = title; }
-	void addAmountToValue(fixed amount);	
+	void addAmountToValue(fixed amount);
+	
+	bool operator<(const AreaChartItem &rhs) const
+	{
+		return rhs.m_activeEntries < this->m_activeEntries;
+	}
 	
 	std::string		getTitle() { return m_title; }
 	int				getNumItems() { return m_amounts.size(); }
@@ -72,12 +88,17 @@ protected:
 	std::vector<fixed> m_amounts;
 	fixed m_maxValue;
 	bool m_blank;
+	int m_activeEntries;
 };
 
-bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
-bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers);
+bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
+bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
+bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
+bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort);
 
 bool buildAreaChartItemsForExpenseCategories(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
 											 fixed &overallMax, bool ignoreTransfers);
@@ -88,6 +109,7 @@ bool buildAreaChartItemsForDepositCategories(Account *pAccount, std::vector<Area
 bool buildAreaChartItemsForDepositPayees(Account *pAccount, std::vector<AreaChartItem> &aItems, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, 
 											 fixed &overallMax, bool ignoreTransfers);
 
-void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal);
+void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal, int groupSmaller, std::string &groupSmallerName,
+									PieChartSort eSort);
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, std::vector<AreaChartItem> &aItems,
 						   std::vector<MonthYear> &aDates, fixed &overallMax);

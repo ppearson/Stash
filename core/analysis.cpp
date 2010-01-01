@@ -32,7 +32,7 @@ PieChartItem::PieChartItem(std::string title, double angle, fixed amount) : m_ti
 
 }
 
-AreaChartItem::AreaChartItem(std::string title) : m_title(title), m_maxValue(0.0), m_blank(true)
+AreaChartItem::AreaChartItem(std::string title) : m_title(title), m_maxValue(0.0), m_blank(true), m_activeEntries(0)
 {
 
 }
@@ -42,6 +42,9 @@ void AreaChartItem::addAmountToValue(fixed amount)
 	m_blank = false;
 	
 	m_amounts.push_back(amount);
+	
+	if (!amount.IsZero())
+		m_activeEntries++;
 	
 	if (m_maxValue < amount)
 		m_maxValue = amount;
@@ -58,6 +61,9 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 		{
 			fixed &itemValue = (*itemIt);
 			
+			if (!itemValue.IsZero())
+				m_activeEntries++;
+			
 			m_amounts.push_back(itemValue);
 		}
 		
@@ -73,10 +79,14 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 			
 			thisValue += itemValue;
 		}
+		
+		if (m_activeEntries < item.m_activeEntries)
+			m_activeEntries = item.m_activeEntries;
 	}
 }
 
-bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
+bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
 {
 	if (!pAccount)
 		return false;
@@ -150,12 +160,13 @@ bool buildPieChartItemsForExpenseCategories(Account *pAccount, std::vector<PieCh
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal);
+	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
 
 	return true;
 }
 
-bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
+bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
 {
 	if (!pAccount)
 		return false;
@@ -229,12 +240,13 @@ bool buildPieChartItemsForExpensePayees(Account *pAccount, std::vector<PieChartI
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal);
+	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
 	
 	return true;
 }
 
-bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
+bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+											bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
 {
 	if (!pAccount)
 		return false;
@@ -304,12 +316,13 @@ bool buildPieChartItemsForDepositCategories(Account *pAccount, std::vector<PieCh
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal);
+	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
 	
 	return true;	
 }
 
-bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal, bool ignoreTransfers)
+bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+										bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort)
 {
 	if (!pAccount)
 		return false;
@@ -379,7 +392,7 @@ bool buildPieChartItemsForDepositPayees(Account *pAccount, std::vector<PieChartI
 		}
 	}
 	
-	copyPieItemsToVector(aMap, aValues, overallTotal);
+	copyPieItemsToVector(aMap, aValues, overallTotal, groupSmaller, groupSmallerName, eSort);
 	
 	return true;	
 }
@@ -928,7 +941,8 @@ bool buildAreaChartItemsForDepositPayees(Account *pAccount, std::vector<AreaChar
 	return true;
 }
 
-void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal)
+void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieChartItem> &aVector, fixed &overallTotal, int groupSmaller, std::string &groupSmallerName,
+						  PieChartSort eSort)
 {
 	double dOverallTotal = overallTotal.ToDouble();
 	
@@ -938,13 +952,15 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 	
 	std::map<std::string, fixed>::iterator itMap = aMap.begin();
 	
+	double dGroupSmaller = static_cast<double>(groupSmaller);
+	
 	for (; itMap != aMap.end(); ++itMap)
 	{
 		std::string title = (*itMap).first;
 		
 		fixed amount = (*itMap).second;
 		
-		if (title.empty())
+		if (title.empty() || title == groupSmallerName)
 		{
 			leftovers += amount;
 			continue;
@@ -952,7 +968,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 		
 		double dPieAngle = (amount.ToDouble() / dOverallTotal) * 360.0;
 		
-		if (dPieAngle > 4.0)
+		if (groupSmaller == -1 || dPieAngle > dGroupSmaller)
 		{
 			PieChartItem newGraphValue(title, dPieAngle, amount);
 			
@@ -964,9 +980,16 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 		}
 	}
 	
-	// sort the values by size
+	// sort the values
 	
-	std::sort(aVector.begin(), aVector.end());
+	if (eSort == PieChartSortTitle)
+	{
+		std::sort(aVector.begin(), aVector.end(), PieChartItem::PieChartSortTitle);
+	}
+	else
+	{
+		std::sort(aVector.begin(), aVector.end(), PieChartItem::PieChartSortAngle);
+	}
 	
 	// add other category with any leftovers that are too small to bother showing
 	
@@ -974,7 +997,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 	{
 		double dPieAngle = (leftovers.ToDouble() / dOverallTotal) * 360.0;
 		
-		PieChartItem newGraphValue("Other", dPieAngle, leftovers);
+		PieChartItem newGraphValue(groupSmallerName, dPieAngle, leftovers);
 		
 		aVector.push_back(newGraphValue);
 	}	
@@ -983,7 +1006,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, std::vector<PieCha
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, std::vector<AreaChartItem> &aItems,
 						   std::vector<MonthYear> &aDates, fixed &overallMax)
 {
-	//	for each item, for each date that exists in the aDates set, create a AreaChartItem for that date and the item
+	//	for each item, for each date that exists in the aDates set, create an AreaChartItem for that date and the item
 		
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItem = aMap.begin();
 	
@@ -1050,8 +1073,11 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	if (bAddOther)
 		aItems.push_back(otherItem);
 	
+	// sort the items so that items with fewer actual values (most likely occasional expenditures) get done last
+	// so they won't affect the more regular items, and will stand out more 
+	std::sort(aItems.begin(), aItems.end());
+		
 	// add dateitems to vector
-	
 	std::map<MonthYear, fixed>::iterator itDate2 = aDateTotals.begin();
 	
 	for (; itDate2 != aDateTotals.end(); ++itDate2)

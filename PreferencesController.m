@@ -22,6 +22,17 @@
 
 #import "PreferencesController.h"
 
+#define TOOLBAR_GENERAL			@"TOOLBAR_GENERAL"
+#define TOOLBAR_TRANSACTIONS	@"TOOLBAR_TRANSACTIONS"
+#define TOOLBAR_PIECHART		@"TOOLBAR_PIECHART"
+#define TOOLBAR_AREACHART		@"TOOLBAR_AREACHART"
+
+@interface PreferencesController (Private)
+
+- (void) setPrefView: (id) sender;
+
+@end
+
 
 @implementation PreferencesController
 
@@ -41,7 +52,172 @@
 
 - (void)awakeFromNib
 {
+	bHasLoaded = YES;
+    
+    NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier:@"Preferences Toolbar"];
+    [toolbar setDelegate:self];
+    [toolbar setAllowsUserCustomization:NO];
+    [toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
+    [toolbar setSizeMode:NSToolbarSizeModeRegular];
+    [toolbar setSelectedItemIdentifier:TOOLBAR_GENERAL];
+    [[self window] setToolbar:toolbar];
+    [toolbar release];
+    
+    [self setPrefView:nil];
+	
+	[fSegmentSort removeAllItems];
+	
+	[fSegmentSort addItemWithTitle:@"Size"];
+	[fSegmentSort addItemWithTitle:@"Title"];
+	
+	[fSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
+	
+	if ([uDefaults boolForKey:@"PieChartGroupSmallerItems"] == NO)
+	{
+		[fGroupSize setEnabled:NO];
+		[fGroupName setEnabled:NO];
+	}
+}
 
+- (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
+{
+    NSToolbarItem * item = [[NSToolbarItem alloc] initWithItemIdentifier: ident];
+	
+    if ([ident isEqualToString:TOOLBAR_GENERAL])
+    {
+        [item setLabel:@"General"];
+        [item setImage:[NSImage imageNamed:NSImageNamePreferencesGeneral]];
+        [item setTarget:self];
+        [item setAction:@selector(setPrefView:)];
+        [item setAutovalidates:NO];
+    }
+    else if ([ident isEqualToString:TOOLBAR_TRANSACTIONS])
+    {
+        [item setLabel:@"Transactions"];
+        [item setImage:[NSImage imageNamed:@"trans_prefs.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(setPrefView:)];
+        [item setAutovalidates:NO];
+    }
+    else if ([ident isEqualToString:TOOLBAR_PIECHART])
+    {
+        [item setLabel:@"Pie Chart"];
+        [item setImage:[NSImage imageNamed:@"pie_prefs.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(setPrefView:)];
+        [item setAutovalidates:NO];
+    }
+    else if ([ident isEqualToString:TOOLBAR_AREACHART])
+    {
+        [item setLabel:@"Area Chart"];
+        [item setImage:[NSImage imageNamed:@"area_prefs.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(setPrefView:)];
+        [item setAutovalidates:NO];
+    }
+	else
+    {
+        [item release];
+        return nil;
+    }
+	
+    return [item autorelease];
+}
+
+- (NSArray *)toolbarSelectableItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [self toolbarDefaultItemIdentifiers:toolbar];
+}
+
+- (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [self toolbarAllowedItemIdentifiers:toolbar];
+}
+
+- (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
+{
+    return [NSArray arrayWithObjects:TOOLBAR_GENERAL, TOOLBAR_TRANSACTIONS, TOOLBAR_PIECHART, TOOLBAR_AREACHART, nil];
+}
+
+- (void)updateGraphSettings:(id)sender
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"GraphSettingsUpdate" object:self];
+}
+
+- (void)pieChartGroupItemsToggle:(id)sender
+{
+	if ([sender state] == NSOnState)
+	{
+		[fGroupSize setEnabled:YES];
+		[fGroupName setEnabled:YES];
+	}
+	else
+	{
+		[fGroupSize setEnabled:NO];
+		[fGroupName setEnabled:NO];
+	}
+	
+	[self performSelector:@selector(updateGraphSettings:) withObject:nil];
+}
+
+@end
+
+@implementation PreferencesController (Private)
+
+- (void)setPrefView:(id)sender
+{
+    NSString * identifier;
+    if (sender)
+    {
+        identifier = [sender itemIdentifier];
+        [[NSUserDefaults standardUserDefaults] setObject:identifier forKey:@"SelectedPrefView"];
+    }
+    else
+        identifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"SelectedPrefView"];
+    
+    NSView *view;
+    if ([identifier isEqualToString:TOOLBAR_TRANSACTIONS])
+        view = vTransactionsView;
+    else if ([identifier isEqualToString:TOOLBAR_PIECHART])
+        view = vPieChartView;
+    else if ([identifier isEqualToString:TOOLBAR_AREACHART])
+        view = vAreaChartView;
+	else
+    {
+        identifier = TOOLBAR_GENERAL;
+        view = vGeneralView;
+    }
+    
+    [[[self window] toolbar] setSelectedItemIdentifier:identifier];
+    
+    NSWindow *window = [self window];
+    if ([window contentView] == view)
+        return;
+    
+    [window setContentView:view];
+    
+    if (sender)
+	{
+		NSString *sTitle = [NSString stringWithFormat:@"%@ Preferences", [sender label]];
+        [window setTitle:sTitle];
+	}
+    else
+    {
+        NSToolbar *toolbar = [window toolbar];
+        NSString *itemIdentifier = [toolbar selectedItemIdentifier];
+		int items = [[toolbar items] count];
+		int i = 0;
+        for (i = 0; i < items; i++)
+		{
+			NSToolbarItem *item = [[toolbar items] objectAtIndex:i];
+            if ([[item itemIdentifier] isEqualToString: itemIdentifier])
+            {
+				NSString *sTitle = [NSString stringWithFormat:@"%@ Preferences", [item label]];
+                [window setTitle:sTitle];
+                break;
+            }
+		}
+    }
 }
 
 @end

@@ -26,6 +26,24 @@
 @interface PreferencesController : NSWindowController
 {
 	NSUserDefaults *uDefaults;
+    BOOL bHasLoaded;
+    
+    IBOutlet NSView *vGeneralView, *vTransactionsView, *vPieChartView, *vAreaChartView;
+	
+	// General
+	
+	// Transactons
+	
+	// Pie Chart
+	
+	IBOutlet NSPopUpButton *fSegmentSort;
+	IBOutlet NSTextField *fGroupSize;
+	IBOutlet NSTextField *fGroupName;
+	
+	// Area Chart
 }
+
+- (void)updateGraphSettings:(id)sender;
+- (void)pieChartGroupItemsToggle:(id)sender;
 
 @end
