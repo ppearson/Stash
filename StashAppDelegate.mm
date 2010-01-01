@@ -90,6 +90,7 @@ toolbarViewGroupTag;
 		
 		NSNotificationCenter *nc;
 		nc = [NSNotificationCenter defaultCenter];
+		[nc addObserver:self selector:@selector(handleTransactionsSettingsUpdate:) name:@"TransactionsSettingsUpdate" object:nil];
 		[nc addObserver:self selector:@selector(handleGraphSettingsUpdate:) name:@"GraphSettingsUpdate" object:nil];
 		
 		m_HasFinishedLoading = false;
@@ -120,6 +121,8 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
 	
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsScrollToLatest"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegAmountsRed"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];	
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"PieChartGroupSmallerItems"];
@@ -718,6 +721,9 @@ toolbarViewGroupTag;
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	
+	BOOL bShowNegAmountsInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegAmountsRed"];
+	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
+	
 	for (; it != m_pAccount->end(); ++it, nTransaction++)
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
@@ -749,6 +755,15 @@ toolbarViewGroupTag;
 		
 		int recon = it->isReconciled();
 		
+		BOOL bIsAmountNeg = NO;
+		BOOL bIsBalanceNeg = NO;
+		
+		if (bShowNegAmountsInRed && !it->getAmount().IsPositive())
+			bIsAmountNeg = YES;
+		
+		if (bShowNegBalancesInRed && !localBalance.IsPositive())
+			bIsBalanceNeg = YES;
+		
 		[newTransaction setIntValue:recon forKey:@"Reconciled"];
 		[newTransaction setValue:sTDate forKey:@"Date"];
 		[newTransaction setValue:sTPayee forKey:@"Payee"];
@@ -756,6 +771,9 @@ toolbarViewGroupTag;
 		[newTransaction setValue:sTCategory forKey:@"Category"];
 		[newTransaction setValue:sTAmount forKey:@"Amount"];
 		[newTransaction setValue:sTBalance forKey:@"Balance"];
+		
+		[newTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
+		[newTransaction setBoolValue:bIsBalanceNeg forKey:@"BalNeg"];
 		
 		[newTransaction setIntValue:nTransaction forKey:@"Transaction"];
 		
@@ -783,10 +801,17 @@ toolbarViewGroupTag;
 				NSNumber *nSAmount = [NSNumber numberWithDouble:split.getAmount().ToDouble()];
 				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
 				
+				bIsAmountNeg = NO;
+			
+				if (bShowNegAmountsInRed && !split.getAmount().IsPositive())
+					bIsAmountNeg = YES;
+				
 				[newSplit setValue:sSPayee forKey:@"Payee"];
 				[newSplit setValue:sSDescription forKey:@"Description"];
 				[newSplit setValue:sSCategory forKey:@"Category"];
 				[newSplit setValue:sSAmount forKey:@"Amount"];
+				
+				[newSplit setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 				
 				[newSplit setTransaction:nTransaction];
 				[newSplit setIntValue:nTransaction forKey:@"Transaction"];
@@ -1853,6 +1878,10 @@ toolbarViewGroupTag;
 	if (nSplit >= 0)
 		split = &trans->getSplit(nSplit);
 	
+	BOOL bIsAmountNeg = NO;
+	
+	BOOL bShowNegAmountsInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegAmountsRed"];
+	
 	if (trans && !split && nSplit != -2)
 	{
 		trans->setDate(date1);
@@ -1870,12 +1899,16 @@ toolbarViewGroupTag;
 			[self updateBalancesFromTransactionIndex:nTrans - m_nTransactionOffset];
 		}
 		
+		if (bShowNegAmountsInRed && !fAmount.IsPositive())
+			bIsAmountNeg = YES;
+		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
 		[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
 		[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
 		[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+		[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 		
 		if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 		{
@@ -1900,11 +1933,15 @@ toolbarViewGroupTag;
 			split->setCategory(strCategory);
 			split->setAmount(fAmount);
 			
+			if (bShowNegAmountsInRed && !fAmount.IsPositive())
+				bIsAmountNeg = YES;
+			
 			[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
 			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
 			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 			[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+			[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 			
 			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 			{
@@ -1926,6 +1963,9 @@ toolbarViewGroupTag;
 			
 			trans->addSplit(strDesc, strPayee, strCategory, fAmount);
 			
+			if (bShowNegAmountsInRed && !fAmount.IsPositive())
+				bIsAmountNeg = YES;
+			
 			int nSplitsNumber = trans->getSplitCount() - 1;
 			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
 			[m_SelectedTransaction setIntValue:nSplitsNumber forKey:@"Split"];
@@ -1933,6 +1973,7 @@ toolbarViewGroupTag;
 			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
 			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+			[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 			
 			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
 			{
@@ -2612,6 +2653,20 @@ toolbarViewGroupTag;
 	
 	if ([item intKeyValue:@"Split"] != -1)
 		enableCheck = NO;
+	
+	if ([[tableColumn identifier] isEqualToString:@"Reconciled"])
+	{
+		if (enableCheck == YES)
+		{
+			[cell setImagePosition: NSImageOnly];
+		}
+		else
+		{
+			[cell setImagePosition: NSNoImage];
+		}
+		
+		return;
+	}
 		
 	if ([outlineView selectedRow] == [outlineView rowForItem:item])
 	{
@@ -2627,21 +2682,24 @@ toolbarViewGroupTag;
 		{
 			fontColor = [NSColor blackColor];
 		}
+	}	
+	
+	if ([[tableColumn identifier] isEqualToString:@"Amount"])
+	{
+		if ([item boolKeyValue:@"AmoNeg"] == YES)
+		{
+			fontColor = [NSColor redColor];
+		}		
+	}
+	else if ([[tableColumn identifier] isEqualToString:@"Balance"])
+	{
+		if ([item boolKeyValue:@"BalNeg"] == YES)
+		{
+			fontColor = [NSColor redColor];
+		}		
 	}
 	
-	if ([[tableColumn identifier] isEqualToString:@"Reconciled"])
-	{
-		if (enableCheck == YES)
-		{
-			[cell setImagePosition: NSImageOnly];
-		}
-		else
-		{
-			[cell setImagePosition: NSNoImage];
-		}
-	}
-	else
-		[cell setTextColor:fontColor];
+	[cell setTextColor:fontColor];
 }
 
 // Transactions OutlineView End
@@ -3294,6 +3352,8 @@ NSDate *convertToNSDate(MonthYear &date)
 		localBalance = m_aBalance.back();
 	}
 	
+	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
+	
 	std::vector<Transaction>::iterator it = m_pAccount->begin() + m_nTransactionOffset + nIndex;
 	
 	int nTransItemIndex = nIndex;
@@ -3305,10 +3365,17 @@ NSDate *convertToNSDate(MonthYear &date)
 		
 		m_aBalance.push_back(localBalance);
 		
+		BOOL bIsBalanceNeg = NO;		
+		
+		if (bShowNegBalancesInRed && !localBalance.IsPositive())
+			bIsBalanceNeg = YES;
+		
 		NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
 		NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
 				
-		[aTransaction setValue:sTBalance forKey:@"Balance"];		
+		[aTransaction setValue:sTBalance forKey:@"Balance"];
+		
+		[aTransaction setBoolValue:bIsBalanceNeg forKey:@"BalNeg"];
 	
 		[sTBalance release];
 	}	
@@ -3333,6 +3400,11 @@ NSDate *convertToNSDate(MonthYear &date)
 		[aTransaction setTransaction:nTransIndex];
 		[aTransaction setIntValue:nTransIndex forKey:@"Transaction"];
 	}	
+}
+
+- (void)handleTransactionsSettingsUpdate:(NSNotification *)note
+{
+	[self buildTransactionsTree];
 }
 
 - (void)handleGraphSettingsUpdate:(NSNotification *)note

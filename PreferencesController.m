@@ -145,6 +145,11 @@
     return [NSArray arrayWithObjects:TOOLBAR_GENERAL, TOOLBAR_TRANSACTIONS, TOOLBAR_PIECHART, TOOLBAR_AREACHART, nil];
 }
 
+- (void)updateTransactionsSettings:(id)sender
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"TransactionsSettingsUpdate" object:self];
+}
+
 - (void)updateGraphSettings:(id)sender
 {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"GraphSettingsUpdate" object:self];

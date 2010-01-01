@@ -245,6 +245,7 @@ NSDate *convertToNSDate(MonthYear &date);
 - (void)updateBalancesFromTransactionIndex:(int)nIndex;
 - (void)updateTransactionsFromTransactionIndex:(int)nIndex;
 
+- (void)handleTransactionsSettingsUpdate:(NSNotification *)note;
 - (void)handleGraphSettingsUpdate:(NSNotification *)note;
 
 @property (assign) IBOutlet NSWindow *window;

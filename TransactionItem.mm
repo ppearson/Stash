@@ -82,6 +82,19 @@
 	[data setValue:[NSNumber numberWithInt:value] forKey:key];
 }
 
+- (BOOL)boolKeyValue:(NSString *)key
+{
+	if ([data objectForKey:key] != nil)
+		return [[data valueForKey:key] boolValue];
+	
+	return NO;
+}
+
+- (void)setBoolValue:(BOOL)value forKey:(NSString *)key
+{
+	[data setValue:[NSNumber numberWithBool:value] forKey:key];
+}
+
 - (void)addChild:(TransactionItem *)n
 {
 	[children addObject:n];

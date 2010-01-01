@@ -46,6 +46,7 @@
 	IBOutlet NSTextField *fAreaGroupName;
 }
 
+- (void)updateTransactionsSettings:(id)sender;
 - (void)updateGraphSettings:(id)sender;
 
 - (void)pieChartGroupItemsToggle:(id)sender;

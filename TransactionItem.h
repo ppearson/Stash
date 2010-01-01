@@ -45,6 +45,9 @@
 - (int)intKeyValue:(NSString *)key;
 - (void)setIntValue:(int)value forKey:(NSString *)key;
 
+- (BOOL)boolKeyValue:(NSString *)key;
+- (void)setBoolValue:(BOOL)value forKey:(NSString *)key;
+
 - (void)addChild:(TransactionItem *)n;
 - (int)childrenCount;
 - (TransactionItem *)childAtIndex:(int)i;
