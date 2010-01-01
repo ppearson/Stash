@@ -13,6 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="20"/>
+			<integer value="21"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,7 +62,9 @@
 			<object class="NSUserDefaultsController" id="526319124">
 				<object class="NSMutableArray" key="NSDeclaredKeys">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>PieChartSortType</string>
+					<string>AreaChartGroupSmallerItemsSize</string>
+					<string>AreaChartGroupSmallerItemsName</string>
+					<string>AreaChartGroupSmallerItems</string>
 				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
@@ -358,9 +361,85 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="185582477">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
+				<object class="NSMutableArray" key="NSSubviews">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="NSTextField" id="905592078">
+						<reference key="NSNextResponder" ref="185582477"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{45, 224}, {158, 22}}</string>
+						<reference key="NSSuperview" ref="185582477"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSTextFieldCell" key="NSCell" id="279443940">
+							<int key="NSCellFlags">-1804468671</int>
+							<int key="NSCellFlags2">272630784</int>
+							<string key="NSContents"/>
+							<reference key="NSSupport" ref="278382982"/>
+							<reference key="NSControlView" ref="905592078"/>
+							<bool key="NSDrawsBackground">YES</bool>
+							<reference key="NSBackgroundColor" ref="595294352"/>
+							<reference key="NSTextColor" ref="687513895"/>
+						</object>
+					</object>
+					<object class="NSTextField" id="571902945">
+						<reference key="NSNextResponder" ref="185582477"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{268, 253}, {176, 17}}</string>
+						<reference key="NSSuperview" ref="185582477"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSTextFieldCell" key="NSCell" id="663592963">
+							<int key="NSCellFlags">68288064</int>
+							<int key="NSCellFlags2">272630784</int>
+							<string key="NSContents">% max value into new item:</string>
+							<reference key="NSSupport" ref="278382982"/>
+							<reference key="NSControlView" ref="571902945"/>
+							<reference key="NSBackgroundColor" ref="294453264"/>
+							<reference key="NSTextColor" ref="1000447787"/>
+						</object>
+					</object>
+					<object class="NSTextField" id="472477972">
+						<reference key="NSNextResponder" ref="185582477"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{218, 250}, {45, 22}}</string>
+						<reference key="NSSuperview" ref="185582477"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSTextFieldCell" key="NSCell" id="60721107">
+							<int key="NSCellFlags">-1804468671</int>
+							<int key="NSCellFlags2">272630784</int>
+							<string key="NSContents"/>
+							<reference key="NSSupport" ref="278382982"/>
+							<reference key="NSControlView" ref="472477972"/>
+							<bool key="NSDrawsBackground">YES</bool>
+							<reference key="NSBackgroundColor" ref="595294352"/>
+							<reference key="NSTextColor" ref="687513895"/>
+						</object>
+					</object>
+					<object class="NSButton" id="50030689">
+						<reference key="NSNextResponder" ref="185582477"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{18, 252}, {187, 18}}</string>
+						<reference key="NSSuperview" ref="185582477"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSButtonCell" key="NSCell" id="218833013">
+							<int key="NSCellFlags">-2080244224</int>
+							<int key="NSCellFlags2">0</int>
+							<string key="NSContents">Group items smaller than:</string>
+							<reference key="NSSupport" ref="278382982"/>
+							<reference key="NSControlView" ref="50030689"/>
+							<int key="NSButtonFlags">1211912703</int>
+							<int key="NSButtonFlags2">2</int>
+							<reference key="NSNormalImage" ref="351570209"/>
+							<reference key="NSAlternateImage" ref="942508073"/>
+							<string key="NSAlternateContents"/>
+							<string key="NSKeyEquivalent"/>
+							<int key="NSPeriodicDelay">200</int>
+							<int key="NSPeriodicInterval">25</int>
+						</object>
+					</object>
+				</object>
 				<string key="NSFrameSize">{546, 286}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 		</object>
@@ -454,30 +533,6 @@
 						<reference key="destination" ref="1005"/>
 					</object>
 					<int key="connectionID">28</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">fSegmentSort</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="470131850"/>
-					</object>
-					<int key="connectionID">47</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">fGroupSize</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="968818098"/>
-					</object>
-					<int key="connectionID">48</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">fGroupName</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="298359877"/>
-					</object>
-					<int key="connectionID">49</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -575,6 +630,118 @@
 					</object>
 					<int key="connectionID">63</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateGraphSettings:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="905592078"/>
+					</object>
+					<int key="connectionID">72</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateGraphSettings:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="472477972"/>
+					</object>
+					<int key="connectionID">74</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fAreaGroupSize</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="472477972"/>
+					</object>
+					<int key="connectionID">78</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fAreaGroupName</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="905592078"/>
+					</object>
+					<int key="connectionID">79</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fPieGroupName</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="298359877"/>
+					</object>
+					<int key="connectionID">80</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fPieGroupSize</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="968818098"/>
+					</object>
+					<int key="connectionID">81</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">fPieSegmentSort</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="470131850"/>
+					</object>
+					<int key="connectionID">82</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.AreaChartGroupSmallerItemsSize</string>
+						<reference key="source" ref="472477972"/>
+						<reference key="destination" ref="526319124"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="472477972"/>
+							<reference key="NSDestination" ref="526319124"/>
+							<string key="NSLabel">value: values.AreaChartGroupSmallerItemsSize</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.AreaChartGroupSmallerItemsSize</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">83</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.AreaChartGroupSmallerItemsName</string>
+						<reference key="source" ref="905592078"/>
+						<reference key="destination" ref="526319124"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="905592078"/>
+							<reference key="NSDestination" ref="526319124"/>
+							<string key="NSLabel">value: values.AreaChartGroupSmallerItemsName</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.AreaChartGroupSmallerItemsName</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">84</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.AreaChartGroupSmallerItems</string>
+						<reference key="source" ref="50030689"/>
+						<reference key="destination" ref="526319124"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="50030689"/>
+							<reference key="NSDestination" ref="526319124"/>
+							<string key="NSLabel">value: values.AreaChartGroupSmallerItems</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.AreaChartGroupSmallerItems</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">85</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">areaChartGroupItemsToggle:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="50030689"/>
+					</object>
+					<int key="connectionID">86</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -669,6 +836,13 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">21</int>
 						<reference key="object" ref="185582477"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="50030689"/>
+							<reference ref="472477972"/>
+							<reference ref="571902945"/>
+							<reference ref="905592078"/>
+						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">AreaChart</string>
 					</object>
@@ -828,6 +1002,62 @@
 						<reference key="object" ref="185975999"/>
 						<reference key="parent" ref="298359877"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">64</int>
+						<reference key="object" ref="50030689"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="218833013"/>
+						</object>
+						<reference key="parent" ref="185582477"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">65</int>
+						<reference key="object" ref="472477972"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="60721107"/>
+						</object>
+						<reference key="parent" ref="185582477"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">66</int>
+						<reference key="object" ref="571902945"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="663592963"/>
+						</object>
+						<reference key="parent" ref="185582477"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">67</int>
+						<reference key="object" ref="905592078"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="279443940"/>
+						</object>
+						<reference key="parent" ref="185582477"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">68</int>
+						<reference key="object" ref="279443940"/>
+						<reference key="parent" ref="905592078"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">69</int>
+						<reference key="object" ref="663592963"/>
+						<reference key="parent" ref="571902945"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">70</int>
+						<reference key="object" ref="60721107"/>
+						<reference key="parent" ref="472477972"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">71</int>
+						<reference key="object" ref="218833013"/>
+						<reference key="parent" ref="50030689"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -871,7 +1101,15 @@
 					<string>46.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
+					<string>64.IBPluginDependency</string>
+					<string>65.IBPluginDependency</string>
+					<string>66.IBPluginDependency</string>
+					<string>67.IBPluginDependency</string>
+					<string>68.IBPluginDependency</string>
+					<string>69.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
+					<string>70.IBPluginDependency</string>
+					<string>71.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -888,9 +1126,17 @@
 					<string>{{387, 520}, {546, 286}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{342, 526}, {547, 286}}</string>
+					<string>{{345, 543}, {547, 286}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{387, 520}, {546, 286}}</string>
+					<string>{{735, 446}, {546, 286}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -931,7 +1177,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">63</int>
+			<int key="maxID">86</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -943,11 +1189,13 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>areaChartGroupItemsToggle:</string>
 							<string>pieChartGroupItemsToggle:</string>
 							<string>updateGraphSettings:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -956,9 +1204,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>fGroupName</string>
-							<string>fGroupSize</string>
-							<string>fSegmentSort</string>
+							<string>fAreaGroupName</string>
+							<string>fAreaGroupSize</string>
+							<string>fPieGroupName</string>
+							<string>fPieGroupSize</string>
+							<string>fPieSegmentSort</string>
 							<string>vAreaChartView</string>
 							<string>vGeneralView</string>
 							<string>vPieChartView</string>
@@ -966,6 +1216,8 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTextField</string>
+							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSPopUpButton</string>

@@ -36,14 +36,19 @@
 	
 	// Pie Chart
 	
-	IBOutlet NSPopUpButton *fSegmentSort;
-	IBOutlet NSTextField *fGroupSize;
-	IBOutlet NSTextField *fGroupName;
+	IBOutlet NSPopUpButton *fPieSegmentSort;
+	IBOutlet NSTextField *fPieGroupSize;
+	IBOutlet NSTextField *fPieGroupName;
 	
 	// Area Chart
+	
+	IBOutlet NSTextField *fAreaGroupSize;
+	IBOutlet NSTextField *fAreaGroupName;
 }
 
 - (void)updateGraphSettings:(id)sender;
+
 - (void)pieChartGroupItemsToggle:(id)sender;
+- (void)areaChartGroupItemsToggle:(id)sender;
 
 @end

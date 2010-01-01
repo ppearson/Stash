@@ -65,17 +65,23 @@
     
     [self setPrefView:nil];
 	
-	[fSegmentSort removeAllItems];
+	[fPieSegmentSort removeAllItems];
 	
-	[fSegmentSort addItemWithTitle:@"Size"];
-	[fSegmentSort addItemWithTitle:@"Title"];
+	[fPieSegmentSort addItemWithTitle:@"Size"];
+	[fPieSegmentSort addItemWithTitle:@"Title"];
 	
-	[fSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
+	[fPieSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
 	
 	if ([uDefaults boolForKey:@"PieChartGroupSmallerItems"] == NO)
 	{
-		[fGroupSize setEnabled:NO];
-		[fGroupName setEnabled:NO];
+		[fPieGroupSize setEnabled:NO];
+		[fPieGroupName setEnabled:NO];
+	}
+	
+	if ([uDefaults boolForKey:@"AreaChartGroupSmallerItems"] == NO)
+	{
+		[fAreaGroupSize setEnabled:NO];
+		[fAreaGroupName setEnabled:NO];
 	}
 }
 
@@ -148,13 +154,29 @@
 {
 	if ([sender state] == NSOnState)
 	{
-		[fGroupSize setEnabled:YES];
-		[fGroupName setEnabled:YES];
+		[fPieGroupSize setEnabled:YES];
+		[fPieGroupName setEnabled:YES];
 	}
 	else
 	{
-		[fGroupSize setEnabled:NO];
-		[fGroupName setEnabled:NO];
+		[fPieGroupSize setEnabled:NO];
+		[fPieGroupName setEnabled:NO];
+	}
+	
+	[self performSelector:@selector(updateGraphSettings:) withObject:nil];
+}
+
+- (void)areaChartGroupItemsToggle:(id)sender
+{
+	if ([sender state] == NSOnState)
+	{
+		[fAreaGroupSize setEnabled:YES];
+		[fAreaGroupName setEnabled:YES];
+	}
+	else
+	{
+		[fAreaGroupSize setEnabled:NO];
+		[fAreaGroupName setEnabled:NO];
 	}
 	
 	[self performSelector:@selector(updateGraphSettings:) withObject:nil];

@@ -628,32 +628,37 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		criteria.m_aValues.push_back(newItem);
 	}
 	
-	// now work out what's 2% of the max overall value and if the item's less than that, remove it
-	
-	double dPurgeValue = criteria.m_overallMax.ToDouble();
-	dPurgeValue *= 0.02;
-	
-	bool bAddOther = false;
-	AreaChartItem otherItem("Other");
-	
-	std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
-	
-	while (itPurgeItem != criteria.m_aValues.end())
+	if (criteria.m_groupSmaller > 0)
 	{
-		if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
+		// now work out what's under the group smaller setting percentage of the max overall value and if the item's less than that, remove it
+		
+		double dPurgeValue = criteria.m_overallMax.ToDouble();
+		double dPercentage = (double)criteria.m_groupSmaller / 100.0;
+		
+		dPurgeValue *= dPercentage;
+		
+		bool bAddOther = false;
+		AreaChartItem otherItem(criteria.m_groupSmallerName);
+		
+		std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
+		
+		while (itPurgeItem != criteria.m_aValues.end())
 		{
-			otherItem.combineItem(*itPurgeItem);
-			itPurgeItem = criteria.m_aValues.erase(itPurgeItem);
-			bAddOther = true;
+			if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
+			{
+				otherItem.combineItem(*itPurgeItem);
+				itPurgeItem = criteria.m_aValues.erase(itPurgeItem);
+				bAddOther = true;
+			}
+			else
+			{
+				++itPurgeItem;
+			}
 		}
-		else
-		{
-			++itPurgeItem;
-		}
+		
+		if (bAddOther)
+			criteria.m_aValues.push_back(otherItem);
 	}
-	
-	if (bAddOther)
-		criteria.m_aValues.push_back(otherItem);
 	
 	// sort the items so that items with fewer actual values (most likely occasional expenditures) get done last
 	// so they won't affect the more regular items, and will stand out more 

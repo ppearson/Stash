@@ -125,6 +125,10 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"PieChartGroupSmallerItems"];
 	[defaultValues setObject:[NSNumber numberWithInt:3] forKey:@"PieChartGroupSmallerItemsSize"];
 	[defaultValues setValue:@"Other" forKey:@"PieChartGroupSmallerItemsName"];
+	
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"AreaChartGroupSmallerItems"];
+	[defaultValues setObject:[NSNumber numberWithInt:2] forKey:@"AreaChartGroupSmallerItemsSize"];
+	[defaultValues setValue:@"Other" forKey:@"AreaChartGroupSmallerItemsName"];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 }
@@ -979,19 +983,19 @@ toolbarViewGroupTag;
 	fixed overallTotal = 0.0;
 	
 	int pieSmallerThanValue = -1;
-	std::string groupSmallerName = "";
+	std::string pieGroupSmallerName = "";
 	
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"PieChartGroupSmallerItems"] == YES)
 	{
 		pieSmallerThanValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartGroupSmallerItemsSize"];
 		NSString *sGroupOtherName = [[NSUserDefaults standardUserDefaults] valueForKey:@"PieChartGroupSmallerItemsName"];
 		
-		groupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
+		pieGroupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
 	}
 	
 	PieChartSort ePieChartSort = static_cast<PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
 	
-	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, groupSmallerName, ePieChartSort);
+	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
 		
 	if (type == ExpenseCategories)
 		buildPieChartItemsForCategories(pieCriteria, true);
@@ -1056,7 +1060,19 @@ toolbarViewGroupTag;
 	
 	fixed overallMax = 0.0;
 	
-	AreaChartCriteria areaCriteria(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	int areaSmallerThanValue = -1;
+	std::string areaGroupSmallerName = "";
+	
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"AreaChartGroupSmallerItems"] == YES)
+	{
+		areaSmallerThanValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"AreaChartGroupSmallerItemsSize"];
+		NSString *sGroupOtherName = [[NSUserDefaults standardUserDefaults] valueForKey:@"AreaChartGroupSmallerItemsName"];
+		
+		areaGroupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
+	}
+	
+	AreaChartCriteria areaCriteria(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers,
+								   areaSmallerThanValue, areaGroupSmallerName);
 	
 	if (type == ExpenseCategories)
 		buildAreaChartItemsForCategories(areaCriteria, true);

@@ -118,8 +118,10 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &
 
 struct AreaChartCriteria
 {
-	AreaChartCriteria(Account *pAccount, std::vector<AreaChartItem> &aValues, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
-		m_pAccount(pAccount), m_aValues(aValues), m_aDates(aDates), m_startDate(startDate), m_endDate(endDate), m_overallMax(overallMax), m_ignoreTransfers(ignoreTransfers)
+	AreaChartCriteria(Account *pAccount, std::vector<AreaChartItem> &aValues, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers,
+					int groupSmaller, std::string &groupSmallerName) :
+		m_pAccount(pAccount), m_aValues(aValues), m_aDates(aDates), m_startDate(startDate), m_endDate(endDate), m_overallMax(overallMax), m_ignoreTransfers(ignoreTransfers),
+		m_groupSmaller(groupSmaller), m_groupSmallerName(groupSmallerName)
 	{
 	}
 	
@@ -129,7 +131,9 @@ struct AreaChartCriteria
 	Date &m_startDate;
 	Date &m_endDate;
 	fixed &m_overallMax;
-	bool m_ignoreTransfers;	
+	bool m_ignoreTransfers;
+	int m_groupSmaller;
+	std::string &m_groupSmallerName;
 };
 
 bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense);
