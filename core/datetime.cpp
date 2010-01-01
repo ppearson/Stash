@@ -37,8 +37,8 @@ Date::Date(const Date &rhs) : m_Separator('/')
 	m_Day = rhs.m_Day;
 	m_Month = rhs.m_Month;
 	m_Year = rhs.m_Year;
-
-	SetTimeFromVars();
+	
+	m_Time = rhs.m_Time;
 }
 
 Date::Date(time_t Time)
@@ -62,7 +62,11 @@ Date::Date(std::string date, char cSep, DateStringFormat dateFormat) : m_Separat
 const Date& Date::operator=(const Date& rhs)
 {
 	m_Time = rhs.m_Time;
-	SetVarsFromTime();
+	
+	m_Day = rhs.m_Day;
+	m_Month = rhs.m_Month;
+	m_Year = rhs.m_Year;
+	
 	return *this;
 }
 
