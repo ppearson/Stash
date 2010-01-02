@@ -14,7 +14,7 @@
 				<string>stash</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>StashDocument.icns</string>
+			<string>stashdocument.icns</string>
 			<key>CFBundleTypeName</key>
 			<string>Stash Document</string>
 			<key>CFBundleTypeOSTypes</key>
@@ -30,7 +30,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>Stash.icns</string>
+	<string>stash.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.peterpearson.Stash</string>
 	<key>CFBundleInfoDictionaryVersion</key>
