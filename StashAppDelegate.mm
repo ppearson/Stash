@@ -74,11 +74,11 @@ toolbarViewGroupTag;
 		}
 		
 		[self buildIndexTree];
+		
+		[self calculateAndShowScheduled];
 	
 		[window makeKeyAndOrderFront:self];
 	}
-	
-	[self calculateAndShowScheduled];
 }
 
 - (id)init
