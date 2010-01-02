@@ -54,6 +54,8 @@ public:
 	void DecrementDays(int days);
 	void DecrementMonths(int months);
 	
+	void AdvanceToNextWorkingDay();
+	
 	void Now();
 	
 	void setDate(int Day, int Month, int Year = -1);
@@ -67,6 +69,8 @@ public:
 	int getYear() const { return m_Year; }
 	int getMonth() const { return m_Month; }
 	int getDay() const { return m_Day; }
+	
+	bool isLeapYear() const;
 
 	bool operator==(Date date) const { return m_Time == date.m_Time; }
 	bool operator!=(Date date) const { return m_Time != date.m_Time; }
@@ -93,6 +97,7 @@ private:
 	int m_Year;
 	int m_Month;
 	int m_Day;
+	int m_DayOfWeek;
 
 	char m_Separator;
 };

@@ -24,7 +24,7 @@
 #include <bitset>
 #include "scheduled_transaction.h"
 
-ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(None), m_dateFallsOn(ExactDate)
+ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(None), m_constraint(ExactDate)
 {
 	m_nextDate.Now();
 }
@@ -58,7 +58,7 @@ void ScheduledTransaction::Load(std::fstream &stream, int version)
 	m_nextDate.Load(stream, version);
 	
 	stream.read((char *) &m_type, sizeof(unsigned char));
-	stream.read((char *) &m_dateFallsOn, sizeof(unsigned char));
+	stream.read((char *) &m_constraint, sizeof(unsigned char));
 }
 
 void ScheduledTransaction::Store(std::fstream &stream)
@@ -82,7 +82,7 @@ void ScheduledTransaction::Store(std::fstream &stream)
 	m_nextDate.Store(stream);
 	
 	stream.write((char *) &m_type, sizeof(unsigned char));
-	stream.write((char *) &m_dateFallsOn, sizeof(unsigned char));
+	stream.write((char *) &m_constraint, sizeof(unsigned char));
 }
 
 void ScheduledTransaction::AdvanceNextDate()
@@ -110,5 +110,10 @@ void ScheduledTransaction::AdvanceNextDate()
 		case Annually:
 			m_nextDate.IncrementMonths(12);
 			break;
+	}
+	
+	if (m_constraint == ExactOrNextWorkingDay)
+	{
+		m_nextDate.AdvanceToNextWorkingDay();
 	}
 }

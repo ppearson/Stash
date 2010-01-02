@@ -253,6 +253,11 @@ toolbarViewGroupTag;
 	[scheduledFrequency addItemWithTitle:@"Quarterly"];
 	[scheduledFrequency addItemWithTitle:@"Annually"];
 	
+	[scheduledConstraint removeAllItems];
+	
+	[scheduledConstraint addItemWithTitle:@"Exact Day"];
+	[scheduledConstraint addItemWithTitle:@"Exact or Next Working Day"];
+	
 	[graphType removeAllItems];
 	
 	[graphType addItemWithTitle:@"Expense Categories"];
@@ -2072,6 +2077,9 @@ toolbarViewGroupTag;
 		[scheduledFrequency selectItemAtIndex:eFreq];
 		[scheduledType selectItemAtIndex:eType];
 		
+		Constraint eConstraint = schedTrans.getConstraint();
+		[scheduledConstraint selectItemAtIndex:eConstraint];
+		
 		[scheduledDateCntl setDateValue:datetemp];
 		
 		if (account >= 0)
@@ -2147,6 +2155,9 @@ toolbarViewGroupTag;
 	int nFrequency = [scheduledFrequency indexOfSelectedItem];
 	Frequency eFreq = static_cast<Frequency>(nFrequency);
 	
+	int nConstraint = [scheduledConstraint indexOfSelectedItem];
+	Constraint eConstraint = static_cast<Constraint>(nConstraint);
+	
 	// update the actual ScheduledTransaction
 	
 	schedTrans.setAccount(nAccount);
@@ -2157,6 +2168,7 @@ toolbarViewGroupTag;
 	schedTrans.setFrequency(eFreq);
 	schedTrans.setNextDate(date1);
 	schedTrans.setType(eType);
+	schedTrans.setConstraint(eConstraint);
 	
 	NSMutableDictionary *oSchedTransItem = [m_aScheduledTransactions objectAtIndex:row];
 	

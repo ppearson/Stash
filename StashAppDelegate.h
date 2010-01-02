@@ -110,6 +110,7 @@ enum TransactionsToShow
 	IBOutlet NSPopUpButton *scheduledAccount;
 	IBOutlet NSPopUpButton *scheduledType;
 	IBOutlet NSPopUpButton *scheduledFrequency;
+	IBOutlet NSPopUpButton *scheduledConstraint;
 	IBOutlet id scheduledDateCntl;
 	
 	IBOutlet NSButton *deleteScheduled;

@@ -25,7 +25,7 @@
 
 #include "datetime.h"
 
-static int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+static int aDaysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
 
 Date::Date() : m_Separator('/')
 {
@@ -37,6 +37,7 @@ Date::Date(const Date &rhs) : m_Separator('/')
 	m_Day = rhs.m_Day;
 	m_Month = rhs.m_Month;
 	m_Year = rhs.m_Year;
+	m_DayOfWeek = rhs.m_DayOfWeek;
 	
 	m_Time = rhs.m_Time;
 }
@@ -66,6 +67,7 @@ const Date& Date::operator=(const Date& rhs)
 	m_Day = rhs.m_Day;
 	m_Month = rhs.m_Month;
 	m_Year = rhs.m_Year;
+	m_DayOfWeek = rhs.m_DayOfWeek;
 	
 	return *this;
 }
@@ -88,7 +90,12 @@ void Date::IncrementMonths(int months)
 {
 	for (int i = 0; i < months; i++)
 	{
-		IncrementDays(daysInMonth[m_Month - 1]);		
+		int daysInMonth = aDaysInMonth[m_Month - 1];
+		
+		if (m_Month == 1 && isLeapYear())
+			daysInMonth++;
+		
+		IncrementDays(daysInMonth);
 	}
 	
 	SetVarsFromTime();
@@ -105,10 +112,23 @@ void Date::DecrementMonths(int months)
 {
 	for (int i = 0; i < months; i++)
 	{
-		DecrementDays(daysInMonth[m_Month - 1]);		
+		int daysInMonth = aDaysInMonth[m_Month - 1];
+
+		if (m_Month == 1 && isLeapYear())
+			daysInMonth++;
+		
+		DecrementDays(daysInMonth);
 	}
 	
 	SetVarsFromTime();
+}
+
+void Date::AdvanceToNextWorkingDay()
+{
+	while (m_DayOfWeek == 0 || m_DayOfWeek == 6)
+	{
+		IncrementDays(1);
+	}
 }
 
 void Date::Now()
@@ -116,6 +136,14 @@ void Date::Now()
 	time(&m_Time);
 
 	SetVarsFromTime();
+}
+			
+bool Date::isLeapYear() const
+{
+	if ((m_Year % 400) == 0 || ((m_Year % 4 == 0) && m_Year % 100 != 0))
+		return true;
+	
+	return false;
 }
 
 void Date::SetVarsFromTime()
@@ -128,6 +156,7 @@ void Date::SetVarsFromTime()
 		m_Month = time->tm_mon + 1;
 		m_Day = time->tm_mday;
 		m_Year = time->tm_year + 1900;
+		m_DayOfWeek = time->tm_wday;
 	}
 }
 

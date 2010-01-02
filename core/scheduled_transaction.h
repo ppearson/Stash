@@ -39,7 +39,7 @@ enum Frequency
 	Annually
 };
 
-enum DateFallsOn
+enum Constraint
 {
 	ExactDate,
 	ExactOrNextWorkingDay,
@@ -63,6 +63,7 @@ public:
 	Date getNextDate() { return m_nextDate; }
 	const Date &getNextDate2() { return m_nextDate; }
 	TransactionType getType() { return m_type; }
+	Constraint getConstraint() { return m_constraint; }
 	
 	void setAccount(int account) { m_account = account; }
 	void setEnabled(bool enabled) { m_enabled = enabled; }
@@ -73,6 +74,7 @@ public:
 	void setFrequency(Frequency frequency) { m_frequency = frequency; }
 	void setNextDate(Date nextDate) { m_nextDate = nextDate; }
 	void setType(TransactionType type) { m_type = type; }
+	void setConstraint(Constraint constraint) { m_constraint = constraint; }
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
@@ -90,7 +92,7 @@ protected:
 	Frequency m_frequency;
 	Date m_nextDate;
 	TransactionType m_type;
-	DateFallsOn m_dateFallsOn;
+	Constraint m_constraint;
 	
 };
 
