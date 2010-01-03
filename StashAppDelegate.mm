@@ -122,8 +122,9 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
 	
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsScrollToLatest"];
-	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegAmountsRed"];
-	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];	
+	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsNegAmountsRed"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];
+	[defaultValues setObject:[NSNumber numberWithInt:30] forKey:@"TransactionsRecentDuration"];
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"PieChartGroupSmallerItems"];
@@ -682,10 +683,15 @@ toolbarViewGroupTag;
 	
 	if (ShowTransactionsViewType == RECENT)
 	{
+		int nRecentDuration = [[NSUserDefaults standardUserDefaults] integerForKey:@"TransactionsRecentDuration"];
+		
+		if (nRecentDuration <= 0)
+			nRecentDuration = 30;
+		
 		Date dateNow;
 		dateNow.Now();
 		
-		dateNow.DecrementDays(30);
+		dateNow.DecrementDays(nRecentDuration);
 		
 		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
 		
