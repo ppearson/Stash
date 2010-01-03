@@ -1182,10 +1182,13 @@ toolbarViewGroupTag;
 		[aDates addObject:sDate];
 	}
 	
-	[areaChartView setLongestDate:[aDates objectAtIndex:nLongestDateIndex]];
-	[areaChartView setDates:aDates];
-	[areaChartView setMaxValue:overallMax.ToDouble()];
-	[areaChartView setData:aAreaItems];	
+	if (nLongestDateIndex >= 0)
+	{
+		[areaChartView setLongestDate:[aDates objectAtIndex:nLongestDateIndex]];
+		[areaChartView setDates:aDates];
+		[areaChartView setMaxValue:overallMax.ToDouble()];
+		[areaChartView setData:aAreaItems];
+	}
 }
 
 - (void)refreshLibraryItems
@@ -1253,12 +1256,17 @@ toolbarViewGroupTag;
 	newAccount.setNumber(strNumber);
 	newAccount.setNote(strNote);
 	
-	Date currentDate;
-	currentDate.Now();
-	Transaction newTransaction("Starting balance", "", "", startingBalance, currentDate);
-	newTransaction.setReconciled(true);
+	// only add a starting balance if a value is given
 	
-	newAccount.addTransaction(newTransaction);
+	if (!startingBalance.IsZero())
+	{
+		Date currentDate;
+		currentDate.Now();
+		Transaction newTransaction("Starting balance", "", "", startingBalance, currentDate);
+		newTransaction.setReconciled(true);
+		
+		newAccount.addTransaction(newTransaction);
+	}
 	
 	int nAccountNum = m_Document.addAccount(newAccount);
 	
@@ -1403,7 +1411,7 @@ toolbarViewGroupTag;
 	
 	int nCount = [rows count];
 	
-	if (nCount > 0)
+	if (m_pAccount && nCount > 0)
 	{
 		NSInteger row = [rows lastIndex];
 		
@@ -2694,6 +2702,12 @@ toolbarViewGroupTag;
 
 - (IBAction)AddGraph:(id)sender
 {
+	if (m_Document.getAccountCount() == 0)
+	{
+		NSRunAlertPanel(@"No Accounts Exist", @"You must have some accounts in the current document first before you can create a graph.", @"OK", nil, nil);
+		return;
+	}
+	
 	Graph newGraph;
 	newGraph.setName("New Graph");
 	newGraph.setAccount(0);
