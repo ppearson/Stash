@@ -12,6 +12,10 @@ Version 0.6
   double-clicking it in the Finder
 * Fixed bug which didn't draw the left-hand border of an Area Chart plot item correctly if it was
   selected
+* Fixed bug which sometimes caused a crash when creating a new graph if no transactions existing on the
+  current date
+* Fixed bug which sometimes caused a crash when pressing backspace (delete) key when the Transactions
+  View wasn't active
 * Changed Preferences Window to have multiple panes, allowing more categorised options:
 * Added Pie Chart preferences, allowing the controlling of grouping smaller items into another item
   and the order in which the segments should be sorted
