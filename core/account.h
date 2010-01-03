@@ -55,7 +55,7 @@ public:
 	std::string getNote() { return m_note; }
 	AccountType getType() { return m_type; }
 	
-	void addTransaction(Transaction &trans) { m_aTransactions.push_back(trans); }
+	int addTransaction(Transaction &trans) { m_aTransactions.push_back(trans); return m_aTransactions.size() - 1; }
 	Transaction &getTransaction(int trans) { return m_aTransactions[trans]; }
 	int getTransactionCount() { return m_aTransactions.size(); }
 	void deleteTransaction(int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }

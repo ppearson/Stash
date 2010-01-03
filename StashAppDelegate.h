@@ -33,6 +33,7 @@
 #import "PreferencesController.h"
 #import "PieChartView.h"
 #import "AreaChartView.h"
+#import "MakeTransfer.h"
 
 enum TransactionsToShow
 {
@@ -129,6 +130,7 @@ enum TransactionsToShow
 	IBOutlet id graphIgnoreTransfers;
 	
 	PreferencesController *prefController;
+	MakeTransfer *makeTransfer;
 	
 	
 	Document m_Document;
@@ -173,10 +175,15 @@ enum TransactionsToShow
 - (IBAction)DeleteTransaction:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
 
+- (IBAction)MakeTransfer:(id)sender;
+- (void)makeTransferItem:(MakeTransfer *)makeTransferController;
+
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;
 - (void)SwapTransactions:(int)from to:(int)to;
 - (void)RefreshView:(id)sender;
+
+- (TransactionItem*)createTransactionItem:(Transaction&)transaction index:(int)index;
 
 - (IBAction)showRecentTransactions:(id)sender;
 - (IBAction)showAllTransactionsThisYear:(id)sender;

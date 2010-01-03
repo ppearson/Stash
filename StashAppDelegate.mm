@@ -36,6 +36,7 @@
 #define TOOLBAR_VIEWTHISYEAR	@"TOOLBAR_VIEWTHISYEAR"
 #define TOOLBAR_VIEWALL			@"TOOLBAR_VIEWALL"
 #define TOOLBAR_VIEWTYPE		@"TOOLBAR_VIEWTYPE"
+#define TOOLBAR_MAKETRANSFER	@"TOOLBAR_MAKETRANSFER"
 
 typedef enum
 {
@@ -312,6 +313,14 @@ toolbarViewGroupTag;
         [item setAction:@selector(AddGraph:)];
         [item setAutovalidates:NO];
     }
+	else if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
+    {
+        [item setLabel:@"Make Transfer"];
+        [item setImage:[NSImage imageNamed:@"make_transfer.png"]];
+        [item setTarget:self];
+        [item setAction:@selector(MakeTransfer:)];
+        [item setAutovalidates:NO];
+    }
 	else if ([ident isEqualToString: TOOLBAR_VIEWTYPE])
     {
         ToolbarItemEx *groupItem = [[ToolbarItemEx alloc] initWithItemIdentifier:ident];
@@ -326,7 +335,7 @@ toolbarViewGroupTag;
 		
 		[segmentedControl setSegmentStyle:NSSegmentStyleTexturedSquare];
         
-        const NSSize groupSize = NSMakeSize(200.0, 25.0);
+        const NSSize groupSize = NSMakeSize(180.0, 25.0);
         [groupItem setMinSize:groupSize];
         [groupItem setMaxSize:groupSize];
         
@@ -368,7 +377,7 @@ toolbarViewGroupTag;
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, TOOLBAR_VIEWTYPE, nil];
+    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, TOOLBAR_VIEWTYPE, TOOLBAR_MAKETRANSFER, nil];
 }
 
 - (void)buildIndexTree
@@ -1356,7 +1365,7 @@ toolbarViewGroupTag;
 	
 	Transaction newTransaction("", "", "", 0.0, date1);
 	
-	m_pAccount->addTransaction(newTransaction);
+	int nTransaction = m_pAccount->addTransaction(newTransaction);
 	
 	[transactionsPayee setStringValue:@""];
 	[transactionsDescription setStringValue:@""];
@@ -1365,62 +1374,7 @@ toolbarViewGroupTag;
 	[transactionsType selectItemAtIndex:0];
 	[transactionsReconciled setState:NSOffState];
 	
-	TransactionItem *newIndex = [[TransactionItem alloc] init];
-	
-	std::string strPayee = newTransaction.getPayee();
-	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
-	
-	std::string strDescription = newTransaction.getDescription();
-	NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
-	
-	std::string strCategory = newTransaction.getCategory();
-	NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
-	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	
-	NSNumber *nAmount = [NSNumber numberWithDouble:newTransaction.getAmount().ToDouble()];
-	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
-		
-	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *sDate = [[dateFormatter stringFromDate:ndate1] retain];
-	
-	[dateFormatter release];
-	
-	fixed localBalance;
-	
-	if (!m_aBalance.empty())
-	{
-		localBalance = m_aBalance.back();
-	}
-	else
-	{
-		localBalance = m_pAccount->getBalance(true);
-	}
-	
-	NSNumber *nBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
-	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
-	
-	[numberFormatter release];
-	
-	int nTransaction = m_pAccount->getTransactionCount() - 1;
-	
-	[newIndex setTransaction:nTransaction];
-	
-	int recon = newTransaction.isReconciled();
-	
-	[newIndex setIntValue:recon forKey:@"Reconciled"];
-	[newIndex setValue:sDate forKey:@"Date"];
-	[newIndex setValue:sPayee forKey:@"Payee"];
-	[newIndex setValue:sDescription forKey:@"Description"];
-	[newIndex setValue:sCategory forKey:@"Category"];
-	[newIndex setValue:sAmount forKey:@"Amount"];
-	[newIndex setValue:sBalance forKey:@"Balance"];
-	
-	[newIndex setIntValue:nTransaction forKey:@"Transaction"];
+	TransactionItem *newIndex = [self createTransactionItem:newTransaction index:nTransaction];
 	
 	[m_aTransactionItems addObject:newIndex];
 	[newIndex release];
@@ -1465,8 +1419,6 @@ toolbarViewGroupTag;
 			{
 				m_pAccount->deleteTransaction(nTransaction);
 				[m_aTransactionItems removeObjectAtIndex:nTransaction - m_nTransactionOffset];
-				
-				[self updateBalancesFromTransactionIndex:row];
 			}
 			else if (nSplit != -2)
 			{
@@ -1542,6 +1494,135 @@ toolbarViewGroupTag;
 	[numberFormatter release];
 	
 	m_UnsavedChanges = true;
+}
+
+- (IBAction)MakeTransfer:(id)sender
+{
+	if (m_Document.getAccountCount() < 2)
+	{
+		NSRunAlertPanel(@"Not enough accounts", @"You must have more than one accounts in the current document to create a Transfer.", @"OK", nil, nil);
+		return;
+	}
+	
+	NSMutableArray *aAccounts = [[NSMutableArray alloc] init];
+	
+	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	
+	for (; it != m_Document.AccountEnd(); ++it)
+	{
+		std::string strName = it->getName();
+		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+		[aAccounts addObject:sName];
+		
+		[sName release];
+	}
+	
+	NSMutableArray *aCategories = [[NSMutableArray alloc] init];
+	
+	std::set<std::string>::iterator itCat = m_Document.CategoryBegin();
+	
+	for (; itCat != m_Document.CategoryEnd(); ++itCat)
+	{
+		NSString *sCategory = [[NSString alloc] initWithUTF8String:(*itCat).c_str()];
+		
+		[aCategories addObject:sCategory];
+	}
+	
+	if (!makeTransfer)
+		makeTransfer = [[MakeTransfer alloc] initWithAccounts:aAccounts categories:aCategories];
+	
+	[makeTransfer makeTransfer:window initialAccount:0];	
+}
+
+- (void)makeTransferItem:(MakeTransfer *)makeTransferController
+{
+	int nFromAccount = [makeTransferController fromAccount];
+	int nToAccount = [makeTransferController toAccount];
+	
+	Account *pFromAccount = NULL;
+	pFromAccount = m_Document.getAccountPtr(nFromAccount);
+	Account *pToAccount = NULL;
+	pToAccount = m_Document.getAccountPtr(nToAccount);
+	
+	if (!pFromAccount || !pToAccount)
+	{
+		
+		return;
+	}
+	
+	NSString *sAmount = [makeTransferController amount];
+	NSString *sCategory = [makeTransferController category];
+	NSString *sDescription = [makeTransferController description];
+	NSDate *dtDate = [makeTransferController date];
+		
+	std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
+	std::string strDescription = [sDescription cStringUsingEncoding:NSUTF8StringEncoding];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
+	
+	NSNumber *nAmount = [numberFormatter numberFromString:sAmount];
+	
+	fixed amount = [nAmount doubleValue];
+	
+	NSCalendarDate *CalDate = [dtDate dateWithCalendarFormat:0 timeZone:0];
+	
+	int nYear = [CalDate yearOfCommonEra];
+	int nMonth = [CalDate monthOfYear];
+	int nDay = [CalDate dayOfMonth];
+	
+	Date date1(nDay, nMonth, nYear);
+	
+	std::string strFromAccountName = pFromAccount->getName();
+	std::string strToAccountName = pToAccount->getName();
+	
+	amount.setNegative();
+	
+	Transaction fromTransaction(strDescription, strToAccountName, strCategory, amount, date1);
+	fromTransaction.setType(Transfer);
+	int nFromTransaction = pFromAccount->addTransaction(fromTransaction);
+	
+	amount.setPositive();
+	
+	Transaction toTransaction(strDescription, strFromAccountName, strCategory, amount, date1);
+	toTransaction.setType(Transfer);
+	int nToTransaction = pToAccount->addTransaction(toTransaction);
+	
+//	[makeTransferController release];
+	[numberFormatter release];
+	
+	if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
+	{
+		m_Document.addCategory(strCategory);
+		[transactionsCategory addItemWithObjectValue:sCategory];
+	}
+	
+	m_UnsavedChanges = true;
+	
+	if (m_pAccount && (m_pAccount == pFromAccount || m_pAccount == pToAccount))
+	{
+		TransactionItem *newTransaction = NULL;
+		
+		if (m_pAccount == pFromAccount)
+		{
+			newTransaction = [self createTransactionItem:fromTransaction index:nFromTransaction];			
+		}
+		else if (m_pAccount == pToAccount)
+		{
+			newTransaction = [self createTransactionItem:toTransaction index:nToTransaction];			
+		}
+		
+		[m_aTransactionItems addObject:newTransaction];
+		[newTransaction release];
+		
+		[transactionsTableView reloadData];
+		
+		NSInteger row = [transactionsTableView rowForItem:newTransaction];
+		
+		[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
+		[transactionsTableView scrollRowToVisible:row];
+	}
 }
 
 - (IBAction)MoveUp:(id)sender
@@ -1648,6 +1729,70 @@ toolbarViewGroupTag;
 	[self buildTransactionsTree];
 	
 	[transactionsTableView reloadData];	
+}
+
+- (TransactionItem*)createTransactionItem:(Transaction&)transaction index:(int)index
+{
+	TransactionItem *newIndex = [[TransactionItem alloc] init];
+	
+	std::string strPayee = transaction.getPayee();
+	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
+	
+	std::string strDescription = transaction.getDescription();
+	NSString *sDescription = [[NSString alloc] initWithUTF8String:strDescription.c_str()];
+	
+	std::string strCategory = transaction.getCategory();
+	NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	NSNumber *nAmount = [NSNumber numberWithDouble:transaction.getAmount().ToDouble()];
+	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+	
+	NSDate *transDate = convertToNSDate(const_cast<Date&>(transaction.getDate1()));
+	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *sDate = [[dateFormatter stringFromDate:transDate] retain];
+	
+	[dateFormatter release];
+	
+	fixed localBalance;
+	
+	if (!m_aBalance.empty())
+	{
+		localBalance = m_aBalance.back();
+	}
+	else
+	{
+		localBalance = m_pAccount->getBalance(true);
+	}
+	
+	localBalance -= transaction.getAmount();
+	
+	NSNumber *nBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
+	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
+	
+	[numberFormatter release];
+	
+	[newIndex setTransaction:index];
+	
+	int recon = transaction.isReconciled();
+	
+	[newIndex setIntValue:recon forKey:@"Reconciled"];
+	[newIndex setValue:sDate forKey:@"Date"];
+	[newIndex setValue:sPayee forKey:@"Payee"];
+	[newIndex setValue:sDescription forKey:@"Description"];
+	[newIndex setValue:sCategory forKey:@"Category"];
+	[newIndex setValue:sAmount forKey:@"Amount"];
+	[newIndex setValue:sBalance forKey:@"Balance"];
+	
+	[newIndex setIntValue:index forKey:@"Transaction"];
+	
+	return newIndex;
 }
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
@@ -3352,6 +3497,11 @@ NSDate *convertToNSDate(MonthYear &date)
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	
 	fixed localBalance = 0.0;
+	
+	if (nIndex > m_aBalance.size())
+	{
+		nIndex = m_aBalance.size();
+	}
 	
 	m_aBalance.erase(m_aBalance.begin() + nIndex, m_aBalance.end());
 	
