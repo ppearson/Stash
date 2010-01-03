@@ -3383,6 +3383,13 @@ NSDate *convertToNSDate(MonthYear &date)
         [menuItem setState:ShowTransactionsViewType == ALL ? NSOnState : NSOffState];
         return YES;
     }
+	
+	if (action == @selector(MoveUp:) || action == @selector(MoveDown:) || action == @selector(SplitTransaction:))
+	{
+		if (!m_pAccount || !m_SelectedTransaction)
+			return NO;
+	}
+	
 	return YES;
 }
 
