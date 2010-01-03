@@ -1,3 +1,25 @@
+Version 0.6
+-----------
+
+* New main application icons kindly created by Aleksandar Kovac
+* Speed improvements - opening a document is now around 7x faster and the analysis of data
+  in order to show a graph is now 17x faster
+* Added a Make Transfer feature, which allows reciprocal Transactions to be easily created for doing a
+  transfer from one account to another
+* Added the ability to have constraints for Scheduled Transactions. Currently the only one available is
+  to force the next calculated date to be moved to the following Monday if it would fall on a weekend
+* Fixed bug which would show any due Scheduled Transactions twice if a Stash document was opened by
+  double-clicking it in the Finder
+* Fixed bug which didn't draw the left-hand border of an Area Chart plot item correctly if it was
+  selected
+* Changed Preferences Window to have multiple panes, allowing more categorised options:
+* Added Pie Chart preferences, allowing the controlling of grouping smaller items into another item
+  and the order in which the segments should be sorted
+* Added Area Chart preferences, allowing the controlling of grouping smaller items into another item
+* Added preferences allowing the Amounts and/or Balances of transactions to be shown in red if they
+  are negative
+* Added preference allowing the duration of the Recent Transaction view to be altered
+
 Version 0.51
 ------------
 
