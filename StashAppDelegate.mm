@@ -1514,7 +1514,7 @@ toolbarViewGroupTag;
 {
 	if (m_Document.getAccountCount() < 2)
 	{
-		NSRunAlertPanel(@"Not enough accounts", @"You must have more than one accounts in the current document to create a Transfer.", @"OK", nil, nil);
+		NSRunAlertPanel(@"Not enough accounts", @"You must have more than one account in the current document to create a Transfer.", @"OK", nil, nil);
 		return;
 	}
 	
@@ -2729,6 +2729,8 @@ toolbarViewGroupTag;
 	m_UnsavedChanges = true;
 	
 	[indexBar reloadData];
+	
+	[indexBar renameItem:sGraphKey];
 }
 
 // Transactions OutlineView Start

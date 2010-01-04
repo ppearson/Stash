@@ -238,14 +238,28 @@
 	return [selectedItem getItemIndex];
 }
 
-- (IBAction)renameItem:(id)sender
+- (void)renameItem:(id)key
 {
-	int row = [self selectedRow];
+	int row = -1;
+	
+	if ([key isKindOfClass: [NSMenuItem class]])
+	{
+		row = [self selectedRow];
+	}
+	else
+	{
+		IndexItem *itemToRename = [m_dItems objectForKey:key];
+		
+		if (itemToRename == nil)
+			return;
+		
+		row = [self rowForItem:itemToRename];
+	}
 	
 	if (row >= 0)
 	{
-		[self editColumn:0 row:row withEvent:nil select:YES];		
-	}	
+		[self editColumn:0 row:row withEvent:nil select:YES];
+	}
 }
 
 @end
