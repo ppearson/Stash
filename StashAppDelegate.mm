@@ -3228,6 +3228,9 @@ NSDate *convertToNSDate(MonthYear &date)
 			std::string strSPayee = it->getPayee();
 			NSString *sSPayee = [[NSString alloc] initWithUTF8String:strSPayee.c_str()];
 			
+			std::string strSDesc = it->getDescription();
+			NSString *sSDesc = [[NSString alloc] initWithUTF8String:strSDesc.c_str()];
+			
 			NSNumber *nSAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
 			
 			NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
@@ -3245,6 +3248,7 @@ NSDate *convertToNSDate(MonthYear &date)
 				
 				[item setValue:[NSNumber numberWithInt:schedTransIndex] forKey:@"index"];
 				[item setValue:sSPayee forKey:@"payee"];
+				[item setValue:sSDesc forKey:@"desc"];
 				[item setValue:sSAmount forKey:@"amount"];
 				[item setValue:sSDate forKey:@"date"];
 				[item setValue:sAccount forKey:@"account"];
@@ -3281,18 +3285,20 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	oAccount.addTransaction(newTransaction);
 	
-	m_UnsavedChanges = true;
-	
 	[self buildTransactionsTree];
 	
-	schedTrans.AdvanceNextDate();	
+	schedTrans.AdvanceNextDate();
+	
+	m_UnsavedChanges = true;
 }
 
 - (void)SkipDueScheduledTransaction:(int)index
 {
 	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
 	
-	schedTrans.AdvanceNextDate();	
+	schedTrans.AdvanceNextDate();
+	
+	m_UnsavedChanges = true;
 }
 
 - (IBAction)ImportQIF:(id)sender
