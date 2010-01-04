@@ -36,11 +36,11 @@
         m_aData = [[NSMutableArray alloc] init];
 		m_aColours = [[NSMutableArray alloc] init];
 		
-		[m_aColours addObject:[NSColor blueColor]];
+		[m_aColours addObject:[NSColor grayColor]];
 		[m_aColours addObject:[NSColor redColor]];
 		[m_aColours addObject:[NSColor yellowColor]];
 		[m_aColours addObject:[NSColor greenColor]];
-		[m_aColours addObject:[NSColor grayColor]];
+		[m_aColours addObject:[NSColor blueColor]];
     }
     return self;
 }
@@ -109,14 +109,14 @@
 		nColourIndex ++;
 		
 		if (nColourIndex > 4)
-			nColourIndex = 0;
+			nColourIndex = 1;
 	}
 	
 	// draw gloss gradient
 	
 	NSGradient* aGradient = [[[NSGradient alloc]
-							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.4f], (CGFloat)0.0,
-							  [[NSColor whiteColor] colorWithAlphaComponent:0.1f], (CGFloat)1.0, nil] autorelease];
+							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.5f], (CGFloat)0.0,
+							  [[NSColor whiteColor] colorWithAlphaComponent:0.2f], (CGFloat)1.0, nil] autorelease];
 	
 	NSRect glossRect = NSMakeRect(m_centrepoint.x - (m_dMainRadius), m_centrepoint.y - (m_dMainRadius), m_dMainRadius * 2.0, m_dMainRadius * 2.0);
 	
