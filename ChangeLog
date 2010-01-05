@@ -1,3 +1,16 @@
+Version 0.65
+------------
+
+* Fixed issue which meant that sometimes two adjacent Pie Chart slices were the same colour
+* When adding a new Graph, the new item in the IndexBar automatically starts editing
+* Due Scheduled Transactions window now shows Description of Scheduled transactions
+* Fixed bug which didn't set the document's status as modified if a due Scheduled Transaction
+  had been skipped
+* Added support for toggling Transaction View table columns (right-click the header)
+* Added optional Transaction View table column "Type"
+* Transaction View table now remembers the order and visibility of columns between sessions
+* Fixed issue entering negative currency amounts with a "-" prefix for US locale settings
+
 Version 0.6
 -----------
 
