@@ -41,6 +41,6 @@
 - (void)selectItem:(id)key;
 - (void)expandSection:(id)itemKey;
 
-- (void)renameItem:(id)key;
+- (IBAction)renameItem:(id)key;
 
 @end

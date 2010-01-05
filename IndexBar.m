@@ -238,7 +238,7 @@
 	return [selectedItem getItemIndex];
 }
 
-- (void)renameItem:(id)key
+- (IBAction)renameItem:(id)key
 {
 	int row = -1;
 	

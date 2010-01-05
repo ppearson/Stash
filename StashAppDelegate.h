@@ -61,7 +61,8 @@ enum TransactionsToShow
 	
 	int nViewType;
 	
-	// Transactions	
+	// Transactions
+	NSMenu *transactionsTableHeaderMenu;
 	IBOutlet NSOutlineView *transactionsTableView;
 	IBOutlet NSSplitView *transactionsverticalSplitView;
 	IBOutlet NSComboBox *transactionsPayee;
@@ -88,8 +89,7 @@ enum TransactionsToShow
 	int m_nTransactionOffset;
 	
 	TransactionItem *m_SelectedIndex;
-	TransactionItem *m_SelectedTransaction;
-	
+	TransactionItem *m_SelectedTransaction;	
 	
 	// Payees
 	IBOutlet NSTableView *payeesTableView;
@@ -178,6 +178,8 @@ enum TransactionsToShow
 - (IBAction)MakeTransfer:(id)sender;
 - (void)makeTransferItem:(MakeTransfer *)makeTransferController;
 
+- (NSString*)transactionTypeToString:(TransactionType)type;
+
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;
 - (void)SwapTransactions:(int)from to:(int)to;
@@ -190,6 +192,7 @@ enum TransactionsToShow
 - (IBAction)showAllTransactions:(id)sender;
 
 - (void)viewToolbarClicked:(id)sender;
+- (void)transactionTableColumnMenu:(id)sender;
 
 
 // Payees

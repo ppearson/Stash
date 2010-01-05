@@ -89,6 +89,8 @@ toolbarViewGroupTag;
 	{
 		prefController = [[PreferencesController alloc] init];
 		
+		transactionsTableHeaderMenu = [[NSMenu alloc] initWithTitle:@"Menu"];
+		
 		NSNotificationCenter *nc;
 		nc = [NSNotificationCenter defaultCenter];
 		[nc addObserver:self selector:@selector(handleTransactionsSettingsUpdate:) name:@"TransactionsSettingsUpdate" object:nil];
@@ -106,6 +108,7 @@ toolbarViewGroupTag;
 - (void)dealloc
 {
 	[prefController release];
+	[transactionsTableHeaderMenu release];
 	
 	NSNotificationCenter *nc;
 	nc = [NSNotificationCenter defaultCenter];
@@ -134,6 +137,34 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"AreaChartGroupSmallerItems"];
 	[defaultValues setObject:[NSNumber numberWithInt:2] forKey:@"AreaChartGroupSmallerItemsSize"];
 	[defaultValues setValue:@"Other" forKey:@"AreaChartGroupSmallerItemsName"];
+	
+	NSDictionary *visibleTransactionColumns = [NSDictionary dictionaryWithObjectsAndKeys:
+									   [NSNumber numberWithBool:YES], @"Reconciled",
+									   [NSNumber numberWithBool:YES], @"Date",
+									   [NSNumber numberWithBool:YES], @"Payee",
+									   [NSNumber numberWithBool:YES], @"Category",
+									   [NSNumber numberWithBool:YES], @"Description",
+									   [NSNumber numberWithBool:NO], @"Type",
+									   [NSNumber numberWithBool:YES], @"Amount",
+									   [NSNumber numberWithBool:YES], @"Balance",
+									   nil];
+	
+	NSDictionary *transactionColumnSizes = [NSDictionary dictionaryWithObjectsAndKeys:
+									 [NSNumber numberWithFloat:38], @"Reconciled",
+									 [NSNumber numberWithFloat:86], @"Date",
+									 [NSNumber numberWithFloat:147], @"Payee",
+									 [NSNumber numberWithFloat:147], @"Category",
+									 [NSNumber numberWithFloat:157], @"Description",
+									 [NSNumber numberWithFloat:80], @"Type",
+									 [NSNumber numberWithFloat:91], @"Amount",
+									 [NSNumber numberWithFloat:83], @"Balance",
+									 nil];
+	
+	NSDictionary *transactionColumnOrder = [NSArray arrayWithObjects:@"Reconciled", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
+	
+	[defaultValues setObject:visibleTransactionColumns forKey:@"VisibleTransactionColumns"];
+	[defaultValues setObject:transactionColumnSizes forKey:@"TransactionColumnSizes"];
+	[defaultValues setObject:transactionColumnOrder forKey:@"TransactionColumnOrder"];
 		
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
 }
@@ -205,16 +236,47 @@ toolbarViewGroupTag;
 	m_aScheduledTransactions = [[NSMutableArray alloc] init];
 	
 	// Load Transactions view OutlineView column sizes
-	int nCol = 0;
-	for (NSTableColumn *tc in [transactionsTableView tableColumns])
+	
+	NSDictionary *visibleTransactionColumns = [[NSUserDefaults standardUserDefaults] objectForKey:@"VisibleTransactionColumns"];
+	NSDictionary *transactionColumnSizes = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnSizes"];
+	NSArray *transactionColumnOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnOrder"];
+	
+	[[transactionsTableView headerView] setMenu:transactionsTableHeaderMenu];
+	
+	int nMenuIndex = 0;
+	for (NSTableColumn *tc in [[transactionsTableView tableColumns] reverseObjectEnumerator])
 	{
-		NSString *sColKey = [NSString stringWithFormat:@"TransactionColWidth%i", nCol++];
-		float fWidth = [[defs objectForKey:sColKey] floatValue];
+		NSMenuItem *subItem = [transactionsTableHeaderMenu insertItemWithTitle:[tc identifier] action:@selector(transactionTableColumnMenu:) keyEquivalent:@"" atIndex:nMenuIndex];
+		
+		[subItem setTarget:self];
+		[subItem setRepresentedObject:tc];
+		
+		float fWidth = [[transactionColumnSizes objectForKey:[tc identifier]] floatValue];
 		
 		if (fWidth > 0.0)
 		{
 			[tc setWidth:fWidth];
 		}
+		
+		BOOL bIsVisible = [[visibleTransactionColumns objectForKey:[tc identifier]] boolValue];
+		
+		if (!bIsVisible)
+		{
+			[subItem setState:NSOffState];
+			[tc setHidden:TRUE];
+		}
+		else
+		{
+			[subItem setState:NSOnState];
+		}
+		
+		[[tc headerCell] setMenu:transactionsTableHeaderMenu];
+	}
+	
+	int nCol = 0;
+	for (NSString *oa in transactionColumnOrder)
+	{
+		[transactionsTableView moveColumn:[transactionsTableView columnWithIdentifier:oa] toColumn:nCol++];
 	}
 	
 	NSDate *date1 = [NSDate date];
@@ -757,6 +819,8 @@ toolbarViewGroupTag;
 		std::string strTCategory = it->getCategory();
 		NSString *sTCategory = [[NSString alloc] initWithUTF8String:strTCategory.c_str()];
 		
+		NSString *sTType = [self transactionTypeToString:it->getType()];
+		
 		NSNumber *nTAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
 		
 		NSString *sTAmount = [[numberFormatter stringFromNumber:nTAmount] retain];
@@ -789,6 +853,7 @@ toolbarViewGroupTag;
 		[newTransaction setValue:sTPayee forKey:@"Payee"];
 		[newTransaction setValue:sTDescription forKey:@"Description"];
 		[newTransaction setValue:sTCategory forKey:@"Category"];
+		[newTransaction setValue:sTType forKey:@"Type"];
 		[newTransaction setValue:sTAmount forKey:@"Amount"];
 		[newTransaction setValue:sTBalance forKey:@"Balance"];
 		
@@ -1758,6 +1823,8 @@ toolbarViewGroupTag;
 	std::string strCategory = transaction.getCategory();
 	NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 	
+	NSString *sType = [self transactionTypeToString:transaction.getType()];
+	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	
@@ -1801,6 +1868,7 @@ toolbarViewGroupTag;
 	[newIndex setValue:sPayee forKey:@"Payee"];
 	[newIndex setValue:sDescription forKey:@"Description"];
 	[newIndex setValue:sCategory forKey:@"Category"];
+	[newIndex setValue:sType forKey:@"Type"];
 	[newIndex setValue:sAmount forKey:@"Amount"];
 	[newIndex setValue:sBalance forKey:@"Balance"];
 	
@@ -2025,6 +2093,8 @@ toolbarViewGroupTag;
 	int nType = [transactionsType indexOfSelectedItem];
 	TransactionType eType = static_cast<TransactionType>(nType);
 	
+	NSString *sType = [self transactionTypeToString:eType];
+	
 	bool bReconciled = false;
 	
 	if ([transactionsReconciled state] == NSOnState)
@@ -2070,6 +2140,7 @@ toolbarViewGroupTag;
 		[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
 		[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
 		[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
+		[m_SelectedTransaction setValue:sType forKey:@"Type"];
 		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
 		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
 		[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
@@ -3460,14 +3531,29 @@ NSDate *convertToNSDate(MonthYear &date)
 	[defs setFloat:[window frame].size.height forKey:@"MainWndHeight"];
 	
 	// Save Transactions view OutlineView column sizes
-	int nCol = 0;
+	
+	NSMutableDictionary *visibleTransactionColumns = [NSMutableDictionary dictionary];
+	NSMutableDictionary *transactionColumnSizes = [NSMutableDictionary dictionary];
+	
+	NSMutableArray *transactionColumnOrder = [NSMutableArray array];
+	
 	for (NSTableColumn *tc in [transactionsTableView tableColumns])
-	{
-		float fWidth = [tc width];
-		NSString *sColKey = [NSString stringWithFormat:@"TransactionColWidth%i", nCol++];
+	{		
+		BOOL bIsVisible = ![tc isHidden];
+		[visibleTransactionColumns setObject:[NSNumber numberWithBool:bIsVisible] forKey:[tc identifier]];
 		
-		[defs setFloat:fWidth forKey:sColKey];
+		if (bIsVisible)
+		{
+			float fWidth = [tc width];
+			[transactionColumnSizes setObject:[NSNumber numberWithFloat:fWidth] forKey:[tc identifier]];
+		}
+		
+		[transactionColumnOrder addObject:[tc identifier]];
 	}
+	
+	[defs setObject:visibleTransactionColumns forKey:@"VisibleTransactionColumns"];
+	[defs setObject:transactionColumnSizes forKey:@"TransactionColumnSizes"];
+	[defs setObject:transactionColumnOrder forKey:@"TransactionColumnOrder"];
 	
 	// Save the splitter positions
 	[indexBarSplitView saveLayoutToDefault:@"indexSplitter"];
@@ -3475,6 +3561,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	[scheduledverticalSplitView saveLayoutToDefault:@"schedtransSplitter"];
 	
 	[defs setInteger:self.ShowTransactionsViewType forKey:@"TransactionsViewType"];
+	[defs synchronize];
 	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];
@@ -3523,6 +3610,58 @@ NSDate *convertToNSDate(MonthYear &date)
 	[self calculateAndShowScheduled];
 
 	return YES;
+}
+
+- (void)transactionTableColumnMenu:(id)sender
+{
+	if ([sender state] == NSOnState)
+	{
+		[sender setState:NSOffState];
+		[[sender representedObject] setHidden:TRUE];
+	}
+	else
+	{
+		[sender setState:NSOnState];
+		[[sender representedObject] setHidden:FALSE];
+	}
+}
+
+- (NSString*)transactionTypeToString:(TransactionType)type
+{
+	NSString *string;
+	
+	switch (type)
+	{
+		case None:
+			string = @"None";
+			break;
+		case Deposit:
+			string = @"Deposit";
+			break;
+		case Withdrawal:
+			string = @"Withdrawal";
+			break;
+		case Transfer:
+			string = @"Transfer";
+			break;
+		case StandingOrder:
+			string = @"Standing Order";
+			break;
+		case DirectDebit:
+			string = @"Direct Debit";
+			break;
+		case PointOfSale:
+			string = @"Point Of Sale";
+			break;
+		case Charge:
+			string = @"Charge";
+			break;
+		case ATM:
+			string = @"ATM";
+			break;
+	}
+	
+	return string;	
 }
 
 // update the balances of all transactions from the given index down
