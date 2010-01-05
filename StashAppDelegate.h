@@ -179,6 +179,7 @@ enum TransactionsToShow
 - (void)makeTransferItem:(MakeTransfer *)makeTransferController;
 
 - (NSString*)transactionTypeToString:(TransactionType)type;
+- (NSString*)convertUSNegAmount:(NSString*)string;
 
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;

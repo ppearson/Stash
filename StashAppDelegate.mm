@@ -1310,6 +1310,11 @@ toolbarViewGroupTag;
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
 	
+	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
+	{
+		sStartingBalance = [self convertUSNegAmount:sStartingBalance];
+	}
+	
 	NSNumber *nStartingBalance = [numberFormatter numberFromString:sStartingBalance];
 	
 	fixed startingBalance = [nStartingBalance doubleValue];
@@ -1640,6 +1645,11 @@ toolbarViewGroupTag;
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
+	
+	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
+	{
+		sAmount = [self convertUSNegAmount:sAmount];
+	}
 	
 	NSNumber *nAmount = [numberFormatter numberFromString:sAmount];
 	
@@ -2084,7 +2094,13 @@ toolbarViewGroupTag;
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
 	
-	NSNumber *nAmount = [numberFormatter numberFromString:[transactionsAmount stringValue]];	
+	NSString *sTransactionAmount = [transactionsAmount stringValue];
+	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
+	{
+		sTransactionAmount = [self convertUSNegAmount:sTransactionAmount];
+	}
+	
+	NSNumber *nAmount = [numberFormatter numberFromString:sTransactionAmount];	
 	fixed fAmount = [nAmount doubleValue];
 
 	// reformat the number again, in case an abbreviation was used
@@ -2371,7 +2387,13 @@ toolbarViewGroupTag;
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[numberFormatter setLenient:YES];
 	
-	NSNumber *nAmount = [numberFormatter numberFromString:[scheduledAmount stringValue]];	
+	NSString *sScheduledAmount = [scheduledAmount stringValue];
+	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
+	{
+		sScheduledAmount = [self convertUSNegAmount:sScheduledAmount];
+	}
+	
+	NSNumber *nAmount = [numberFormatter numberFromString:sScheduledAmount];	
 	fixed fAmount = [nAmount doubleValue];
 	
 	// reformat the number again, in case an abbreviation was used
@@ -3662,6 +3684,35 @@ NSDate *convertToNSDate(MonthYear &date)
 	}
 	
 	return string;	
+}
+
+- (NSString*)convertUSNegAmount:(NSString*)string
+{
+	NSRange r;
+	
+	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
+	
+	if (r.length == 0)
+	{
+		return string;
+	}
+	
+	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"("]];
+	
+	if (r.length != 0)
+	{
+		return string;
+	}
+	
+	NSMutableString *mutableString = [NSMutableString stringWithString:string];
+	
+	r = [mutableString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
+	
+	[mutableString deleteCharactersInRange:r];
+	
+	NSString *newString = [NSString stringWithFormat:@"(%@)", mutableString];
+	
+	return newString;	
 }
 
 // update the balances of all transactions from the given index down
