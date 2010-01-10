@@ -34,6 +34,8 @@
 #import "PieChartView.h"
 #import "AreaChartView.h"
 #import "MakeTransfer.h"
+#import "ImportOFXController.h"
+#import "ExportOFXController.h"
 
 enum TransactionsToShow
 {
@@ -131,7 +133,8 @@ enum TransactionsToShow
 	
 	PreferencesController *prefController;
 	MakeTransfer *makeTransfer;
-	
+	ImportOFXController *importOFXController;
+	ExportOFXController *exportOFXController;	
 	
 	Document m_Document;
 	Account *m_pAccount;
@@ -228,9 +231,19 @@ enum TransactionsToShow
 - (bool)SaveFileTo:(std::string)path;
 
 - (IBAction)ImportQIF:(id)sender;
+- (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
+
+- (IBAction)ImportOFX:(id)sender;
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled;
+- (void)deleteImportOFXController;
+
+- (IBAction)ExportOFX:(id)sender;
+- (void)exportOFXFileWithController:(ExportOFXController*)controller;
+- (void)deleteExportOFXController;
+
 - (IBAction)ExportQIF:(id)sender;
 
-- (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
+
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateTransaction:(id)sender;

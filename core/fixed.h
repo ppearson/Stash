@@ -41,6 +41,8 @@ public:
 	bool operator==(const fixed & rhs) const;
 	bool operator!=(const fixed & rhs) const;
 	
+	void SetFromString(std::string value, CurrencyFormat format = UKFormat);
+	
 	bool IsZero() const;	
 	bool IsPositive() const;
 	
@@ -64,8 +66,7 @@ private:
 	
 	std::string ToString() const;
 	
-	void SetFromDouble(const double value = 0.00);
-	void SetFromString(std::string value, CurrencyFormat format = UKFormat);
+	void SetFromDouble(const double value = 0.00);	
 	
 	static void add(fixed & dec, const fixed & value);
 	static void subtract(fixed & dec, const fixed & value);

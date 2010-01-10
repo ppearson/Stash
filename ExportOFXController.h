@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -22,26 +22,27 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IndexBar : NSOutlineView
+#include <string>
+
+@interface ExportOFXController : NSWindowController
 {
-	NSMutableArray *m_aSections;
-	NSMutableDictionary *m_dItems;
+	IBOutlet NSWindow *exportOFXWindow;
 	
-	IBOutlet NSMenu *fAccountMenu;
-	IBOutlet NSMenu *fMiscMenu;
+	NSMutableArray *m_aAvailableAccounts;
+	
+	IBOutlet NSTableView *fAvailableAccountsTable;
+	IBOutlet NSPopUpButton *fOFXVersion;
+	
+	std::string m_path;
 }
 
-- (int)getItemIndex;
-- (id)getSelectedItemKey;
+- (id)initWithAccountData:(NSMutableArray *)availableAccounts file:(std::string)path;
+- (void)showExportOFXWindow:(NSWindow *)window;
 
-- (void)clearAllItems;
+- (IBAction)doExport:(id)sender;
+- (IBAction)doCancel:(id)sender;
 
-- (void)addSection:(id)key title:(NSString*)sTitle;
-- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget;
-
-- (void)selectItem:(id)key;
-- (void)expandSection:(id)itemKey;
-
-- (IBAction)renameItem:(id)key;
+- (NSArray*)getAccounts;
+- (NSString*)getFilename;
 
 @end

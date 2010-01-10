@@ -45,9 +45,14 @@
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D09435B910B08CB3009EC0D3 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */; };
+		D096420110F791170072CE3C /* ExportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D096420010F791170072CE3C /* ExportOFX.xib */; };
+		D096420710F793430072CE3C /* ExportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D096420610F793430072CE3C /* ExportOFXController.mm */; };
 		D09E91E210CAB982001DE73F /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09E91E110CAB982001DE73F /* graph.cpp */; };
+		D09F242410F64F5600CD1C8D /* ImportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D09F242310F64F5600CD1C8D /* ImportOFXController.mm */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
 		D0A460D110A224FD007CB217 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CF10A224FD007CB217 /* up.png */; };
+		D0A95F4710F48985008F28B6 /* ofx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0A95F4610F48985008F28B6 /* ofx.cpp */; };
+		D0A9613810F539A0008F28B6 /* ImportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A9613710F539A0008F28B6 /* ImportOFX.xib */; };
 		D0AD4AD110EF81CE008226E6 /* stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0AD4ACF10EF81CE008226E6 /* stash.icns */; };
 		D0AD4AD210EF81CE008226E6 /* stashdocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0AD4AD010EF81CE008226E6 /* stashdocument.icns */; };
 		D0B430DC10ED1AAB00D63206 /* area_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430D910ED1AAB00D63206 /* area_prefs.png */; };
@@ -128,10 +133,18 @@
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D09435B810B08CB3009EC0D3 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DueScheduledTransactions.xib; sourceTree = "<group>"; };
+		D096420010F791170072CE3C /* ExportOFX.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportOFX.xib; sourceTree = "<group>"; };
+		D096420510F793430072CE3C /* ExportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportOFXController.h; sourceTree = "<group>"; };
+		D096420610F793430072CE3C /* ExportOFXController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ExportOFXController.mm; sourceTree = "<group>"; };
 		D09E91E010CAB982001DE73F /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		D09E91E110CAB982001DE73F /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
+		D09F242210F64F5600CD1C8D /* ImportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportOFXController.h; sourceTree = "<group>"; };
+		D09F242310F64F5600CD1C8D /* ImportOFXController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImportOFXController.mm; sourceTree = "<group>"; };
 		D0A460CE10A224FD007CB217 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		D0A460CF10A224FD007CB217 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		D0A95F4510F48985008F28B6 /* ofx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofx.h; sourceTree = "<group>"; };
+		D0A95F4610F48985008F28B6 /* ofx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofx.cpp; sourceTree = "<group>"; };
+		D0A9613710F539A0008F28B6 /* ImportOFX.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportOFX.xib; sourceTree = "<group>"; };
 		D0AD4ACF10EF81CE008226E6 /* stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = stash.icns; sourceTree = "<group>"; };
 		D0AD4AD010EF81CE008226E6 /* stashdocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = stashdocument.icns; sourceTree = "<group>"; };
 		D0B430D910ED1AAB00D63206 /* area_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = area_prefs.png; sourceTree = "<group>"; };
@@ -201,6 +214,10 @@
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
 				D0677E0910B82563005D783C /* AccountInfoController.h */,
 				D0677E0A10B82563005D783C /* AccountInfoController.mm */,
+				D09F242210F64F5600CD1C8D /* ImportOFXController.h */,
+				D09F242310F64F5600CD1C8D /* ImportOFXController.mm */,
+				D096420510F793430072CE3C /* ExportOFXController.h */,
+				D096420610F793430072CE3C /* ExportOFXController.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -255,6 +272,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D0A9613710F539A0008F28B6 /* ImportOFX.xib */,
 				D058757910EFA76C00A2766A /* MakeTransfer.xib */,
 				D00534AD10B95C18000F9B23 /* Preferences.xib */,
 				D0677DF710B8244C005D783C /* AccountInfo.xib */,
@@ -266,6 +284,7 @@
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				D06BDF5E109C7C17007437B6 /* ImportQIF.xib */,
+				D096420010F791170072CE3C /* ExportOFX.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -282,6 +301,8 @@
 		D01984F510A8CA7F0040DD63 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D0A95F4510F48985008F28B6 /* ofx.h */,
+				D0A95F4610F48985008F28B6 /* ofx.cpp */,
 				D09E91E010CAB982001DE73F /* graph.h */,
 				D09E91E110CAB982001DE73F /* graph.cpp */,
 				D0DE686110CAF30D0066699B /* analysis.h */,
@@ -392,6 +413,8 @@
 				D0AD4AD210EF81CE008226E6 /* stashdocument.icns in Resources */,
 				D058757A10EFA76C00A2766A /* MakeTransfer.xib in Resources */,
 				D058775010EFE07E00A2766A /* make_transfer.png in Resources */,
+				D0A9613810F539A0008F28B6 /* ImportOFX.xib in Resources */,
+				D096420110F791170072CE3C /* ExportOFX.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +454,9 @@
 				D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */,
 				D086340410E61A410055EB1B /* AreaChartView.mm in Sources */,
 				D058758010EFA80D00A2766A /* MakeTransfer.m in Sources */,
+				D0A95F4710F48985008F28B6 /* ofx.cpp in Sources */,
+				D09F242410F64F5600CD1C8D /* ImportOFXController.mm in Sources */,
+				D096420710F793430072CE3C /* ExportOFXController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +522,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-liconv";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};
@@ -508,6 +535,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-liconv";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};

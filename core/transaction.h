@@ -40,7 +40,10 @@ enum TransactionType
 	DirectDebit,
 	PointOfSale,
 	Charge,
-	ATM
+	ATM,
+	Cheque,
+	Credit,
+	Debit
 };
 
 class Transaction
@@ -61,8 +64,10 @@ public:
 	std::string getPayee() const { return m_Payee; }
 	void setPayee(std::string Payee) { m_Payee = Payee; }
 	fixed getAmount() const { return m_Amount; }
+	const fixed &getAmount1() { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	TransactionType getType() const { return m_Type; }
+	const TransactionType &getType1() { return m_Type; }
 	void setType(TransactionType type) { m_Type = type; }
 	
 	void setSplit(bool split) { m_Split = split; }

@@ -31,7 +31,8 @@
 enum DateStringFormat
 {
 	UK,
-	US
+	US,
+	OFX
 };
 
 #define SECONDS_IN_DAY 86400

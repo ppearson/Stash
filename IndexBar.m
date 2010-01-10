@@ -238,6 +238,15 @@
 	return [selectedItem getItemIndex];
 }
 
+- (id)getSelectedItemKey
+{
+	IndexItem *selectedItem = [self itemAtRow:[self selectedRow]];
+	if (selectedItem == nil)
+		return nil;
+	
+	return [selectedItem itemKey];	
+}
+
 - (IBAction)renameItem:(id)key
 {
 	int row = -1;

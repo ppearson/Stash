@@ -21,6 +21,7 @@
  */
 
 #include "storage.h"
+#include "ofx.h"
 #include "analysis.h"
 
 #import "StashAppDelegate.h"
@@ -294,6 +295,10 @@ toolbarViewGroupTag;
 	[transactionsType addItemWithTitle:@"Point Of Sale"];
 	[transactionsType addItemWithTitle:@"Charge"];
 	[transactionsType addItemWithTitle:@"ATM"];
+	[transactionsType addItemWithTitle:@"Check"];
+	[transactionsType addItemWithTitle:@"Credit"];
+	[transactionsType addItemWithTitle:@"Debit"];
+	
 	
 	[scheduledType removeAllItems];
 	
@@ -306,6 +311,9 @@ toolbarViewGroupTag;
 	[scheduledType addItemWithTitle:@"Point Of Sale"];
 	[scheduledType addItemWithTitle:@"Charge"];
 	[scheduledType addItemWithTitle:@"ATM"];
+	[scheduledType addItemWithTitle:@"Check"];
+	[scheduledType addItemWithTitle:@"Credit"];
+	[scheduledType addItemWithTitle:@"Debit"];
 	
 	[scheduledFrequency removeAllItems];
 	
@@ -737,7 +745,10 @@ toolbarViewGroupTag;
 	}
 	
 	if (m_pAccount->getTransactionCount() == 0)
+	{
+		[transactionsTableView reloadData];
 		return;
+	}
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin();
 	int nTransaction = 0;
@@ -3405,10 +3416,11 @@ NSDate *convertToNSDate(MonthYear &date)
 	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
 	NSString *fileToOpen;
 	std::string strFile = "";
-	[oPanel setAllowsMultipleSelection: NO];
-	[oPanel setResolvesAliases: YES];
+	[oPanel setAllowsMultipleSelection:NO];
+	[oPanel setResolvesAliases:YES];
+	[oPanel setRequiredFileType:@"qif"];
 	[oPanel setTitle: @"Import QIF file"];
-	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"qif", nil]];
+	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"qif", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
@@ -3448,7 +3460,296 @@ NSDate *convertToNSDate(MonthYear &date)
 		bMR = false;
 	
 	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator, bMR))
-		[self buildTransactionsTree];	
+		[self buildTransactionsTree];
+}
+
+- (IBAction)ImportOFX:(id)sender
+{
+	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
+	NSString *fileToOpen;
+	std::string strFile = "";
+	[oPanel setAllowsMultipleSelection:NO];
+	[oPanel setResolvesAliases:YES];
+	[oPanel setRequiredFileType:@"ofx"];
+	[oPanel setTitle:@"Select OFX file to Import"];
+	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
+	
+	if ([oPanel runModal] == NSOKButton)
+	{
+		fileToOpen = [oPanel filename];
+		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
+		
+		OFXData dataItem;
+		
+		if (!importOFXFile(strFile, dataItem))
+		{
+			NSRunAlertPanel(@"Couldn't Import OFX File", @"Couldn't import the selected OFX file.", @"OK", nil, nil);
+			return;	
+		}
+		
+		int numAccounts = dataItem.getResponseCount();
+		
+		if (numAccounts == 0)
+		{
+			NSRunAlertPanel(@"No data in file", @"Stash couldn't find any account/transaction data in the OFX file.", @"OK", nil, nil);
+			return;
+		}
+		
+		bool bFoundReverse = false;
+		BOOL bReverseTransactions = NO;
+		
+		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		
+		NSMutableArray *aAccountsData = [[NSMutableArray alloc] init];
+		
+		OFXStTrResIt sTRIt = dataItem.begin();
+		
+		for (; sTRIt != dataItem.end(); ++sTRIt)
+		{
+			OFXStatementResponse &stResp = (*sTRIt).getStatementResponse();
+			
+			NSMutableDictionary *importItem = [[NSMutableDictionary alloc] init];
+			
+			const OFXBankAccount &bankAccount = stResp.getAccount();
+			
+			// try and work out if transactions need to be reversed
+			int nMaxLook = stResp.getTransactionCount() - 1;
+			
+			if (!bFoundReverse && nMaxLook > 1)
+			{
+				const Date &dtStart = stResp.getTransaction1(0).getDate1();				
+				const Date &dtEnd = stResp.getTransaction1(nMaxLook).getDate1();
+				
+				if (dtStart > dtEnd)
+				{
+					bFoundReverse = true;
+					bReverseTransactions = YES;
+				}				
+			}
+			
+			NSString *sAccountNumber = [[NSString alloc] initWithUTF8String:bankAccount.getAccountID().c_str()];		
+			NSString *sTransactionCount = [NSString stringWithFormat:@"%i", stResp.getTransactionCount()];
+			
+			fixed balance = stResp.getBalance();
+			
+			NSNumber *nSBalance = [NSNumber numberWithDouble:balance.ToDouble()];
+			NSString *sBalance = [[numberFormatter stringFromNumber:nSBalance] retain];
+						
+			[importItem setValue:sAccountNumber forKey:@"accno"];
+			[importItem setValue:sTransactionCount forKey:@"transcount"];
+			[importItem setValue:sBalance forKey:@"balance"];
+			
+			[importItem setObject:[NSNumber numberWithBool:YES] forKey:@"import"];
+			[importItem setObject:[NSNumber numberWithInt:1] forKey:@"importType"];
+			[importItem setValue:sAccountNumber forKey:@"account"];
+			[importItem setValue:sAccountNumber forKey:@"newAccName"];
+			[importItem setObject:[NSNumber numberWithInt:0] forKey:@"newAccType"];			
+			
+			[aAccountsData addObject:importItem];			
+		}
+		
+		[numberFormatter release];		
+		
+		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
+		
+		std::vector<Account>::iterator it = m_Document.AccountBegin();
+		
+		for (; it != m_Document.AccountEnd(); ++it)
+		{
+			std::string strName = it->getName();
+			NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+			[aExistingAccounts addObject:sName];
+			
+			[sName release];
+		}
+		
+		if (!importOFXController)
+			importOFXController = [[ImportOFXController alloc] initWithOFXData:aAccountsData existingAccounts:aExistingAccounts file:strFile];
+		
+		[importOFXController showImportOFXWindow:window reverse:bReverseTransactions];
+	}
+}
+
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled
+{
+	NSString *sFileName = [controller getFilename];
+	std::string strFilename = [sFileName cStringUsingEncoding: NSUTF8StringEncoding];
+	
+	OFXData dataItem;
+	
+	if (!importOFXFile(strFilename, dataItem))
+	{
+		NSRunAlertPanel(@"Couldn't open file", @"Stash could not import the selected OFX file. Check it is a valid OFX 1.x/2.x file.", @"OK", nil, nil);
+		return;
+	}
+	
+	NSArray *settings = [controller getSettings];
+	
+	int numAccountSettings = [settings count];
+	int numAccountsInFile = dataItem.getResponseCount();
+	
+	if (numAccountSettings != numAccountsInFile)
+	{
+		// something's gone wrong
+		NSRunAlertPanel(@"Import data inconcistency", @"The Import data could not be processed correctly.", @"OK", nil, nil);
+		return;
+		
+		[importOFXController release];
+		importOFXController = 0;
+		return;
+	}
+	
+	// remember which IndexBar item is currently selected
+	NSString *selectedKey = [[indexBar getSelectedItemKey] retain];
+	
+	for (int i = 0; i < numAccountSettings; i++)
+	{
+		NSMutableDictionary *accountSettings = [settings objectAtIndex:i];
+		
+		if ([[accountSettings objectForKey:@"import"] boolValue] == NO)
+			 continue;
+							  
+		OFXStatementTransactionResponse &response = dataItem.getResponse(i);		
+		OFXStatementResponse &stResp = response.getStatementResponse();
+		
+		int importType = [[accountSettings objectForKey:@"importType"] intValue];
+		
+		if (importType == 0) // existing Account
+		{
+			int existingAccountIndex = [[accountSettings objectForKey:@"existingAccount"] intValue];
+			Account &existingAccount = m_Document.getAccount(existingAccountIndex);
+			
+			importOFXStatementIntoAccount(existingAccount, stResp, reverse, reconciled);
+		}
+		else // new Account
+		{
+			NSString *sAccountName = [accountSettings valueForKey:@"newAccName"];
+			std::string strAccountName = [sAccountName cStringUsingEncoding:NSUTF8StringEncoding];
+			
+			int accountType = [[accountSettings objectForKey:@"newAccType"] intValue];
+			
+			AccountType eType = static_cast<AccountType>(accountType);
+			
+			Account newAccount;
+			newAccount.setName(strAccountName);
+			newAccount.setType(eType);
+			
+			importOFXStatementIntoAccount(newAccount, stResp, reverse, reconciled);
+			
+			m_Document.addAccount(newAccount);			
+		}		
+	}
+	
+	m_UnsavedChanges = true;
+	[self buildIndexTree];
+	
+	if (selectedKey != nil)
+		[indexBar selectItem:selectedKey];
+	
+	[importOFXController release];
+	importOFXController = 0;
+}
+
+- (void)deleteImportOFXController
+{
+	if (importOFXController)
+	{
+		[importOFXController release];
+		importOFXController = 0;
+	}
+}
+
+- (IBAction)ExportOFX:(id)sender
+{
+	NSSavePanel *sPanel = [NSSavePanel savePanel];
+	NSString *fileToSave;
+	std::string strFile = "";
+	[sPanel setRequiredFileType:@"ofx"];
+	[sPanel setTitle:@"Select OFX file to Export to"];
+	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
+	
+	if ([sPanel runModal] == NSOKButton)
+	{
+		fileToSave = [sPanel filename];
+		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
+		
+		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
+		
+		std::vector<Account>::iterator it = m_Document.AccountBegin();
+		
+		int accountCount = 0;
+		
+		for (; it != m_Document.AccountEnd(); ++it)
+		{
+			NSMutableDictionary *accountItem = [[NSMutableDictionary alloc] init];
+			std::string strName = it->getName();
+			NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
+			
+			[accountItem setValue:sName forKey:@"account"];
+			[accountItem setObject:[NSNumber numberWithBool:YES] forKey:@"export"];
+			[accountItem setObject:[NSNumber numberWithInt:accountCount++] forKey:@"num"];			
+			
+			[aExistingAccounts addObject:accountItem];
+			
+			[sName release];
+		}
+		
+		if (!exportOFXController)
+			exportOFXController = [[ExportOFXController alloc] initWithAccountData:aExistingAccounts file:strFile];
+		
+		[exportOFXController showExportOFXWindow:window];
+	}
+}
+
+- (void)exportOFXFileWithController:(ExportOFXController*)controller xmlOFX:(bool)xml
+{
+	NSString *sFileName = [controller getFilename];
+	std::string strFilename = [sFileName cStringUsingEncoding:NSUTF8StringEncoding];
+	
+	OFXData dataItem;
+	
+	NSArray *accounts = [controller getAccounts];
+	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	NSString *currencyCode = [numberFormatter currencyCode];
+	std::string strCurrencyCode = [currencyCode cStringUsingEncoding:NSUTF8StringEncoding];
+	
+	NSMutableDictionary *accountItem = 0;
+	
+	for (accountItem in accounts)
+	{
+		int accountIndex = [[accountItem objectForKey:@"num"] intValue];
+		
+		BOOL bExport = [[accountItem objectForKey:@"export"] boolValue];
+		
+		if (bExport)
+		{
+			Account &account = m_Document.getAccount(accountIndex);
+			
+			OFXStatementTransactionResponse newResponseItem;
+			newResponseItem.getStatementResponse().setCurrencyCode(strCurrencyCode);
+			
+			newResponseItem.addOFXTransactionsForAccount(account);
+			
+			dataItem.addStatementTransactionResponse(newResponseItem);			
+		}
+	}
+	
+	[numberFormatter release];
+	
+	dataItem.exportDataToFile(strFilename, xml);
+}
+
+- (void)deleteExportOFXController
+{
+	if (exportOFXController)
+	{
+		[exportOFXController release];
+		exportOFXController = 0;
+	}
 }
 
 - (IBAction)ExportQIF:(id)sender
@@ -3680,6 +3981,15 @@ NSDate *convertToNSDate(MonthYear &date)
 			break;
 		case ATM:
 			string = @"ATM";
+			break;
+		case Cheque:
+			string = @"Check";
+			break;
+		case Credit:
+			string = @"Credit";
+			break;
+		case Debit:
+			string = @"Debit";
 			break;
 	}
 	

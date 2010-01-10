@@ -63,7 +63,7 @@
 	}
 	
 	[fromAccount selectItemAtIndex:initAccount];
-	[fromAccount selectItemAtIndex:0];
+	[toAccount selectItemAtIndex:0];
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];

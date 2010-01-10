@@ -176,31 +176,52 @@ void Date::SetTimeFromVars()
 	m_Time = mktime(&time);
 }
 
-void Date::setDate(std::string date, char cSep, DateStringFormat dateFomat)
+void Date::setDate(std::string date, char cSep, DateStringFormat dateFormat)
 {
-	if (date.find(cSep) == -1)
-		return;
+	if (dateFormat == OFX)
+	{
+		if (date.size() >= 8)
+		{
+			date = date.substr(0, 8);
+			
+			date.insert(6, " ");
+			date.insert(4, " ");			
+		}
+		else
+			return;
+	}
+	else
+	{
+		if (date.find(cSep) == -1)
+			return;
 
-	std::replace(date.begin(), date.end(), cSep, ' ');
+		std::replace(date.begin(), date.end(), cSep, ' ');
+	}
 
 	std::stringstream strm(date);
 	std::string strDay;
 	std::string strMonth;
 	std::string strYear;
 	
-	if (dateFomat == UK)
+	if (dateFormat == OFX)
+	{
+		strm >> strYear;
+		strm >> strMonth;
+		strm >> strDay;
+	}
+	else if (dateFormat == UK)
 	{
 		strm >> strDay;
 		strm >> strMonth;
+		strm >> strYear;
 	}
 	else
 	{
 		strm >> strMonth;
 		strm >> strDay;
+		strm >> strYear;
 	}
-
-	strm >> strYear;
-
+	
 	int nDay = atoi(strDay.c_str());
 	int nMonth = atoi(strMonth.c_str());
 	int nYear = atoi(strYear.c_str());
@@ -288,8 +309,13 @@ std::string Date::FormattedDate(DateStringFormat format) const
 		sDate << std::setw(2) << std::setfill('0') << m_Day;
 		sDate << m_Separator << m_Year;
 	}
-
-	sDate << std::ends;
+	else
+	{
+		sDate << m_Year;
+		sDate << std::setw(2) << std::setfill('0') << m_Month;
+		sDate << std::setw(2) << std::setfill('0') << m_Day;
+		sDate << "000000";
+	}
 
 	return sDate.str();
 }
