@@ -102,6 +102,11 @@
 	m_description = [description stringValue];
 	m_date = [dateCntl dateValue];
 	
+	if ([setAsReconciled state] == NSOnState)
+		m_makeReconciled = YES;
+	else
+		m_makeReconciled = NO;
+	
 	if (m_fromAccount == m_toAccount)
 	{
 		NSRunAlertPanel(@"Invalid account selection", @"You must select different From and To accounts in order to make a Transfer.", @"OK", nil, nil);
@@ -148,6 +153,11 @@
 - (NSDate*)date
 {
 	return m_date;
+}
+
+- (BOOL)makeReconciled
+{
+	return m_makeReconciled;
 }
 
 @end

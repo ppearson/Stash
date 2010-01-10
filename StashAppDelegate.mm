@@ -1649,6 +1649,7 @@ toolbarViewGroupTag;
 	NSString *sCategory = [makeTransferController category];
 	NSString *sDescription = [makeTransferController description];
 	NSDate *dtDate = [makeTransferController date];
+	BOOL bMakeReconciled = [makeTransferController makeReconciled];
 		
 	std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strDescription = [sDescription cStringUsingEncoding:NSUTF8StringEncoding];
@@ -1681,12 +1682,20 @@ toolbarViewGroupTag;
 	
 	Transaction fromTransaction(strDescription, strToAccountName, strCategory, amount, date1);
 	fromTransaction.setType(Transfer);
+	if (bMakeReconciled)
+	{
+		fromTransaction.setReconciled(true);
+	}
 	int nFromTransaction = pFromAccount->addTransaction(fromTransaction);
 	
 	amount.setPositive();
 	
 	Transaction toTransaction(strDescription, strFromAccountName, strCategory, amount, date1);
 	toTransaction.setType(Transfer);
+	if (bMakeReconciled)
+	{
+		toTransaction.setReconciled(true);
+	}
 	int nToTransaction = pToAccount->addTransaction(toTransaction);
 	
 //	[makeTransferController release];
