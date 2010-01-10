@@ -43,7 +43,6 @@ enum Constraint
 {
 	ExactDate,
 	ExactOrNextWorkingDay,
-	FirstWorkingDayOfMonth,
 	LastWorkingDayOfMonth	
 };
 

@@ -131,6 +131,23 @@ void Date::AdvanceToNextWorkingDay()
 	}
 }
 
+void Date::AdvanceToLastWorkingDayOfMonth()
+{
+	int daysInMonth = aDaysInMonth[m_Month - 1];
+	
+	if (m_Month == 1 && isLeapYear())
+		daysInMonth++;
+	
+	setDay(daysInMonth);
+	
+	SetVarsFromTime(); // needed to update m_DayOfWeek
+	
+	while (m_DayOfWeek == 0 || m_DayOfWeek == 6)
+	{
+		DecrementDays(1);
+	}
+}
+
 void Date::Now()
 {
 	time(&m_Time);

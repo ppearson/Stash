@@ -56,6 +56,7 @@ public:
 	void DecrementMonths(int months);
 	
 	void AdvanceToNextWorkingDay();
+	void AdvanceToLastWorkingDayOfMonth();
 	
 	void Now();
 	

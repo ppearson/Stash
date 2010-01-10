@@ -329,6 +329,7 @@ toolbarViewGroupTag;
 	
 	[scheduledConstraint addItemWithTitle:@"Exact Day"];
 	[scheduledConstraint addItemWithTitle:@"Exact or Next Working Day"];
+	[scheduledConstraint addItemWithTitle:@"Last Working Day of Month"];
 	
 	[graphType removeAllItems];
 	
