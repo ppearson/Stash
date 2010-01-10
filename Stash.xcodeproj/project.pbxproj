@@ -37,6 +37,9 @@
 		D06BDF5F109C7C17007437B6 /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D06BDF5E109C7C17007437B6 /* ImportQIF.xib */; };
 		D06BDF65109C7F48007437B6 /* ImportQIFController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D06BDF64109C7F48007437B6 /* ImportQIFController.mm */; };
 		D077492B1093B3AB00EDC307 /* round_check.png in Resources */ = {isa = PBXBuildFile; fileRef = D077492A1093B3AB00EDC307 /* round_check.png */; };
+		D07D51EA10FA1FEC00BC37F9 /* DropDownDate.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */; };
+		D07D51EB10FA1FEC00BC37F9 /* DropDownWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D07D51E910FA1FEC00BC37F9 /* DropDownWindow.m */; };
+		D07D520F10FA212C00BC37F9 /* cal.png in Resources */ = {isa = PBXBuildFile; fileRef = D07D520E10FA212C00BC37F9 /* cal.png */; };
 		D086340410E61A410055EB1B /* AreaChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086340310E61A410055EB1B /* AreaChartView.mm */; };
 		D086FD0710931F14001AE198 /* TransactionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = D086FD0610931F14001AE198 /* TransactionItem.mm */; };
 		D08B025910D461AA006152CD /* SplitViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B025810D461AA006152CD /* SplitViewEx.m */; };
@@ -120,6 +123,11 @@
 		D06BDF63109C7F48007437B6 /* ImportQIFController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportQIFController.h; sourceTree = "<group>"; };
 		D06BDF64109C7F48007437B6 /* ImportQIFController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImportQIFController.mm; sourceTree = "<group>"; };
 		D077492A1093B3AB00EDC307 /* round_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_check.png; sourceTree = "<group>"; };
+		D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownDate.h; sourceTree = "<group>"; };
+		D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownDate.m; sourceTree = "<group>"; };
+		D07D51E810FA1FEC00BC37F9 /* DropDownWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropDownWindow.h; sourceTree = "<group>"; };
+		D07D51E910FA1FEC00BC37F9 /* DropDownWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropDownWindow.m; sourceTree = "<group>"; };
+		D07D520E10FA212C00BC37F9 /* cal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cal.png; sourceTree = "<group>"; };
 		D086340210E61A410055EB1B /* AreaChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaChartView.h; sourceTree = "<group>"; };
 		D086340310E61A410055EB1B /* AreaChartView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AreaChartView.mm; sourceTree = "<group>"; };
 		D086FD0510931F14001AE198 /* TransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionItem.h; sourceTree = "<group>"; };
@@ -179,6 +187,10 @@
 			isa = PBXGroup;
 			children = (
 				D058757E10EFA80D00A2766A /* MakeTransfer.h */,
+				D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */,
+				D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */,
+				D07D51E810FA1FEC00BC37F9 /* DropDownWindow.h */,
+				D07D51E910FA1FEC00BC37F9 /* DropDownWindow.m */,
 				D058757F10EFA80D00A2766A /* MakeTransfer.m */,
 				D086340210E61A410055EB1B /* AreaChartView.h */,
 				D086340310E61A410055EB1B /* AreaChartView.mm */,
@@ -331,6 +343,7 @@
 		D07749291093B3AB00EDC307 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D07D520E10FA212C00BC37F9 /* cal.png */,
 				D058774F10EFE07E00A2766A /* make_transfer.png */,
 				D0AD4ACF10EF81CE008226E6 /* stash.icns */,
 				D0AD4AD010EF81CE008226E6 /* stashdocument.icns */,
@@ -415,6 +428,7 @@
 				D058775010EFE07E00A2766A /* make_transfer.png in Resources */,
 				D0A9613810F539A0008F28B6 /* ImportOFX.xib in Resources */,
 				D096420110F791170072CE3C /* ExportOFX.xib in Resources */,
+				D07D520F10FA212C00BC37F9 /* cal.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +471,8 @@
 				D0A95F4710F48985008F28B6 /* ofx.cpp in Sources */,
 				D09F242410F64F5600CD1C8D /* ImportOFXController.mm in Sources */,
 				D096420710F793430072CE3C /* ExportOFXController.mm in Sources */,
+				D07D51EA10FA1FEC00BC37F9 /* DropDownDate.m in Sources */,
+				D07D51EB10FA1FEC00BC37F9 /* DropDownWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
