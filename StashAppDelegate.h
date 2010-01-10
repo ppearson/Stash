@@ -238,7 +238,7 @@ enum TransactionsToShow
 - (void)deleteImportOFXController;
 
 - (IBAction)ExportOFX:(id)sender;
-- (void)exportOFXFileWithController:(ExportOFXController*)controller;
+- (void)exportOFXFileWithController:(ExportOFXController*)controller xmlOFX:(bool)xml;
 - (void)deleteExportOFXController;
 
 - (IBAction)ExportQIF:(id)sender;
