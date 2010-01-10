@@ -87,19 +87,6 @@
 	[window release];
 }
 
-- (void)keyDown:(NSEvent *)event
-{
-    if ([event keyCode] == 53) // esc key
-	{
-    //    [[self containedView] close];
-		NSWindow *thisWindow = [[self containedView] window];
-		[[thisWindow parentWindow] removeChildWindow:thisWindow];
-		[thisWindow orderOut:thisWindow];
-	}
-    else
-        [super keyDown: event];
-}
-
 + (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event
 {
 	[[self class] dropDownWindow:self atPoint:point withEvent:event];	
@@ -156,7 +143,12 @@
 	{
 		NSPoint location = [[event window] convertBaseToScreen:[event locationInWindow]];
 		
-		return [NSEvent mouseEventWithType:	[event type]
+		if ([event type] == NSKeyDown)
+		{
+			return event;
+		}
+		else
+			return [NSEvent mouseEventWithType:	[event type]
 								  location:	[self convertScreenToBase:location]
 							 modifierFlags:	[event modifierFlags]
 								 timestamp:	[event timestamp]
@@ -192,7 +184,7 @@
 	mask = NSLeftMouseUpMask | NSLeftMouseDraggedMask |
 	NSRightMouseUpMask | NSRightMouseDraggedMask |
 	NSAppKitDefinedMask | NSFlagsChangedMask |
-	NSScrollWheelMask;
+	NSScrollWheelMask | NSKeyDownMask;
 	
 	while (maintain)
 	{
@@ -239,7 +231,7 @@
 					maintain = NO;
 				break;
 			case NSKeyDown:
-				if ([thisEvent keyCode] == 53)
+				if ([thisEvent keyCode] == 53) // Escape key
 					maintain = NO;
 				break;
 			default:
