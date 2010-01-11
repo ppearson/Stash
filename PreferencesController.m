@@ -65,7 +65,15 @@
     
     [self setPrefView:nil];
 	
+	[fPieSegmentSort removeAllItems];
+	[fPieSegmentSort addItemWithTitle:@"Size"];
+	[fPieSegmentSort addItemWithTitle:@"Title"];
+	
 	[fPieSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
+	
+	[fPieSegmentSelectionType removeAllItems];
+	[fPieSegmentSelectionType addItemWithTitle:@"are selected"];
+	[fPieSegmentSelectionType addItemWithTitle:@"pop out"];
 	
 	[fPieSegmentSelectionType selectItemAtIndex:[uDefaults integerForKey:@"PieChartSelectionType"]];
 	

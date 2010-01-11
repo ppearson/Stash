@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="19"/>
 			<integer value="20"/>
+			<integer value="19"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -60,10 +60,6 @@
 				<bool key="NSAppliesImmediately">YES</bool>
 			</object>
 			<object class="NSUserDefaultsController" id="526319124">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>PieChartSelectionType</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomView" id="1018902850">
@@ -310,7 +306,6 @@
 								<string key="NSKeyEquiv"/>
 								<int key="NSKeyEquivModMask">1048576</int>
 								<int key="NSMnemonicLoc">2147483647</int>
-								<int key="NSState">1</int>
 								<object class="NSCustomResource" key="NSOnImage" id="1061639940">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">NSMenuCheckmark</string>
@@ -342,7 +337,6 @@
 								</object>
 								<reference key="NSMenuFont" ref="278382982"/>
 							</object>
-							<int key="NSSelectedIndex">1</int>
 							<int key="NSPreferredEdge">1</int>
 							<bool key="NSUsesItemFromMenu">YES</bool>
 							<bool key="NSAltersState">YES</bool>
@@ -460,7 +454,6 @@
 								<string key="NSKeyEquiv"/>
 								<int key="NSKeyEquivModMask">1048576</int>
 								<int key="NSMnemonicLoc">2147483647</int>
-								<int key="NSState">1</int>
 								<reference key="NSOnImage" ref="1061639940"/>
 								<reference key="NSMixedImage" ref="19251903"/>
 								<string key="NSAction">_popUpItemAction:</string>
@@ -1085,13 +1078,13 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="255146114"/>
-							<reference ref="470131850"/>
 							<reference ref="68101585"/>
 							<reference ref="968818098"/>
 							<reference ref="298359877"/>
 							<reference ref="1011180607"/>
 							<reference ref="605748855"/>
 							<reference ref="191170206"/>
+							<reference ref="470131850"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">PieChart</string>
