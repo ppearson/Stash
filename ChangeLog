@@ -1,3 +1,17 @@
+Version 0.7
+-----------
+
+* Added OFX Import and Export support
+* Fixed bug which wouldn't refresh transactions view when changing viewed account if newly selected
+  account had no transactions
+* Added Transaction Types Check, Credit, Debit
+* Changed all date-picker controllers to smaller textual steppers, and added DatePickerDropdown buttons
+  next to them all
+* Added new option to Make Transfer window, allowing generated transaction items to be automatically
+  set as reconciled
+* Added new Scheduled Transaction constraint: Last Working day of Month
+* Added preference to control how selected Pie Chart segments are drawn (selected or popped out)
+
 Version 0.65
 ------------
 
