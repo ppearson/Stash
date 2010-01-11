@@ -65,12 +65,9 @@
     
     [self setPrefView:nil];
 	
-	[fPieSegmentSort removeAllItems];
-	
-	[fPieSegmentSort addItemWithTitle:@"Size"];
-	[fPieSegmentSort addItemWithTitle:@"Title"];
-	
 	[fPieSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
+	
+	[fPieSegmentSelectionType selectItemAtIndex:[uDefaults integerForKey:@"PieChartSelectionType"]];
 	
 	if ([uDefaults boolForKey:@"PieChartGroupSmallerItems"] == NO)
 	{

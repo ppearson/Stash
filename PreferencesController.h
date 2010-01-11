@@ -39,6 +39,7 @@
 	IBOutlet NSPopUpButton *fPieSegmentSort;
 	IBOutlet NSTextField *fPieGroupSize;
 	IBOutlet NSTextField *fPieGroupName;
+	IBOutlet NSPopUpButton *fPieSegmentSelectionType;
 	
 	// Area Chart
 	

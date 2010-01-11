@@ -74,6 +74,15 @@
 	
 	NSBezierPath* path = [NSBezierPath bezierPath];
 	
+	int selectionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSelectionType"];
+	
+	BOOL bPushoutSelected = NO;
+	
+	if (selectionType == 1)
+		bPushoutSelected = YES;
+	
+	double dPushoutDistance = 10.0;
+	
 	id colour;
 	int nColourIndex = 0;
 	
@@ -88,10 +97,27 @@
 	{
 		double dStartAngle = [[item valueForKey:@"startangle"] doubleValue];
 		double dEndAngle = [[item valueForKey:@"endangle"] doubleValue];
+		
+		BOOL bSelected = [[item valueForKey:@"selected"] boolValue];
+		
+		double dMidPointAngle = ((dEndAngle - dStartAngle) / 2.0) + dStartAngle;
+		
+		double dRad = DegToRad(dMidPointAngle);
+		double dX, dY = 0.0;
+		
+		dY = sin(dRad);
+		dX = cos(dRad);
+		
+		double dRadius = m_dMainRadius;
+		
+		if (bPushoutSelected && bSelected)
+		{
+			dRadius += 10.0;
+		}
 						
 		[path moveToPoint:m_centrepoint];
 		
-		[path appendBezierPathWithArcWithCenter:m_centrepoint radius:m_dMainRadius startAngle:dStartAngle endAngle:dEndAngle clockwise:NO];
+		[path appendBezierPathWithArcWithCenter:m_centrepoint radius:dRadius startAngle:dStartAngle endAngle:dEndAngle clockwise:NO];
 		[path lineToPoint:m_centrepoint];
 		
 		colour = [[m_aColours objectAtIndex:nColourIndex] colorWithAlphaComponent:0.8f];
@@ -118,7 +144,8 @@
 							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.5f], (CGFloat)0.0,
 							  [[NSColor whiteColor] colorWithAlphaComponent:0.2f], (CGFloat)1.0, nil] autorelease];
 	
-	NSRect glossRect = NSMakeRect(m_centrepoint.x - (m_dMainRadius), m_centrepoint.y - (m_dMainRadius), m_dMainRadius * 2.0, m_dMainRadius * 2.0);
+	double dGlossRadious = m_dMainRadius + dPushoutDistance;
+	NSRect glossRect = NSMakeRect(m_centrepoint.x - (dGlossRadious), m_centrepoint.y - (dGlossRadious), dGlossRadious * 2.0, dGlossRadious * 2.0);
 	
 	[path appendBezierPathWithOvalInRect:glossRect];
 	
@@ -134,33 +161,6 @@
 		
 		BOOL bSelected = [[item valueForKey:@"selected"] boolValue];
 		
-		if (bSelected == YES)
-		{
-			NSNumber *sliceAmount = [item valueForKey:@"numamount"];
-			
-			selectedAmount += [sliceAmount doubleValue];
-			
-			[NSGraphicsContext saveGraphicsState];
-			
-			NSSetFocusRingStyle(NSFocusRingOnly);
-			
-			[path moveToPoint:m_centrepoint];
-			
-			[path appendBezierPathWithArcWithCenter:m_centrepoint radius:m_dMainRadius startAngle:dStartAngle endAngle:dEndAngle clockwise:NO];
-			[path lineToPoint:m_centrepoint];
-			
-			[path setLineWidth:3.0];
-			
-			[path stroke];
-			
-			[NSGraphicsContext restoreGraphicsState];
-			
-			[path removeAllPoints];
-		}		
-		
-		NSString *title = [item valueForKey:@"title"];
-		NSString *amount = [item valueForKey:@"amount"];
-		
 		// draw text label		
 		double dMidPointAngle = ((dEndAngle - dStartAngle) / 2.0) + dStartAngle;
 		
@@ -169,6 +169,36 @@
 		
 		dY = sin(dRad);
 		dX = cos(dRad);
+		
+		if (bSelected == YES)
+		{
+			NSNumber *sliceAmount = [item valueForKey:@"numamount"];
+			
+			selectedAmount += [sliceAmount doubleValue];
+			
+			if (!bPushoutSelected)
+			{
+				[NSGraphicsContext saveGraphicsState];
+				
+				NSSetFocusRingStyle(NSFocusRingOnly);
+				
+				[path moveToPoint:m_centrepoint];
+				
+				[path appendBezierPathWithArcWithCenter:m_centrepoint radius:m_dMainRadius startAngle:dStartAngle endAngle:dEndAngle clockwise:NO];
+				[path lineToPoint:m_centrepoint];
+				
+				[path setLineWidth:3.0];
+				
+				[path stroke];
+				
+				[NSGraphicsContext restoreGraphicsState];
+				
+				[path removeAllPoints];
+			}
+		}		
+		
+		NSString *title = [item valueForKey:@"title"];
+		NSString *amount = [item valueForKey:@"amount"];
 		
 		NSString *strText = [NSString stringWithFormat:@"%@  %@", title, amount];
 		NSSize extent = [strText sizeWithAttributes:attributes1];

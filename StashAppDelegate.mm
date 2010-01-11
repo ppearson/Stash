@@ -131,6 +131,7 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithInt:30] forKey:@"TransactionsRecentDuration"];
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
+	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSelectionType"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"PieChartGroupSmallerItems"];
 	[defaultValues setObject:[NSNumber numberWithInt:3] forKey:@"PieChartGroupSmallerItemsSize"];
 	[defaultValues setValue:@"Other" forKey:@"PieChartGroupSmallerItemsName"];
