@@ -87,19 +87,6 @@ void ScheduledTransaction::Store(std::fstream &stream)
 
 void ScheduledTransaction::AdvanceNextDate()
 {
-	if (m_constraint == LastWorkingDayOfMonth)
-	{
-		int nYear = m_nextDate.getYear();
-		int nMonth = m_nextDate.getMonth();
-		
-		Date tmpNextDate(1, nMonth + 1, nYear);
-		tmpNextDate.AdvanceToLastWorkingDayOfMonth();
-		
-		m_nextDate = tmpNextDate;
-		
-		return;
-	}
-	
 	switch (m_frequency)
 	{
 		case Weekly:
@@ -128,5 +115,9 @@ void ScheduledTransaction::AdvanceNextDate()
 	if (m_constraint == ExactOrNextWorkingDay)
 	{
 		m_nextDate.AdvanceToNextWorkingDay();
+	}
+	else if (m_constraint == LastWorkingDayOfMonth)
+	{
+		m_nextDate.AdvanceToLastWorkingDayOfMonth();
 	}
 }
