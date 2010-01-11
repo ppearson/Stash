@@ -1,11 +1,3 @@
-/*
- *  document.h
- *  Stash
- *
- *  Created by Peter Pearson on 28/10/2009.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
 /* 
  * Stash:  A Personal Finance app for OS X.
  * Copyright (C) 2009 Peter Pearson

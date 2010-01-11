@@ -153,7 +153,7 @@ void fixed::Load(std::fstream &stream, int version)
 {
 	// Strictly speaking, this isn't right, as m_num is an unsigned long,
 	// but as it's very unlikely that an individual transaction is going to
-	// have a value of over 21,474,836.48 (what this code can cope with), it's probably
+	// have a value of over 21,474,836.47 (what this code can cope with), it's probably
 	// worth doing for efficient storage
 	
 	int temp = 0;
@@ -171,7 +171,7 @@ void fixed::Store(std::fstream &stream)
 {
 	// Strictly speaking, this isn't right, as m_num is an unsigned long,
 	// but as it's very unlikely that an individual transaction is going to
-	// have a value of over 21,474,836.48 (what this code can cope with), it's probably
+	// have a value of over 21,474,836.47 (what this code can cope with), it's probably
 	// worth doing for efficient storage
 	
 	int temp = m_num;
