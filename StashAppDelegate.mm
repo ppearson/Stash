@@ -1968,6 +1968,7 @@ toolbarViewGroupTag;
 			
 			[transactionsReconciled setEnabled:YES];
 			[transactionsType setEnabled:YES];
+			[transactionsDateCntl setEnabled:YES];
 			
 			bool bReconciled = trans->isReconciled();
 			
@@ -2020,6 +2021,7 @@ toolbarViewGroupTag;
 			
 			[transactionsReconciled setEnabled:NO];
 			[transactionsType setEnabled:NO];
+			[transactionsDateCntl setEnabled:NO];
 			
 			[sPayee release];
 			[sDescription release];
@@ -2046,6 +2048,7 @@ toolbarViewGroupTag;
 			
 			[transactionsReconciled setEnabled:NO];
 			[transactionsType setEnabled:NO];
+			[transactionsDateCntl setEnabled:NO];
 		}
 		
 		[numberFormatter release];
