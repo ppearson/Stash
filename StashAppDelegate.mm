@@ -733,6 +733,21 @@ toolbarViewGroupTag;
 	[indexBar reloadData];
 }
 
+- (void)setWindowTitleWithDocName:(NSString*)path
+{
+	NSString *sWindowTitle;
+	if (path)
+	{
+		sWindowTitle = [NSString stringWithFormat:@"Stash - %@", [[NSURL fileURLWithPath:path] lastPathComponent]];
+	}
+	else
+	{
+		sWindowTitle = @"Stash";
+	}
+	
+	[[self window] setTitle:sWindowTitle];	
+}
+
 - (void)buildTransactionsTree
 {
 	[m_aTransactionItems removeAllObjects];
@@ -3159,6 +3174,8 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	m_Document.clear();
 	
+	[self setWindowTitleWithDocName:nil];
+	
 	[self buildIndexTree];
 	[self buildTransactionsTree];
 	[self buildSchedTransList];
@@ -3212,6 +3229,8 @@ NSDate *convertToNSDate(MonthYear &date)
 		}
 		
 		[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileToOpen]];
+		
+		[self setWindowTitleWithDocName:fileToOpen];
 		
 		m_DocumentFile = strFile;
 		m_UnsavedChanges = false;
@@ -3269,6 +3288,8 @@ NSDate *convertToNSDate(MonthYear &date)
 		}
 		else
 		{
+			[self setWindowTitleWithDocName:fileToSave];
+			
 			[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileToSave]];
 			
 			m_DocumentFile = strFile;
@@ -3934,6 +3955,8 @@ NSDate *convertToNSDate(MonthYear &date)
 	{
 		return NO;
 	}
+	
+	[self setWindowTitleWithDocName:filename];
 	
 	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
 	

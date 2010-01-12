@@ -161,6 +161,8 @@ enum TransactionsToShow
 - (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers;
 - (void)refreshLibraryItems;
 
+- (void)setWindowTitleWithDocName:(NSString*)path;
+
 - (void)calculateAndShowScheduled;
 - (void)AddDueScheduledTransaction:(int)index;
 - (void)SkipDueScheduledTransaction:(int)index;
