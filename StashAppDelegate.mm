@@ -299,8 +299,7 @@ toolbarViewGroupTag;
 	[transactionsType addItemWithTitle:@"Check"];
 	[transactionsType addItemWithTitle:@"Credit"];
 	[transactionsType addItemWithTitle:@"Debit"];
-	
-	
+		
 	[scheduledType removeAllItems];
 	
 	[scheduledType addItemWithTitle:@"None"];

@@ -243,8 +243,6 @@ enum TransactionsToShow
 
 - (IBAction)ExportQIF:(id)sender;
 
-
-
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateTransaction:(id)sender;
 
