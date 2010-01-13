@@ -51,7 +51,7 @@
 	NSRect rect = [self bounds];
 	p.y -= rect.size.height;
 	
-	[window dropDownAtPoint:p withEvent:event];
+	[window dropDownAtPoint:p withEvent:event sender:self];
 }
 
 - (IBAction)dropDownDateChanged:(id)sender

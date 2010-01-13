@@ -24,8 +24,7 @@
 
 @interface DropDownWindow (Private)
 
-+ (void)dropDownWindow:(DropDownWindow*)window atPoint:(NSPoint)point withEvent:(NSEvent*)event;
-+ (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event;
++ (void)dropDownWindow:(DropDownWindow*)window atPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender;
 
 @end
 
@@ -66,7 +65,7 @@
 		[self setHandleFirstClick:NO];	
 }
 
-+ (void)dropDownWindow:(DropDownWindow*)window atPoint:(NSPoint)point withEvent:(NSEvent*)event
++ (void)dropDownWindow:(DropDownWindow*)window atPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender
 {
 	if (!window)
 		window = [DropDownWindow dropDownWindowWithContainedView:nil];
@@ -74,7 +73,23 @@
 	[window retain];
 	
 	point = [[event window] convertBaseToScreen:point];
+	
+	// if the popup window is going to fall off the screen, move it
+	NSRect screenRect = [[NSScreen mainScreen] frame];
+	NSRect buttonRect = [sender frame];
+	
+	if ((point.x + [window frame].size.width) >= screenRect.size.width)
+	{
+		point.x -= [window frame].size.width;
+	}
+	
+	if (point.y - [window frame].size.height < 0)
+	{
+		point.y += [window frame].size.height + buttonRect.size.height;
+	}	
+	
 	[window setFrameTopLeftPoint:point];
+	
 	[[event window] addChildWindow:window ordered:NSWindowAbove];
 	
 	[window orderFront:self];
@@ -87,14 +102,9 @@
 	[window release];
 }
 
-+ (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event
+- (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender
 {
-	[[self class] dropDownWindow:self atPoint:point withEvent:event];	
-}
-
-- (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event
-{
-	[[self class] dropDownWindow:self atPoint:point withEvent:event];
+	[[self class] dropDownWindow:self atPoint:point withEvent:event sender:sender];
 }
 
 - (void)closeWindow

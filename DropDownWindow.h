@@ -33,7 +33,7 @@
 
 - (void)setContainedView:(NSView*)view sizeToFit:(BOOL)sizeToFit;
 
-- (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event;
+- (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender;
 
 - (void)closeWindow;
 
