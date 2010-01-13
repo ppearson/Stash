@@ -619,6 +619,10 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 			{
 				pTransaction->setMemo(data);
 			}
+			else if (tag == "FITID")
+			{
+				pTransaction->setFITID(data);
+			}
 			else if (tag == "/STMTTRN")
 			{
 				pStatementResponse->addTransaction(pTransaction);
@@ -635,7 +639,7 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 	return true;
 }
 
-bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled)
+bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled, bool ignoreDuplicates)
 {
 	OFXStTrIt transactionsIt = statement.begin();
 	
@@ -643,6 +647,8 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 	{
 		statement.reverseTransactionOrder();
 	}
+	
+	bool ignoreThisOne = false;
 	
 	for (; transactionsIt != statement.end(); ++transactionsIt)
 	{
@@ -656,7 +662,27 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 			newTransaction.setReconciled(true);
 		}
 		
-		account.addTransaction(newTransaction);			
+		ignoreThisOne = false;
+		
+		if (!itemTrans.getFITID().empty()) // if there's a FITID, apply it to the Transaction so it will get saved
+		{
+			const std::string strFITID = itemTrans.getFITID();
+			newTransaction.setFITID(strFITID);
+			newTransaction.setHasFITID(true);
+			
+			if (ignoreDuplicates)
+			{
+				if (account.doesFITIDExist(strFITID))
+				{
+					ignoreThisOne = true;
+				}
+			}
+		}		
+		
+		if (!ignoreThisOne)
+		{
+			account.addTransaction(newTransaction, true); // add the FITID as well
+		}
 	}
 	
 	return true;

@@ -40,6 +40,7 @@
 	IBOutlet NSTextField *fNewAccountName;
 	IBOutlet id fReverseTransactionOrder;
 	IBOutlet id fMarkAllAsReconciled;
+	IBOutlet id fIgnoreExistingTransactions;
 	
 	int m_lastSelectedAccount;
 	std::string m_path;

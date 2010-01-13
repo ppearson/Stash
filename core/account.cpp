@@ -37,14 +37,19 @@ void Account::Load(std::fstream &stream, int version)
 	
 	stream.read((char *) &m_type, sizeof(unsigned char));
 	
-	unsigned int numTransactions = 0;
-	
+	unsigned int numTransactions = 0;	
 	stream.read((char *) &numTransactions, sizeof(unsigned int));
 	
 	for (unsigned int i = 0; i < numTransactions; i++)
 	{
 		Transaction tempTransaction;
 		tempTransaction.Load(stream, version);
+		
+		if (tempTransaction.hasFITID())
+		{
+			std::string strFITID = tempTransaction.getFITID();
+			addFITID(strFITID);
+		}
 		
 		m_aTransactions.push_back(tempTransaction);
 	}
@@ -59,8 +64,7 @@ void Account::Store(std::fstream &stream)
 	
 	stream.write((char *) &m_type, sizeof(unsigned char));
 	
-	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());
-	
+	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());	
 	stream.write((char *) &numTransactions, sizeof(unsigned int));
 	
 	for (std::vector<Transaction>::iterator it = m_aTransactions.begin(); it != m_aTransactions.end(); ++it)
@@ -69,9 +73,39 @@ void Account::Store(std::fstream &stream)
 	}
 }
 
+int Account::addTransaction(Transaction &trans, bool bFITID)
+{
+	if (bFITID && trans.hasFITID())
+	{
+		std::string strFITID = trans.getFITID();
+		addFITID(strFITID);
+	}
+	
+	m_aTransactions.push_back(trans);
+	return m_aTransactions.size() - 1;
+}
+
 void Account::swapTransactions(int from, int to)
 {
 	iter_swap(m_aTransactions.begin() + from, m_aTransactions.begin() + to);
+}
+
+bool Account::doesFITIDExist(const std::string &FITID)
+{
+	std::set<std::string>::iterator it = m_aFITIDs.find(FITID);
+	
+	if (it == m_aFITIDs.end())
+		return false;
+	
+	return true;
+}
+
+void Account::deleteFITID(std::string &FITID)
+{
+	std::set<std::string>::iterator it = m_aFITIDs.find(FITID);
+	
+	if (it != m_aFITIDs.end())
+		m_aFITIDs.erase(it);
 }
 
 fixed Account::getBalance(bool onlyReconciled, int endIndex)

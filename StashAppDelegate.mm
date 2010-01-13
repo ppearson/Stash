@@ -3605,7 +3605,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	}
 }
 
-- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled ignoreExisting:(bool)ignoreExisting
 {
 	NSString *sFileName = [controller getFilename];
 	std::string strFilename = [sFileName cStringUsingEncoding: NSUTF8StringEncoding];
@@ -3654,7 +3654,7 @@ NSDate *convertToNSDate(MonthYear &date)
 			int existingAccountIndex = [[accountSettings objectForKey:@"existingAccount"] intValue];
 			Account &existingAccount = m_Document.getAccount(existingAccountIndex);
 			
-			importOFXStatementIntoAccount(existingAccount, stResp, reverse, reconciled);
+			importOFXStatementIntoAccount(existingAccount, stResp, reverse, reconciled, ignoreExisting);
 		}
 		else // new Account
 		{
@@ -3669,7 +3669,7 @@ NSDate *convertToNSDate(MonthYear &date)
 			newAccount.setName(strAccountName);
 			newAccount.setType(eType);
 			
-			importOFXStatementIntoAccount(newAccount, stResp, reverse, reconciled);
+			importOFXStatementIntoAccount(newAccount, stResp, reverse, reconciled, ignoreExisting);
 			
 			m_Document.addAccount(newAccount);			
 		}		

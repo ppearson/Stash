@@ -250,13 +250,20 @@
 		bMarkAsReconciled = true;
 	}
 	
+	bool bIgnoreExisting = false;
+	
+	if ([fIgnoreExistingTransactions state] == NSOnState)
+	{
+		bIgnoreExisting = true;
+	}
+	
 	if (m_lastSelectedAccount >= 0)
 	{
 		NSMutableDictionary *lastSelectedAccount = [m_aAvailableAccounts objectAtIndex:m_lastSelectedAccount];
 		[lastSelectedAccount setObject:[fNewAccountName stringValue] forKey:@"newAccName"];		
 	}
 	
-	[[NSApp delegate] importOFXFileWithController:self reverseTransactions:bReverse reconciled:bMarkAsReconciled];
+	[[NSApp delegate] importOFXFileWithController:self reverseTransactions:bReverse reconciled:bMarkAsReconciled ignoreExisting:bIgnoreExisting];
 	
 	[NSApp endSheet:importOFXWindow];
 	[importOFXWindow orderOut:self];

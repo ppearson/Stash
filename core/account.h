@@ -23,6 +23,8 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
+#include <set>
+
 #include "transaction.h"
 
 enum AccountType
@@ -55,10 +57,14 @@ public:
 	std::string getNote() { return m_note; }
 	AccountType getType() { return m_type; }
 	
-	int addTransaction(Transaction &trans) { m_aTransactions.push_back(trans); return m_aTransactions.size() - 1; }
+	int addTransaction(Transaction &trans, bool bFITID = false);
 	Transaction &getTransaction(int trans) { return m_aTransactions[trans]; }
 	int getTransactionCount() { return m_aTransactions.size(); }
 	void deleteTransaction(int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
+	
+	bool doesFITIDExist(const std::string &FITID);
+	void addFITID(std::string &FITID) { m_aFITIDs.insert(FITID); }
+	void deleteFITID(std::string &FITID);
 	
 	void swapTransactions(int from, int to);
 	
@@ -78,6 +84,7 @@ protected:
 	AccountType m_type;
 	
 	std::vector<Transaction> m_aTransactions;
+	std::set<std::string> m_aFITIDs;
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include "document.h"
 #include "string.h"
 
-#define FILE_VERSION 3
+#define FILE_VERSION 4
 
 Document::Document()
 {
@@ -42,6 +42,12 @@ bool Document::Load(std::fstream &stream)
 	
 	unsigned char fileVersion = 0;
 	stream.read((char *) &fileVersion, sizeof(unsigned char));
+	
+	if (fileVersion > FILE_VERSION)
+	{
+		// we can't read this file as we don't know about it
+		return false;
+	}
 	
 	m_aAccounts.clear();
 	

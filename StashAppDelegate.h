@@ -236,7 +236,7 @@ enum TransactionsToShow
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
 - (IBAction)ImportOFX:(id)sender;
-- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled;
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled ignoreExisting:(bool)ignoreExisting;
 - (void)deleteImportOFXController;
 
 - (IBAction)ExportOFX:(id)sender;

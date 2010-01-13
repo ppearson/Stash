@@ -49,11 +49,16 @@ enum TransactionType
 class Transaction
 {
 public:
-	Transaction() { m_Split = false; m_Reconciled = false; m_Type = None; }
+	Transaction();
 	Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date);
 	
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
+	bool isCleared() const { return m_Cleared; }
+	void setCleared(bool cleared) { m_Cleared = cleared; }
+	bool isFlagged() const { return m_Flagged; }
+	void setFlagged(bool flagged) { m_Flagged = flagged; }
+	
 	Date getDate() const { return m_Date; }
 	const Date &getDate1() { return m_Date; }
 	void setDate(Date date) { m_Date = date; }
@@ -69,6 +74,11 @@ public:
 	TransactionType getType() const { return m_Type; }
 	const TransactionType &getType1() { return m_Type; }
 	void setType(TransactionType type) { m_Type = type; }
+	std::string getFITID() const { return m_FITID; }
+	void setFITID(std::string FITID) { m_FITID = FITID; }
+	
+	bool hasFITID() const { return m_HasFITID; }
+	void setHasFITID(bool has) { m_HasFITID = has; }
 	
 	void setSplit(bool split) { m_Split = split; }
 	bool isSplit() { return m_Split; }
@@ -88,12 +98,18 @@ private:
 	std::string ToString() const;
 	
 	bool m_Reconciled;
+	bool m_Cleared;
+	bool m_Flagged;
+	bool m_HasFITID;
+	
 	Date m_Date;
 	std::string m_Category;
 	std::string m_Description;
 	std::string m_Payee;
 	fixed m_Amount;
 	TransactionType m_Type;
+	
+	std::string m_FITID;
 	
 	bool m_Split;
 	

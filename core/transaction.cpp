@@ -30,9 +30,14 @@
 #include "transaction.h"
 #include "string.h"
 
+Transaction::Transaction() : m_Split(false), m_Reconciled(false), m_Type(None), m_Cleared(false), m_Flagged(false), m_HasFITID(false)
+{
+	
+}
+
 Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
 	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Reconciled(false),
-	m_Type(None)
+	m_Type(None), m_Cleared(false), m_Flagged(false), m_HasFITID(false)
 {
 	
 }
@@ -55,8 +60,19 @@ void Transaction::Load(std::fstream &stream, int version)
 	m_Reconciled = localset[0];
 	m_Split = localset[1];
 	
-	unsigned char numSplits = 0;
+	if (version > 3)
+	{
+		m_Cleared = localset[2];
+		m_Flagged = localset[3];
+		m_HasFITID = localset[4];
+		
+		if (m_HasFITID)
+		{
+			LoadString(m_FITID, stream);
+		}
+	}
 	
+	unsigned char numSplits = 0;	
 	stream.read((char *) &numSplits, sizeof(unsigned char));
 		
 	for (int i = 0; i < numSplits; i++)
@@ -81,9 +97,17 @@ void Transaction::Store(std::fstream &stream)
 	std::bitset<8> localset;	
 	localset[0] = m_Reconciled;
 	localset[1] = m_Split;
+	localset[2] = m_Cleared;
+	localset[3] = m_Flagged;
+	localset[4] = m_HasFITID;
 	
 	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
 	stream.write((char *) &cBitset, sizeof(unsigned char));
+	
+	if (m_HasFITID)
+	{
+		StoreString(m_FITID, stream);
+	}
 	
 	unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
 	stream.write((char *) &numSplits, sizeof(unsigned char));

@@ -270,7 +270,8 @@ bool importOFXFile(std::string path, OFXData &dataItem);
 
 bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encoding, std::string &charset);
 
-bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled);
+bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled,
+								   bool ignoreDuplicates);
 
 
 #endif
