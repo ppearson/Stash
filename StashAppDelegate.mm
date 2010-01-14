@@ -391,7 +391,7 @@ toolbarViewGroupTag;
         [item setImage:[NSImage imageNamed:@"make_transfer.png"]];
         [item setTarget:self];
         [item setAction:@selector(MakeTransfer:)];
-        [item setAutovalidates:NO];
+        [item setAutovalidates:YES];
     }
 	else if ([ident isEqualToString: TOOLBAR_VIEWTYPE])
     {
@@ -3840,6 +3840,12 @@ NSDate *convertToNSDate(MonthYear &date)
 			return NO;
 	}
 	
+	if (action == @selector(MakeTransfer:))
+	{
+		if (m_Document.getAccountCount() < 2)
+			return NO;
+	}
+	
 	return YES;
 }
 
@@ -3849,6 +3855,12 @@ NSDate *convertToNSDate(MonthYear &date)
     
     if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
         return nViewType == 0;
+	
+	if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
+	{
+		if (m_Document.getAccountCount() < 2)
+			return NO;
+	}
 	
 	return YES;
 }
