@@ -24,7 +24,7 @@
 #include "graph.h"
 #include "string.h"
 
-Graph::Graph() : m_name(""), m_account(0), m_type(ExpenseCategories), m_ignoreTransfers(false), m_dateType(DateCustom)
+Graph::Graph() : m_name(""), m_account(0), m_type(ExpenseCategories), m_ignoreTransfers(false), m_dateType(DateCustom), m_itemsType(AllItems)
 {
 
 }
@@ -53,6 +53,24 @@ void Graph::Load(std::fstream &stream, int version)
 	{
 		stream.read((char *) &m_dateType, sizeof(unsigned char));
 	}
+	
+	if (version > 4)
+	{
+		stream.read((char *) &m_itemsType, sizeof(unsigned char));
+		
+		m_items.clear();
+		
+		unsigned int numItems = 0;
+		stream.read((char *) &numItems, sizeof(unsigned int));
+		
+		for (unsigned int i = 0; i < numItems; i++)
+		{
+			std::string strItem;
+			LoadString(strItem, stream);
+			
+			m_items.insert(strItem);
+		}
+	}
 }
 
 void Graph::Store(std::fstream &stream)
@@ -75,4 +93,14 @@ void Graph::Store(std::fstream &stream)
 	stream.write((char *) &cBitset, sizeof(unsigned char));
 	
 	stream.write((char *) &m_dateType, sizeof(unsigned char));
+	
+	stream.write((char *) &m_itemsType, sizeof(unsigned char));	
+	
+	unsigned int numItems = static_cast<unsigned int>(m_items.size());
+	stream.write((char *) &numItems, sizeof(unsigned int));
+	
+	for (std::set<std::string>::iterator it = m_items.begin(); it != m_items.end(); ++it)
+	{
+		StoreString((*it), stream);
+	}
 }

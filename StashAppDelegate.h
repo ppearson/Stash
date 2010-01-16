@@ -130,6 +130,10 @@ enum TransactionsToShow
 	IBOutlet id graphStartDateCntrl;
 	IBOutlet id graphEndDateCntrl;
 	IBOutlet id graphIgnoreTransfers;
+	IBOutlet NSPopUpButton *graphItemTypes;
+	IBOutlet NSTableView *graphItemsTableView;
+	
+	NSMutableArray *m_aGraphItems;
 	
 	PreferencesController *prefController;
 	MakeTransfer *makeTransfer;
@@ -255,6 +259,9 @@ enum TransactionsToShow
 - (IBAction)dateBarClicked:(id)sender;
 - (IBAction)graphDatesManuallyChanged:(id)sender;
 
+- (IBAction)addGraphItem:(id)sender;
+- (IBAction)deleteGraphItem:(id)sender;
+
 - (IBAction)updateGraph:(id)sender;
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem;
@@ -272,6 +279,9 @@ NSDate *convertToNSDate(MonthYear &date);
 
 - (void)handleTransactionsSettingsUpdate:(NSNotification *)note;
 - (void)handleGraphSettingsUpdate:(NSNotification *)note;
+
+- (IBAction)gotoWebsite:(id)sender;
+- (IBAction)reportBug:(id)sender;
 
 @property (assign) IBOutlet NSWindow *window;
 

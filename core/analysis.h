@@ -23,6 +23,7 @@
 #include <vector>
 #include <map>
 
+#include "graph.h"
 #include "fixed.h"
 #include "Account.h"
 
@@ -111,8 +112,7 @@ struct PieChartCriteria
 	PieChartSort m_eSort;
 };
 
-bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense);
-bool buildPieChartItemsForPayees(PieChartCriteria &criteria, bool expense);
+bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense, bool categories);
 
 void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &criteria);
 
@@ -136,7 +136,8 @@ struct AreaChartCriteria
 	std::string &m_groupSmallerName;
 };
 
-bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense);
-bool buildAreaChartItemsForPayees(AreaChartCriteria &criteria, bool expense);
+bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories);
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
+
+bool shouldItemBeIncluded(Graph *pGraph, std::string &item);

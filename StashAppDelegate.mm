@@ -236,6 +236,7 @@ toolbarViewGroupTag;
 	m_aPayeeItems = [[NSMutableArray alloc] init];
 	m_aCategoryItems = [[NSMutableArray alloc] init];
 	m_aScheduledTransactions = [[NSMutableArray alloc] init];
+	m_aGraphItems = [[NSMutableArray alloc] init];
 	
 	// Load Transactions view OutlineView column sizes
 	
@@ -338,6 +339,12 @@ toolbarViewGroupTag;
 	[graphType addItemWithTitle:@"Deposit Categories"];
 	[graphType addItemWithTitle:@"Deposit Payees"];
 	
+	[graphItemTypes removeAllItems];
+
+	[graphItemTypes addItemWithTitle:@"All Items"];
+	[graphItemTypes addItemWithTitle:@"All Items excluding:"];
+	[graphItemTypes addItemWithTitle:@"Only Specified:"];
+	
 	[transactionsType selectItemAtIndex:0];
 	
 	[addTransaction setToolTip:@"Add Transaction"];
@@ -363,6 +370,7 @@ toolbarViewGroupTag;
 	[payeesTableView setDelegate:self];	
 	[categoriesTableView setDelegate:self];
 	[scheduledTransactionsTableView setDelegate:self];
+	[graphItemsTableView setDelegate:self];
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
@@ -658,6 +666,24 @@ toolbarViewGroupTag;
 	{
 		[graphIgnoreTransfers setState:NSOffState];
 	}
+	
+	GraphItemsType eItemsType = m_pGraph->getItemsType();
+	[graphItemTypes selectItemAtIndex:eItemsType];
+	
+	[m_aGraphItems removeAllObjects];
+	
+	std::set<std::string> &aItems = m_pGraph->getItems();
+	
+	for (std::set<std::string>::iterator it = aItems.begin(); it != aItems.end(); ++it)
+	{
+		std::string strItem = (*it);
+		
+		NSString *sItem = [[NSString alloc] initWithUTF8String:strItem.c_str()];
+		
+		[m_aGraphItems addObject:sItem];		
+	}
+	
+	[graphItemsTableView reloadData];
 	
 	GraphDateType eDateType = m_pGraph->getDateType();
 	
@@ -1135,13 +1161,13 @@ toolbarViewGroupTag;
 	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
 		
 	if (type == ExpenseCategories)
-		buildPieChartItemsForCategories(pieCriteria, true);
+		buildPieChartItems(m_pGraph, pieCriteria, true, true);
 	else if (type == ExpensePayees)
-		buildPieChartItemsForPayees(pieCriteria, true);
+		buildPieChartItems(m_pGraph, pieCriteria, true, false);
 	else if (type == DepositCategories)
-		buildPieChartItemsForCategories(pieCriteria, false);
+		buildPieChartItems(m_pGraph, pieCriteria, false, true);
 	else if (type == DepositPayees)
-		buildPieChartItemsForPayees(pieCriteria, false);
+		buildPieChartItems(m_pGraph, pieCriteria, false, false);
 	
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1212,13 +1238,13 @@ toolbarViewGroupTag;
 								   areaSmallerThanValue, areaGroupSmallerName);
 	
 	if (type == ExpenseCategories)
-		buildAreaChartItemsForCategories(areaCriteria, true);
+		buildAreaChartItems(m_pGraph, areaCriteria, true, true);
 	else if (type == ExpensePayees)
-		buildAreaChartItemsForPayees(areaCriteria, true);
+		buildAreaChartItems(m_pGraph, areaCriteria, true, false);
 	else if (type == DepositCategories)
-		buildAreaChartItemsForCategories(areaCriteria, false);
+		buildAreaChartItems(m_pGraph, areaCriteria, false, true);
 	else if (type == DepositPayees)
-		buildAreaChartItemsForPayees(areaCriteria, false);
+		buildAreaChartItems(m_pGraph, areaCriteria, false, false);
 			
 	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
 	
@@ -2531,6 +2557,31 @@ toolbarViewGroupTag;
 	[self redrawGraph:self];
 }
 
+- (IBAction)addGraphItem:(id)sender
+{
+	int count = [m_aGraphItems count];
+	
+	NSString *sNewItem = @"New item";
+	
+	[m_aGraphItems addObject:sNewItem];
+	
+	[graphItemsTableView reloadData];
+	
+	[graphItemsTableView editColumn:0 row:count withEvent:nil select:YES];	
+}
+
+- (IBAction)deleteGraphItem:(id)sender
+{
+	int row = [graphItemsTableView selectedRow];
+	
+	if (row >= 0)
+	{
+		[m_aGraphItems removeObjectAtIndex:row];
+		
+		[graphItemsTableView reloadData];
+	}		
+}
+
 - (IBAction)dateBarClicked:(id)sender
 {
 	if (![sender isKindOfClass:[NSSegmentedControl class]])
@@ -2666,6 +2717,9 @@ toolbarViewGroupTag;
 			eDateType = DateCustom;
 			break;
 	}
+
+	int nItemsType = [graphItemTypes indexOfSelectedItem];
+	GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
 	
 	m_pGraph->setAccount(nAccount);
 	m_pGraph->setStartDate(startDate);
@@ -2673,6 +2727,18 @@ toolbarViewGroupTag;
 	m_pGraph->setType(eType);
 	m_pGraph->setIgnoreTransfers(bIgnoreTransfers);
 	m_pGraph->setDateType(eDateType);
+	m_pGraph->setItemsType(eItemsType);
+	
+	std::set<std::string> &aItems = m_pGraph->getItems();
+	
+	aItems.clear();
+	
+	for (NSString *sItem in m_aGraphItems)
+	{
+		std::string strItem = [sItem cStringUsingEncoding:NSUTF8StringEncoding];
+		
+		aItems.insert(strItem);
+	}
 	
 	m_UnsavedChanges = true;
 	
@@ -3052,6 +3118,12 @@ toolbarViewGroupTag;
 		
 		result = [oObject valueForKey:identifier];
 	}
+	else if (aTableView == graphItemsTableView)
+	{
+		NSString *sItem = [m_aGraphItems objectAtIndex:rowIndex];
+		
+		result = sItem;
+	}
 		
 	return result;
 }
@@ -3064,6 +3136,8 @@ toolbarViewGroupTag;
 		return [m_aCategoryItems count];
 	else if (aTableView == scheduledTransactionsTableView)
 		return [m_aScheduledTransactions count];
+	else if (aTableView == graphItemsTableView)
+		return [m_aGraphItems count];
 	
 	return 0;
 }
@@ -3102,6 +3176,31 @@ toolbarViewGroupTag;
 			m_UnsavedChanges = true;
 		}			
 	}
+	else if (aTableView == graphItemsTableView)
+	{
+		int nRow = rowIndex;
+		
+		if (nRow < 0)
+			return;
+		
+		NSString *sItem = [m_aGraphItems objectAtIndex:nRow];
+		
+		sItem = object;
+		
+		[m_aGraphItems replaceObjectAtIndex:nRow withObject:sItem];
+	}
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+	BOOL result = NO;
+	
+	if (aTableView == graphItemsTableView)
+	{
+		result = YES;
+	}
+	
+	return result;
 }
 
 // Payees/Categories TableView End
@@ -3936,6 +4035,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	[m_aPayeeItems release];
 	[m_aCategoryItems release];
 	[m_aScheduledTransactions release];
+	[m_aGraphItems release];
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
@@ -4155,6 +4255,16 @@ NSDate *convertToNSDate(MonthYear &date)
 - (void)handleGraphSettingsUpdate:(NSNotification *)note
 {
 	[self redrawGraph:self];	
+}
+
+- (IBAction)gotoWebsite:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://wiki.github.com/ppearson/Stash"]];
+}
+
+- (IBAction)reportBug:(id)sender
+{
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://stash.lighthouseapp.com/"]];
 }
 
 @end

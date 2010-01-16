@@ -23,7 +23,7 @@
 #include "document.h"
 #include "string.h"
 
-#define FILE_VERSION 4
+#define FILE_VERSION 5
 
 Document::Document()
 {

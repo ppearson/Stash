@@ -23,6 +23,8 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <set>
+
 #include "datetime.h"
 
 enum GraphType
@@ -41,6 +43,13 @@ enum GraphDateType
 	DateCustom
 };
 
+enum GraphItemsType
+{
+	AllItems,
+	AllItemsExceptSpecified,
+	OnlySpecified
+};
+
 class Graph
 {
 public:
@@ -54,6 +63,7 @@ public:
 	void setType(GraphType type) { m_type = type; }
 	void setIgnoreTransfers(bool igTransfers) { m_ignoreTransfers = igTransfers; }
 	void setDateType(GraphDateType type) { m_dateType = type; }
+	void setItemsType(GraphItemsType type) { m_itemsType = type; }
 	
 	std::string		getName() { return m_name; }
 	int				getAccount() { return m_account; }
@@ -64,6 +74,9 @@ public:
 	GraphType		getType() { return m_type; }
 	bool			getIgnoreTransfers() { return m_ignoreTransfers; }
 	GraphDateType	getDateType() { return m_dateType; }
+	GraphItemsType	getItemsType() { return m_itemsType; }
+	
+	std::set<std::string> &getItems() { return m_items; }
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
@@ -76,6 +89,8 @@ protected:
 	GraphType		m_type;
 	bool			m_ignoreTransfers;
 	GraphDateType	m_dateType;
+	GraphItemsType	m_itemsType;
+	std::set<std::string> m_items;
 };
 
 #endif

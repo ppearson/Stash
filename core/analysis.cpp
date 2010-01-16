@@ -85,7 +85,7 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 	}
 }
 
-bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense)
+bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense, bool categories)
 {
 	if (!criteria.m_pAccount)
 		return false;
@@ -117,16 +117,24 @@ bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string category = split.getCategory();
+				std::string item;
+				if (categories)
+					item = split.getCategory();
+				else
+					item = split.getPayee();
+				
+				if (!shouldItemBeIncluded(pGraph, item))
+					continue;
+				
 				fixed amount = split.getAmount();
 				
 				amount.setPositive();
 				
-				itFind = aMap.find(category);
+				itFind = aMap.find(item);
 				
 				if (itFind == aMap.end())
 				{
-					aMap[category] = amount;
+					aMap[item] = amount;
 				}
 				else
 				{
@@ -140,16 +148,24 @@ bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense)
 		}
 		else
 		{
-			std::string category = (*it).getCategory();
+			std::string item;
+			if (categories)
+				item = (*it).getCategory();
+			else
+				item = (*it).getPayee();
+			
+			if (!shouldItemBeIncluded(pGraph, item))
+				continue;
+			
 			fixed amount = (*it).getAmount();
 			
 			amount.setPositive();
 			
-			itFind = aMap.find(category);
+			itFind = aMap.find(item);
 			
 			if (itFind == aMap.end())
 			{
-				aMap[category] = amount;
+				aMap[item] = amount;
 			}
 			else
 			{
@@ -167,89 +183,7 @@ bool buildPieChartItemsForCategories(PieChartCriteria &criteria, bool expense)
 	return true;
 }
 
-bool buildPieChartItemsForPayees(PieChartCriteria &criteria, bool expense)
-{
-	if (!criteria.m_pAccount)
-		return false;
-	
-	// build up map of categories and the cumulative amount for each
-	
-	std::map<std::string, fixed> aMap;
-	std::map<std::string, fixed>::iterator itFind = aMap.end();
-	
-	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
-	
-	for (; it != criteria.m_pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
-			continue;
-		
-		if (expense && (*it).getAmount().IsPositive() ||
-			!expense && !(*it).getAmount().IsPositive())
-		{
-			continue;
-		}
-		
-		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string payee = split.getPayee();
-				fixed amount = split.getAmount();
-				
-				amount.setPositive();
-				
-				itFind = aMap.find(payee);
-				
-				if (itFind == aMap.end())
-				{
-					aMap[payee] = amount;
-				}
-				else
-				{
-					fixed &payeeTotal = (*itFind).second;
-					
-					payeeTotal += amount;			
-				}
-				
-				criteria.m_overallTotal += amount;
-			}			
-		}
-		else
-		{
-			std::string payee = (*it).getPayee();
-			fixed amount = (*it).getAmount();
-			
-			amount.setPositive();
-			
-			itFind = aMap.find(payee);
-			
-			if (itFind == aMap.end())
-			{
-				aMap[payee] = amount;
-			}
-			else
-			{
-				fixed &payeeTotal = (*itFind).second;
-				
-				payeeTotal += amount;			
-			}
-			
-			criteria.m_overallTotal += amount;
-		}
-	}
-	
-	copyPieItemsToVector(aMap, criteria);
-	
-	return true;	
-}
-
-bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
+bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories)
 {
 	// make temporary cache of all items on a month/day basis
 	std::map<MonthYear, fixed> aDateMap;
@@ -285,7 +219,15 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 			{
 				SplitTransaction &split = (*it).getSplit(i);
 				
-				std::string category = split.getCategory();
+				std::string item;
+				if (categories)
+					item = split.getCategory();
+				else
+					item = split.getPayee();
+				
+				if (!shouldItemBeIncluded(pGraph, item))
+					continue;
+				
 				fixed amount = split.getAmount();
 				
 				amount.setPositive();
@@ -303,7 +245,7 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 					dateTotal += amount;
 				}
 				
-				itItemFind = aItemMap.find(category);
+				itItemFind = aItemMap.find(item);
 				
 				if (itItemFind == aItemMap.end())
 				{
@@ -311,7 +253,7 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 					
 					dateMap[my] = amount;
 					
-					aItemMap[category] = dateMap;
+					aItemMap[item] = dateMap;
 				}
 				else
 				{
@@ -334,7 +276,15 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 		}
 		else
 		{
-			std::string category = (*it).getCategory();
+			std::string item;
+			if (categories)
+				item = (*it).getCategory();
+			else
+				item = (*it).getPayee();
+			
+			if (!shouldItemBeIncluded(pGraph, item))
+				continue;
+			
 			fixed amount = (*it).getAmount();
 			
 			amount.setPositive();
@@ -352,7 +302,7 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 				dateTotal += amount;
 			}
 			
-			itItemFind = aItemMap.find(category);
+			itItemFind = aItemMap.find(item);
 			
 			if (itItemFind == aItemMap.end())
 			{
@@ -360,7 +310,7 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 				
 				dateMap[my] = amount;
 				
-				aItemMap[category] = dateMap;
+				aItemMap[item] = dateMap;
 			}
 			else
 			{
@@ -382,144 +332,6 @@ bool buildAreaChartItemsForCategories(AreaChartCriteria &criteria, bool expense)
 		}
 	}
 
-	copyAreaItemsToVector(aItemMap, aDateTotals, criteria);
-	
-	return true;
-}
-
-bool buildAreaChartItemsForPayees(AreaChartCriteria &criteria, bool expense)
-{
-	// make temporary cache of all items on a month/day basis
-	std::map<MonthYear, fixed> aDateMap;
-	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
-	
-	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
-	std::map<MonthYear, fixed>::iterator itDateFind = NULL;
-	
-	std::map<MonthYear, fixed> aDateTotals;
-	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
-	
-	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
-	
-	for (; it != criteria.m_pAccount->end(); ++it)
-	{
-		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
-			continue;
-		
-		if (expense && (*it).getAmount().IsPositive() ||
-			!expense && !(*it).getAmount().IsPositive())
-		{
-			continue;
-		}
-		
-		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
-			continue;
-		
-		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
-		
-		if ((*it).isSplit() && (*it).getSplitCount() > 0)
-		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
-			{
-				SplitTransaction &split = (*it).getSplit(i);
-				
-				std::string payee = split.getPayee();
-				fixed amount = split.getAmount();
-				
-				amount.setPositive();
-				
-				itDateTotal = aDateTotals.find(my);
-				
-				if (itDateTotal == aDateTotals.end())
-				{
-					aDateTotals[my] = amount;
-				}
-				else
-				{
-					fixed &dateTotal = (*itDateTotal).second;
-					
-					dateTotal += amount;
-				}
-				
-				itItemFind = aItemMap.find(payee);
-				
-				if (itItemFind == aItemMap.end())
-				{
-					std::map<MonthYear, fixed> dateMap;
-					
-					dateMap[my] = amount;
-					
-					aItemMap[payee] = dateMap;
-				}
-				else
-				{
-					std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-					
-					std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-					
-					if (itDateFind == dateMap.end())
-					{
-						dateMap[my] = amount;						
-					}
-					else
-					{
-						fixed &itemTotal = (*itDateFind).second;
-						
-						itemTotal += amount;
-					}		
-				}
-			}			
-		}
-		else
-		{
-			std::string payee = (*it).getPayee();
-			fixed amount = (*it).getAmount();
-			
-			amount.setPositive();
-			
-			itDateTotal = aDateTotals.find(my);
-			
-			if (itDateTotal == aDateTotals.end())
-			{
-				aDateTotals[my] = amount;
-			}
-			else
-			{
-				fixed &dateTotal = (*itDateTotal).second;
-				
-				dateTotal += amount;
-			}
-			
-			itItemFind = aItemMap.find(payee);
-			
-			if (itItemFind == aItemMap.end())
-			{
-				std::map<MonthYear, fixed> dateMap;
-				
-				dateMap[my] = amount;
-				
-				aItemMap[payee] = dateMap;
-			}
-			else
-			{
-				std::map<MonthYear, fixed> &dateMap = (*itItemFind).second;
-				
-				std::map<MonthYear, fixed>::iterator itDateFind = dateMap.find(my);
-				
-				if (itDateFind == dateMap.end())
-				{
-					dateMap[my] = amount;				
-				}
-				else
-				{
-					fixed &itemTotal = (*itDateFind).second;
-					
-					itemTotal += amount;
-				}
-			}
-		}
-	}
-	
 	copyAreaItemsToVector(aItemMap, aDateTotals, criteria);
 	
 	return true;
@@ -673,4 +485,30 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		
 		criteria.m_aDates.push_back(myDate);		
 	}
+}
+
+bool shouldItemBeIncluded(Graph *pGraph, std::string &item)
+{
+	if (pGraph->getItemsType() == AllItems)
+		return true;
+	
+	std::set<std::string> &aItems = pGraph->getItems();
+	std::set<std::string>::iterator it = aItems.find(item);
+	
+	if (pGraph->getItemsType() == AllItemsExceptSpecified)
+	{
+		if (it == aItems.end())
+		{
+			return true;
+		}
+	}
+	else if (pGraph->getItemsType() == OnlySpecified)
+	{
+		if (it != aItems.end())
+		{
+			return true;
+		}
+	}
+	
+	return false;
 }
