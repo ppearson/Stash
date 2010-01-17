@@ -123,6 +123,7 @@ enum TransactionsToShow
 	// Graphs
 	
 	IBOutlet NSSegmentedControl* viewingPeriodSegmentControl;
+	IBOutlet NSTabView *graphViewType;
 	IBOutlet PieChartView *pieChartView;
 	IBOutlet AreaChartView *areaChartView;
 	IBOutlet NSPopUpButton *graphAccount;

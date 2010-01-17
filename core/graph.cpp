@@ -24,7 +24,8 @@
 #include "graph.h"
 #include "string.h"
 
-Graph::Graph() : m_name(""), m_account(0), m_type(ExpenseCategories), m_ignoreTransfers(false), m_dateType(DateCustom), m_itemsType(AllItems)
+Graph::Graph() : m_name(""), m_account(0), m_viewType(Total), m_type(ExpenseCategories), m_ignoreTransfers(false),
+			m_dateType(DateCustom), m_itemsType(AllItems)
 {
 
 }
@@ -70,6 +71,8 @@ void Graph::Load(std::fstream &stream, int version)
 			
 			m_items.insert(strItem);
 		}
+		
+		stream.read((char *) &m_viewType, sizeof(unsigned char));
 	}
 }
 
@@ -103,4 +106,6 @@ void Graph::Store(std::fstream &stream)
 	{
 		StoreString((*it), stream);
 	}
+	
+	stream.write((char *) &m_viewType, sizeof(unsigned char));
 }

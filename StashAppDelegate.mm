@@ -714,6 +714,10 @@ toolbarViewGroupTag;
 		[viewingPeriodSegmentControl setEnabled:NO forSegment:5];
 	}
 	
+	GraphViewType eViewType = m_pGraph->getViewType();
+	
+	[graphViewType selectTabViewItemAtIndex:eViewType];
+	
 	// for some reason, the above sets/selects don't always update the controls properly
 	[graphAccount setNeedsDisplay:YES];
 	[graphStartDateCntrl setNeedsDisplay:YES];
@@ -2739,11 +2743,15 @@ toolbarViewGroupTag;
 			eDateType = DateCustom;
 			break;
 	}
+	
+	int nGraphViewType = [graphViewType indexOfTabViewItem:[graphViewType selectedTabViewItem]];
+	GraphViewType eViewType = static_cast<GraphViewType>(nGraphViewType);
 
 	int nItemsType = [graphItemTypes indexOfSelectedItem];
 	GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
 	
 	m_pGraph->setAccount(nAccount);
+	m_pGraph->setViewType(eViewType);
 	m_pGraph->setStartDate(startDate);
 	m_pGraph->setEndDate(endDate);
 	m_pGraph->setType(eType);

@@ -50,6 +50,12 @@ enum GraphItemsType
 	OnlySpecified
 };
 
+enum GraphViewType
+{
+	Total,
+	OverTime
+};
+
 class Graph
 {
 public:
@@ -58,6 +64,7 @@ public:
 	
 	void setName(std::string name) { m_name = name; }
 	void setAccount(int account) { m_account = account; }
+	void setViewType(GraphViewType type) { m_viewType = type; }
 	void setStartDate(Date startDate) { m_startDate = startDate; }
 	void setEndDate(Date endDate) { m_endDate = endDate; }
 	void setType(GraphType type) { m_type = type; }
@@ -67,6 +74,7 @@ public:
 	
 	std::string		getName() { return m_name; }
 	int				getAccount() { return m_account; }
+	GraphViewType	getViewType() { return m_viewType; }
 	Date			getStartDate() { return m_startDate; }
 	Date			getEndDate() { return m_endDate; }
 	const Date	   &getStartDate1() { return m_startDate; }
@@ -84,6 +92,7 @@ public:
 protected:
 	std::string		m_name;
 	int				m_account;
+	GraphViewType	m_viewType;
 	Date			m_startDate;
 	Date			m_endDate;
 	GraphType		m_type;
