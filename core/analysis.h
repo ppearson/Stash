@@ -22,6 +22,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
 #include "graph.h"
 #include "fixed.h"
@@ -110,6 +111,8 @@ struct PieChartCriteria
 	int m_groupSmaller;
 	std::string &m_groupSmallerName;
 	PieChartSort m_eSort;
+	GraphItemsType m_itemsType;
+	std::set<std::string> m_aItems;
 };
 
 bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense, bool categories);
@@ -134,10 +137,12 @@ struct AreaChartCriteria
 	bool m_ignoreTransfers;
 	int m_groupSmaller;
 	std::string &m_groupSmallerName;
+	GraphItemsType m_itemsType;
+	std::set<std::string> m_aItems;
 };
 
 bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories);
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
 
-bool shouldItemBeIncluded(Graph *pGraph, std::string &item);
+bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, std::string &item);

@@ -1159,6 +1159,22 @@ toolbarViewGroupTag;
 	PieChartSort ePieChartSort = static_cast<PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
 	
 	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
+	
+	//
+	
+	int nItemsType = [graphItemTypes indexOfSelectedItem];
+	GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
+	
+	pieCriteria.m_itemsType = eItemsType;
+	
+	std::set<std::string> &aItems = pieCriteria.m_aItems;
+	
+	for (NSString *sItem in m_aGraphItems)
+	{
+		std::string strItem = [sItem cStringUsingEncoding:NSUTF8StringEncoding];
+		
+		aItems.insert(strItem);
+	}
 		
 	if (type == ExpenseCategories)
 		buildPieChartItems(m_pGraph, pieCriteria, true, true);
@@ -1236,6 +1252,10 @@ toolbarViewGroupTag;
 	
 	AreaChartCriteria areaCriteria(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers,
 								   areaSmallerThanValue, areaGroupSmallerName);
+	
+	areaCriteria.m_itemsType = eItemsType;
+	
+	areaCriteria.m_aItems = pieCriteria.m_aItems;
 	
 	if (type == ExpenseCategories)
 		buildAreaChartItems(m_pGraph, areaCriteria, true, true);
@@ -2579,6 +2599,8 @@ toolbarViewGroupTag;
 		[m_aGraphItems removeObjectAtIndex:row];
 		
 		[graphItemsTableView reloadData];
+		
+		[self redrawGraph:self];
 	}		
 }
 
@@ -3188,6 +3210,8 @@ toolbarViewGroupTag;
 		sItem = object;
 		
 		[m_aGraphItems replaceObjectAtIndex:nRow withObject:sItem];
+		
+		[self redrawGraph:self];
 	}
 }
 

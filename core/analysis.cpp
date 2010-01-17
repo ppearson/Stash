@@ -123,7 +123,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 				else
 					item = split.getPayee();
 				
-				if (!shouldItemBeIncluded(pGraph, item))
+				if (!shouldItemBeIncluded(criteria.m_itemsType, criteria.m_aItems, item))
 					continue;
 				
 				fixed amount = split.getAmount();
@@ -154,7 +154,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 			else
 				item = (*it).getPayee();
 			
-			if (!shouldItemBeIncluded(pGraph, item))
+			if (!shouldItemBeIncluded(criteria.m_itemsType, criteria.m_aItems, item))
 				continue;
 			
 			fixed amount = (*it).getAmount();
@@ -225,7 +225,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 				else
 					item = split.getPayee();
 				
-				if (!shouldItemBeIncluded(pGraph, item))
+				if (!shouldItemBeIncluded(criteria.m_itemsType, criteria.m_aItems, item))
 					continue;
 				
 				fixed amount = split.getAmount();
@@ -282,7 +282,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 			else
 				item = (*it).getPayee();
 			
-			if (!shouldItemBeIncluded(pGraph, item))
+			if (!shouldItemBeIncluded(criteria.m_itemsType, criteria.m_aItems, item))
 				continue;
 			
 			fixed amount = (*it).getAmount();
@@ -487,22 +487,21 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	}
 }
 
-bool shouldItemBeIncluded(Graph *pGraph, std::string &item)
+bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, std::string &item)
 {
-	if (pGraph->getItemsType() == AllItems)
+	if (eType == AllItems)
 		return true;
 	
-	std::set<std::string> &aItems = pGraph->getItems();
 	std::set<std::string>::iterator it = aItems.find(item);
 	
-	if (pGraph->getItemsType() == AllItemsExceptSpecified)
+	if (eType == AllItemsExceptSpecified)
 	{
 		if (it == aItems.end())
 		{
 			return true;
 		}
 	}
-	else if (pGraph->getItemsType() == OnlySpecified)
+	else if (eType == OnlySpecified)
 	{
 		if (it != aItems.end())
 		{
