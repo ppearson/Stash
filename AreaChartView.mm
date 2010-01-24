@@ -97,7 +97,7 @@
 	
 	if (bProblem)
 	{
-		NSString *sMessage = @"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months.";
+		NSString *sMessage = NSLocalizedString(@"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months.", "Area Chart View -> No Data Message");
 		
 		NSSize extent = [sMessage sizeWithAttributes:attributes1];
 		
@@ -280,7 +280,8 @@
 			colour = [[m_aColours objectAtIndex:nColourIndex] colorWithAlphaComponent:0.2f];
 			
 			// draw selected item title
-			NSString *sSelectedItem = [NSString stringWithFormat:@"Selected item: %@", [plotItem objectForKey:@"title"]];
+			NSString *sSelectedItem = [NSString stringWithFormat:NSLocalizedString(@"Selected item: %@", "Area Chart View -> Selected Item Text"),
+									   [plotItem objectForKey:@"title"]];
 			NSSize extent = [sSelectedItem sizeWithAttributes:attributes1];
 			
 			[sSelectedItem drawAtPoint:NSMakePoint(5, bounds.size.height - 5 - extent.height) withAttributes:attributes1];

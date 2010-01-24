@@ -238,10 +238,10 @@
 	
 	if (m_total)
 	{
-		NSString *strText = [NSString stringWithFormat:@"Total amount:  %@", m_total];
+		NSString *strText = [NSString stringWithFormat:NSLocalizedString(@"Total amount:  %@", "Pie Chart View -> Total Amount Text"), m_total];
 		[strText drawAtPoint:NSMakePoint(5.0, 5.0) withAttributes:attributes1];
 		
-		strText = [NSString stringWithFormat:@"Selected amount:  %@", sSelAmount];
+		strText = [NSString stringWithFormat:NSLocalizedString(@"Selected amount:  %@", "Pie Chart View -> Selected Amount Text"), sSelAmount];
 		[strText drawAtPoint:NSMakePoint(5.0, 25.0) withAttributes:attributes1];
 	}
 }

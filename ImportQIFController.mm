@@ -44,7 +44,7 @@
 		[sFormat retain];
 		sSampleDate = sFormat;
 		
-		sDesc = [NSString stringWithFormat:@"Please select the settings you want to use to import the file \"%@\".", sFile];
+		sDesc = [NSString stringWithFormat:NSLocalizedString(@"Please select the settings you want to use to import the file \"%@\".", "QIF Import Window Text"), sFile];
 	}
 	
 	return self;	

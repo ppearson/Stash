@@ -43,6 +43,7 @@
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D096420710F793430072CE3C /* ExportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D096420610F793430072CE3C /* ExportOFXController.mm */; };
+		D09A22181102293E001F2479 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D09A22171102293E001F2479 /* Localizable.strings */; };
 		D09E91E210CAB982001DE73F /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09E91E110CAB982001DE73F /* graph.cpp */; };
 		D09F242410F64F5600CD1C8D /* ImportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D09F242310F64F5600CD1C8D /* ImportOFXController.mm */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
@@ -137,6 +138,7 @@
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D096420510F793430072CE3C /* ExportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportOFXController.h; sourceTree = "<group>"; };
 		D096420610F793430072CE3C /* ExportOFXController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ExportOFXController.mm; sourceTree = "<group>"; };
+		D09A21DD11021E90001F2479 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D09E91E010CAB982001DE73F /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		D09E91E110CAB982001DE73F /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		D09F242210F64F5600CD1C8D /* ImportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportOFXController.h; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				D09A22171102293E001F2479 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -390,6 +393,13 @@
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Stash" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				de,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Stash */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -429,6 +439,7 @@
 				D0C06C9910FBADF3008CD6D1 /* ImportQIF.xib in Resources */,
 				D0C06C9A10FBADF3008CD6D1 /* MakeTransfer.xib in Resources */,
 				D0C06C9B10FBADF3008CD6D1 /* Preferences.xib in Resources */,
+				D09A22181102293E001F2479 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +504,14 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		D09A22171102293E001F2479 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D09A21DD11021E90001F2479 /* English */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		D0C06C8410FBADF3008CD6D1 /* AccountInfo.xib */ = {

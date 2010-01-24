@@ -66,14 +66,14 @@
     [self setPrefView:nil];
 	
 	[fPieSegmentSort removeAllItems];
-	[fPieSegmentSort addItemWithTitle:@"Size"];
-	[fPieSegmentSort addItemWithTitle:@"Title"];
+	[fPieSegmentSort addItemWithTitle:NSLocalizedString(@"Size", "Preferences -> Pie Chart -> Sort -> Size")];
+	[fPieSegmentSort addItemWithTitle:NSLocalizedString(@"Title", "Preferences -> Pie Chart -> Sort -> Title")];
 	
 	[fPieSegmentSort selectItemAtIndex:[uDefaults integerForKey:@"PieChartSortType"]];
 	
 	[fPieSegmentSelectionType removeAllItems];
-	[fPieSegmentSelectionType addItemWithTitle:@"are selected"];
-	[fPieSegmentSelectionType addItemWithTitle:@"pop out"];
+	[fPieSegmentSelectionType addItemWithTitle:NSLocalizedString(@"are selected", "Preferences -> Pie Chart -> Selection Type -> Selected")];
+	[fPieSegmentSelectionType addItemWithTitle:NSLocalizedString(@"pop out", "Preferences -> Pie Chart -> Selection Type -> Pop Out")];
 	
 	[fPieSegmentSelectionType selectItemAtIndex:[uDefaults integerForKey:@"PieChartSelectionType"]];
 	
@@ -96,7 +96,7 @@
 	
     if ([ident isEqualToString:TOOLBAR_GENERAL])
     {
-        [item setLabel:@"General"];
+        [item setLabel:NSLocalizedString(@"General", "Preferences -> General")];
         [item setImage:[NSImage imageNamed:NSImageNamePreferencesGeneral]];
         [item setTarget:self];
         [item setAction:@selector(setPrefView:)];
@@ -104,7 +104,7 @@
     }
     else if ([ident isEqualToString:TOOLBAR_TRANSACTIONS])
     {
-        [item setLabel:@"Transactions"];
+        [item setLabel:NSLocalizedString(@"Transactions", "Preferences -> Transactions")];
         [item setImage:[NSImage imageNamed:@"trans_prefs.png"]];
         [item setTarget:self];
         [item setAction:@selector(setPrefView:)];
@@ -112,7 +112,7 @@
     }
     else if ([ident isEqualToString:TOOLBAR_PIECHART])
     {
-        [item setLabel:@"Pie Chart"];
+        [item setLabel:NSLocalizedString(@"Pie Chart", "Preferences -> Pie Chart")];
         [item setImage:[NSImage imageNamed:@"pie_prefs.png"]];
         [item setTarget:self];
         [item setAction:@selector(setPrefView:)];
@@ -120,7 +120,7 @@
     }
     else if ([ident isEqualToString:TOOLBAR_AREACHART])
     {
-        [item setLabel:@"Area Chart"];
+        [item setLabel:NSLocalizedString(@"Area Chart", "Preferences -> Area Chart")];
         [item setImage:[NSImage imageNamed:@"area_prefs.png"]];
         [item setTarget:self];
         [item setAction:@selector(setPrefView:)];
@@ -230,7 +230,7 @@
     
     if (sender)
 	{
-		NSString *sTitle = [NSString stringWithFormat:@"%@ Preferences", [sender label]];
+		NSString *sTitle = [NSString stringWithFormat:NSLocalizedString(@"%@ Preferences", "Preferences Window Title"), [sender label]];
         [window setTitle:sTitle];
 	}
     else
@@ -244,7 +244,7 @@
 			NSToolbarItem *item = [[toolbar items] objectAtIndex:i];
             if ([[item itemIdentifier] isEqualToString: itemIdentifier])
             {
-				NSString *sTitle = [NSString stringWithFormat:@"%@ Preferences", [item label]];
+				NSString *sTitle = [NSString stringWithFormat:NSLocalizedString(@"%@ Preferences", "Preferences Window Title"), [item label]];
                 [window setTitle:sTitle];
                 break;
             }

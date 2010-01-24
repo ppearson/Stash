@@ -87,14 +87,14 @@
 	}
 	
 	[fNewAccountType removeAllItems];
-	[fNewAccountType addItemWithTitle:@"Cash"];
-	[fNewAccountType addItemWithTitle:@"Checking"];
-	[fNewAccountType addItemWithTitle:@"Savings"];
-	[fNewAccountType addItemWithTitle:@"Credit Card"];
-	[fNewAccountType addItemWithTitle:@"Investment"];
-	[fNewAccountType addItemWithTitle:@"Asset"];
-	[fNewAccountType addItemWithTitle:@"Liability"];
-	[fNewAccountType addItemWithTitle:@"Other"];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Cash", "Account Type -> Cash")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Checking", "Account Type -> Checking")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Savings", "Account Type -> Savings")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Credit Card", "Account Type -> Credit Card")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Investment", "Account Type -> Investment")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Asset", "Account Type -> Asset")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Liability", "Account Type -> Liability")];
+	[fNewAccountType addItemWithTitle:NSLocalizedString(@"Other", "Account Type -> Other")];
 	
 	if (reverseTransactions)
 	{
@@ -105,7 +105,7 @@
 		[fReverseTransactionOrder setState:NSOffState];
 	}
 	
-	[fReverseTransactionOrder setToolTip:@"Some Banks produce files with records in reverse order. This option reverses them on import."];
+	[fReverseTransactionOrder setToolTip:NSLocalizedString(@"Some Banks produce files with records in reverse order. This option reverses them on import.", "Import OFX Reverse Tooltip")];
 	
 	[fAvailableAccountsTable selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
 

@@ -288,71 +288,71 @@ toolbarViewGroupTag;
 	
 	[transactionsType removeAllItems];
 	
-	[transactionsType addItemWithTitle:@"None"];
-	[transactionsType addItemWithTitle:@"Deposit"];
-	[transactionsType addItemWithTitle:@"Withdrawal"];
-	[transactionsType addItemWithTitle:@"Transfer"];
-	[transactionsType addItemWithTitle:@"Standing Order"];
-	[transactionsType addItemWithTitle:@"Direct Debit"];
-	[transactionsType addItemWithTitle:@"Point Of Sale"];
-	[transactionsType addItemWithTitle:@"Charge"];
-	[transactionsType addItemWithTitle:@"ATM"];
-	[transactionsType addItemWithTitle:@"Check"];
-	[transactionsType addItemWithTitle:@"Credit"];
-	[transactionsType addItemWithTitle:@"Debit"];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"None", "Transaction Type -> None")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Deposit", "Transaction Type -> Deposit")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Withdrawal", "Transaction Type -> Withdrawal")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Transfer", "Transaction Type -> Transfer")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Standing Order", "Transaction Type -> Standing Order")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Direct Debit", "Transaction Type -> Direct Debit")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Point Of Sale", "Transaction Type -> Point Of Sale")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Charge", "Transaction Type -> Charge")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"ATM", "Transaction Type -> ATM")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Check", "Transaction Type -> Check")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Credit", "Transaction Type -> Credit")];
+	[transactionsType addItemWithTitle:NSLocalizedString(@"Debit", "Transaction Type -> Debit")];
 		
 	[scheduledType removeAllItems];
 	
-	[scheduledType addItemWithTitle:@"None"];
-	[scheduledType addItemWithTitle:@"Deposit"];
-	[scheduledType addItemWithTitle:@"Withdrawal"];
-	[scheduledType addItemWithTitle:@"Transfer"];
-	[scheduledType addItemWithTitle:@"Standing Order"];
-	[scheduledType addItemWithTitle:@"Direct Debit"];
-	[scheduledType addItemWithTitle:@"Point Of Sale"];
-	[scheduledType addItemWithTitle:@"Charge"];
-	[scheduledType addItemWithTitle:@"ATM"];
-	[scheduledType addItemWithTitle:@"Check"];
-	[scheduledType addItemWithTitle:@"Credit"];
-	[scheduledType addItemWithTitle:@"Debit"];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"None", "Transaction Type -> None")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Deposit", "Transaction Type -> Deposit")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Withdrawal", "Transaction Type -> Withdrawal")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Transfer", "Transaction Type -> Transfer")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Standing Order", "Transaction Type -> Standing Order")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Direct Debit", "Transaction Type -> Direct Debit")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Point Of Sale", "Transaction Type -> Point Of Sale")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Charge", "Transaction Type -> Charge")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"ATM", "Transaction Type -> ATM")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Check", "Transaction Type -> Check")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Credit", "Transaction Type -> Credit")];
+	[scheduledType addItemWithTitle:NSLocalizedString(@"Debit", "Transaction Type -> Debit")];
 	
 	[scheduledFrequency removeAllItems];
 	
-	[scheduledFrequency addItemWithTitle:@"Weekly"];
-	[scheduledFrequency addItemWithTitle:@"Two Weeks"];
-	[scheduledFrequency addItemWithTitle:@"Four Weeks"];
-	[scheduledFrequency addItemWithTitle:@"Monthly"];
-	[scheduledFrequency addItemWithTitle:@"Two Months"];
-	[scheduledFrequency addItemWithTitle:@"Quarterly"];
-	[scheduledFrequency addItemWithTitle:@"Annually"];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Weekly", "Scheduled Transactions Pane -> Frequency -> Weekly")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Two Weeks", "Scheduled Transactions Pane -> Frequency -> Two Weeks")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Four Weeks", "Scheduled Transactions Pane -> Frequency -> Four Weeks")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Monthly", "Scheduled Transactions Pane -> Frequency -> Monthly")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Two Months", "Scheduled Transactions Pane -> Frequency -> Two Months")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Quarterly", "Scheduled Transactions Pane -> Frequency -> Quarterly")];
+	[scheduledFrequency addItemWithTitle:NSLocalizedString(@"Annually", "Scheduled Transactions Pane -> Frequency -> Annually")];
 	
 	[scheduledConstraint removeAllItems];
 	
-	[scheduledConstraint addItemWithTitle:@"Exact Day"];
-	[scheduledConstraint addItemWithTitle:@"Exact or Next Working Day"];
-	[scheduledConstraint addItemWithTitle:@"Last Working Day of Month"];
+	[scheduledConstraint addItemWithTitle:NSLocalizedString(@"Exact Day", "Scheduled Transactions Pane -> Constraint -> Exact Day")];
+	[scheduledConstraint addItemWithTitle:NSLocalizedString(@"Exact or Next Working Day", "Scheduled Transactions Pane -> Constraint -> Exact or Next Working Day")];
+	[scheduledConstraint addItemWithTitle:NSLocalizedString(@"Last Working Day of Month", "Scheduled Transactions Pane -> Constraint -> Last Working Day of Month")];
 	
 	[graphType removeAllItems];
 	
-	[graphType addItemWithTitle:@"Expense Categories"];
-	[graphType addItemWithTitle:@"Expense Payees"];
-	[graphType addItemWithTitle:@"Deposit Categories"];
-	[graphType addItemWithTitle:@"Deposit Payees"];
+	[graphType addItemWithTitle:NSLocalizedString(@"Expense Categories", "Graph Pane -> Type -> Expense Categories")];
+	[graphType addItemWithTitle:NSLocalizedString(@"Expense Payees", "Graph Pane -> Type -> Expense Payees")];
+	[graphType addItemWithTitle:NSLocalizedString(@"Deposit Categories", "Graph Pane -> Type -> Deposit Categories")];
+	[graphType addItemWithTitle:NSLocalizedString(@"Deposit Payees", "Graph Pane -> Type -> Deposit Payees")];
 	
 	[graphItemTypes removeAllItems];
 
-	[graphItemTypes addItemWithTitle:@"All Items"];
-	[graphItemTypes addItemWithTitle:@"All Items excluding:"];
-	[graphItemTypes addItemWithTitle:@"Only Specified:"];
+	[graphItemTypes addItemWithTitle:NSLocalizedString(@"All Items", "Graph Pane -> Items Type -> All Items")];
+	[graphItemTypes addItemWithTitle:NSLocalizedString(@"All Items excluding:", "Graph Pane -> Items Type -> All Items excluding:")];
+	[graphItemTypes addItemWithTitle:NSLocalizedString(@"Only Specified:", "Graph Pane -> Items Type -> Only Specified:")];
 	
 	[transactionsType selectItemAtIndex:0];
 	
-	[addTransaction setToolTip:@"Add Transaction"];
-	[deleteTransaction setToolTip:@"Delete Transaction"];
-	[splitTransaction setToolTip:@"Split Transaction"];
-	[moveDown setToolTip:@"Move Down"];
-	[moveUp setToolTip:@"Move Up"];
-	[refresh setToolTip:@"Refresh"];
+	[addTransaction setToolTip:NSLocalizedString(@"Add Transaction", "Transactions Pane -> Add Transaction Button Tooltip")];
+	[deleteTransaction setToolTip:NSLocalizedString(@"Delete Transaction", "Transactions Pane -> Delete Transaction Button Tooltip")];
+	[splitTransaction setToolTip:NSLocalizedString(@"Split Transaction", "Transactions Pane -> Split Transaction Button Tooltip")];
+	[moveDown setToolTip:NSLocalizedString(@"Move Down", "Transactions Pane -> Move Down Button Tooltip")];
+	[moveUp setToolTip:NSLocalizedString(@"Move Up", "Transactions Pane -> Move Up Button Tooltip")];
+	[refresh setToolTip:NSLocalizedString(@"Refresh", "Transactions Pane -> Refresh Button Tooltip")];
 	
 	[deleteTransaction setEnabled:NO];
 	[splitTransaction setEnabled:NO];
@@ -379,7 +379,7 @@ toolbarViewGroupTag;
 	
     if ([ident isEqualToString:TOOLBAR_ADDACCOUNT])
     {
-        [item setLabel:@"Add Account"];
+        [item setLabel:NSLocalizedString(@"Add Account", "Main Toolbar -> Add Account")];
         [item setImage:[NSImage imageNamed:@"add_account.png"]];
         [item setTarget:self];
         [item setAction:@selector(AddAccount:)];
@@ -387,7 +387,7 @@ toolbarViewGroupTag;
     }
     else if ([ident isEqualToString:TOOLBAR_ADDGRAPH])
     {
-        [item setLabel:@"Add Graph"];
+        [item setLabel:NSLocalizedString(@"Add Graph", "Main Toolbar -> Add Graph")];
         [item setImage:[NSImage imageNamed:@"add_graph.png"]];
         [item setTarget:self];
         [item setAction:@selector(AddGraph:)];
@@ -395,7 +395,7 @@ toolbarViewGroupTag;
     }
 	else if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
     {
-        [item setLabel:@"Make Transfer"];
+        [item setLabel:NSLocalizedString(@"Make Transfer", "Main Toolbar -> Make Transfer")];
         [item setImage:[NSImage imageNamed:@"make_transfer.png"]];
         [item setTarget:self];
         [item setAction:@selector(MakeTransfer:)];
@@ -419,22 +419,22 @@ toolbarViewGroupTag;
         [groupItem setMinSize:groupSize];
         [groupItem setMaxSize:groupSize];
         
-        [groupItem setLabel:@"View Type"];
-        [groupItem setPaletteLabel:@"View Type"];
+        [groupItem setLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
+        [groupItem setPaletteLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
         [groupItem setTarget:self];
         [groupItem setAction:@selector(viewToolbarClicked:)];
         
         [segmentedCell setTag:TOOLBAR_VIEW_RECENT_TAG forSegment:TOOLBAR_VIEW_RECENT_TAG];
-		[segmentedControl setLabel:@"Recent" forSegment:TOOLBAR_VIEW_RECENT_TAG];
-        [segmentedCell setToolTip:@"Show recent Transactions" forSegment:TOOLBAR_VIEW_RECENT_TAG];
+		[segmentedControl setLabel:NSLocalizedString(@"Recent", "Main Toolbar -> View Type -> Recent") forSegment:TOOLBAR_VIEW_RECENT_TAG];
+        [segmentedCell setToolTip:NSLocalizedString(@"Show recent Transactions", "Main Toolbar -> View Type -> Recent Tooltip") forSegment:TOOLBAR_VIEW_RECENT_TAG];
         
         [segmentedCell setTag:TOOLBAR_VIEW_THISYEAR_TAG forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
-		[segmentedControl setLabel:@"This Year" forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
-        [segmentedCell setToolTip:@"Show Transactions from this year" forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+		[segmentedControl setLabel:NSLocalizedString(@"This Year", "Main Toolbar -> View Type -> This Year") forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+        [segmentedCell setToolTip:NSLocalizedString(@"Show Transactions from this year", "Main Toolbar -> View Type -> This Year Tooltip") forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
 		
 		[segmentedCell setTag: TOOLBAR_VIEW_ALL_TAG forSegment:TOOLBAR_VIEW_ALL_TAG];
-		[segmentedControl setLabel: @"All" forSegment:TOOLBAR_VIEW_ALL_TAG];
-        [segmentedCell setToolTip: @"Show all Transactions" forSegment:TOOLBAR_VIEW_ALL_TAG];
+		[segmentedControl setLabel:NSLocalizedString(@"All", "Main Toolbar -> View Type -> All") forSegment:TOOLBAR_VIEW_ALL_TAG];
+        [segmentedCell setToolTip:NSLocalizedString(@"Show all Transactions", "Main Toolbar -> View Type -> All Tooltip") forSegment:TOOLBAR_VIEW_ALL_TAG];
 		
 		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"ShowTransactionsViewType" options:0];
         
@@ -464,7 +464,7 @@ toolbarViewGroupTag;
 {
 	[indexBar clearAllItems];
 	
-	[indexBar addSection:@"accounts" title:@"ACCOUNTS"];
+	[indexBar addSection:@"accounts" title:NSLocalizedString(@"ACCOUNTS", "IndexBar -> ACCOUNTS")];
 	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	int nAccount = 0;
@@ -481,12 +481,12 @@ toolbarViewGroupTag;
 		[sName release];
 	}
 	
-	[indexBar addSection:@"manage" title:@"MANAGE"];
-	[indexBar addItem:@"manage" key:@"payees" title:@"Payees" item:0 action:@selector(payeesSelected:) target:self type:2 rename:nil renameTarget:nil];
-	[indexBar addItem:@"manage" key:@"categories" title:@"Categories" item:0 action:@selector(categoriesSelected:) target:self type:2 rename:nil renameTarget:nil];
-	[indexBar addItem:@"manage" key:@"scheduled" title:@"Scheduled" item:0 action:@selector(scheduledSelected:) target:self type:2 rename:nil renameTarget:nil];
+	[indexBar addSection:@"manage" title:NSLocalizedString(@"MANAGE", "IndexBar -> MANAGE")];
+	[indexBar addItem:@"manage" key:@"payees" title:NSLocalizedString(@"Payees", "IndexBar -> Payees") item:0 action:@selector(payeesSelected:) target:self type:2 rename:nil renameTarget:nil];
+	[indexBar addItem:@"manage" key:@"categories" title:NSLocalizedString(@"Categories", "IndexBar -> Categories") item:0 action:@selector(categoriesSelected:) target:self type:2 rename:nil renameTarget:nil];
+	[indexBar addItem:@"manage" key:@"scheduled" title:NSLocalizedString(@"Scheduled", "IndexBar -> Scheduled") item:0 action:@selector(scheduledSelected:) target:self type:2 rename:nil renameTarget:nil];
 	
-	[indexBar addSection:@"graphs" title:@"GRAPHS"];
+	[indexBar addSection:@"graphs" title:NSLocalizedString(@"GRAPHS", "IndexBar -> GRAPHS")];
 	
 	std::vector<Graph>::iterator itGraph = m_Document.GraphBegin();
 	int nGraph = 0;
@@ -1409,7 +1409,10 @@ toolbarViewGroupTag;
 	{
 		Date currentDate;
 		currentDate.Now();
-		Transaction newTransaction("Starting balance", "", "", startingBalance, currentDate);
+		
+		NSString *sStartingBalanceText = NSLocalizedString(@"Starting balance", "New Account -> Starting balance");
+		std::string strStartingBalanceText = [sStartingBalanceText cStringUsingEncoding:NSUTF8StringEncoding];
+		Transaction newTransaction(strStartingBalanceText, "", "", startingBalance, currentDate);
 		newTransaction.setReconciled(true);
 		
 		newAccount.addTransaction(newTransaction);
@@ -1488,11 +1491,11 @@ toolbarViewGroupTag;
 	
 	if (nAccount >= 0)
 	{
-		NSString * message = @"The Account and all transactions in it will be deleted. Are you sure?";
+		NSString * message = NSLocalizedString(@"The Account and all transactions in it will be deleted. Are you sure?", "Account Deletion Warning Message");
 		
 		int choice = NSAlertDefaultReturn;
 		
-		choice = NSRunAlertPanel(@"Delete Account?", message, @"Delete", @"Cancel", nil);
+		choice = NSRunAlertPanel(NSLocalizedString(@"Delete Account?", "Account Deletion Warning Title"), message, NSLocalizedString(@"Delete", "Delete Button"), NSLocalizedString(@"Cancel", "Cancel Button"), nil);
 		
 		if (choice != NSAlertDefaultReturn)
 			return;
@@ -1511,7 +1514,9 @@ toolbarViewGroupTag;
 {
 	if (!m_pAccount)
 	{
-		NSRunAlertPanel(@"No Active Account", @"You must have an active account in order to add a new transaction.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"No Active Account", "No Active Account Warning Title"),
+						NSLocalizedString(@"You must have an active account in order to add a new transaction.", "No Active Account Warning Message"),
+										  NSLocalizedString(@"OK", "OK Button"), nil, nil);
 		return;
 	}
 	
@@ -1661,7 +1666,9 @@ toolbarViewGroupTag;
 {
 	if (m_Document.getAccountCount() < 2)
 	{
-		NSRunAlertPanel(@"Not enough accounts", @"You must have more than one account in the current document to create a Transfer.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Not enough accounts", "Not enough accounts Warning Title"),
+						NSLocalizedString(@"You must have more than one account in the current document to create a Transfer.", "Not enough accounts Warning Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
 		return;
 	}
 	
@@ -2536,11 +2543,12 @@ toolbarViewGroupTag;
 	
 	if (nGraph >= 0)
 	{
-		NSString * message = @"The Graph will be deleted. Are you sure?";
+		NSString * message = NSLocalizedString(@"This Graph will be deleted. Are you sure?", "Graph Deletion Warning Message");
 		
 		int choice = NSAlertDefaultReturn;
 		
-		choice = NSRunAlertPanel(@"Delete Graph?", message, @"Delete", @"Cancel", nil);
+		choice = NSRunAlertPanel(NSLocalizedString(@"Delete Graph?", "Graph Deletion Warning Title"), message,
+								 NSLocalizedString(@"Delete", "Delete Button"), NSLocalizedString(@"Cancel", "Cancel Button"), nil);
 		
 		if (choice != NSAlertDefaultReturn)
 			return;
@@ -2585,7 +2593,7 @@ toolbarViewGroupTag;
 {
 	int count = [m_aGraphItems count];
 	
-	NSString *sNewItem = @"New item";
+	NSString *sNewItem = NSLocalizedString(@"New Item", "New Graph Item Name");
 	
 	[m_aGraphItems addObject:sNewItem];
 	
@@ -2932,12 +2940,17 @@ toolbarViewGroupTag;
 {
 	if (m_Document.getAccountCount() == 0)
 	{
-		NSRunAlertPanel(@"No Accounts Exist", @"You must have some accounts in the current document first before you can create a graph.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"No Accounts Exist", "No Accounts For Graph Error Title"),
+						NSLocalizedString(@"You must have some accounts in the current document first before you can create a graph.", "No Accounts For Graph Error Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
 		return;
 	}
 	
+	NSString *sNewGraph = NSLocalizedString(@"New Graph", "New Graph Text");
+	std::string strNewGraph = [sNewGraph cStringUsingEncoding:NSUTF8StringEncoding];
+	
 	Graph newGraph;
-	newGraph.setName("New Graph");
+	newGraph.setName(strNewGraph);
 	newGraph.setAccount(0);
 	
 	Date currentDate;
@@ -2952,7 +2965,7 @@ toolbarViewGroupTag;
 	
 	NSString *sGraphKey = [NSString stringWithFormat:@"g@s", nGraphNum];
 	
-	[indexBar addItem:@"graphs" key:sGraphKey title:@"New Graph" item:nGraphNum action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
+	[indexBar addItem:@"graphs" key:sGraphKey title:sNewGraph item:nGraphNum action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
 	
 	m_UnsavedChanges = true;
 	
@@ -3283,9 +3296,12 @@ NSDate *convertToNSDate(MonthYear &date)
     {
 		int choice = NSAlertDefaultReturn;
 		
-		NSString *message = @"Do you want to save the changes you made in this document?";
+		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
 		
-		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
+		choice = NSRunAlertPanel(title, NSLocalizedString(@"Your changes will be lost if you don't save them.", "Save Document Warning Message"),
+								 NSLocalizedString(@"Save", "Save Button"),
+								 NSLocalizedString(@"Don't Save", "Don't Save Button"),
+								 NSLocalizedString(@"Cancel", "Cancel Button"));
 		
 		if (choice == NSAlertDefaultReturn) // Save file
 		{
@@ -3319,9 +3335,12 @@ NSDate *convertToNSDate(MonthYear &date)
     {
 		int choice = NSAlertDefaultReturn;
 		
-		NSString *message = @"Do you want to save the changes you made in this document?";
+		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
 		
-		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
+		choice = NSRunAlertPanel(title, NSLocalizedString(@"Your changes will be lost if you don't save them.", "Save Document Warning Message"),
+								 NSLocalizedString(@"Save", "Save Button"),
+								 NSLocalizedString(@"Don't Save", "Don't Save Button"),
+								 NSLocalizedString(@"Cancel", "Cancel Button"));
 		
 		if (choice == NSAlertDefaultReturn) // Save file
 		{
@@ -3338,7 +3357,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	std::string strFile = "";
 	[oPanel setAllowsMultipleSelection: NO];
 	[oPanel setResolvesAliases: YES];
-	[oPanel setTitle: @"Open Document"];
+	[oPanel setTitle:NSLocalizedString(@"Open Document", "Open Document Title")];
 	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"stash", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
@@ -3349,10 +3368,10 @@ NSDate *convertToNSDate(MonthYear &date)
 		if ([self OpenFileAt:strFile] == false)
 		{
 			NSAlert *alert = [[NSAlert alloc] init];
-			[alert setMessageText:[NSString stringWithFormat:@"Could not open file: \"%@\".", fileToOpen]];
-			[alert setInformativeText: @"There was a problem opening the Document file."];
+			[alert setMessageText:[NSString stringWithFormat:NSLocalizedString(@"Could not open file: \"%@\".", "Open Document Error Message"), fileToOpen]];
+			[alert setInformativeText:NSLocalizedString(@"There was a problem opening the Document file.", "Open Document Error Text")];
 			[alert setAlertStyle: NSWarningAlertStyle];
-			[alert addButtonWithTitle: @"OK"];
+			[alert addButtonWithTitle:NSLocalizedString(@"OK", "OK Button")];
 			
 			[alert runModal];
 			[alert release];
@@ -3397,7 +3416,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	NSString *fileToSave;
 	std::string strFile = "";
 	
-	[sPanel setTitle: @"Save Document"];
+	[sPanel setTitle:NSLocalizedString(@"Save Document", "Save Document Title")];
 	[sPanel setRequiredFileType:@"stash"];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"stash", nil]];
 	
@@ -3409,10 +3428,10 @@ NSDate *convertToNSDate(MonthYear &date)
 		if ([self SaveFileTo:strFile] == false)
 		{
 			NSAlert *alert = [[NSAlert alloc] init];
-			[alert setMessageText:[NSString stringWithFormat:@"Could not save to file: \"%@\".", fileToSave]];
-			[alert setInformativeText: @"There was a problem saving the Document to the file."];
+			[alert setMessageText:[NSString stringWithFormat:NSLocalizedString(@"Could not save to file: \"%@\".", "Save Document Error Message"), fileToSave]];
+			[alert setInformativeText:NSLocalizedString(@"There was a problem saving the Document to the file.", "Save Document Error Text")];
 			[alert setAlertStyle: NSWarningAlertStyle];
-			[alert addButtonWithTitle: @"OK"];
+			[alert addButtonWithTitle:NSLocalizedString(@"OK", "OK Button")];
 			
 			[alert runModal];
 			[alert release];
@@ -3574,7 +3593,9 @@ NSDate *convertToNSDate(MonthYear &date)
 {
 	if (!m_pAccount)
 	{
-		NSRunAlertPanel(@"No Active Account", @"You must have an active account in order to import QIF file data.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"No Active Account", "Import QIF -> No Active Account Warning Title"),
+						NSLocalizedString(@"You must have an active account in order to import QIF file data.", "Import QIF -> No Active Account Warning Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
 		return;
 	}
 	
@@ -3584,7 +3605,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	[oPanel setAllowsMultipleSelection:NO];
 	[oPanel setResolvesAliases:YES];
 	[oPanel setRequiredFileType:@"qif"];
-	[oPanel setTitle: @"Import QIF file"];
+	[oPanel setTitle:NSLocalizedString(@"Import QIF file", "Import QIF Title")];
 	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"qif", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
@@ -3636,7 +3657,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	[oPanel setAllowsMultipleSelection:NO];
 	[oPanel setResolvesAliases:YES];
 	[oPanel setRequiredFileType:@"ofx"];
-	[oPanel setTitle:@"Select OFX file to Import"];
+	[oPanel setTitle:NSLocalizedString(@"Select OFX file to Import", "Import OFX Title")];
 	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
@@ -3648,7 +3669,9 @@ NSDate *convertToNSDate(MonthYear &date)
 		
 		if (!importOFXFile(strFile, dataItem))
 		{
-			NSRunAlertPanel(@"Couldn't Import OFX File", @"Couldn't import the selected OFX file.", @"OK", nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"Couldn't Import OFX File", "Import OFX Error Title"),
+							NSLocalizedString(@"Couldn't import the selected OFX file. Check it is a valid OFX 1.x/2.x file.", "Import OFX Error Message"),
+							NSLocalizedString(@"OK", "OK Button"), nil, nil);
 			return;	
 		}
 		
@@ -3656,7 +3679,9 @@ NSDate *convertToNSDate(MonthYear &date)
 		
 		if (numAccounts == 0)
 		{
-			NSRunAlertPanel(@"No data in file", @"Stash couldn't find any account/transaction data in the OFX file.", @"OK", nil, nil);
+			NSRunAlertPanel(NSLocalizedString(@"No data in file", "Import OFX No Data Title"),
+							NSLocalizedString(@"Stash couldn't find any account/transaction data in the OFX file.", "Import OFX No Data Message"),
+							NSLocalizedString(@"OK", "OK Button"), nil, nil);
 			return;
 		}
 		
@@ -3745,7 +3770,13 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	if (!importOFXFile(strFilename, dataItem))
 	{
-		NSRunAlertPanel(@"Couldn't open file", @"Stash could not import the selected OFX file. Check it is a valid OFX 1.x/2.x file.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Couldn't Import OFX file", "Import OFX Error Title"),
+						NSLocalizedString(@"Couldn't import the selected OFX file. Check it is a valid OFX 1.x/2.x file.", "Import OFX Error Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
+		
+		[importOFXController release];
+		importOFXController = 0;
+		
 		return;
 	}
 	
@@ -3757,9 +3788,10 @@ NSDate *convertToNSDate(MonthYear &date)
 	if (numAccountSettings != numAccountsInFile)
 	{
 		// something's gone wrong
-		NSRunAlertPanel(@"Import data inconcistency", @"The Import data could not be processed correctly.", @"OK", nil, nil);
-		return;
-		
+		NSRunAlertPanel(NSLocalizedString(@"Import data inconcistency", "Import OFX Data Inconcistency Title"),
+						NSLocalizedString(@"The Import data could not be processed correctly.", "Import OFX Data Inconcistency Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
+			
 		[importOFXController release];
 		importOFXController = 0;
 		return;
@@ -3831,7 +3863,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	NSString *fileToSave;
 	std::string strFile = "";
 	[sPanel setRequiredFileType:@"ofx"];
-	[sPanel setTitle:@"Select OFX file to Export to"];
+	[sPanel setTitle:NSLocalizedString(@"Select OFX file to Export to", "Export OFX Title")];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
 	
 	if ([sPanel runModal] == NSOKButton)
@@ -3923,7 +3955,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	NSString *fileToSave;
 	std::string strFile = "";
 	
-	[sPanel setTitle: @"Export to QIF file"];
+	[sPanel setTitle:NSLocalizedString(@"Export to QIF file", "Export QIF Title")];
 	[sPanel setRequiredFileType:@"qif"];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"qif", nil]];
 	
@@ -4002,9 +4034,12 @@ NSDate *convertToNSDate(MonthYear &date)
     {
 		int choice = NSAlertDefaultReturn;
 		
-		NSString *message = @"Do you want to save the changes you made in this document?";
+		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
 		
-		choice = NSRunAlertPanel(message, @"Your changes will be lost if you don't save them.", @"Save", @"Don't Save", @"Cancel");
+		choice = NSRunAlertPanel(title, NSLocalizedString(@"Your changes will be lost if you don't save them.", "Save Document Warning Message"),
+								 NSLocalizedString(@"Save", "Save Button"),
+								 NSLocalizedString(@"Don't Save", "Don't Save Button"),
+								 NSLocalizedString(@"Cancel", "Cancel Button"));
 		
 		if (choice == NSAlertDefaultReturn) // Save file
 		{
@@ -4085,9 +4120,11 @@ NSDate *convertToNSDate(MonthYear &date)
     {
 		int choice = NSAlertDefaultReturn;
 		
-        NSString * message = @"You have unsaved changes in this document. Are you sure you want to open another document?";
+        NSString * message = NSLocalizedString(@"You have unsaved changes in this document. Are you sure you want to open another document?", "Replace Document Warning Message");
 		
-		choice = NSRunAlertPanel(@"Replace current document?", message, @"Replace", @"Cancel", nil);
+		choice = NSRunAlertPanel(NSLocalizedString(@"Replace current document?", "Replace Document Warning Title"),
+								 message, NSLocalizedString(@"Replace", "Replace Button"),
+								 NSLocalizedString(@"Cancel", "Cancel Button"), nil);
 		
 		if (choice != NSAlertDefaultReturn)
 			return NO;
@@ -4136,40 +4173,40 @@ NSDate *convertToNSDate(MonthYear &date)
 	switch (type)
 	{
 		case None:
-			string = @"None";
+			string = NSLocalizedString(@"None", "Transaction Type -> None");
 			break;
 		case Deposit:
-			string = @"Deposit";
+			string = NSLocalizedString(@"Deposit", "Transaction Type -> Deposit");
 			break;
 		case Withdrawal:
-			string = @"Withdrawal";
+			string = NSLocalizedString(@"Withdrawal", "Transaction Type -> Withdrawal");
 			break;
 		case Transfer:
-			string = @"Transfer";
+			string = NSLocalizedString(@"Transfer", "Transaction Type -> Transfer");
 			break;
 		case StandingOrder:
-			string = @"Standing Order";
+			string = NSLocalizedString(@"Standing Order", "Transaction Type -> Standing Order");
 			break;
 		case DirectDebit:
-			string = @"Direct Debit";
+			string = NSLocalizedString(@"Direct Debit", "Transaction Type -> Direct Debit");
 			break;
 		case PointOfSale:
-			string = @"Point Of Sale";
+			string = NSLocalizedString(@"Point Of Sale", "Transaction Type -> Point Of Sale");
 			break;
 		case Charge:
-			string = @"Charge";
+			string = NSLocalizedString(@"Charge", "Transaction Type -> Charge");
 			break;
 		case ATM:
-			string = @"ATM";
+			string = NSLocalizedString(@"ATM", "Transaction Type -> ATM");
 			break;
 		case Cheque:
-			string = @"Check";
+			string = NSLocalizedString(@"Check", "Transaction Type -> Check");
 			break;
 		case Credit:
-			string = @"Credit";
+			string = NSLocalizedString(@"Credit", "Transaction Type -> Credit");
 			break;
 		case Debit:
-			string = @"Debit";
+			string = NSLocalizedString(@"Debit", "Transaction Type -> Debit");
 			break;
 	}
 	

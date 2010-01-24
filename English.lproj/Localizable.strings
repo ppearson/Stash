@@ -1,0 +1,367 @@
+
+/* Transaction Type -> None */
+"None" = "None"
+
+/* Transaction Type -> Deposit */
+"Deposit" = "Deposit"
+
+/* Transaction Type -> Withdrawal */
+"Withdrawal" = "Withdrawal"
+
+/* Transaction Type -> Transfer */
+"Transfer" = "Transfer"
+
+/* Transaction Type -> Standing Order */
+"Standing Order" = "Standing Order"
+
+/* Transaction Type -> Direct Debit */
+"Direct Debit" = "Direct Debit"
+
+/* Transaction Type -> Point Of Sale */
+"Point Of Sale" = "Point Of Sale"
+
+/* Transaction Type -> Charge */
+"Charge" = "Charge"
+
+/* Transaction Type -> ATM */
+"ATM" = "ATM"
+
+/* Transaction Type -> Check */
+"Check" = "Check"
+
+/* Transaction Type -> Credit */
+"Credit" = "Credit"
+
+/* Transaction Type -> Debit */
+"Debit" = "Debit"
+
+
+/* Account Type -> Cash */
+"Cash" = "Cash"
+
+/* Account Type -> Checking */
+"Checking" = "Checking"
+
+/* Account Type -> Savings */
+"Savings" = "Savings"
+
+/* Account Type -> Credit Card */
+"Credit Card" = "Credit Card"
+
+/* Account Type -> Investment */
+"Investment" = "Investment"
+
+/* Account Type -> Asset */
+"Asset" = "Asset"
+
+/* Account Type -> Liability */
+"Liability" = "Liability"
+
+/* Account Type -> Other */
+"Other" = "Other"
+
+
+/* IndexBar -> ACCOUNTS */
+"ACCOUNTS" = "ACCOUNTS"
+
+/* IndexBar -> MANAGE */
+"MANAGE" = "MANAGE"
+
+/* IndexBar -> Payees */
+"Payees" = "Payees"
+
+/* IndexBar -> Categories */
+"Categories" = "Categories"
+
+/* IndexBar -> Scheduled */
+"Scheduled" = "Scheduled"
+
+/* IndexBar -> GRAPHS */
+"GRAPHS" = "GRAPHS"
+
+/* Transactions Pane -> Add Transaction Button Tooltip */
+"Add Transaction" = "Add Transaction"
+
+/* Transactions Pane -> Delete Transaction Button Tooltip */
+"Delete Transaction" = "Delete Transaction"
+
+/* Transactions Pane -> Split Transaction Button Tooltip */
+"Split Transaction" = "Split Transaction"
+
+/* Transactions Pane -> Move Down Button Tooltip */
+"Move Down" = "Move Down"
+
+/* Transactions Pane -> Move Up Button Tooltip */
+"Move Up" = "Move Up"
+
+/* Transactions Pane -> Refresh Button Tooltip */
+"Refresh" = "Refresh"
+
+/* Scheduled Transactions Pane -> Frequency -> Weekly */
+"Weekly" = "Weekly"
+
+/* Scheduled Transactions Pane -> Frequency -> Two Weeks */
+"Two Weeks" = "Two Weeks"
+
+/* Scheduled Transactions Pane -> Frequency -> Four Weeks */
+"Four Weeks" = "Four Weeks"
+
+/* Scheduled Transactions Pane -> Frequency -> Monthly */
+"Monthly" = "Monthly"
+
+/* Scheduled Transactions Pane -> Frequency -> Two Months */
+"Two Months" = "Two Months"
+
+/* Scheduled Transactions Pane -> Frequency -> Quarterly */
+"Quarterly" = "Quarterly"
+
+/* Scheduled Transactions Pane -> Frequency -> Annually */
+"Annually" = "Annually"
+
+/* Scheduled Transactions Pane -> Constraint -> Exact Day */
+"Exact Day" = "Exact Day"
+
+/* Scheduled Transactions Pane -> Constraint -> Exact or Next Working Day */
+"Exact or Next Working Day" = "Exact or Next Working Day"
+
+/* Scheduled Transactions Pane -> Constraint -> Last Working Day of Month */
+"Last Working Day of Month" = "Last Working Day of Month"
+
+/* Graph Pane -> Type -> Expense Categories */
+"Expense Categories" = "Expense Categories"
+
+/* Graph Pane -> Type -> Expense Payees */
+"Expense Payees" = "Expense Payees"
+
+/* Graph Pane -> Type -> Deposit Categories */
+"Deposit Categories" = "Deposit Categories"
+
+/* Graph Pane -> Type -> Deposit Payees */
+"Deposit Payees" = "Deposit Payees"
+
+/* Graph Pane -> Items Type -> All Items */
+"All Items" = "All Items"
+
+/* Graph Pane -> Items Type -> All Items excluding: */
+"All Items excluding:" = "All Items excluding:"
+
+/* Graph Pane -> Items Type -> Only Specified: */
+"Only Specified:" = "Only Specified:"
+
+
+
+
+
+/* Main Toolbar -> Add Account */
+"Add Account" = "Add Account"
+
+/* Main Toolbar -> Add Graph */
+"Add Graph" = "Add Graph"
+
+/* Main Toolbar -> Make Transfer */
+"Make Transfer" = "Make Transfer"
+
+/* Main Toolbar -> View Type */
+"View Type" = "View Type"
+
+
+/* Main Toolbar -> View Type -> Recent */
+"Recent" = "Recent"
+
+/* Main Toolbar -> View Type -> Recent Tooltip */
+"Show recent Transactions" = "Show recent Transactions"
+
+/* Main Toolbar -> View Type -> This Year */
+"This Year" = "This Year"
+
+/* Main Toolbar -> View Type -> This Year Tooltip */
+"Show Transactions from this year" = "Show Transactions from this year"
+
+/* Main Toolbar -> View Type -> All */
+"All" = "All"
+
+/* Main Toolbar -> View Type -> All Tooltip */
+"Show all Transactions" = "Show all Transactions"
+
+/* New Account -> Starting balance */
+"Starting balance" = "Starting balance"
+
+
+
+/* Delete Button */
+"Delete" = "Delete"
+
+/* Cancel Button */
+"Cancel" = "Cancel"
+
+/* Save Button */
+"Save" = "Save"
+
+/* Don't Save Button */
+"Don't Save" = "Don't Save"
+
+/* OK Button */
+"OK" = "OK"
+
+/* Replace Button */
+"Replace" = "Replace"
+
+
+
+/* Account Deletion Warning Message */
+"The Account and all transactions in it will be deleted. Are you sure?" = "The Account and all transactions in it will be deleted. Are you sure?"
+
+/* Account Deletion Warning Title */
+"Delete Account?" = "Delete Account?"
+
+/* No Active Account Warning Title */
+"No Active Account" = "No Active Account"
+
+/* No Active Account Warning Message */
+"You must have an active account in order to add a new transaction." = "You must have an active account in order to add a new transaction."
+
+/* Not enough accounts Warning Title */
+"Not enough accounts" = "Not enough accounts"
+
+/* Not enough accounts Warning Message */
+"You must have more than one account in the current document to create a Transfer." = "You must have more than one account in the current document to create a Transfer."
+
+/* Graph Deletion Warning Message */
+"This Graph will be deleted. Are you sure?" = "This Graph will be deleted. Are you sure?"
+
+/* Graph Deletion Warning Title */
+"Delete Graph?" = "Delete Graph?"
+
+/* New Graph Item Name */
+"New Item" = "New Item"
+
+/* No Accounts For Graph Error Title */
+"No Accounts Exist" = "No Accounts Exist"
+
+/* No Accounts For Graph Error Message */
+"You must have some accounts in the current document first before you can create a graph." = "You must have some accounts in the current document first before you can create a graph."
+
+/* New Graph Text */
+"New Graph" = "New Graph"
+
+/* Save Document Warning Title */
+"Do you want to save the changes you made in this document?" = "Do you want to save the changes you made in this document?"
+
+/* Save Document Warning Message */
+"Your changes will be lost if you don't save them." = "Your changes will be lost if you don't save them."
+
+/* Open Document Title */
+"Open Document" = "Open Document"
+
+/* Open Document Error Message */
+"Could not open file: \"%@\"." = "Could not open file: \"%@\"."
+
+/* Open Document Error Text */
+"There was a problem opening the Document file." = "There was a problem opening the Document file."
+
+/* Save Document Title /*
+"Save Document" = "Save Document"
+
+/* Save Document Error Message */
+"Could not save to file: \"%@\"." = "Could not save to file: \"%@\"."
+
+/* Save Document Error Text */
+"There was a problem saving the Document to file." = "There was a problem saving the Document to file."
+
+/* Import QIF -> No Active Account Warning Title */
+"No Active Account" = "No Active Account"
+
+/* Import QIF -> No Active Account Warning Message */
+"You must have an active account in order to import QIF file data." = "You must have an active account in order to import QIF file data."
+
+/* Import QIF Title */
+"Import QIF file" = "Import QIF file"
+
+/* Import OFX Title */
+"Select OFX file to Import" = "Select OFX file to Import"
+
+/* Import OFX Error Title */
+"Couldn't Import OFX File" = "Couldn't Import OFX File"
+
+/* Import OFX Error Message */
+"Couldn't import the selected OFX file. Check it is a valid OFX 1.x/2.x file." = "Couldn't import the selected OFX file. Check it is a valid OFX 1.x/2.x file."
+
+/* Import OFX No Data Title */
+"No data in file" = "No data in file"
+
+/* Import OFX No Data Message */
+"Stash couldn't find any account/transaction data in the OFX file." = "Stash couldn't find any account/transaction data in the OFX file."
+
+/* Import OFX Data Inconcistency Title */
+"Import data inconcistency" = "Import data inconcistency"
+
+/* Import OFX Data Inconcistency Message */
+"The Import data could not be processed correctly." = "The Import data could not be processed correctly."
+
+/* Export OFX Title */
+"Select OFX file to Export to" = "Select OFX file to Export to"
+
+/* Export QIF Title */
+"Export to QIF file" = "Export to QIF file"
+
+/* Replace Document Warning Title */
+"Replace current document?" = "Replace current document?"
+
+/* Replace Document Warning Message */
+"You have unsaved changes in this document. Are you sure you want to open another document?" = "You have unsaved changes in this document. Are you sure you want to open another document?"
+
+
+
+/* Make Transfer -> Invalid account selection Warning Title */
+"Invalid account selection" = "Invalid account selection"
+
+/* Make Transfer -> Invalid account selection Warning Message */
+"You must select different From and To accounts in order to make a Transfer." = "You must select different From and To accounts in order to make a Transfer."
+
+
+/* Area Chart View -> No Data Message */
+"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months." = "Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months."
+
+/* Area Chart View -> Selected Item Text */
+"Selected item: %@" = "Selected item: %@"
+
+
+/* Pie Chart View -> Total Amount Text */
+"Total amount:  %@" = "Total amount:  %@"
+
+/* Pie Chart View -> Selected Amount Text */
+"Selected amount:  %@" = "Selected amount:  %@"
+
+
+/* Preferences -> General */
+"General" = "General"
+
+/* Preferences -> Transactions */
+"Transactions" = "Transactions"
+
+/* Preferences -> Pie Chart */
+"Pie Chart" = "Pie Chart"
+
+/* Preferences -> Area Chart */
+"Area Chart" = "Area Chart"
+
+/* Preferences -> Pie Chart -> Sort -> Size */
+"Size" = "Size"
+
+/* Preferences -> Pie Chart -> Sort -> Title */
+"Title" = "Title"
+
+/* Preferences -> Pie Chart -> Selection Type -> Selected */
+"are selected" = "are selected"
+
+/* Preferences -> Pie Chart -> Selection Type -> Pop Out */
+"pop out" = "pop out"
+
+/* Preferences Window Title */
+"%@ Preferences" = "%@ Preferences"
+
+/* QIF Import Window Text */
+"Please select the settings you want to use to import the file \"%@\"." = "Please select the settings you want to use to import the file \"%@\"."
+
+/* Import OFX Reverse Tooltip */
+"Some Banks produce files with records in reverse order. This option reverses them on import." = "Some Banks produce files with records in reverse order. This option reverses them on import."

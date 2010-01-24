@@ -109,7 +109,9 @@
 	
 	if (m_fromAccount == m_toAccount)
 	{
-		NSRunAlertPanel(@"Invalid account selection", @"You must select different From and To accounts in order to make a Transfer.", @"OK", nil, nil);
+		NSRunAlertPanel(NSLocalizedString(@"Invalid account selection", "Make Transfer -> Invalid account selection Warning Title"),
+						NSLocalizedString(@"You must select different From and To accounts in order to make a Transfer.", "Make Transfer -> Invalid account selection Warning Message"),
+						NSLocalizedString(@"OK", "OK Button"), nil, nil);
 		return;
 	}
 	

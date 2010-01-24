@@ -55,14 +55,14 @@
 {
 	[fAccountType removeAllItems];
 	
-	[fAccountType addItemWithTitle:@"Cash"];
-	[fAccountType addItemWithTitle:@"Checking"];
-	[fAccountType addItemWithTitle:@"Savings"];
-	[fAccountType addItemWithTitle:@"Credit Card"];
-	[fAccountType addItemWithTitle:@"Investment"];
-	[fAccountType addItemWithTitle:@"Asset"];
-	[fAccountType addItemWithTitle:@"Liability"];
-	[fAccountType addItemWithTitle:@"Other"];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Cash", "Account Type -> Cash")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Checking", "Account Type -> Checking")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Savings", "Account Type -> Savings")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Credit Card", "Account Type -> Credit Card")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Investment", "Account Type -> Investment")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Asset", "Account Type -> Asset")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Liability", "Account Type -> Liability")];
+	[fAccountType addItemWithTitle:NSLocalizedString(@"Other", "Account Type -> Other")];
 	
 	[fAccountType selectItemAtIndex:eAccountType];
 	
