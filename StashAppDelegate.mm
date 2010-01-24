@@ -1602,7 +1602,7 @@ toolbarViewGroupTag;
 				[self updateTransactionsFromTransactionIndex:nTransaction - m_nTransactionOffset];
 			}
 			
-			row = [rows indexLessThanIndex:row];			
+			row = [rows indexLessThanIndex:row];	
 		}		
 		
 		[transactionsTableView reloadData];
@@ -2604,16 +2604,24 @@ toolbarViewGroupTag;
 
 - (IBAction)deleteGraphItem:(id)sender
 {
-	int row = [graphItemsTableView selectedRow];
+	NSIndexSet *rows = [graphItemsTableView selectedRowIndexes];
 	
-	if (row >= 0)
+	int nCount = [rows count];
+	
+	if (nCount > 0)
 	{
-		[m_aGraphItems removeObjectAtIndex:row];
+		NSInteger row = [rows lastIndex];
 		
-		[graphItemsTableView reloadData];
-		
-		[self redrawGraph:self];
-	}		
+		while (row != NSNotFound)
+		{
+			[m_aGraphItems removeObjectAtIndex:row];
+			
+			row = [rows indexLessThanIndex:row];
+		}
+	}
+	
+	[graphItemsTableView reloadData];
+	[self redrawGraph:self];
 }
 
 - (IBAction)dateBarClicked:(id)sender

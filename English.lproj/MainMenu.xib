@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="977"/>
+			<integer value="920"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4182,7 +4182,7 @@
 														<reference key="NSBackgroundColor" ref="376223508"/>
 														<reference key="NSGridColor" ref="57620723"/>
 														<double key="NSRowHeight">14</double>
-														<int key="NSTvFlags">306184192</int>
+														<int key="NSTvFlags">440401920</int>
 														<reference key="NSDelegate"/>
 														<reference key="NSDataSource"/>
 														<int key="NSGridStyleMask">2</int>
