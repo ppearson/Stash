@@ -2618,10 +2618,10 @@ toolbarViewGroupTag;
 			
 			row = [rows indexLessThanIndex:row];
 		}
+		
+		[graphItemsTableView reloadData];
+		[self redrawGraph:self];
 	}
-	
-	[graphItemsTableView reloadData];
-	[self redrawGraph:self];
 }
 
 - (IBAction)dateBarClicked:(id)sender
