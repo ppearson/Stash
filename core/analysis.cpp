@@ -468,8 +468,27 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 			}
 		}
 		
+		// In case there's an other item already, we need to combine the existing and our new one
+		std::vector<AreaChartItem>::iterator itExistingOtherItem = criteria.m_aValues.begin();
+		while (itExistingOtherItem != criteria.m_aValues.end())
+		{
+			if ((*itExistingOtherItem).getTitle() == criteria.m_groupSmallerName)
+				break;
+			
+			++itExistingOtherItem;
+		}
+		
 		if (bAddOther)
-			criteria.m_aValues.push_back(otherItem);
+		{
+			if (itExistingOtherItem != criteria.m_aValues.end())
+			{
+				((*itExistingOtherItem).combineItem(otherItem));
+			}
+			else
+			{
+				criteria.m_aValues.push_back(otherItem);
+			}
+		}
 	}
 	
 	// sort the items so that items with fewer actual values (most likely occasional expenditures) get done last
