@@ -243,11 +243,11 @@
 		bReverse = true;
 	}
 	
-	bool bMarkAsReconciled = false;
+	bool bMarkAsCleared = false;
 	
-	if ([fMarkAllAsReconciled state] == NSOnState)
+	if ([fMarkAllAsCleared state] == NSOnState)
 	{
-		bMarkAsReconciled = true;
+		bMarkAsCleared = true;
 	}
 	
 	bool bIgnoreExisting = false;
@@ -263,7 +263,7 @@
 		[lastSelectedAccount setObject:[fNewAccountName stringValue] forKey:@"newAccName"];		
 	}
 	
-	[[NSApp delegate] importOFXFileWithController:self reverseTransactions:bReverse reconciled:bMarkAsReconciled ignoreExisting:bIgnoreExisting];
+	[[NSApp delegate] importOFXFileWithController:self reverseTransactions:bReverse cleared:bMarkAsCleared ignoreExisting:bIgnoreExisting];
 	
 	[NSApp endSheet:importOFXWindow];
 	[importOFXWindow orderOut:self];

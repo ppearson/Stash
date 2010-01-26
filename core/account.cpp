@@ -108,7 +108,7 @@ void Account::deleteFITID(std::string &FITID)
 		m_aFITIDs.erase(it);
 }
 
-fixed Account::getBalance(bool onlyReconciled, int endIndex)
+fixed Account::getBalance(bool onlyCleared, int endIndex)
 {
 	fixed balance = 0.0;
 	
@@ -121,11 +121,11 @@ fixed Account::getBalance(bool onlyReconciled, int endIndex)
 		itEnd = m_aTransactions.begin() + endIndex;
 	}
 	
-	if (onlyReconciled)
+	if (onlyCleared)
 	{
 		for (; it != itEnd; ++it)
 		{
-			if ((*it).isReconciled())
+			if ((*it).isCleared())
 			{
 				balance += (*it).getAmount();
 			}

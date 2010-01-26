@@ -39,7 +39,7 @@
 	IBOutlet NSPopUpButton *fNewAccountType;
 	IBOutlet NSTextField *fNewAccountName;
 	IBOutlet id fReverseTransactionOrder;
-	IBOutlet id fMarkAllAsReconciled;
+	IBOutlet id fMarkAllAsCleared;
 	IBOutlet id fIgnoreExistingTransactions;
 	
 	int m_lastSelectedAccount;

@@ -52,12 +52,12 @@ public:
 	Transaction();
 	Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date);
 	
-	bool isReconciled() const { return m_Reconciled; }
-	void setReconciled(bool recon) { m_Reconciled = recon; }
 	bool isCleared() const { return m_Cleared; }
 	void setCleared(bool cleared) { m_Cleared = cleared; }
 	bool isFlagged() const { return m_Flagged; }
 	void setFlagged(bool flagged) { m_Flagged = flagged; }
+	bool isReconciled() const { return m_Reconciled; }
+	void setReconciled(bool recon) { m_Reconciled = recon; }
 	
 	Date getDate() const { return m_Date; }
 	const Date &getDate1() { return m_Date; }
@@ -97,9 +97,9 @@ private:
 	
 	std::string ToString() const;
 	
-	bool m_Reconciled;
 	bool m_Cleared;
 	bool m_Flagged;
+	bool m_Reconciled;
 	bool m_HasFITID;
 	
 	Date m_Date;

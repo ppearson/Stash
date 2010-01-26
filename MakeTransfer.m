@@ -102,10 +102,10 @@
 	m_description = [description stringValue];
 	m_date = [dateCntl dateValue];
 	
-	if ([setAsReconciled state] == NSOnState)
-		m_makeReconciled = YES;
+	if ([setAsCleared state] == NSOnState)
+		m_makeCleared = YES;
 	else
-		m_makeReconciled = NO;
+		m_makeCleared = NO;
 	
 	if (m_fromAccount == m_toAccount)
 	{
@@ -157,9 +157,9 @@
 	return m_date;
 }
 
-- (BOOL)makeReconciled
+- (BOOL)makeCleared
 {
-	return m_makeReconciled;
+	return m_makeCleared;
 }
 
 @end

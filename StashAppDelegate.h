@@ -73,7 +73,7 @@ enum TransactionsToShow
 	IBOutlet NSTextField *transactionsAmount;
 	IBOutlet NSPopUpButton *transactionsType;
 	IBOutlet id transactionsDateCntl;
-	IBOutlet id transactionsReconciled;
+	IBOutlet id transactionsCleared;
 	
 	IBOutlet NSButton *addTransaction;
 	IBOutlet NSButton *deleteTransaction;
@@ -241,7 +241,7 @@ enum TransactionsToShow
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
 - (IBAction)ImportOFX:(id)sender;
-- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled ignoreExisting:(bool)ignoreExisting;
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse cleared:(bool)cleared ignoreExisting:(bool)ignoreExisting;
 - (void)deleteImportOFXController;
 
 - (IBAction)ExportOFX:(id)sender;

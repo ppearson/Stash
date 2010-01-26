@@ -189,11 +189,11 @@
 			isa = PBXGroup;
 			children = (
 				D058757E10EFA80D00A2766A /* MakeTransfer.h */,
+				D058757F10EFA80D00A2766A /* MakeTransfer.m */,
 				D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */,
 				D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */,
 				D07D51E810FA1FEC00BC37F9 /* DropDownWindow.h */,
 				D07D51E910FA1FEC00BC37F9 /* DropDownWindow.m */,
-				D058757F10EFA80D00A2766A /* MakeTransfer.m */,
 				D086340210E61A410055EB1B /* AreaChartView.h */,
 				D086340310E61A410055EB1B /* AreaChartView.mm */,
 				D08D8ADF10E2C5B000BE3AC6 /* NSDateEx.h */,

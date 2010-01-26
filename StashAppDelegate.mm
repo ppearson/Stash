@@ -141,7 +141,7 @@ toolbarViewGroupTag;
 	[defaultValues setValue:@"Other" forKey:@"AreaChartGroupSmallerItemsName"];
 	
 	NSDictionary *visibleTransactionColumns = [NSDictionary dictionaryWithObjectsAndKeys:
-									   [NSNumber numberWithBool:YES], @"Reconciled",
+									   [NSNumber numberWithBool:YES], @"Cleared",
 									   [NSNumber numberWithBool:YES], @"Date",
 									   [NSNumber numberWithBool:YES], @"Payee",
 									   [NSNumber numberWithBool:YES], @"Category",
@@ -152,7 +152,7 @@ toolbarViewGroupTag;
 									   nil];
 	
 	NSDictionary *transactionColumnSizes = [NSDictionary dictionaryWithObjectsAndKeys:
-									 [NSNumber numberWithFloat:38], @"Reconciled",
+									 [NSNumber numberWithFloat:38], @"Cleared",
 									 [NSNumber numberWithFloat:86], @"Date",
 									 [NSNumber numberWithFloat:147], @"Payee",
 									 [NSNumber numberWithFloat:147], @"Category",
@@ -162,7 +162,7 @@ toolbarViewGroupTag;
 									 [NSNumber numberWithFloat:83], @"Balance",
 									 nil];
 	
-	NSDictionary *transactionColumnOrder = [NSArray arrayWithObjects:@"Reconciled", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
+	NSDictionary *transactionColumnOrder = [NSArray arrayWithObjects:@"Cleared", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
 	
 	[defaultValues setObject:visibleTransactionColumns forKey:@"VisibleTransactionColumns"];
 	[defaultValues setObject:transactionColumnSizes forKey:@"TransactionColumnSizes"];
@@ -242,8 +242,8 @@ toolbarViewGroupTag;
 	
 	NSDictionary *visibleTransactionColumns = [[NSUserDefaults standardUserDefaults] objectForKey:@"VisibleTransactionColumns"];
 	NSDictionary *transactionColumnSizes = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnSizes"];
-	NSArray *transactionColumnOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnOrder"];
-	
+	NSMutableArray *transactionColumnOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnOrder"];
+		
 	[[transactionsTableView headerView] setMenu:transactionsTableHeaderMenu];
 	
 	int nMenuIndex = 0;
@@ -277,9 +277,12 @@ toolbarViewGroupTag;
 	}
 	
 	int nCol = 0;
-	for (NSString *oa in transactionColumnOrder)
+	for (NSString *sItem in transactionColumnOrder)
 	{
-		[transactionsTableView moveColumn:[transactionsTableView columnWithIdentifier:oa] toColumn:nCol++];
+		if ([sItem isEqualToString:@"Reconciled"])
+			sItem = @"Cleared";
+		
+		[transactionsTableView moveColumn:[transactionsTableView columnWithIdentifier:sItem] toColumn:nCol++];
 	}
 	
 	NSDate *date1 = [NSDate date];
@@ -542,7 +545,7 @@ toolbarViewGroupTag;
 	[transactionsCategory setStringValue:@""];
 	[transactionsAmount setStringValue:@""];
 	[transactionsType selectItemAtIndex:0];
-	[transactionsReconciled setState:NSOffState];
+	[transactionsCleared setState:NSOffState];
 	
 	[transactionsTableView deselectAll:self];
 	
@@ -894,7 +897,7 @@ toolbarViewGroupTag;
 		
 		[newTransaction setTransaction:nTransaction];
 		
-		int recon = it->isReconciled();
+		int recon = it->isCleared();
 		
 		BOOL bIsAmountNeg = NO;
 		BOOL bIsBalanceNeg = NO;
@@ -905,7 +908,7 @@ toolbarViewGroupTag;
 		if (bShowNegBalancesInRed && !localBalance.IsPositive())
 			bIsBalanceNeg = YES;
 		
-		[newTransaction setIntValue:recon forKey:@"Reconciled"];
+		[newTransaction setIntValue:recon forKey:@"Cleared"];
 		[newTransaction setValue:sTDate forKey:@"Date"];
 		[newTransaction setValue:sTPayee forKey:@"Payee"];
 		[newTransaction setValue:sTDescription forKey:@"Description"];
@@ -1419,7 +1422,7 @@ toolbarViewGroupTag;
 		NSString *sStartingBalanceText = NSLocalizedString(@"Starting balance", "New Account -> Starting balance");
 		std::string strStartingBalanceText = [sStartingBalanceText cStringUsingEncoding:NSUTF8StringEncoding];
 		Transaction newTransaction(strStartingBalanceText, "", "", startingBalance, currentDate);
-		newTransaction.setReconciled(true);
+		newTransaction.setCleared(true);
 		
 		newAccount.addTransaction(newTransaction);
 	}
@@ -1544,7 +1547,7 @@ toolbarViewGroupTag;
 	[transactionsCategory setStringValue:@""];
 	[transactionsAmount setStringValue:@""];
 	[transactionsType selectItemAtIndex:0];
-	[transactionsReconciled setState:NSOffState];
+	[transactionsCleared setState:NSOffState];
 	
 	TransactionItem *newIndex = [self createTransactionItem:newTransaction index:nTransaction];
 	
@@ -1728,7 +1731,7 @@ toolbarViewGroupTag;
 	NSString *sCategory = [makeTransferController category];
 	NSString *sDescription = [makeTransferController description];
 	NSDate *dtDate = [makeTransferController date];
-	BOOL bMakeReconciled = [makeTransferController makeReconciled];
+	BOOL bMakeCleared = [makeTransferController makeCleared];
 		
 	std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strDescription = [sDescription cStringUsingEncoding:NSUTF8StringEncoding];
@@ -1761,9 +1764,9 @@ toolbarViewGroupTag;
 	
 	Transaction fromTransaction(strDescription, strToAccountName, strCategory, amount, date1);
 	fromTransaction.setType(Transfer);
-	if (bMakeReconciled)
+	if (bMakeCleared)
 	{
-		fromTransaction.setReconciled(true);
+		fromTransaction.setCleared(true);
 	}
 	int nFromTransaction = pFromAccount->addTransaction(fromTransaction);
 	
@@ -1771,9 +1774,9 @@ toolbarViewGroupTag;
 	
 	Transaction toTransaction(strDescription, strFromAccountName, strCategory, amount, date1);
 	toTransaction.setType(Transfer);
-	if (bMakeReconciled)
+	if (bMakeCleared)
 	{
-		toTransaction.setReconciled(true);
+		toTransaction.setCleared(true);
 	}
 	int nToTransaction = pToAccount->addTransaction(toTransaction);
 	
@@ -1921,7 +1924,7 @@ toolbarViewGroupTag;
 
 - (TransactionItem*)createTransactionItem:(Transaction&)transaction index:(int)index
 {
-	TransactionItem *newIndex = [[TransactionItem alloc] init];
+	TransactionItem *newItem = [[TransactionItem alloc] init];
 	
 	std::string strPayee = transaction.getPayee();
 	NSString *sPayee = [[NSString alloc] initWithUTF8String:strPayee.c_str()];
@@ -1968,22 +1971,22 @@ toolbarViewGroupTag;
 	
 	[numberFormatter release];
 	
-	[newIndex setTransaction:index];
+	[newItem setTransaction:index];
 	
-	int recon = transaction.isReconciled();
+	int cleared = transaction.isCleared();
 	
-	[newIndex setIntValue:recon forKey:@"Reconciled"];
-	[newIndex setValue:sDate forKey:@"Date"];
-	[newIndex setValue:sPayee forKey:@"Payee"];
-	[newIndex setValue:sDescription forKey:@"Description"];
-	[newIndex setValue:sCategory forKey:@"Category"];
-	[newIndex setValue:sType forKey:@"Type"];
-	[newIndex setValue:sAmount forKey:@"Amount"];
-	[newIndex setValue:sBalance forKey:@"Balance"];
+	[newItem setIntValue:cleared forKey:@"Cleared"];
+	[newItem setValue:sDate forKey:@"Date"];
+	[newItem setValue:sPayee forKey:@"Payee"];
+	[newItem setValue:sDescription forKey:@"Description"];
+	[newItem setValue:sCategory forKey:@"Category"];
+	[newItem setValue:sType forKey:@"Type"];
+	[newItem setValue:sAmount forKey:@"Amount"];
+	[newItem setValue:sBalance forKey:@"Balance"];
 	
-	[newIndex setIntValue:index forKey:@"Transaction"];
+	[newItem setIntValue:index forKey:@"Transaction"];
 	
-	return newIndex;
+	return newItem;
 }
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
@@ -2044,19 +2047,19 @@ toolbarViewGroupTag;
 			Date date1 = trans->getDate();
 			NSDate *datetemp = convertToNSDate(date1);
 			
-			[transactionsReconciled setEnabled:YES];
+			[transactionsCleared setEnabled:YES];
 			[transactionsType setEnabled:YES];
 			[transactionsDateCntl setEnabled:YES];
 			
-			bool bReconciled = trans->isReconciled();
+			bool bCleared = trans->isCleared();
 			
-			if (bReconciled)
+			if (bCleared)
 			{
-				[transactionsReconciled setState:NSOnState];
+				[transactionsCleared setState:NSOnState];
 			}
 			else
 			{
-				[transactionsReconciled setState:NSOffState];
+				[transactionsCleared setState:NSOffState];
 			}
 			
 			[transactionsPayee setStringValue:sPayee];
@@ -2097,7 +2100,7 @@ toolbarViewGroupTag;
 			[transactionsAmount setStringValue:sAmount];
 			[transactionsType selectItemAtIndex:0];
 			
-			[transactionsReconciled setEnabled:NO];
+			[transactionsCleared setEnabled:NO];
 			[transactionsType setEnabled:NO];
 			[transactionsDateCntl setEnabled:NO];
 			
@@ -2124,7 +2127,7 @@ toolbarViewGroupTag;
 			[transactionsAmount setStringValue:sAmount];
 			[transactionsType selectItemAtIndex:0];
 			
-			[transactionsReconciled setEnabled:NO];
+			[transactionsCleared setEnabled:NO];
 			[transactionsType setEnabled:NO];
 			[transactionsDateCntl setEnabled:NO];
 		}
@@ -2151,7 +2154,7 @@ toolbarViewGroupTag;
 		[transactionsCategory setStringValue:@""];
 		[transactionsType selectItemAtIndex:0];
 		[transactionsAmount setStringValue:@""];
-		[transactionsReconciled setState:NSOffState];		
+		[transactionsCleared setState:NSOffState];		
 		
 		m_SelectedTransaction = 0; 
 		m_bEditing = false;		
@@ -2213,10 +2216,10 @@ toolbarViewGroupTag;
 	
 	NSString *sType = [self transactionTypeToString:eType];
 	
-	bool bReconciled = false;
+	bool bCleared = false;
 	
-	if ([transactionsReconciled state] == NSOnState)
-		bReconciled = true;
+	if ([transactionsCleared state] == NSOnState)
+		bCleared = true;
 	
 	int nTrans = [m_SelectedTransaction transaction];
 	int nSplit = [m_SelectedTransaction splitTransaction];
@@ -2241,7 +2244,7 @@ toolbarViewGroupTag;
 		trans->setDescription(strDesc);
 		trans->setCategory(strCategory);
 		trans->setType(eType);
-		trans->setReconciled(bReconciled);
+		trans->setCleared(bCleared);
 		
 		fixed oldAmount = trans->getAmount();
 		
@@ -2260,7 +2263,7 @@ toolbarViewGroupTag;
 		[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 		[m_SelectedTransaction setValue:sType forKey:@"Type"];
 		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-		[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+		[m_SelectedTransaction setIntValue:bCleared forKey:@"Cleared"];
 		[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 		
 		if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
@@ -2293,7 +2296,7 @@ toolbarViewGroupTag;
 			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
 			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-			[m_SelectedTransaction setIntValue:bReconciled forKey:@"Reconciled"];
+			[m_SelectedTransaction setIntValue:bCleared forKey:@"Cleared"];
 			[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
 			
 			if (!strPayee.empty() && !m_Document.doesPayeeExist(strPayee))
@@ -3033,10 +3036,10 @@ toolbarViewGroupTag;
 {
 	NSString *identifier = [tableColumn identifier];
 	
-	if ([identifier caseInsensitiveCompare:@"reconciled"] == NSOrderedSame)
+	if ([identifier caseInsensitiveCompare:@"cleared"] == NSOrderedSame)
 	{
-		int nReconciled = [item intKeyValue:identifier];
-		return [NSNumber numberWithInt:nReconciled];
+		int nCleared = [item intKeyValue:identifier];
+		return [NSNumber numberWithInt:nCleared];
 	}
 
     return [item keyValue:identifier];
@@ -3059,15 +3062,15 @@ toolbarViewGroupTag;
 			if (nTrans >= 0)
 				trans = &m_pAccount->getTransaction(nTrans);
 			
-			if ([identifier isEqualToString:@"Reconciled"])
+			if ([identifier isEqualToString:@"Cleared"])
 			{
 				if ([object boolValue] == YES)
 				{
-					trans->setReconciled(true);
+					trans->setCleared(true);
 				}
 				else
 				{
-					trans->setReconciled(false);
+					trans->setCleared(false);
 				}
 				
 				m_UnsavedChanges = true;
@@ -3097,7 +3100,7 @@ toolbarViewGroupTag;
 	if ([item intKeyValue:@"Split"] != -1)
 		enableCheck = NO;
 	
-	if ([[tableColumn identifier] isEqualToString:@"Reconciled"])
+	if ([[tableColumn identifier] isEqualToString:@"Cleared"])
 	{
 		if (enableCheck == YES)
 		{
@@ -3656,7 +3659,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	char cSeparator = [importQIFController separator];
 	
-	BOOL bMarkReconciled = [importQIFController markAsReconciled];
+	BOOL bMarkCleared = [importQIFController markAsCleared];
 	
 	NSString *sFile = [importQIFController file];
 		
@@ -3664,11 +3667,11 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	[importQIFController release];
 	
-	bool bMR = true;
-	if (bMarkReconciled == NO)
-		bMR = false;
+	bool bMC = true;
+	if (bMarkCleared == NO)
+		bMC = false;
 	
-	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator, bMR))
+	if (importQIFFileToAccount(m_pAccount, strFile, dateFormat, cSeparator, bMC))
 		[self buildTransactionsTree];
 }
 
@@ -3784,7 +3787,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	}
 }
 
-- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse reconciled:(bool)reconciled ignoreExisting:(bool)ignoreExisting
+- (void)importOFXFileWithController:(ImportOFXController*)controller reverseTransactions:(bool)reverse cleared:(bool)cleared ignoreExisting:(bool)ignoreExisting
 {
 	NSString *sFileName = [controller getFilename];
 	std::string strFilename = [sFileName cStringUsingEncoding: NSUTF8StringEncoding];
@@ -3840,7 +3843,7 @@ NSDate *convertToNSDate(MonthYear &date)
 			int existingAccountIndex = [[accountSettings objectForKey:@"existingAccount"] intValue];
 			Account &existingAccount = m_Document.getAccount(existingAccountIndex);
 			
-			importOFXStatementIntoAccount(existingAccount, stResp, reverse, reconciled, ignoreExisting);
+			importOFXStatementIntoAccount(existingAccount, stResp, reverse, cleared, ignoreExisting);
 		}
 		else // new Account
 		{
@@ -3855,7 +3858,7 @@ NSDate *convertToNSDate(MonthYear &date)
 			newAccount.setName(strAccountName);
 			newAccount.setType(eType);
 			
-			importOFXStatementIntoAccount(newAccount, stResp, reverse, reconciled, ignoreExisting);
+			importOFXStatementIntoAccount(newAccount, stResp, reverse, cleared, ignoreExisting);
 			
 			m_Document.addAccount(newAccount);			
 		}		

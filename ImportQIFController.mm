@@ -101,10 +101,10 @@
 			cSeparator = '-';			
 	}
 	
-	if ([fSetAsReconciled state] == NSOnState)
-		bMarkReconciled = YES;
+	if ([fSetAsCleared state] == NSOnState)
+		bMarkCleared = YES;
 	else
-		bMarkReconciled = NO;
+		bMarkCleared = NO;
 		
 	[self confirmImport];
 }
@@ -131,9 +131,9 @@
 	return sFile;
 }
 
-- (BOOL)markAsReconciled
+- (BOOL)markAsCleared
 {
-	return bMarkReconciled;
+	return bMarkCleared;
 }
 
 @end

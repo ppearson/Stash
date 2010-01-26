@@ -12,8 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="920"/>
+			<integer value="570"/>
 			<integer value="1101"/>
+			<integer value="920"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1214,7 +1215,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="834574435">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1403,7 +1404,7 @@
 												<object class="NSMutableArray" key="NSTableColumns">
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="NSTableColumn" id="181470193">
-														<string key="NSIdentifier">Reconciled</string>
+														<string key="NSIdentifier">Cleared</string>
 														<double key="NSWidth">38</double>
 														<double key="NSMinWidth">16</double>
 														<double key="NSMaxWidth">1000</double>
@@ -1654,6 +1655,7 @@
 										</object>
 										<string key="NSFrame">{{0, 17}, {854, 410}}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="781317227"/>
 										<reference key="NSDocView" ref="781317227"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1686,6 +1688,7 @@
 										</object>
 										<string key="NSFrameSize">{854, 17}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="347113208"/>
 										<reference key="NSDocView" ref="347113208"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1694,6 +1697,7 @@
 								</object>
 								<string key="NSFrameSize">{854, 427}</string>
 								<reference key="NSSuperview" ref="966867876"/>
+								<reference key="NSNextKeyView" ref="573510658"/>
 								<int key="NSsFlags">560</int>
 								<reference key="NSVScroller" ref="875781203"/>
 								<reference key="NSHScroller" ref="185413264"/>
@@ -2143,6 +2147,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{854, 609}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSUserDefaultsController" id="616500614">
@@ -2805,6 +2810,7 @@
 										</object>
 										<string key="NSFrame">{{0, 17}, {889, 410}}</string>
 										<reference key="NSSuperview" ref="228632865"/>
+										<reference key="NSNextKeyView" ref="820979008"/>
 										<reference key="NSDocView" ref="820979008"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -2837,6 +2843,7 @@
 										</object>
 										<string key="NSFrameSize">{889, 17}</string>
 										<reference key="NSSuperview" ref="228632865"/>
+										<reference key="NSNextKeyView" ref="315945161"/>
 										<reference key="NSDocView" ref="315945161"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -2845,6 +2852,7 @@
 								</object>
 								<string key="NSFrameSize">{889, 427}</string>
 								<reference key="NSSuperview" ref="1682"/>
+								<reference key="NSNextKeyView" ref="760280864"/>
 								<int key="NSsFlags">560</int>
 								<reference key="NSVScroller" ref="520593772"/>
 								<reference key="NSHScroller" ref="796482333"/>
@@ -4802,14 +4810,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsReconciled</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="697506675"/>
-					</object>
-					<int key="connectionID">872</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">transactionsType</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="642794364"/>
@@ -5511,6 +5511,14 @@
 						<reference key="destination" ref="623953355"/>
 					</object>
 					<int key="connectionID">1106</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsCleared</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="697506675"/>
+					</object>
+					<int key="connectionID">1107</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -9070,7 +9078,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1106</int>
+			<int key="maxID">1107</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -9348,10 +9356,10 @@
 							<string>splitTransaction</string>
 							<string>transactionsAmount</string>
 							<string>transactionsCategory</string>
+							<string>transactionsCleared</string>
 							<string>transactionsDateCntl</string>
 							<string>transactionsDescription</string>
 							<string>transactionsPayee</string>
-							<string>transactionsReconciled</string>
 							<string>transactionsTableView</string>
 							<string>transactionsType</string>
 							<string>transactionsverticalSplitView</string>
@@ -9404,9 +9412,9 @@
 							<string>NSTextField</string>
 							<string>NSComboBox</string>
 							<string>id</string>
+							<string>id</string>
 							<string>NSTextField</string>
 							<string>NSComboBox</string>
-							<string>id</string>
 							<string>NSOutlineView</string>
 							<string>NSPopUpButton</string>
 							<string>NSSplitView</string>

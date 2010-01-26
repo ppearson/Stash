@@ -36,7 +36,7 @@
 	IBOutlet NSComboBox *category;
 	IBOutlet NSTextField *description;
 	IBOutlet id dateCntl;
-	IBOutlet id setAsReconciled;
+	IBOutlet id setAsCleared;
 	
 	int m_fromAccount;
 	int m_toAccount;
@@ -44,7 +44,7 @@
 	NSString *m_category;
 	NSString *m_description;
 	NSDate *m_date;
-	BOOL m_makeReconciled;
+	BOOL m_makeCleared;
 }
 
 - (IBAction)doMakeTransfer:(id)sender;
@@ -60,6 +60,6 @@
 - (NSString*)category;
 - (NSString*)description;
 - (NSDate*)date;
-- (BOOL)makeReconciled;
+- (BOOL)makeCleared;
 
 @end

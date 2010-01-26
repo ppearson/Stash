@@ -30,14 +30,14 @@
 #include "transaction.h"
 #include "string.h"
 
-Transaction::Transaction() : m_Split(false), m_Reconciled(false), m_Type(None), m_Cleared(false), m_Flagged(false), m_HasFITID(false)
+Transaction::Transaction() : m_Split(false), m_Type(None), m_Cleared(false), m_Flagged(false), m_Reconciled(false), m_HasFITID(false)
 {
 	
 }
 
 Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
-	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Reconciled(false),
-	m_Type(None), m_Cleared(false), m_Flagged(false), m_HasFITID(false)
+	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Type(None),
+	m_Cleared(false), m_Reconciled(false), m_Flagged(false), m_HasFITID(false)
 {
 	
 }
@@ -57,12 +57,12 @@ void Transaction::Load(std::fstream &stream, int version)
 	
 	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
 		
-	m_Reconciled = localset[0];
+	m_Cleared = localset[0];
 	m_Split = localset[1];
 	
 	if (version > 3)
 	{
-		m_Cleared = localset[2];
+		m_Reconciled = localset[2];
 		m_Flagged = localset[3];
 		m_HasFITID = localset[4];
 		
@@ -95,9 +95,9 @@ void Transaction::Store(std::fstream &stream)
 	stream.write((char *) &m_Type, sizeof(unsigned char));
 	
 	std::bitset<8> localset;	
-	localset[0] = m_Reconciled;
+	localset[0] = m_Cleared;
 	localset[1] = m_Split;
-	localset[2] = m_Cleared;
+	localset[2] = m_Reconciled;
 	localset[3] = m_Flagged;
 	localset[4] = m_HasFITID;
 	

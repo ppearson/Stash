@@ -32,20 +32,20 @@
 	IBOutlet NSPopUpButton *fDateFormatPopup;
 	IBOutlet NSTextField *fDateFormat;
 	
-	IBOutlet id fSetAsReconciled;
+	IBOutlet id fSetAsCleared;
 	
 	StashAppDelegate *fMainController;
 	
 	NSString *sDesc, *sFile, *sSampleDate;
 	char cSeparator;
 	int nDateFormat;
-	BOOL bMarkReconciled;
+	BOOL bMarkCleared;
 }
 
 - (int)dateFormat;
 - (char)separator;
 - (NSString*)file;
-- (BOOL)markAsReconciled;
+- (BOOL)markAsCleared;
 
 - (id)initWnd:(StashAppDelegate *)controller withFile:(NSString*)file sampleFormat:(NSString*)sFormat;
 
