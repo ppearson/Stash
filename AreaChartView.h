@@ -31,10 +31,14 @@
 	NSMutableArray *m_aDates;
 	NSMutableArray *m_aPlotShapes;
 	
+	IBOutlet NSMenu *fMenu;
+	
 	double m_dMaxValue;
 	int m_selectedPlot;
 	NSString *m_sLongestDate;
 }
+
+- (IBAction)addSelectedItem:(id)sender;
 
 - (void)setData:(NSMutableArray*)data;
 - (void)setMaxValue:(double)value;

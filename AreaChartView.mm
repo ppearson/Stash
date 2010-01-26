@@ -360,6 +360,28 @@
 	[self setNeedsDisplay:YES];
 }
 
+- (NSMenu*)menuForEvent:(NSEvent*)event
+{
+    if (m_selectedPlot != -1)
+		return fMenu;
+	
+	return nil;
+}
+
+- (IBAction)addSelectedItem:(id)sender
+{
+	if (m_selectedPlot == -1)
+		return;
+	
+	NSMutableDictionary *item = [m_aData objectAtIndex:m_selectedPlot];
+	
+	NSString *sTitle = [item objectForKey:@"title"];
+	
+	[[NSApp delegate] addSelectedGraphItem:sTitle];
+	
+	m_selectedPlot = -1;
+}
+		
 - (void)setLongestDate:(NSString*)longestDate
 {
 	[m_sLongestDate retain];

@@ -261,6 +261,7 @@ enum TransactionsToShow
 - (IBAction)graphDatesManuallyChanged:(id)sender;
 
 - (IBAction)addGraphItem:(id)sender;
+- (IBAction)addSelectedGraphItem:(NSString *)item;
 - (IBAction)deleteGraphItem:(id)sender;
 
 - (IBAction)updateGraph:(id)sender;

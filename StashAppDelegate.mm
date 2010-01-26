@@ -1309,11 +1309,15 @@ toolbarViewGroupTag;
 	
 	int nIndex = 0;
 	
+	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"MMMM\nyyyy"];
+	
 	for (; itDate != aDateItems.end(); ++itDate, nIndex++)
 	{
 		NSDate *thisDate = convertToNSDate(*itDate);
 		
-		NSString *sDate = [thisDate descriptionWithCalendarFormat:@"%B\n%Y" timeZone:nil locale:nil];
+		NSString *sDate = [[dateFormatter stringFromDate:thisDate] retain];
 		
 		if ([sDate length] > nLongestDateLength)
 		{
@@ -1323,6 +1327,8 @@ toolbarViewGroupTag;
 		
 		[aDates addObject:sDate];
 	}
+	
+	[dateFormatter release];
 	
 	if (nLongestDateIndex >= 0)
 	{
@@ -2602,6 +2608,14 @@ toolbarViewGroupTag;
 	[graphItemsTableView editColumn:0 row:count withEvent:nil select:YES];	
 }
 
+- (IBAction)addSelectedGraphItem:(NSString *)item
+{
+	[m_aGraphItems addObject:item];
+	
+	[graphItemsTableView reloadData];
+	[self redrawGraph:self];
+}
+
 - (IBAction)deleteGraphItem:(id)sender
 {
 	NSIndexSet *rows = [graphItemsTableView selectedRowIndexes];
@@ -2620,6 +2634,7 @@ toolbarViewGroupTag;
 		}
 		
 		[graphItemsTableView reloadData];
+		[graphItemsTableView deselectAll:self];
 		[self redrawGraph:self];
 	}
 }
