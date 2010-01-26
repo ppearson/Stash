@@ -94,14 +94,10 @@ public:
 	void Store(std::fstream &stream);
 
 private:
-	
-	std::string ToString() const;
-	
 	bool m_Cleared;
 	bool m_Flagged;
 	bool m_Reconciled;
-	bool m_HasFITID;
-	
+		
 	Date m_Date;
 	std::string m_Category;
 	std::string m_Description;
@@ -109,6 +105,7 @@ private:
 	fixed m_Amount;
 	TransactionType m_Type;
 	
+	bool m_HasFITID;
 	std::string m_FITID;
 	
 	bool m_Split;
