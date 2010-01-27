@@ -418,7 +418,7 @@ toolbarViewGroupTag;
 		
 		[segmentedControl setSegmentStyle:NSSegmentStyleTexturedSquare];
         
-        const NSSize groupSize = NSMakeSize(180.0, 25.0);
+        const NSSize groupSize = NSMakeSize(200.0, 25.0);
         [groupItem setMinSize:groupSize];
         [groupItem setMaxSize:groupSize];
         
@@ -1314,7 +1314,7 @@ toolbarViewGroupTag;
 	
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:@"MMMM\nyyyy"];
+	[dateFormatter setDateFormat:@"MMM\nyyyy"];
 	
 	for (; itDate != aDateItems.end(); ++itDate, nIndex++)
 	{
