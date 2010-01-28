@@ -716,6 +716,11 @@ toolbarViewGroupTag;
 		[viewingPeriodSegmentControl setEnabled:NO forSegment:0];
 		[viewingPeriodSegmentControl setEnabled:NO forSegment:5];
 	}
+	else
+	{
+		[viewingPeriodSegmentControl setEnabled:YES forSegment:0];
+		[viewingPeriodSegmentControl setEnabled:YES forSegment:5];
+	}
 	
 	GraphViewType eViewType = m_pGraph->getViewType();
 	
