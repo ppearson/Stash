@@ -105,11 +105,19 @@
 		return;
 	}
 	
-	double dMarginX = 45;
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[numberFormatter setLenient:YES];
+	
+	NSNumber *nMaxAmount = [NSNumber numberWithDouble:m_dMaxValue];
+	NSString *sMaxAmount = [numberFormatter stringFromNumber:nMaxAmount];
+	NSSize maxAmountSize = [sMaxAmount sizeWithAttributes:attributes1];	
+	
+	double dMarginX = maxAmountSize.width + 30;
 	double dMarginY = 40;
 	
-	NSRect innerBounds = NSInsetRect(bounds, dMarginX, dMarginY);
-	NSRect plotArea = NSOffsetRect(innerBounds, (dMarginX/2.0), 0);
+	NSRect innerBounds = NSInsetRect(bounds, (dMarginX / 2.0), dMarginY);
+	NSRect plotArea = NSOffsetRect(innerBounds, (dMarginX / 3.5), 0);
 	
 	[[NSColor blackColor] set];	
 	[NSBezierPath strokeRect:plotArea];
@@ -181,10 +189,6 @@
 	
 	numYGrids++;
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
-	
 	for (int i = 0; i < numYGrids; i++)
 	{
 		double dYValue = dBottomStart + (dYInc * i) * dYScale;
@@ -193,7 +197,6 @@
 		[gridLine lineToPoint:NSMakePoint(plotArea.origin.x + plotArea.size.width, dYValue)];
 		
 		NSNumber *nScaleAmount = [NSNumber numberWithDouble:(dYInc * i)];
-		
 		NSString *sScaleAmount = [[numberFormatter stringFromNumber:nScaleAmount] retain];
 		
 		NSSize extent = [sScaleAmount sizeWithAttributes:attributes1];
