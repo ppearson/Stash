@@ -29,7 +29,7 @@
 	NSImage *fButtonImage;
 	IBOutlet id fContainedView;
 	IBOutlet id fLinkedItem;
-	DropDownWindow* window;
+	DropDownWindow* fWindow;
 }
 
 - (IBAction)dropDownDateChanged:(id)sender;

@@ -100,18 +100,12 @@
 	[window orderOut:window];
 	
 	[window release];
+	window = nil;
 }
 
 - (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender
 {
 	[[self class] dropDownWindow:self atPoint:point withEvent:event sender:sender];
-}
-
-- (void)closeWindow
-{
-	NSWindow *thisWindow = [[self containedView] window];
-	[[thisWindow parentWindow] removeChildWindow:thisWindow];
-	[thisWindow orderOut:thisWindow];
 }
 
 - (void)setHandleFirstClick:(BOOL)handle
@@ -147,31 +141,6 @@
 	return self;
 }
 
-- (NSEvent*)filterEvent:(NSEvent*)event
-{
-	if (([event window] != self) && [event isWantedEvent])
-	{
-		NSPoint location = [[event window] convertBaseToScreen:[event locationInWindow]];
-		
-		if ([event type] == NSKeyDown)
-		{
-			return event;
-		}
-		else
-			return [NSEvent mouseEventWithType:	[event type]
-								  location:	[self convertScreenToBase:location]
-							 modifierFlags:	[event modifierFlags]
-								 timestamp:	[event timestamp]
-							  windowNumber:	[self windowNumber]
-								   context:	[event context]
-							   eventNumber:	[event eventNumber]
-								clickCount:	[event clickCount]
-								  pressure:	[event pressure]];
-	}
-	else
-		return event;
-}
-
 - (void)trackWithEvent:(NSEvent*)event
 {
 	NSTimeInterval startTime = [event timestamp];
@@ -180,7 +149,7 @@
 	
 	if (bHandleFirstClick)
 	{
-		[[self containedView] mouseDown:[self filterEvent:event]];
+		[[self containedView] mouseDown:event];
 		
 		if ([[self currentEvent] timestamp] - startTime > 0.25)
 			return;
@@ -192,20 +161,18 @@
 	BOOL invertedTracking = NO;
 	
 	mask = NSLeftMouseUpMask | NSLeftMouseDraggedMask |
-	NSRightMouseUpMask | NSRightMouseDraggedMask |
-	NSAppKitDefinedMask | NSFlagsChangedMask |
-	NSScrollWheelMask | NSKeyDownMask;
+	NSRightMouseUpMask | NSRightMouseDraggedMask | NSAppKitDefined |
+	NSFlagsChangedMask | NSScrollWheelMask | NSKeyDownMask;
 	
 	while (maintain)
 	{
-		thisEvent = [self filterEvent:[self nextEventMatchingMask:mask]];
+		thisEvent = [self nextEventMatchingMask:mask];
 		
 		switch([thisEvent type])
 		{
 			case NSMouseMovedMask:
 				[[self containedView] mouseMoved:thisEvent];
-				break;
-				
+				break;				
 			case NSRightMouseUp:
 			case NSLeftMouseUp:
 				if  ([thisEvent timestamp] - startTime < 0.25 || !bHandleFirstClick)
@@ -235,7 +202,7 @@
 				break;
 			case NSFlagsChanged:
 				[[self containedView] flagsChanged:thisEvent];
-				break;				
+				break;
 			case NSAppKitDefined:
 				if ([thisEvent subtype] == NSApplicationDeactivatedEventType)
 					maintain = NO;
@@ -249,7 +216,7 @@
 		}		
 	}
 	
-	[self discardEventsMatchingMask:NSAnyEventMask beforeEvent:thisEvent];	
+	[self discardEventsMatchingMask:NSAnyEventMask beforeEvent:thisEvent];
 }
 
 @end

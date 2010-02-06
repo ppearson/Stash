@@ -37,29 +37,33 @@
 
 - (void)mouseDown:(NSEvent*)event
 {
-	window = [DropDownWindow dropDownWindowWithContainedView:fContainedView];
-	[window setShouldCloseWhenViewTrackingReturns:NO];
-	
-	[fContainedView setTarget:self];
-	[fContainedView setAction:@selector(dropDownDateChanged:)];
-	
-	[fContainedView setDateValue:[fLinkedItem dateValue]];
-	
-	NSPoint p = [self bounds].origin;
-	p = [self convertPoint:p toView:nil];
-	
-	NSRect rect = [self bounds];
-	p.y -= rect.size.height;
-	
-	[window dropDownAtPoint:p withEvent:event sender:self];
+	fWindow = [DropDownWindow dropDownWindowWithContainedView:fContainedView];
+	if (fWindow)
+	{
+		[fWindow setShouldCloseWhenViewTrackingReturns:NO];
+		
+		[fContainedView setTarget:self];
+		[fContainedView setAction:@selector(dropDownDateChanged:)];
+		
+		[fContainedView setDateValue:[fLinkedItem dateValue]];
+		
+		NSPoint p = [self bounds].origin;
+		p = [self convertPoint:p toView:nil];
+		
+		NSRect rect = [self bounds];
+		p.y -= rect.size.height;
+		
+		[fWindow dropDownAtPoint:p withEvent:event sender:self];
+	}
 }
 
 - (IBAction)dropDownDateChanged:(id)sender
 {
 	NSDate *date = [sender dateValue];
 	
-	[fLinkedItem setDateValue:date];	
-	[window closeWindow];
+	[fLinkedItem setDateValue:date];
+	
+	[fWindow setShouldCloseWhenViewTrackingReturns:YES];
 }
 
 @end

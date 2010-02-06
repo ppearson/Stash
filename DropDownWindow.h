@@ -35,14 +35,11 @@
 
 - (void)dropDownAtPoint:(NSPoint)point withEvent:(NSEvent*)event sender:(id)sender;
 
-- (void)closeWindow;
-
 - (void)setHandleFirstClick:(BOOL)handle;
 - (void)setShouldCloseWhenViewTrackingReturns:(BOOL)closeOnReturn;
 
 - (id)initWithContentRect1:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation;
 
-- (NSEvent*)filterEvent:(NSEvent*)event;
 - (void)trackWithEvent:(NSEvent*)event;
 
 - (NSView*)containedView;
