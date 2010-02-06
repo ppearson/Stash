@@ -310,55 +310,55 @@
 
 
 /* Make Transfer -> Invalid account selection Warning Title */
-"Invalid account selection" = "Invalid account selection"
+"Invalid account selection" = "Invalid account selection";
 
 /* Make Transfer -> Invalid account selection Warning Message */
-"You must select different From and To accounts in order to make a Transfer." = "You must select different From and To accounts in order to make a Transfer."
+"You must select different From and To accounts in order to make a Transfer." = "You must select different From and To accounts in order to make a Transfer.";
 
 
 /* Area Chart View -> No Data Message */
-"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months." = "Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months."
+"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months." = "Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months.";
 
 /* Area Chart View -> Selected Item Text */
-"Selected item: %@" = "Selected item: %@"
+"Selected item: %@" = "Selected item: %@";
 
 
 /* Pie Chart View -> Total Amount Text */
-"Total amount:  %@" = "Total amount:  %@"
+"Total amount:  %@" = "Total amount:  %@";
 
 /* Pie Chart View -> Selected Amount Text */
-"Selected amount:  %@" = "Selected amount:  %@"
+"Selected amount:  %@" = "Selected amount:  %@";
 
 
 /* Preferences -> General */
-"General" = "General"
+"General" = "General";
 
 /* Preferences -> Transactions */
-"Transactions" = "Transactions"
+"Transactions" = "Transactions";
 
 /* Preferences -> Pie Chart */
-"Pie Chart" = "Pie Chart"
+"Pie Chart" = "Pie Chart";
 
 /* Preferences -> Area Chart */
-"Area Chart" = "Area Chart"
+"Area Chart" = "Area Chart";
 
 /* Preferences -> Pie Chart -> Sort -> Size */
-"Size" = "Size"
+"Size" = "Size";
 
 /* Preferences -> Pie Chart -> Sort -> Title */
-"Title" = "Title"
+"Title" = "Title";
 
 /* Preferences -> Pie Chart -> Selection Type -> Selected */
-"are selected" = "are selected"
+"are selected" = "are selected";
 
 /* Preferences -> Pie Chart -> Selection Type -> Pop Out */
-"pop out" = "pop out"
+"pop out" = "pop out";
 
 /* Preferences Window Title */
-"%@ Preferences" = "%@ Preferences"
+"%@ Preferences" = "%@ Preferences";
 
 /* QIF Import Window Text */
-"Please select the settings you want to use to import the file \"%@\"." = "Please select the settings you want to use to import the file \"%@\"."
+"Please select the settings you want to use to import the file \"%@\"." = "Please select the settings you want to use to import the file \"%@\".";
 
 /* Import OFX Reverse Tooltip */
-"Some Banks produce files with records in reverse order. This option reverses them on import." = "Some Banks produce files with records in reverse order. This option reverses them on import."
+"Some Banks produce files with records in reverse order. This option reverses them on import." = "Some Banks produce files with records in reverse order. This option reverses them on import.";
