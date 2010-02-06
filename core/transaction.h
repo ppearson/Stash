@@ -60,7 +60,7 @@ public:
 	void setReconciled(bool recon) { m_Reconciled = recon; }
 	
 	Date getDate() const { return m_Date; }
-	const Date &getDate1() { return m_Date; }
+	const Date &getDate1() const { return m_Date; }
 	void setDate(Date date) { m_Date = date; }
 	std::string getCategory() const { return m_Category; }
 	void setCategory(std::string Category) { m_Category = Category; }
@@ -81,12 +81,13 @@ public:
 	void setHasFITID(bool has) { m_HasFITID = has; }
 	
 	void setSplit(bool split) { m_Split = split; }
-	bool isSplit() { return m_Split; }
+	bool isSplit() const { return m_Split; }
 	
 	void addSplit(SplitTransaction &split) { m_aSplits.push_back(split); }
 	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);
 	SplitTransaction & getSplit(int item) { return m_aSplits[item]; }
-	int getSplitCount() { return m_aSplits.size(); }
+	const SplitTransaction & getSplit(int item) const { return m_aSplits[item]; }
+	int getSplitCount() const { return m_aSplits.size(); }
 	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
 	fixed getSplitTotal();
 	

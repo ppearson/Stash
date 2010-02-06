@@ -32,7 +32,7 @@ class Document
 {
 public:
 	Document();
-	~Document() { };
+	virtual ~Document() { };
 	
 	int addAccount(Account &acc) { m_aAccounts.push_back(acc); return m_aAccounts.size() - 1; }
 	Account &getAccount(int acc) { return m_aAccounts[acc]; }
@@ -65,20 +65,20 @@ public:
 	bool Load(std::fstream &stream);
 	bool Store(std::fstream &stream);
 	
-	std::vector<Account>::iterator AccountBegin() { return m_aAccounts.begin(); }
-	std::vector<Account>::iterator AccountEnd() { return m_aAccounts.end(); }
+	inline std::vector<Account>::iterator AccountBegin() { return m_aAccounts.begin(); }
+	inline std::vector<Account>::iterator AccountEnd() { return m_aAccounts.end(); }
 	
-	std::set<std::string>::iterator PayeeBegin() { return m_aPayees.begin(); }
-	std::set<std::string>::iterator PayeeEnd() { return m_aPayees.end(); }
+	inline std::set<std::string>::iterator PayeeBegin() { return m_aPayees.begin(); }
+	inline std::set<std::string>::iterator PayeeEnd() { return m_aPayees.end(); }
 	
-	std::set<std::string>::iterator CategoryBegin() { return m_aCategories.begin(); }
-	std::set<std::string>::iterator CategoryEnd() { return m_aCategories.end(); }
+	inline std::set<std::string>::iterator CategoryBegin() { return m_aCategories.begin(); }
+	inline std::set<std::string>::iterator CategoryEnd() { return m_aCategories.end(); }
 	
-	std::vector<ScheduledTransaction>::iterator SchedTransBegin() { return m_aScheduledTransactions.begin(); }
-	std::vector<ScheduledTransaction>::iterator SchedTransEnd() { return m_aScheduledTransactions.end(); }
+	inline std::vector<ScheduledTransaction>::iterator SchedTransBegin() { return m_aScheduledTransactions.begin(); }
+	inline std::vector<ScheduledTransaction>::iterator SchedTransEnd() { return m_aScheduledTransactions.end(); }
 	
-	std::vector<Graph>::iterator GraphBegin() { return m_aGraphs.begin(); }
-	std::vector<Graph>::iterator GraphEnd() { return m_aGraphs.end(); }
+	inline std::vector<Graph>::iterator GraphBegin() { return m_aGraphs.begin(); }
+	inline std::vector<Graph>::iterator GraphEnd() { return m_aGraphs.end(); }
 	
 	fixed getBalance(bool onlyReconciled);
 	

@@ -40,7 +40,7 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 
 	// output each transaction record
 
-	std::vector<Transaction>::iterator it = pAccount->begin();
+	std::vector<Transaction>::const_iterator it = pAccount->begin();
 	for (; it != pAccount->end(); ++it)
 	{
 		Date date = it->getDate();

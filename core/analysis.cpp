@@ -95,7 +95,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 	std::map<std::string, fixed> aMap;
 	std::map<std::string, fixed>::iterator itFind = aMap.end();
 	
-	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
+	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
 
 	for (; it != criteria.m_pAccount->end(); ++it)
 	{
@@ -115,7 +115,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
-				SplitTransaction &split = (*it).getSplit(i);
+				const SplitTransaction &split = (*it).getSplit(i);
 				
 				std::string item;
 				if (categories)
@@ -195,7 +195,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 	std::map<MonthYear, fixed> aDateTotals;
 	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
 	
-	std::vector<Transaction>::iterator it = criteria.m_pAccount->begin();
+	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
 	
 	for (; it != criteria.m_pAccount->end(); ++it)
 	{
@@ -217,7 +217,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 		{
 			for (int i = 0; i < (*it).getSplitCount(); i++)
 			{
-				SplitTransaction &split = (*it).getSplit(i);
+				const SplitTransaction &split = (*it).getSplit(i);
 				
 				std::string item;
 				if (categories)

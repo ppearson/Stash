@@ -804,7 +804,7 @@ toolbarViewGroupTag;
 		return;
 	}
 	
-	std::vector<Transaction>::iterator it = m_pAccount->begin();
+	std::vector<Transaction>::const_iterator it = m_pAccount->begin();
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
@@ -820,7 +820,7 @@ toolbarViewGroupTag;
 		
 		dateNow.DecrementDays(nRecentDuration);
 		
-		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
+		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
@@ -842,7 +842,7 @@ toolbarViewGroupTag;
 		
 		Date dateComp(1, 1, dateNow.getYear());
 		
-		std::vector<Transaction>::iterator itTemp = m_pAccount->begin();
+		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
 		
 		for (; itTemp != m_pAccount->end(); ++itTemp)
 		{
@@ -935,7 +935,7 @@ toolbarViewGroupTag;
 			
 			for (int i = 0; i < nSplits; i++)
 			{
-				SplitTransaction & split = it->getSplit(i);
+				const SplitTransaction &split = it->getSplit(i);
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				

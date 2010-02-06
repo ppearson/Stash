@@ -202,8 +202,8 @@ public:
 	void writeToSGMLStream(std::fstream &stream);
 	void writeToXMLStream(std::fstream &stream);
 	
-	OFXStTrIt begin() { return m_aTransactions.begin(); }
-	OFXStTrIt end() { return m_aTransactions.end(); }
+	inline OFXStTrIt begin() const { return m_aTransactions.begin(); }
+	inline OFXStTrIt end() const { return m_aTransactions.end(); }
 	
 private:
 	OFXBankAccount		m_account;
@@ -246,8 +246,8 @@ public:
 	void addStatementTransactionResponse(std::auto_ptr<OFXStatementTransactionResponse> pResponse) { m_aStatements.push_back(*pResponse.get()); }
 	void addStatementTransactionResponse(OFXStatementTransactionResponse &response) { m_aStatements.push_back(response); }
 
-	OFXStTrResIt begin() { return m_aStatements.begin(); }
-	OFXStTrResIt end() { return m_aStatements.end(); }
+	inline OFXStTrResIt begin() { return m_aStatements.begin(); }
+	inline OFXStTrResIt end() { return m_aStatements.end(); }
 	
 	OFXStatementTransactionResponse &getResponse(int response) { return m_aStatements[response]; }
 	

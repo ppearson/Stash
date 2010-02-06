@@ -71,8 +71,10 @@ public:
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);
 	
-	std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }
-	std::vector<Transaction>::iterator end() { return m_aTransactions.end(); }
+	inline std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }
+	inline std::vector<Transaction>::iterator end() { return m_aTransactions.end(); }
+	inline std::vector<Transaction>::const_iterator begin() const { return m_aTransactions.begin(); }
+	inline std::vector<Transaction>::const_iterator end() const { return m_aTransactions.end(); }
 	
 	fixed getBalance(bool onlyCleared, int endIndex = -1);
 
