@@ -208,8 +208,10 @@ enum TransactionsToShow
 
 // Payees
 
+- (IBAction)AddPayee:(id)sender;
 - (IBAction)DeletePayee:(id)sender;
 
+- (IBAction)AddCategory:(id)sender;
 - (IBAction)DeleteCategory:(id)sender;
 
 - (IBAction)AddScheduledTransaction:(id)sender;

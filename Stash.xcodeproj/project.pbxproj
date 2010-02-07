@@ -40,7 +40,7 @@
 		D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
-		D0938704111EF48600D6FFCF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58150DA1D0A300B32029 /* MainMenu.xib */; };
+		D0938746111F124900D6FFCF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0938745111F124900D6FFCF /* MainMenu.xib */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D096420710F793430072CE3C /* ExportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D096420610F793430072CE3C /* ExportOFXController.mm */; };
 		D09A22181102293E001F2479 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D09A22171102293E001F2479 /* Localizable.strings */; };
@@ -73,7 +73,7 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1DDD58150DA1D0A300B32029 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StashAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StashAppDelegate.mm; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* Stash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stash_Prefix.pch; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 				D07749291093B3AB00EDC307 /* Images */,
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				1DDD58150DA1D0A300B32029 /* MainMenu.xib */,
+				D0938745111F124900D6FFCF /* MainMenu.xib */,
 				D09A22171102293E001F2479 /* Localizable.strings */,
 			);
 			name = Resources;
@@ -423,7 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				D0938704111EF48600D6FFCF /* MainMenu.xib in Resources */,
+				D0938746111F124900D6FFCF /* MainMenu.xib in Resources */,
 				D077492B1093B3AB00EDC307 /* round_check.png in Resources */,
 				D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */,
 				D09284CD10A0BCC10040EDF5 /* split.png in Resources */,
@@ -504,6 +504,14 @@
 				089C165DFE840E0CC02AAC07 /* English */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D0938745111F124900D6FFCF /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1DDD58150DA1D0A300B32029 /* English */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 		D09A22171102293E001F2479 /* Localizable.strings */ = {

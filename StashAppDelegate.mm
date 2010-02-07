@@ -2851,6 +2851,17 @@ toolbarViewGroupTag;
     }	
 }
 
+- (IBAction)AddPayee:(id)sender
+{
+	int count = [m_aPayeeItems count];
+	
+	[m_aPayeeItems addObject:@""];
+	
+	[payeesTableView reloadData];
+	
+	[payeesTableView editColumn:0 row:count withEvent:nil select:YES];
+}
+
 - (IBAction)DeletePayee:(id)sender
 {
 	NSInteger row = [payeesTableView selectedRow];
@@ -2869,6 +2880,17 @@ toolbarViewGroupTag;
 		
 		m_UnsavedChanges = true;
 	}
+}
+
+- (IBAction)AddCategory:(id)sender
+{
+	int count = [m_aCategoryItems count];
+	
+	[m_aCategoryItems addObject:@""];
+	
+	[categoriesTableView reloadData];
+	
+	[categoriesTableView editColumn:0 row:count withEvent:nil select:YES];
 }
 
 - (IBAction)DeleteCategory:(id)sender
@@ -3220,23 +3242,21 @@ toolbarViewGroupTag;
 {
 	NSString *identifier = [tableColumn identifier];
 	
+	if (rowIndex < 0)
+		return;
+	
 	if (aTableView == scheduledTransactionsTableView)
 	{
 		if ([identifier isEqualToString:@"enabled"])
-		{
-			int nRow = rowIndex;
-			
-			if (nRow < 0)
-				return;
-			
-			NSMutableDictionary *nsSchedTrans = [m_aScheduledTransactions objectAtIndex:nRow];
+		{			
+			NSMutableDictionary *nsSchedTrans = [m_aScheduledTransactions objectAtIndex:rowIndex];
 			
 			if (nsSchedTrans == nil)
 				return;
 			
 			[nsSchedTrans setValue:[NSNumber numberWithBool:[object boolValue]] forKey:@"enabled"];
 			
-			ScheduledTransaction &oSchedTrans = m_Document.getScheduledTransaction(nRow);
+			ScheduledTransaction &oSchedTrans = m_Document.getScheduledTransaction(rowIndex);
 			
 			if ([object boolValue] == YES)
 			{
@@ -3252,18 +3272,51 @@ toolbarViewGroupTag;
 	}
 	else if (aTableView == graphItemsTableView)
 	{
-		int nRow = rowIndex;
-		
-		if (nRow < 0)
-			return;
-		
-		NSString *sItem = [m_aGraphItems objectAtIndex:nRow];
+		NSString *sItem = [m_aGraphItems objectAtIndex:rowIndex];
 		
 		sItem = object;
 		
-		[m_aGraphItems replaceObjectAtIndex:nRow withObject:sItem];
+		[m_aGraphItems replaceObjectAtIndex:rowIndex withObject:sItem];
 		
 		[self redrawGraph:self];
+	}
+	else if (aTableView == payeesTableView)
+	{
+		NSString *sItem = [m_aPayeeItems objectAtIndex:rowIndex];
+		
+		if ([sItem length] == 0)
+		{
+			NSString *sNewItem = object;
+			
+			std::string strPayee = [sNewItem cStringUsingEncoding:NSUTF8StringEncoding];
+		
+			[m_aPayeeItems replaceObjectAtIndex:rowIndex withObject:sNewItem];
+			
+			m_Document.addPayee(strPayee);
+			
+			[payeesTableView reloadData];
+			
+			m_UnsavedChanges = true;
+		}
+	}
+	else if (aTableView == categoriesTableView)
+	{
+		NSString *sItem = [m_aCategoryItems objectAtIndex:rowIndex];
+		
+		if ([sItem length] == 0)
+		{
+			NSString *sNewItem = object;
+			
+			std::string strCategory = [sNewItem cStringUsingEncoding:NSUTF8StringEncoding];
+			
+			[m_aCategoryItems replaceObjectAtIndex:rowIndex withObject:sNewItem];
+			
+			m_Document.addCategory(strCategory);
+			
+			[categoriesTableView reloadData];
+			
+			m_UnsavedChanges = true;
+		}
 	}
 }
 
