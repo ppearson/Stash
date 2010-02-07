@@ -20,9 +20,9 @@
  *
  */
 
-#import "MakeTransfer.h"
+#import "MakeTransferController.h"
 
-@implementation MakeTransfer
+@implementation MakeTransferController
 
 - (id)initWithAccounts:(NSMutableArray *)accounts categories:(NSMutableArray *)categories
 {

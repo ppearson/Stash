@@ -22,8 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-
-@interface MakeTransfer : NSWindowController
+@interface MakeTransferController : NSWindowController
 {
 	IBOutlet NSWindow *makeTransferWindow;
 	

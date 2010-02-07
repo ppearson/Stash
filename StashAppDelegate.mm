@@ -1710,16 +1710,16 @@ toolbarViewGroupTag;
 		[aCategories addObject:sCategory];
 	}
 	
-	if (!makeTransfer)
-		makeTransfer = [[MakeTransfer alloc] initWithAccounts:aAccounts categories:aCategories];
+	if (!makeTransferController)
+		makeTransferController = [[MakeTransferController alloc] initWithAccounts:aAccounts categories:aCategories];
 	
-	[makeTransfer makeTransfer:window initialAccount:0];	
+	[makeTransferController makeTransfer:window initialAccount:0];	
 }
 
-- (void)makeTransferItem:(MakeTransfer *)makeTransferController
+- (void)makeTransferItem:(MakeTransferController *)makeTransferCont
 {
-	int nFromAccount = [makeTransferController fromAccount];
-	int nToAccount = [makeTransferController toAccount];
+	int nFromAccount = [makeTransferCont fromAccount];
+	int nToAccount = [makeTransferCont toAccount];
 	
 	Account *pFromAccount = NULL;
 	pFromAccount = m_Document.getAccountPtr(nFromAccount);
@@ -1732,11 +1732,11 @@ toolbarViewGroupTag;
 		return;
 	}
 	
-	NSString *sAmount = [makeTransferController amount];
-	NSString *sCategory = [makeTransferController category];
-	NSString *sDescription = [makeTransferController description];
-	NSDate *dtDate = [makeTransferController date];
-	BOOL bMakeCleared = [makeTransferController makeCleared];
+	NSString *sAmount = [makeTransferCont amount];
+	NSString *sCategory = [makeTransferCont category];
+	NSString *sDescription = [makeTransferCont description];
+	NSDate *dtDate = [makeTransferCont date];
+	BOOL bMakeCleared = [makeTransferCont makeCleared];
 		
 	std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strDescription = [sDescription cStringUsingEncoding:NSUTF8StringEncoding];

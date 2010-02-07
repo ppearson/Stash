@@ -33,7 +33,7 @@
 #import "PreferencesController.h"
 #import "PieChartView.h"
 #import "AreaChartView.h"
-#import "MakeTransfer.h"
+#import "MakeTransferController.h"
 #import "ImportOFXController.h"
 #import "ExportOFXController.h"
 
@@ -137,7 +137,7 @@ enum TransactionsToShow
 	NSMutableArray *m_aGraphItems;
 	
 	PreferencesController *prefController;
-	MakeTransfer *makeTransfer;
+	MakeTransferController *makeTransferController;
 	ImportOFXController *importOFXController;
 	ExportOFXController *exportOFXController;	
 	
@@ -186,7 +186,7 @@ enum TransactionsToShow
 - (IBAction)SplitTransaction:(id)sender;
 
 - (IBAction)MakeTransfer:(id)sender;
-- (void)makeTransferItem:(MakeTransfer *)makeTransferController;
+- (void)makeTransferItem:(MakeTransferController *)makeTransferController;
 
 - (NSString*)transactionTypeToString:(TransactionType)type;
 - (NSString*)convertUSNegAmount:(NSString*)string;
