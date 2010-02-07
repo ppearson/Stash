@@ -188,8 +188,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D058757E10EFA80D00A2766A /* MakeTransferController.h */,
-				D058757F10EFA80D00A2766A /* MakeTransferController.m */,
 				D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */,
 				D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */,
 				D07D51E810FA1FEC00BC37F9 /* DropDownWindow.h */,
@@ -204,34 +202,20 @@
 				D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */,
 				D005349B10B95A99000F9B23 /* PreferencesWindow.h */,
 				D005349C10B95A99000F9B23 /* PreferencesWindow.m */,
-				D00534A310B95B3D000F9B23 /* PreferencesController.h */,
-				D00534A410B95B3D000F9B23 /* PreferencesController.m */,
-				D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */,
-				D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */,
 				D010001A109DE5D7001BA24A /* IndexItem.h */,
 				D010001B109DE5D7001BA24A /* IndexItem.m */,
 				D0100013109DE10E001BA24A /* IndexBar.h */,
 				D0100014109DE10E001BA24A /* IndexBar.m */,
-				D06BDF63109C7F48007437B6 /* ImportQIFController.h */,
-				D06BDF64109C7F48007437B6 /* ImportQIFController.mm */,
 				D086FD0510931F14001AE198 /* TransactionItem.h */,
 				D086FD0610931F14001AE198 /* TransactionItem.mm */,
 				D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */,
 				D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */,
 				D08B025710D461AA006152CD /* SplitViewEx.h */,
 				D08B025810D461AA006152CD /* SplitViewEx.m */,
-				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
-				D02C0726109A2A4F00155B13 /* AddAccountController.mm */,
 				D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */,
 				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 				256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
-				D0677E0910B82563005D783C /* AccountInfoController.h */,
-				D0677E0A10B82563005D783C /* AccountInfoController.mm */,
-				D09F242210F64F5600CD1C8D /* ImportOFXController.h */,
-				D09F242310F64F5600CD1C8D /* ImportOFXController.mm */,
-				D096420510F793430072CE3C /* ExportOFXController.h */,
-				D096420610F793430072CE3C /* ExportOFXController.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -265,6 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				D01984F510A8CA7F0040DD63 /* core */,
+				D093870D111EF52700D6FFCF /* Controllers */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -362,6 +347,29 @@
 				D077492A1093B3AB00EDC307 /* round_check.png */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		D093870D111EF52700D6FFCF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D058757E10EFA80D00A2766A /* MakeTransferController.h */,
+				D058757F10EFA80D00A2766A /* MakeTransferController.m */,
+				D00534A310B95B3D000F9B23 /* PreferencesController.h */,
+				D00534A410B95B3D000F9B23 /* PreferencesController.m */,
+				D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */,
+				D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */,
+				D06BDF63109C7F48007437B6 /* ImportQIFController.h */,
+				D06BDF64109C7F48007437B6 /* ImportQIFController.mm */,
+				D02C0725109A2A4F00155B13 /* AddAccountController.h */,
+				D02C0726109A2A4F00155B13 /* AddAccountController.mm */,
+				D0677E0910B82563005D783C /* AccountInfoController.h */,
+				D0677E0A10B82563005D783C /* AccountInfoController.mm */,
+				D09F242210F64F5600CD1C8D /* ImportOFXController.h */,
+				D09F242310F64F5600CD1C8D /* ImportOFXController.mm */,
+				D096420510F793430072CE3C /* ExportOFXController.h */,
+				D096420610F793430072CE3C /* ExportOFXController.mm */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
