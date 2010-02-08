@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		256AC3DA0F4B6AC300CF3369 /* StashAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		D005349D10B95A99000F9B23 /* PreferencesWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = D005349C10B95A99000F9B23 /* PreferencesWindow.m */; };
@@ -24,6 +23,17 @@
 		D019850A10A8CA7F0040DD63 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D019850010A8CA7F0040DD63 /* storage.cpp */; };
 		D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D019850310A8CA7F0040DD63 /* transaction.cpp */; };
 		D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.mm */; };
+		D03BFEC8112085E000A7B70F /* AccountInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEB2112085E000A7B70F /* AccountInfo.xib */; };
+		D03BFEC9112085E000A7B70F /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEB4112085E000A7B70F /* AddAccount.xib */; };
+		D03BFECA112085E000A7B70F /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEB6112085E000A7B70F /* DueScheduledTransactions.xib */; };
+		D03BFECB112085E000A7B70F /* ExportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEB8112085E000A7B70F /* ExportOFX.xib */; };
+		D03BFECC112085E000A7B70F /* ImportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEBA112085E000A7B70F /* ImportOFX.xib */; };
+		D03BFECD112085E000A7B70F /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEBC112085E000A7B70F /* ImportQIF.xib */; };
+		D03BFECE112085E000A7B70F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEBE112085E000A7B70F /* InfoPlist.strings */; };
+		D03BFECF112085E000A7B70F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEC0112085E000A7B70F /* Localizable.strings */; };
+		D03BFED0112085E000A7B70F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEC2112085E000A7B70F /* MainMenu.xib */; };
+		D03BFED1112085E000A7B70F /* MakeTransfer.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEC4112085E000A7B70F /* MakeTransfer.xib */; };
+		D03BFED2112085E000A7B70F /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D03BFEC6112085E000A7B70F /* Preferences.xib */; };
 		D042F86810D4E63200A6C1B1 /* add_account.png in Resources */ = {isa = PBXBuildFile; fileRef = D042F86710D4E63200A6C1B1 /* add_account.png */; };
 		D042F89810D4FE6000A6C1B1 /* add_graph.png in Resources */ = {isa = PBXBuildFile; fileRef = D042F89710D4FE6000A6C1B1 /* add_graph.png */; };
 		D058758010EFA80D00A2766A /* MakeTransferController.m in Sources */ = {isa = PBXBuildFile; fileRef = D058757F10EFA80D00A2766A /* MakeTransferController.m */; };
@@ -40,10 +50,8 @@
 		D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
-		D0938746111F124900D6FFCF /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0938745111F124900D6FFCF /* MainMenu.xib */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D096420710F793430072CE3C /* ExportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D096420610F793430072CE3C /* ExportOFXController.mm */; };
-		D09A22181102293E001F2479 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D09A22171102293E001F2479 /* Localizable.strings */; };
 		D09E91E210CAB982001DE73F /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D09E91E110CAB982001DE73F /* graph.cpp */; };
 		D09F242410F64F5600CD1C8D /* ImportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D09F242310F64F5600CD1C8D /* ImportOFXController.mm */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
@@ -55,14 +63,6 @@
 		D0B430DD10ED1AAB00D63206 /* pie_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430DA10ED1AAB00D63206 /* pie_prefs.png */; };
 		D0B430DE10ED1AAB00D63206 /* trans_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430DB10ED1AAB00D63206 /* trans_prefs.png */; };
 		D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */; };
-		D0C06C9410FBADF3008CD6D1 /* AccountInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8410FBADF3008CD6D1 /* AccountInfo.xib */; };
-		D0C06C9510FBADF3008CD6D1 /* AddAccount.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8610FBADF3008CD6D1 /* AddAccount.xib */; };
-		D0C06C9610FBADF3008CD6D1 /* DueScheduledTransactions.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8810FBADF3008CD6D1 /* DueScheduledTransactions.xib */; };
-		D0C06C9710FBADF3008CD6D1 /* ExportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8A10FBADF3008CD6D1 /* ExportOFX.xib */; };
-		D0C06C9810FBADF3008CD6D1 /* ImportOFX.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8C10FBADF3008CD6D1 /* ImportOFX.xib */; };
-		D0C06C9910FBADF3008CD6D1 /* ImportQIF.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C8E10FBADF3008CD6D1 /* ImportQIF.xib */; };
-		D0C06C9A10FBADF3008CD6D1 /* MakeTransfer.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C9010FBADF3008CD6D1 /* MakeTransfer.xib */; };
-		D0C06C9B10FBADF3008CD6D1 /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0C06C9210FBADF3008CD6D1 /* Preferences.xib */; };
 		D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* round_uncheck.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0DE686310CAF30D0066699B /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0DE686210CAF30D0066699B /* analysis.cpp */; };
@@ -71,9 +71,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StashAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StashAppDelegate.mm; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* Stash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stash_Prefix.pch; sourceTree = "<group>"; };
@@ -109,6 +107,17 @@
 		D019850410A8CA7F0040DD63 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
 		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
 		D02C0726109A2A4F00155B13 /* AddAccountController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AddAccountController.mm; sourceTree = "<group>"; };
+		D03BFEB3112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AccountInfo.xib; sourceTree = "<group>"; };
+		D03BFEB5112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/AddAccount.xib; sourceTree = "<group>"; };
+		D03BFEB7112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DueScheduledTransactions.xib; sourceTree = "<group>"; };
+		D03BFEB9112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ExportOFX.xib; sourceTree = "<group>"; };
+		D03BFEBB112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ImportOFX.xib; sourceTree = "<group>"; };
+		D03BFEBD112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ImportQIF.xib; sourceTree = "<group>"; };
+		D03BFEBF112085E000A7B70F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D03BFEC1112085E000A7B70F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D03BFEC3112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D03BFEC5112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MakeTransfer.xib; sourceTree = "<group>"; };
+		D03BFEC7112085E000A7B70F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Preferences.xib; sourceTree = "<group>"; };
 		D042F86710D4E63200A6C1B1 /* add_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_account.png; sourceTree = "<group>"; };
 		D042F89710D4FE6000A6C1B1 /* add_graph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_graph.png; sourceTree = "<group>"; };
 		D058757E10EFA80D00A2766A /* MakeTransferController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeTransferController.h; sourceTree = "<group>"; };
@@ -138,7 +147,6 @@
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D096420510F793430072CE3C /* ExportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportOFXController.h; sourceTree = "<group>"; };
 		D096420610F793430072CE3C /* ExportOFXController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ExportOFXController.mm; sourceTree = "<group>"; };
-		D09A21DD11021E90001F2479 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D09E91E010CAB982001DE73F /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
 		D09E91E110CAB982001DE73F /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		D09F242210F64F5600CD1C8D /* ImportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportOFXController.h; sourceTree = "<group>"; };
@@ -154,14 +162,6 @@
 		D0B430DB10ED1AAB00D63206 /* trans_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trans_prefs.png; sourceTree = "<group>"; };
 		D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduled_transaction.cpp; sourceTree = "<group>"; };
 		D0C0116710ACC74900BFA7A1 /* scheduled_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduled_transaction.h; sourceTree = "<group>"; };
-		D0C06C8510FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AccountInfo.xib; sourceTree = "<group>"; };
-		D0C06C8710FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AddAccount.xib; sourceTree = "<group>"; };
-		D0C06C8910FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DueScheduledTransactions.xib; sourceTree = "<group>"; };
-		D0C06C8B10FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ExportOFX.xib; sourceTree = "<group>"; };
-		D0C06C8D10FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ImportOFX.xib; sourceTree = "<group>"; };
-		D0C06C8F10FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ImportQIF.xib; sourceTree = "<group>"; };
-		D0C06C9110FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MakeTransfer.xib; sourceTree = "<group>"; };
-		D0C06C9310FBADF3008CD6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/Preferences.xib; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* round_uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = round_uncheck.png; sourceTree = "<group>"; };
 		D0CE3EE6109B8982004CB9B0 /* SIndexSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIndexSplitView.h; sourceTree = "<group>"; };
 		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
@@ -271,20 +271,20 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D0C06C8410FBADF3008CD6D1 /* AccountInfo.xib */,
-				D0C06C8610FBADF3008CD6D1 /* AddAccount.xib */,
-				D0C06C8810FBADF3008CD6D1 /* DueScheduledTransactions.xib */,
-				D0C06C8A10FBADF3008CD6D1 /* ExportOFX.xib */,
-				D0C06C8C10FBADF3008CD6D1 /* ImportOFX.xib */,
-				D0C06C8E10FBADF3008CD6D1 /* ImportQIF.xib */,
-				D0C06C9010FBADF3008CD6D1 /* MakeTransfer.xib */,
-				D0C06C9210FBADF3008CD6D1 /* Preferences.xib */,
+				D03BFEB2112085E000A7B70F /* AccountInfo.xib */,
+				D03BFEB4112085E000A7B70F /* AddAccount.xib */,
+				D03BFEB6112085E000A7B70F /* DueScheduledTransactions.xib */,
+				D03BFEB8112085E000A7B70F /* ExportOFX.xib */,
+				D03BFEBA112085E000A7B70F /* ImportOFX.xib */,
+				D03BFEBC112085E000A7B70F /* ImportQIF.xib */,
+				D03BFEBE112085E000A7B70F /* InfoPlist.strings */,
+				D03BFEC0112085E000A7B70F /* Localizable.strings */,
+				D03BFEC2112085E000A7B70F /* MainMenu.xib */,
+				D03BFEC4112085E000A7B70F /* MakeTransfer.xib */,
+				D03BFEC6112085E000A7B70F /* Preferences.xib */,
 				D093D47410B5C6890087D5BB /* Credits.html */,
 				D07749291093B3AB00EDC307 /* Images */,
 				8D1107310486CEB800E47090 /* Stash-Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				D0938745111F124900D6FFCF /* MainMenu.xib */,
-				D09A22171102293E001F2479 /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -407,6 +407,7 @@
 				French,
 				German,
 				de,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Stash */;
 			projectDirPath = "";
@@ -422,8 +423,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				D0938746111F124900D6FFCF /* MainMenu.xib in Resources */,
 				D077492B1093B3AB00EDC307 /* round_check.png in Resources */,
 				D0C5987B10943E55002326F0 /* round_uncheck.png in Resources */,
 				D09284CD10A0BCC10040EDF5 /* split.png in Resources */,
@@ -439,15 +438,17 @@
 				D0AD4AD210EF81CE008226E6 /* stashdocument.icns in Resources */,
 				D058775010EFE07E00A2766A /* make_transfer.png in Resources */,
 				D07D520F10FA212C00BC37F9 /* cal.png in Resources */,
-				D0C06C9410FBADF3008CD6D1 /* AccountInfo.xib in Resources */,
-				D0C06C9510FBADF3008CD6D1 /* AddAccount.xib in Resources */,
-				D0C06C9610FBADF3008CD6D1 /* DueScheduledTransactions.xib in Resources */,
-				D0C06C9710FBADF3008CD6D1 /* ExportOFX.xib in Resources */,
-				D0C06C9810FBADF3008CD6D1 /* ImportOFX.xib in Resources */,
-				D0C06C9910FBADF3008CD6D1 /* ImportQIF.xib in Resources */,
-				D0C06C9A10FBADF3008CD6D1 /* MakeTransfer.xib in Resources */,
-				D0C06C9B10FBADF3008CD6D1 /* Preferences.xib in Resources */,
-				D09A22181102293E001F2479 /* Localizable.strings in Resources */,
+				D03BFEC8112085E000A7B70F /* AccountInfo.xib in Resources */,
+				D03BFEC9112085E000A7B70F /* AddAccount.xib in Resources */,
+				D03BFECA112085E000A7B70F /* DueScheduledTransactions.xib in Resources */,
+				D03BFECB112085E000A7B70F /* ExportOFX.xib in Resources */,
+				D03BFECC112085E000A7B70F /* ImportOFX.xib in Resources */,
+				D03BFECD112085E000A7B70F /* ImportQIF.xib in Resources */,
+				D03BFECE112085E000A7B70F /* InfoPlist.strings in Resources */,
+				D03BFECF112085E000A7B70F /* Localizable.strings in Resources */,
+				D03BFED0112085E000A7B70F /* MainMenu.xib in Resources */,
+				D03BFED1112085E000A7B70F /* MakeTransfer.xib in Resources */,
+				D03BFED2112085E000A7B70F /* Preferences.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,90 +499,90 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+		D03BFEB2112085E000A7B70F /* AccountInfo.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D0938745111F124900D6FFCF /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1DDD58150DA1D0A300B32029 /* English */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		D09A22171102293E001F2479 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D09A21DD11021E90001F2479 /* English */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		D0C06C8410FBADF3008CD6D1 /* AccountInfo.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D0C06C8510FBADF3008CD6D1 /* English */,
+				D03BFEB3112085E000A7B70F /* en */,
 			);
 			name = AccountInfo.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C8610FBADF3008CD6D1 /* AddAccount.xib */ = {
+		D03BFEB4112085E000A7B70F /* AddAccount.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C8710FBADF3008CD6D1 /* English */,
+				D03BFEB5112085E000A7B70F /* en */,
 			);
 			name = AddAccount.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C8810FBADF3008CD6D1 /* DueScheduledTransactions.xib */ = {
+		D03BFEB6112085E000A7B70F /* DueScheduledTransactions.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C8910FBADF3008CD6D1 /* English */,
+				D03BFEB7112085E000A7B70F /* en */,
 			);
 			name = DueScheduledTransactions.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C8A10FBADF3008CD6D1 /* ExportOFX.xib */ = {
+		D03BFEB8112085E000A7B70F /* ExportOFX.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C8B10FBADF3008CD6D1 /* English */,
+				D03BFEB9112085E000A7B70F /* en */,
 			);
 			name = ExportOFX.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C8C10FBADF3008CD6D1 /* ImportOFX.xib */ = {
+		D03BFEBA112085E000A7B70F /* ImportOFX.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C8D10FBADF3008CD6D1 /* English */,
+				D03BFEBB112085E000A7B70F /* en */,
 			);
 			name = ImportOFX.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C8E10FBADF3008CD6D1 /* ImportQIF.xib */ = {
+		D03BFEBC112085E000A7B70F /* ImportQIF.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C8F10FBADF3008CD6D1 /* English */,
+				D03BFEBD112085E000A7B70F /* en */,
 			);
 			name = ImportQIF.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C9010FBADF3008CD6D1 /* MakeTransfer.xib */ = {
+		D03BFEBE112085E000A7B70F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C9110FBADF3008CD6D1 /* English */,
+				D03BFEBF112085E000A7B70F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D03BFEC0112085E000A7B70F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D03BFEC1112085E000A7B70F /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		D03BFEC2112085E000A7B70F /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D03BFEC3112085E000A7B70F /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		D03BFEC4112085E000A7B70F /* MakeTransfer.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D03BFEC5112085E000A7B70F /* en */,
 			);
 			name = MakeTransfer.xib;
 			sourceTree = "<group>";
 		};
-		D0C06C9210FBADF3008CD6D1 /* Preferences.xib */ = {
+		D03BFEC6112085E000A7B70F /* Preferences.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				D0C06C9310FBADF3008CD6D1 /* English */,
+				D03BFEC7112085E000A7B70F /* en */,
 			);
 			name = Preferences.xib;
 			sourceTree = "<group>";
