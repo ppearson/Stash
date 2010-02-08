@@ -9,12 +9,11 @@ import os
 xibFiles = ["AccountInfo", "AddAccount", "DueScheduledTransactions", "ExportOFX", "ImportOFX", "ImportQIF", "MainMenu", "MakeTransfer", "Preferences"]
 
 def generateStringFiles(pathToCreateIn):
-	print "gen"
 	if pathToCreateIn[-1] != "/":
 		pathToCreateIn += "/"
 	
 	for file in xibFiles:
-		strCommand = "ibtool --export-strings-file %s%s.strings English.lproj/%s.xib" % (pathToCreateIn, file, file)
+		strCommand = "ibtool --export-strings-file %s%s.strings en.lproj/%s.xib" % (pathToCreateIn, file, file)
 #		print strCommand
 		os.system(strCommand)
 	
@@ -32,7 +31,7 @@ def createXibFiles(pathOfStringFiles, newLocalisation):
 		pass
 	
 	for file in xibFiles:
-		strCommand = "ibtool --strings-file %s%s.strings --write %s%s.xib English.lproj/%s.xib" % (pathOfStringFiles, file, strNewDir, file, file)
+		strCommand = "ibtool --strings-file %s%s.strings --write %s%s.xib en.lproj/%s.xib" % (pathOfStringFiles, file, strNewDir, file, file)
 #		print strCommand
 		os.system(strCommand)
 	
