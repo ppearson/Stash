@@ -5,7 +5,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2009-2010 Peter Pearson</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
+	<string>en_GB</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

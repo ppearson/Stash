@@ -346,3 +346,16 @@ MonthYear::MonthYear(int Month, int Year) : m_month(Month), m_year(Year)
 {
 
 }
+
+void MonthYear::increment1()
+{
+	if (m_month == 12)
+	{
+		m_year += 1;
+		m_month = 1;
+	}
+	else
+	{
+		m_month += 1;
+	}
+}

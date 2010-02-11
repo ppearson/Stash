@@ -400,8 +400,38 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria)
 {
-	//	for each item, for each date that exists in the aDates set, create an AreaChartItem for that date and the item
+	// to make sure we don't have holes in date ranges, increment through them and add them if they don't exist
+	
+	if (!aDateTotals.empty())
+	{
+		std::map<MonthYear, fixed>::iterator itStartDate = aDateTotals.begin();
+		std::map<MonthYear, fixed>::iterator itEndDate = aDateTotals.begin();
 		
+		int size = aDateTotals.size();
+		
+		for (int i = 1; i < size; i++)
+			++itEndDate;
+		
+		MonthYear startDate = (*itStartDate).first;
+		MonthYear endDate = (*itEndDate).first;
+		
+		MonthYear DateItem = startDate;
+		
+		while (DateItem < endDate)
+		{
+			DateItem.increment1();
+			
+			std::map<MonthYear, fixed>::iterator itDateFind = aDateTotals.find(DateItem);
+			
+			if (itDateFind == aDateTotals.end())
+			{
+				aDateTotals[DateItem] = 0.0;
+			}			
+		}
+	}
+	
+	//	for each item, for each date that exists in the aDates set, create an AreaChartItem for that date and the item
+	
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItem = aMap.begin();
 	
 	for (; itItem != aMap.end(); ++itItem)
