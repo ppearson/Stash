@@ -1969,7 +1969,7 @@ toolbarViewGroupTag;
 		localBalance = m_pAccount->getBalance(true);
 	}
 	
-	localBalance -= transaction.getAmount();
+	localBalance += transaction.getAmount();
 	
 	NSNumber *nBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
 	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
