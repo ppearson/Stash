@@ -60,7 +60,6 @@ class Graph
 {
 public:
 	Graph();
-	~Graph() { };
 	
 	void setName(std::string name) { m_name = name; }
 	void setAccount(int account) { m_account = account; }

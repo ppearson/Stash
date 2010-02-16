@@ -32,7 +32,6 @@ class Document
 {
 public:
 	Document();
-	virtual ~Document() { };
 	
 	int addAccount(Account &acc) { m_aAccounts.push_back(acc); return m_aAccounts.size() - 1; }
 	Account &getAccount(int acc) { return m_aAccounts[acc]; }

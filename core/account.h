@@ -43,7 +43,6 @@ class Account
 {
 public:
 	Account();
-	~Account() { };
 	
 	void setName(std::string name) { m_name = name; }
 	void setInstitution(std::string institution) { m_institution = institution; }
