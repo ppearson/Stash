@@ -1,0 +1,371 @@
+/* 
+   Localizable.strings (Italian)
+   Stash
+
+ */
+
+
+/* Transaction Type -> None */
+"None" = "Nessuna";
+
+/* Transaction Type -> Deposit */
+"Deposit" = "Deposito";
+
+/* Transaction Type -> Withdrawal */
+"Withdrawal" = "Prelievo";
+
+/* Transaction Type -> Transfer */
+"Transfer" = "Trasferimento";
+
+/* Transaction Type -> Standing Order */
+"Standing Order" = "Cambiale";
+
+/* Transaction Type -> Direct Debit */
+"Direct Debit" = "Addebito diretto";
+
+/* Transaction Type -> Point Of Sale */
+"Point Of Sale" = "POS";
+
+/* Transaction Type -> Charge */
+"Charge" = "a Saldo";
+
+/* Transaction Type -> ATM */
+"ATM" = "ATM";
+
+/* Transaction Type -> Check */
+"Check" = "Assegno";
+
+/* Transaction Type -> Credit */
+"Credit" = "Credito";
+
+/* Transaction Type -> Debit */
+"Debit" = "Debito";
+
+
+/* Account Type -> Cash */
+"Cash" = "Denaro Contante";
+
+/* Account Type -> Checking */
+"Checking" = "Libretto Assegni";
+
+/* Account Type -> Savings */
+"Savings" = "Risparmi";
+
+/* Account Type -> Credit Card */
+"Credit Card" = "Carta di Credito";
+
+/* Account Type -> Investment */
+"Investment" = "Investimento";
+
+/* Account Type -> Asset */
+"Asset" = "Patrimonio";
+
+/* Account Type -> Liability */
+"Liability" = "Obbligazione Finanziaria";
+
+/* Account Type -> Other */
+"Other" = "Altro";
+
+
+/* IndexBar -> ACCOUNTS */
+"ACCOUNTS" = "CONTI";
+
+/* IndexBar -> MANAGE */
+"MANAGE" = "GESTISCI";
+
+/* IndexBar -> Payees */
+"Payees" = "Beneficiari";
+
+/* IndexBar -> Categories */
+"Categories" = "Categorie";
+
+/* IndexBar -> Scheduled */
+"Scheduled" = "Programmati";
+
+/* IndexBar -> GRAPHS */
+"GRAPHS" = "GRAFICI";
+
+/* Transactions Pane -> Add Transaction Button Tooltip */
+"Add Transaction" = "Aggiungi Trasferimento";
+
+/* Transactions Pane -> Delete Transaction Button Tooltip */
+"Delete Transaction" = "Cancella Trasferimento";
+
+/* Transactions Pane -> Split Transaction Button Tooltip */
+"Split Transaction" = "Dividi Trasferimento";
+
+/* Transactions Pane -> Move Down Button Tooltip */
+"Move Down" = "Muovi giù";
+
+/* Transactions Pane -> Move Up Button Tooltip */
+"Move Up" = "Muovi su";
+
+/* Transactions Pane -> Refresh Button Tooltip */
+"Refresh" = "Ricalcola";
+
+/* Scheduled Transactions Pane -> Frequency -> Weekly */
+"Weekly" = "Settimanale";
+
+/* Scheduled Transactions Pane -> Frequency -> Two Weeks */
+"Two Weeks" = "Ogni due Settimane";
+
+/* Scheduled Transactions Pane -> Frequency -> Four Weeks */
+"Four Weeks" = "Ogni quattro Settimane";
+
+/* Scheduled Transactions Pane -> Frequency -> Monthly */
+"Monthly" = "Mensile";
+
+/* Scheduled Transactions Pane -> Frequency -> Two Months */
+"Two Months" = "Bimestrale";
+
+/* Scheduled Transactions Pane -> Frequency -> Quarterly */
+"Quarterly" = "Quadrimestrale";
+
+/* Scheduled Transactions Pane -> Frequency -> Annually */
+"Annually" = "Annuale";
+
+/* Scheduled Transactions Pane -> Constraint -> Exact Day */
+"Exact Day" = "Giorno Esatto";
+
+/* Scheduled Transactions Pane -> Constraint -> Exact or Next Working Day */
+"Exact or Next Working Day" = "Giorno Esatto o Prossimo Lavorativo";
+
+/* Scheduled Transactions Pane -> Constraint -> Last Working Day of Month */
+"Last Working Day of Month" = "Ultimo Lavorativo del Mese";
+
+/* Graph Pane -> Type -> Expense Categories */
+"Expense Categories" = "Voci Spesa";
+
+/* Graph Pane -> Type -> Expense Payees */
+"Expense Payees" = "Beneficiari di Spesa";
+
+/* Graph Pane -> Type -> Deposit Categories */
+"Deposit Categories" = "Voci Entrate";
+
+/* Graph Pane -> Type -> Deposit Payees */
+"Deposit Payees" = "Beneficiari di Entrate";
+
+/* Graph Pane -> Items Type -> All Items */
+"All Items" = "Tutti gli Elementi";
+
+/* Graph Pane -> Items Type -> All Items excluding: */
+"All Items excluding:" = "Tutti gli Elementi escludendo:";
+
+/* Graph Pane -> Items Type -> Only Specified: */
+"Only Specified:" = "Solo Selezionati:";
+
+
+
+/* Main Toolbar -> Add Account */
+"Add Account" = "Aggiungi Conto";
+
+/* Main Toolbar -> Add Graph */
+"Add Graph" = "Aggiungi Grafico";
+
+/* Main Toolbar -> Make Transfer */
+"Make Transfer" = "Inserisci Trasferimento";
+
+/* Main Toolbar -> View Type */
+"View Type" = "Vista Tipo";
+
+
+/* Main Toolbar -> View Type -> Recent */
+"Recent" = "Recenti";
+
+/* Main Toolbar -> View Type -> Recent Tooltip */
+"Show recent Transactions" = "Mostra Trasferimenti recenti";
+
+/* Main Toolbar -> View Type -> This Year */
+"This Year" = "Questo Anno";
+
+/* Main Toolbar -> View Type -> This Year Tooltip */
+"Show Transactions from this year" = "Mostra Trasferimenti di questo Anno";
+
+/* Main Toolbar -> View Type -> All */
+"All" = "All";
+
+/* Main Toolbar -> View Type -> All Tooltip */
+"Show all Transactions" = "Mostra tutti i Trasferimenti";
+
+/* New Account -> Starting balance */
+"Starting balance" = "Bilancio Iniziale";
+
+
+
+/* Delete Button */
+"Delete" = "Elimina";
+
+/* Cancel Button */
+"Cancel" = "Annulla";
+
+/* Save Button */
+"Save" = "Salva";
+
+/* Don't Save Button */
+"Don't Save" = "Non Salvare";
+
+/* OK Button */
+"OK" = "OK";
+
+/* Replace Button */
+"Replace" = "Sostituisci";
+
+
+
+/* Account Deletion Warning Message */
+"The Account and all transactions in it will be deleted. Are you sure?" = "Il Conto e tutti i Trasferimenti in esso contenuti saranno canellati. Sei sicuro?";
+
+/* Account Deletion Warning Title */
+"Delete Account?" = "Elimina il Conto?";
+
+/* No Active Account Warning Title */
+"No Active Account" = "Conto non Attivo";
+
+/* No Active Account Warning Message */
+"You must have an active account in order to add a new transaction." = "Per aggiungere un nuovo Trasferimento devi possedere un Conto attivo.";
+
+/* Not enough accounts Warning Title */
+"Not enough accounts" = "Non ci sono sufficienti Conti";
+
+/* Not enough accounts Warning Message */
+"You must have more than one account in the current document to create a Transfer." = "Per creare un Trasferimento devi possedere più di un Conto nel documento attivo.";
+
+/* Graph Deletion Warning Message */
+"This Graph will be deleted. Are you sure?" = "Questo Grafico sarà eliminato. Sei sicuro?";
+
+/* Graph Deletion Warning Title */
+"Delete Graph?" = "Elimina il Grafico?";
+
+/* New Graph Item Name */
+"New Item" = "Nuovo Elemento";
+
+/* No Accounts For Graph Error Title */
+"No Accounts Exist" = "Non Esiste alcun Conto";
+
+/* No Accounts For Graph Error Message */
+"You must have some accounts in the current document first before you can create a graph." = "Per poter creare un Grafico devi avere almeno un Conto in questo documento.";
+
+/* New Graph Text */
+"New Graph" = "Nuovo Grafico";
+
+/* Save Document Warning Title */
+"Do you want to save the changes you made in this document?" = "Vuoi salvare le modifiche effettuate in questo documento?";
+
+/* Save Document Warning Message */
+"Your changes will be lost if you don't save them." = "Le modifiche andranno perse se non salvi il file.";
+
+/* Open Document Title */
+"Open Document" = "Apri il Documento";
+
+/* Open Document Error Message */
+"Could not open file: \"%@\"." = "Impossibile aprire il file: \"%@\".";
+
+/* Open Document Error Text */
+"There was a problem opening the Document file." = "Si è presentato un problema nell'apertura del Documento.";
+
+/* Save Document Title */
+"Save Document" = "Salva il Documento";
+
+/* Save Document Error Message */
+"Could not save to file: \"%@\"." = "Non è stato possibile salvare il file: \"%@\".";
+
+/* Save Document Error Text */
+"There was a problem saving the Document to file." = "Si è presentato un problema nel salvataggio del Documento.";
+
+/* Import QIF -> No Active Account Warning Title */
+"No Active Account" = "Nessun Conto Attivo";
+
+/* Import QIF -> No Active Account Warning Message */
+"You must have an active account in order to import QIF file data." = "Per importare un file QIF devi possedere almeno un Conto attivo.";
+
+/* Import QIF Title */
+"Import QIF file" = "Importa file QIF";
+
+/* Import OFX Title */
+"Select OFX file to Import" = "Seleziona file OFX da Importare";
+
+/* Import OFX Error Title */
+"Couldn't Import OFX File" = "Non è stato possibile Importare il file OFX";
+
+/* Import OFX Error Message */
+"Couldn't import the selected OFX file. Check it is a valid OFX 1.x/2.x file." = "Non è stato possibile importare il file OFX selezionato. Verifica che sia un file OFX 1.x/2.x valido.";
+
+/* Import OFX No Data Title */
+"No data in file" = "Il file non contiene dati";
+
+/* Import OFX No Data Message */
+"Stash couldn't find any account/transaction data in the OFX file." = "Stash non è riuscito a trovare nessun dato di Conto o Trasferimento all'interno del file OFX.";
+
+/* Import OFX Data Inconcistency Title */
+"Import data inconcistency" = "Dati importati non coerenti";
+
+/* Import OFX Data Inconcistency Message */
+"The Import data could not be processed correctly." = "I dati  non sono stati importati correttamente.";
+
+/* Export OFX Title */
+"Select OFX file to Export to" = "Seleziona il file OFX in cui Esportare";
+
+/* Export QIF Title */
+"Export to QIF file" = "Esporta su file QIF";
+
+/* Replace Document Warning Title */
+"Replace current document?" = "Sostiture il documento attivo?";
+
+/* Replace Document Warning Message */
+"You have unsaved changes in this document. Are you sure you want to open another document?" = "Hai effettuato delle modifiche non salvate nel documento corrente. Aprendone un altro perderai tali modifiche, sei sicuro di continuare?";
+
+
+
+/* Make Transfer -> Invalid account selection Warning Title */
+"Invalid account selection" = "Scelta non valida di conto";
+
+/* Make Transfer -> Invalid account selection Warning Message */
+"You must select different From and To accounts in order to make a Transfer." = "Non puoi eseguire un trasferimento dal Conto in se stesso; inserisci voci differenti nei campi 'Da', 'A'.";
+
+
+/* Area Chart View -> No Data Message */
+"Not enough data to plot an area chart.\nArea charts are plotted on a monthly basis, and the data range must span over two months." = "Non sono presenti dati sufficienti per disegnare il grafico ad Area.\nI grafici ad Area sono disegnati partendo da una base mensile, l'intervallo di dati deve superare i due mesi.";
+
+/* Area Chart View -> Selected Item Text */
+"Selected item: %@" = "Elemento selezionato: %@";
+
+
+/* Pie Chart View -> Total Amount Text */
+"Total amount:  %@" = "Importo totale:  %@";
+
+/* Pie Chart View -> Selected Amount Text */
+"Selected amount:  %@" = "Importo selezionato:  %@";
+
+
+/* Preferences -> General */
+"General" = "Generale";
+
+/* Preferences -> Transactions */
+"Transactions" = "Trasferimenti";
+
+/* Preferences -> Pie Chart */
+"Pie Chart" = "Grafico a Torta";
+
+/* Preferences -> Area Chart */
+"Area Chart" = "Grafico ad Area";
+
+/* Preferences -> Pie Chart -> Sort -> Size */
+"Size" = "Dimensione";
+
+/* Preferences -> Pie Chart -> Sort -> Title */
+"Title" = "Titolo";
+
+/* Preferences -> Pie Chart -> Selection Type -> Selected */
+"are selected" = "sono selezionate";
+
+/* Preferences -> Pie Chart -> Selection Type -> Pop Out */
+"pop out" = "espandi";
+
+/* Preferences Window Title */
+"%@ Preferences" = "%@ Preferenze";
+
+/* QIF Import Window Text */
+"Please select the settings you want to use to import the file \"%@\"." = "Seleziona le impostazioni che vuoi utilizzare per importare il file \"%@\".";
+
+/* Import OFX Reverse Tooltip */
+"Some Banks produce files with records in reverse order. This option reverses them on import." = "Alcune Banche creano files con elementi in ordine inverso. Questa opzione inverte l'ordine durant l'importazione.";

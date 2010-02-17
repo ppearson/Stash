@@ -418,7 +418,7 @@ toolbarViewGroupTag;
 		
 		[segmentedControl setSegmentStyle:NSSegmentStyleTexturedSquare];
         
-        const NSSize groupSize = NSMakeSize(200.0, 25.0);
+        const NSSize groupSize = NSMakeSize(210.0, 25.0);
         [groupItem setMinSize:groupSize];
         [groupItem setMaxSize:groupSize];
         
