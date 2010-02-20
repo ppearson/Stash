@@ -1898,9 +1898,11 @@ toolbarViewGroupTag;
 	
 	[fromItem setTransaction:from];
 	[fromItem setIntValue:from forKey:@"Transaction"];
+	[fromItem setChildrenTransactionIndex:from];
 	
 	[toItem setTransaction:to];
 	[toItem setIntValue:to forKey:@"Transaction"];
+	[toItem setChildrenTransactionIndex:to];
 	
 	if (from < to)
 	{

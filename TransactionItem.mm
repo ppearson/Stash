@@ -115,6 +115,15 @@
 	[children removeObjectAtIndex:i];
 }
 
+- (void)setChildrenTransactionIndex:(int)index
+{
+	for (TransactionItem *child in children)
+	{
+		[child setTransaction:index];
+		[child setIntValue:index forKey:@"Transaction"];
+	}
+}
+
 - (BOOL)expandable
 {
 	return ([children count] > 0);

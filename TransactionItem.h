@@ -53,6 +53,8 @@
 - (TransactionItem *)childAtIndex:(int)i;
 - (void)deleteChild:(int)i;
 
+- (void)setChildrenTransactionIndex:(int)index;
+
 - (BOOL)expandable;
 
 @end
