@@ -1,3 +1,25 @@
+Version 0.75
+------------
+
+* Italian localisation kindly done by Giovanni Medici
+* Added ability to control which items are drawn in graphs
+* Graph setting changes now take effect instantly
+* Graph display type tab is now saved in the document
+* Fixed issue with duplicate "Other" category for Area Charts
+* Reconciled is now called Cleared
+* Fixed bug which didn't re-enable Pie Chart viewing period segment control end buttons in
+  certain situations
+* Fixed bug which prevented keyboard focus from having effect after using the DatePickerDropdown
+  window to pick a new date
+* Tweaks to the sizing/positioning of the Area Chart axis/labels
+* Dates on the x-axis of the Area Charts are now localised
+* Can now manually add new Payees and Categories from their respective screens
+* Fixed bug which meant that the balance of the new transaction item created was wrong if Make Transaction
+  was used with the To account being the currently selected account
+* New cleared checkmark images kindly done by Aleksandar Kovač
+* Fixed bug which meant that split transactions could not be properly added to a transaction
+  which had just been moved up or down
+
 Version 0.7
 -----------
 
@@ -28,7 +50,7 @@ Version 0.65
 Version 0.6
 -----------
 
-* New main application icons kindly created by Aleksandar Kovac
+* New main application icons kindly created by Aleksandar Kovač
 * Speed improvements - opening a document is now around 7x faster and the analysis of data
   in order to show a graph is now 17x faster
 * Added a Make Transfer feature, which allows reciprocal Transactions to be easily created for doing a
