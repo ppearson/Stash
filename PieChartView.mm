@@ -41,6 +41,8 @@
 		[m_aColours addObject:[NSColor yellowColor]];
 		[m_aColours addObject:[NSColor greenColor]];
 		[m_aColours addObject:[NSColor blueColor]];
+		[m_aColours addObject:[NSColor orangeColor]];
+		[m_aColours addObject:[NSColor brownColor]];
     }
     return self;
 }
@@ -134,7 +136,7 @@
 
 		nColourIndex ++;
 		
-		if (nColourIndex > 4)
+		if (nColourIndex > 6)
 			nColourIndex = 1;
 	}
 	
