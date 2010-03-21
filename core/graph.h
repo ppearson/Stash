@@ -53,7 +53,8 @@ enum GraphItemsType
 enum GraphViewType
 {
 	Total,
-	OverTime
+	OverTime,
+	Overview
 };
 
 class Graph

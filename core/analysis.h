@@ -93,6 +93,20 @@ protected:
 	int m_activeEntries;
 };
 
+struct OverviewChartItem
+{
+	OverviewChartItem() { } // only needed for std::map[] if the values isn't found
+	OverviewChartItem(MonthYear &date) : m_date(date) { }
+	~OverviewChartItem() { }
+	
+	void addIncome(fixed &income) { m_income += income; }
+	void addOutgoings(fixed &outgoings) { m_outgoings += outgoings; }
+		
+	MonthYear m_date;
+	fixed m_income;
+	fixed m_outgoings;
+};
+
 struct PieChartCriteria
 {
 	PieChartCriteria(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
@@ -141,8 +155,25 @@ struct AreaChartCriteria
 	std::set<std::string> m_aItems;
 };
 
+struct OverviewChartCriteria
+{
+	OverviewChartCriteria(Account *pAccount, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
+		m_pAccount(pAccount), m_startDate(startDate), m_endDate(endDate), m_ignoreTransfers(ignoreTransfers), m_overallMax(overallMax)
+	{
+	}
+	
+	Account *m_pAccount;
+	Date &m_startDate;
+	Date &m_endDate;
+	bool m_ignoreTransfers;
+	fixed &m_overallMax;
+};
+	
+
 bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories);
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
 
 bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, std::string &item);
+
+bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<OverviewChartItem> &aItems);

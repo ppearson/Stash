@@ -36,6 +36,7 @@
 #import "MakeTransferController.h"
 #import "ImportOFXController.h"
 #import "ExportOFXController.h"
+#import "OverviewChartView.h"
 
 enum TransactionsToShow
 {
@@ -126,6 +127,7 @@ enum TransactionsToShow
 	IBOutlet NSTabView *graphViewType;
 	IBOutlet PieChartView *pieChartView;
 	IBOutlet AreaChartView *areaChartView;
+	IBOutlet OverviewChartView *overviewChartView;
 	IBOutlet NSPopUpButton *graphAccount;
 	IBOutlet NSPopUpButton *graphType;
 	IBOutlet id graphStartDateCntrl;

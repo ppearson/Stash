@@ -107,6 +107,7 @@ private:
 class MonthYear
 {
 public:
+	MonthYear() : m_month(-1), m_year(0) { } // needed for std::map[]
 	MonthYear(int month, int year);
 	
 	int getMonth() { return m_month; }

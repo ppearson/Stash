@@ -1336,7 +1336,7 @@ toolbarViewGroupTag;
 		[aDates addObject:sDate];
 	}
 	
-	[dateFormatter release];
+	
 	
 	if (nLongestDateIndex >= 0)
 	{
@@ -1345,6 +1345,43 @@ toolbarViewGroupTag;
 		[areaChartView setMaxValue:overallMax.ToDouble()];
 		[areaChartView setData:aAreaItems];
 	}
+	
+	// Overview chart
+	
+	overallMax = 0.0;
+	
+	OverviewChartCriteria overviewCriteria(pAccount, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	std::vector<OverviewChartItem> aOverviewChartItems;
+	
+	buildOverviewChartItems(overviewCriteria, aOverviewChartItems);
+	
+	NSMutableArray *aOverviewItems = [[NSMutableArray alloc] init];
+	
+	std::vector<OverviewChartItem>::iterator itOverview = aOverviewChartItems.begin();
+	
+	for (; itOverview != aOverviewChartItems.end(); ++itOverview)
+	{
+		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+		
+		fixed fIncome = (*itOverview).m_income;
+		NSNumber *nsIncome = [NSNumber numberWithDouble:fIncome.ToDouble()];
+		[dict setValue:nsIncome forKey:@"income"];
+		
+		fixed fOutgoings = (*itOverview).m_outgoings;
+		NSNumber *nsOutgoings = [NSNumber numberWithDouble:fOutgoings.ToDouble()];
+		[dict setValue:nsOutgoings forKey:@"outgoings"];
+		
+		NSDate *thisDate = convertToNSDate((*itOverview).m_date);
+		NSString *sDate = [[dateFormatter stringFromDate:thisDate] retain];
+		[dict setValue:sDate forKey:@"date"];
+		
+		[aOverviewItems addObject:dict];		
+	}
+	
+	[dateFormatter release];
+	
+	[overviewChartView setData:aOverviewItems];
+	[overviewChartView setMaxValue:overallMax.ToDouble()];
 }
 
 - (void)refreshLibraryItems

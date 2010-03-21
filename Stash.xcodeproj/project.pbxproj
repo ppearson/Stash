@@ -22,6 +22,7 @@
 		D019850910A8CA7F0040DD63 /* split_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D01984FE10A8CA7F0040DD63 /* split_transaction.cpp */; };
 		D019850A10A8CA7F0040DD63 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D019850010A8CA7F0040DD63 /* storage.cpp */; };
 		D019850B10A8CA7F0040DD63 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D019850310A8CA7F0040DD63 /* transaction.cpp */; };
+		D01E77FD11517B2E00DBFCF5 /* OverviewChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D01E77FC11517B2E00DBFCF5 /* OverviewChartView.mm */; };
 		D02C0727109A2A4F00155B13 /* AddAccountController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D02C0726109A2A4F00155B13 /* AddAccountController.mm */; };
 		D042F86810D4E63200A6C1B1 /* add_account.png in Resources */ = {isa = PBXBuildFile; fileRef = D042F86710D4E63200A6C1B1 /* add_account.png */; };
 		D042F89810D4FE6000A6C1B1 /* add_graph.png in Resources */ = {isa = PBXBuildFile; fileRef = D042F89710D4FE6000A6C1B1 /* add_graph.png */; };
@@ -104,6 +105,8 @@
 		D019850210A8CA7F0040DD63 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		D019850310A8CA7F0040DD63 /* transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transaction.cpp; sourceTree = "<group>"; };
 		D019850410A8CA7F0040DD63 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
+		D01E77FB11517B2E00DBFCF5 /* OverviewChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverviewChartView.h; sourceTree = "<group>"; };
+		D01E77FC11517B2E00DBFCF5 /* OverviewChartView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OverviewChartView.mm; sourceTree = "<group>"; };
 		D02C0725109A2A4F00155B13 /* AddAccountController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountController.h; sourceTree = "<group>"; };
 		D02C0726109A2A4F00155B13 /* AddAccountController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AddAccountController.mm; sourceTree = "<group>"; };
 		D042F86710D4E63200A6C1B1 /* add_account.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_account.png; sourceTree = "<group>"; };
@@ -196,6 +199,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D01E77FB11517B2E00DBFCF5 /* OverviewChartView.h */,
+				D01E77FC11517B2E00DBFCF5 /* OverviewChartView.mm */,
 				D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */,
 				D07D51E710FA1FEC00BC37F9 /* DropDownDate.m */,
 				D07D51E810FA1FEC00BC37F9 /* DropDownWindow.h */,
@@ -501,6 +506,7 @@
 				D096420710F793430072CE3C /* ExportOFXController.mm in Sources */,
 				D07D51EA10FA1FEC00BC37F9 /* DropDownDate.m in Sources */,
 				D07D51EB10FA1FEC00BC37F9 /* DropDownWindow.m in Sources */,
+				D01E77FD11517B2E00DBFCF5 /* OverviewChartView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,10 +641,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_AUTO_VECTORIZATION = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_SSE3_EXTENSIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = 4.2;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-liconv";
 				PREBINDING = NO;
@@ -650,7 +660,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_LDFLAGS = "-liconv";

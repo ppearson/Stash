@@ -560,3 +560,73 @@ bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, s
 	
 	return false;
 }
+
+bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<OverviewChartItem> &aItems)
+{
+	std::map<MonthYear, OverviewChartItem> aBuildItems;
+	std::map<MonthYear, OverviewChartItem>::iterator itDateFind = NULL;
+	
+	bool income = true;
+	
+	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
+	
+	for (; it != criteria.m_pAccount->end(); ++it)
+	{
+		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
+			continue;
+		
+		if ((*it).getAmount().IsPositive())
+			income = true;
+		else
+			income = false;
+		
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
+			continue;
+		
+		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());
+			
+		fixed amount = (*it).getAmount();
+			
+		amount.setPositive();
+		
+		itDateFind = aBuildItems.find(my);
+		
+		if (itDateFind == aBuildItems.end())
+		{
+			OverviewChartItem newItem(my);
+			
+			if (income)
+				newItem.addIncome(amount);
+			else
+				newItem.addOutgoings(amount);
+			
+			aBuildItems[my] = newItem;
+		}
+		else
+		{
+			OverviewChartItem &item = (*itDateFind).second;
+			
+			if (income)
+				item.addIncome(amount);
+			else
+				item.addOutgoings(amount);
+		}
+	}
+	
+	for (itDateFind = aBuildItems.begin(); itDateFind != aBuildItems.end(); ++itDateFind)
+	{
+		if ((*itDateFind).second.m_income > criteria.m_overallMax)
+		{
+			criteria.m_overallMax = (*itDateFind).second.m_income;
+		}
+		
+		if ((*itDateFind).second.m_outgoings > criteria.m_overallMax)
+		{
+			criteria.m_overallMax = (*itDateFind).second.m_outgoings;
+		}
+		
+		aItems.push_back((*itDateFind).second);
+	}
+
+	return true;
+}
