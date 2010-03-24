@@ -39,6 +39,7 @@
 		D08B025910D461AA006152CD /* SplitViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B025810D461AA006152CD /* SplitViewEx.m */; };
 		D08D8AE110E2C5B000BE3AC6 /* NSDateEx.m in Sources */ = {isa = PBXBuildFile; fileRef = D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */; };
 		D08E8F78109BA9C000FE8639 /* STransactionsSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */; };
+		D08F2A6E115660A0007EC06F /* NSPreProcessTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = D08F2A6D115660A0007EC06F /* NSPreProcessTextField.mm */; };
 		D09284CD10A0BCC10040EDF5 /* split.png in Resources */ = {isa = PBXBuildFile; fileRef = D09284CC10A0BCC10040EDF5 /* split.png */; };
 		D093D47510B5C6890087D5BB /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = D093D47410B5C6890087D5BB /* Credits.html */; };
 		D096420710F793430072CE3C /* ExportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D096420610F793430072CE3C /* ExportOFXController.mm */; };
@@ -66,6 +67,7 @@
 		D0C5987B10943E55002326F0 /* cleared_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* cleared_unchecked.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
 		D0DE686310CAF30D0066699B /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0DE686210CAF30D0066699B /* analysis.cpp */; };
+		D0EED7CA115AA42A005E640F /* expression_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0EED7C8115AA42A005E640F /* expression_parser.cpp */; };
 		D0F9453C10CA9B05003CA8A8 /* PieChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */; };
 		D0FF005110B75E0400C792D8 /* DueScheduledTransactionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FF005010B75E0400C792D8 /* DueScheduledTransactionsController.m */; };
 /* End PBXBuildFile section */
@@ -134,6 +136,8 @@
 		D08D8AE010E2C5B000BE3AC6 /* NSDateEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateEx.m; sourceTree = "<group>"; };
 		D08E8F76109BA9C000FE8639 /* STransactionsSplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STransactionsSplitView.h; sourceTree = "<group>"; };
 		D08E8F77109BA9C000FE8639 /* STransactionsSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STransactionsSplitView.m; sourceTree = "<group>"; };
+		D08F2A6C115660A0007EC06F /* NSPreProcessTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPreProcessTextField.h; sourceTree = "<group>"; };
+		D08F2A6D115660A0007EC06F /* NSPreProcessTextField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSPreProcessTextField.mm; sourceTree = "<group>"; };
 		D09284CC10A0BCC10040EDF5 /* split.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = split.png; sourceTree = "<group>"; };
 		D093D47410B5C6890087D5BB /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		D096420510F793430072CE3C /* ExportOFXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExportOFXController.h; sourceTree = "<group>"; };
@@ -178,6 +182,8 @@
 		D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIndexSplitView.m; sourceTree = "<group>"; };
 		D0DE686110CAF30D0066699B /* analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analysis.h; sourceTree = "<group>"; };
 		D0DE686210CAF30D0066699B /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
+		D0EED7C8115AA42A005E640F /* expression_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = expression_parser.cpp; sourceTree = "<group>"; };
+		D0EED7C9115AA42A005E640F /* expression_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = expression_parser.h; sourceTree = "<group>"; };
 		D0F9453A10CA9B05003CA8A8 /* PieChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieChartView.h; sourceTree = "<group>"; };
 		D0F9453B10CA9B05003CA8A8 /* PieChartView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PieChartView.mm; sourceTree = "<group>"; };
 		D0FF004F10B75E0400C792D8 /* DueScheduledTransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DueScheduledTransactionsController.h; sourceTree = "<group>"; };
@@ -229,6 +235,8 @@
 				D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */,
 				256AC3D80F4B6AC300CF3369 /* StashAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
+				D08F2A6C115660A0007EC06F /* NSPreProcessTextField.h */,
+				D08F2A6D115660A0007EC06F /* NSPreProcessTextField.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -313,6 +321,8 @@
 		D01984F510A8CA7F0040DD63 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				D0EED7C8115AA42A005E640F /* expression_parser.cpp */,
+				D0EED7C9115AA42A005E640F /* expression_parser.h */,
 				D0A95F4510F48985008F28B6 /* ofx.h */,
 				D0A95F4610F48985008F28B6 /* ofx.cpp */,
 				D09E91E010CAB982001DE73F /* graph.h */,
@@ -507,6 +517,8 @@
 				D07D51EA10FA1FEC00BC37F9 /* DropDownDate.m in Sources */,
 				D07D51EB10FA1FEC00BC37F9 /* DropDownWindow.m in Sources */,
 				D01E77FD11517B2E00DBFCF5 /* OverviewChartView.mm in Sources */,
+				D08F2A6E115660A0007EC06F /* NSPreProcessTextField.mm in Sources */,
+				D0EED7CA115AA42A005E640F /* expression_parser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

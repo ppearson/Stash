@@ -12,9 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="783"/>
-			<integer value="1111"/>
-			<integer value="1101"/>
+			<integer value="599"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1215,7 +1213,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="834574435">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1655,6 +1653,7 @@
 										</object>
 										<string key="NSFrame">{{0, 17}, {854, 410}}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="781317227"/>
 										<reference key="NSDocView" ref="781317227"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1687,6 +1686,7 @@
 										</object>
 										<string key="NSFrameSize">{854, 17}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="347113208"/>
 										<reference key="NSDocView" ref="347113208"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1695,6 +1695,7 @@
 								</object>
 								<string key="NSFrameSize">{854, 427}</string>
 								<reference key="NSSuperview" ref="966867876"/>
+								<reference key="NSNextKeyView" ref="573510658"/>
 								<int key="NSsFlags">560</int>
 								<reference key="NSVScroller" ref="875781203"/>
 								<reference key="NSHScroller" ref="185413264"/>
@@ -2144,6 +2145,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{854, 609}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSUserDefaultsController" id="616500614">
@@ -2331,7 +2333,7 @@
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="798685624">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">4370</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2413,7 +2415,6 @@
 								</object>
 								<string key="NSFrame">{{0, 17}, {678, 469}}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSNextKeyView" ref="214919357"/>
 								<reference key="NSDocView" ref="214919357"/>
 								<reference key="NSBGColor" ref="584327073"/>
 								<int key="NScvFlags">4</int>
@@ -2447,7 +2448,6 @@
 								</object>
 								<string key="NSFrameSize">{678, 17}</string>
 								<reference key="NSSuperview" ref="818087869"/>
-								<reference key="NSNextKeyView" ref="771626764"/>
 								<reference key="NSDocView" ref="771626764"/>
 								<reference key="NSBGColor" ref="584327073"/>
 								<int key="NScvFlags">4</int>
@@ -2456,7 +2456,6 @@
 						</object>
 						<string key="NSFrame">{{0, 20}, {678, 486}}</string>
 						<reference key="NSSuperview" ref="798685624"/>
-						<reference key="NSNextKeyView" ref="352219819"/>
 						<int key="NSsFlags">560</int>
 						<reference key="NSVScroller" ref="475835809"/>
 						<reference key="NSHScroller" ref="306937856"/>
@@ -2509,7 +2508,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{678, 506}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="68987311">
@@ -3452,7 +3450,7 @@
 				</object>
 			</object>
 			<object class="NSCustomView" id="750146188">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3952,7 +3950,6 @@
 												</object>
 												<string key="NSFrame">{{1, 1}, {160, 206}}</string>
 												<reference key="NSSuperview" ref="592702627"/>
-												<reference key="NSNextKeyView" ref="326396473"/>
 												<reference key="NSDocView" ref="326396473"/>
 												<reference key="NSBGColor" ref="584327073"/>
 												<int key="NScvFlags">4</int>
@@ -3979,7 +3976,6 @@
 										</object>
 										<string key="NSFrame">{{11, 64}, {162, 208}}</string>
 										<reference key="NSSuperview" ref="680355895"/>
-										<reference key="NSNextKeyView" ref="690678724"/>
 										<int key="NSsFlags">562</int>
 										<reference key="NSVScroller" ref="549546676"/>
 										<reference key="NSHScroller" ref="983794955"/>
@@ -4055,7 +4051,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{920, 606}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="573695519">
@@ -8208,6 +8203,8 @@
 					<string>1101.IBEditorWindowLastContentRect</string>
 					<string>1101.IBPluginDependency</string>
 					<string>1102.IBPluginDependency</string>
+					<string>1110.IBPluginDependency</string>
+					<string>1111.IBPluginDependency</string>
 					<string>1112.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>124.ImportedFromIB2</string>
@@ -8400,6 +8397,7 @@
 					<string>590.IBPluginDependency</string>
 					<string>593.IBPluginDependency</string>
 					<string>594.IBPluginDependency</string>
+					<string>595.CustomClassName</string>
 					<string>595.IBPluginDependency</string>
 					<string>596.IBPluginDependency</string>
 					<string>597.IBPluginDependency</string>
@@ -8685,6 +8683,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -8875,6 +8875,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>NSPreProcessTextField</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9055,7 +9056,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{690, 353}, {920, 606}}</string>
+					<string>{{520, 250}, {920, 606}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9199,6 +9200,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">IndexBar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSPreProcessTextField</string>
+					<string key="superclassName">NSTextField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">NSPreProcessTextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
