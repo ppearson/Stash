@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -249,7 +249,7 @@ toolbarViewGroupTag;
 	int nMenuIndex = 0;
 	for (NSTableColumn *tc in [[transactionsTableView tableColumns] reverseObjectEnumerator])
 	{
-		NSMenuItem *subItem = [transactionsTableHeaderMenu insertItemWithTitle:[tc identifier] action:@selector(transactionTableColumnMenu:) keyEquivalent:@"" atIndex:nMenuIndex];
+		NSMenuItem *subItem = [transactionsTableHeaderMenu insertItemWithTitle:[[tc headerCell] stringValue] action:@selector(transactionTableColumnMenu:) keyEquivalent:@"" atIndex:nMenuIndex];
 		
 		[subItem setTarget:self];
 		[subItem setRepresentedObject:tc];
