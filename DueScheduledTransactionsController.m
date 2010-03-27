@@ -40,6 +40,8 @@
 - (void)awakeFromNib
 {
 	[fTransactionsList reloadData];
+	
+	[fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
 }
 
 - (void)dealloc
