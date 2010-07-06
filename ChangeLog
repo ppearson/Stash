@@ -1,3 +1,15 @@
+Version 0.8
+-----------
+
+* Added Overview Chart type for graphs - basically shows a simple profit/loss blue/red bar pair
+  for each month
+* New Date Picker dropdown button icon
+* Added simple (add and subtract only) maths expression parser to amount field - initial '=' symbol
+  causes expression to be parsed
+* Localised column names are now shown in the main transaction view column selector menu
+* When the Scheduled Transaction window appears, the first item is now automatically selected
+* Added Account Balances to the IndexBar on the left
+
 Version 0.75
 ------------
 
