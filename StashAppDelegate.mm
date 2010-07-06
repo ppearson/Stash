@@ -469,6 +469,9 @@ toolbarViewGroupTag;
 	
 	[indexBar addSection:@"accounts" title:NSLocalizedString(@"ACCOUNTS", "IndexBar -> ACCOUNTS")];
 	
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	int nAccount = 0;
 	
@@ -477,12 +480,20 @@ toolbarViewGroupTag;
 		std::string strName = it->getName();
 		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
 		
+		fixed accBalance = it->getBalance(true);
+		
+		NSNumber *nAccBalance = [NSNumber numberWithDouble:accBalance.ToDouble()];
+		
+		NSString *sAccBalance = [[numberFormatter stringFromNumber:nAccBalance] retain];
+		
 		NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccount];
 
-		[indexBar addItem:@"accounts" key:sAccountKey title:sName item:nAccount action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
+		[indexBar addItem:@"accounts" key:sAccountKey title:sName amount:sAccBalance item:nAccount action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
 		
 		[sName release];
 	}
+	
+	[numberFormatter release];
 	
 	[indexBar addSection:@"manage" title:NSLocalizedString(@"MANAGE", "IndexBar -> MANAGE")];
 	[indexBar addItem:@"manage" key:@"payees" title:NSLocalizedString(@"Payees", "IndexBar -> Payees") item:0 action:@selector(payeesSelected:) target:self type:2 rename:nil renameTarget:nil];
@@ -4415,7 +4426,21 @@ NSDate *convertToNSDate(MonthYear &date)
 		[aTransaction setBoolValue:bIsBalanceNeg forKey:@"BalNeg"];
 	
 		[sTBalance release];
-	}	
+	}
+	
+	// need to update IndexBar account balance
+	
+	NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
+	NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
+	
+	NSString *itemKey = [indexBar getSelectedItemKey];
+	
+	if (itemKey)
+	{
+		[indexBar updateAmount:itemKey amount:sTBalance];
+	
+		[indexBar reloadData];
+	}
 
 	[numberFormatter release];
 }

@@ -38,6 +38,9 @@
 
 - (void)addSection:(id)key title:(NSString*)sTitle;
 - (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget;
+- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle amount:(NSString*)sAmount item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget;
+
+- (void)updateAmount:(id)key amount:(NSString*)sAmount;
 
 - (void)selectItem:(id)key;
 - (void)expandSection:(id)itemKey;

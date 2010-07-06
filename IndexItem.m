@@ -27,7 +27,9 @@
 @synthesize parentKey;
 @synthesize itemKey;
 @synthesize type;
+
 @synthesize title;
+@synthesize amount;
 
 @synthesize actionTarget;
 @synthesize action;

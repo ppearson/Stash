@@ -31,6 +31,8 @@
 	BOOL m_section;
 	
 	NSString *title;
+	NSString *amount;	
+	
 	int itemIndex;
 	
 	id actionTarget;
@@ -43,6 +45,7 @@
 }
 
 @property (retain) NSString *title;
+@property (retain) NSString *amount;
 @property (assign) id parentKey;
 @property (assign) id itemKey;
 @property (assign) int type;

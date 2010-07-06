@@ -113,7 +113,6 @@ fixed Account::getBalance(bool onlyCleared, int endIndex)
 	fixed balance = 0.0;
 	
 	std::vector<Transaction>::iterator it = m_aTransactions.begin();
-	
 	std::vector<Transaction>::iterator itEnd = m_aTransactions.end();
 	
 	if (endIndex != -1)

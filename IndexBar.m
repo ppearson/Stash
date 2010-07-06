@@ -53,6 +53,7 @@
 	IndexItem *section = [[IndexItem alloc] init];
 	
 	[section setTitle:sTitle];
+	[section setAmount:@""];
 	[section setItemKey:key];
 	[section setSection:YES];
 	[section setType:0];
@@ -67,6 +68,7 @@
 	IndexItem *newItem = [[IndexItem alloc] init];
 	
 	[newItem setTitle:sTitle];
+	[newItem setAmount:@""];
 	[newItem setItemKey:key];
 	[newItem setParentKey:parentKey];
 	[newItem setItemIndex:item];
@@ -83,6 +85,41 @@
 	{
 		[parentItem addChild:newItem];
 	}
+}
+
+- (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle amount:(NSString*)sAmount item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget
+{
+	IndexItem *newItem = [[IndexItem alloc] init];
+	
+	[newItem setTitle:sTitle];
+	[newItem setAmount:sAmount];
+	
+	[newItem setItemKey:key];
+	[newItem setParentKey:parentKey];
+	[newItem setItemIndex:item];
+	[newItem setType:type];
+	
+	[newItem setAction:selector target:target];
+	[m_dItems setObject:newItem forKey:key];
+	
+	[newItem setRename:renamer target:reTarget];
+	
+	IndexItem *parentItem = [m_dItems objectForKey:parentKey];
+	
+	if (parentItem != nil)
+	{
+		[parentItem addChild:newItem];
+	}
+}
+
+- (void)updateAmount:(id)key amount:(NSString*)sAmount
+{
+	IndexItem *item = [m_dItems objectForKey:key];
+	
+	if (item == nil)
+		return;
+	
+	[item setAmount:sAmount];
 }
 
 - (void)selectItem:(id)key
@@ -137,24 +174,32 @@
 
 -(NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-    if (item == nil)
+	if (item == nil)
 	{
 		return [m_aSections count];
-    }
+	}
 	
-    return [item numberOfChildren];
+	return [item numberOfChildren];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {	
-	return [item title];
+	if ([[tableColumn identifier] isEqualToString:@"Name"])
+	{
+		return [item title];
+	}
+	
+	return [item amount];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
 {
 	BOOL result = NO;
 	
-	result = [item hasRename];
+	if ([[tableColumn identifier] isEqualToString:@"Name"])
+	{
+		result = [item hasRename];
+	}
 	
 	return result;
 }
