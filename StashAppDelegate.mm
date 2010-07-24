@@ -1480,11 +1480,16 @@ toolbarViewGroupTag;
 		newAccount.addTransaction(newTransaction);
 	}
 	
+	// format starting balance to string again for IndexBar
+	
+	NSNumber *nBalance = [NSNumber numberWithDouble:startingBalance.ToDouble()];
+	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
+	
 	int nAccountNum = m_Document.addAccount(newAccount);
 	
-	NSString *sAccountKey = [NSString stringWithFormat:@"a@s", nAccountNum];
+	NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccountNum];
 	
-	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName item:nAccountNum action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
+	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName amount:sBalance item:nAccountNum action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
 	
 	[addAccountController release];
 	[numberFormatter release];
@@ -1496,6 +1501,12 @@ toolbarViewGroupTag;
 	if (nAccountNum == 0) // if first account added, select it
 	{
 		[indexBar selectItem:sAccountKey];
+	}
+	else // otherwise, we need to update m_pAccount as that will have become invalidated
+	{
+		int nSelectedAccount = [indexBar getItemIndex];
+		
+		m_pAccount = m_Document.getAccountPtr(nSelectedAccount);
 	}
 }
 
@@ -1758,8 +1769,12 @@ toolbarViewGroupTag;
 		[aCategories addObject:sCategory];
 	}
 	
-	if (!makeTransferController)
-		makeTransferController = [[MakeTransferController alloc] initWithAccounts:aAccounts categories:aCategories];
+	if (makeTransferController)
+	{
+		[makeTransferController release];
+	}
+	
+	makeTransferController = [[MakeTransferController alloc] initWithAccounts:aAccounts categories:aCategories];
 	
 	[makeTransferController makeTransfer:window initialAccount:0];	
 }
@@ -1834,7 +1849,6 @@ toolbarViewGroupTag;
 	int nToTransaction = pToAccount->addTransaction(toTransaction);
 	
 //	[makeTransferController release];
-	[numberFormatter release];
 	
 	if (!strCategory.empty() && !m_Document.doesCategoryExist(strCategory))
 	{
@@ -1867,6 +1881,35 @@ toolbarViewGroupTag;
 		[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 		[transactionsTableView scrollRowToVisible:row];
 	}
+	
+	// update the balances in the IndexBar
+	
+	fixed fromBalance = pFromAccount->getBalance(true);
+	fixed toBalance = pToAccount->getBalance(true);
+	
+	NSNumber *nFromBalance = [NSNumber numberWithDouble:fromBalance.ToDouble()];
+	NSString *sFromBalance = [[numberFormatter stringFromNumber:nFromBalance] retain];
+	
+	NSString *sFromAccountKey = [NSString stringWithFormat:@"a%d", nFromAccount];
+	
+	if (sFromAccountKey)
+	{
+		[indexBar updateAmount:sFromAccountKey amount:sFromBalance];		
+	}
+	
+	NSNumber *nToBalance = [NSNumber numberWithDouble:toBalance.ToDouble()];
+	NSString *sToBalance = [[numberFormatter stringFromNumber:nToBalance] retain];
+	
+	NSString *sToAccountKey = [NSString stringWithFormat:@"a%d", nToAccount];
+	
+	if (sToAccountKey)
+	{
+		[indexBar updateAmount:sToAccountKey amount:sToBalance];		
+	}
+	
+	[indexBar reloadData];
+	
+	[numberFormatter release];	
 }
 
 - (IBAction)MoveUp:(id)sender
