@@ -41,7 +41,8 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 	// output each transaction record
 
 	std::vector<Transaction>::const_iterator it = pAccount->begin();
-	for (; it != pAccount->end(); ++it)
+	std::vector<Transaction>::const_iterator itEnd = pAccount->end();
+	for (; it != itEnd; ++it)
 	{
 		Date date = it->getDate();
 		fixed amount = it->getAmount();

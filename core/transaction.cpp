@@ -112,7 +112,10 @@ void Transaction::Store(std::fstream &stream)
 	unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
 	stream.write((char *) &numSplits, sizeof(unsigned char));
 	
-	for (std::vector<SplitTransaction>::iterator it = m_aSplits.begin(); it != m_aSplits.end(); ++it)
+	std::vector<SplitTransaction>::iterator it = m_aSplits.begin();
+	std::vector<SplitTransaction>::iterator itEnd = m_aSplits.end();
+	
+	for (; it != itEnd; ++it)
 	{
 		(*it).Store(stream);
 	}
@@ -130,7 +133,10 @@ fixed Transaction::getSplitTotal()
 {
 	fixed total = 0.0;
 	
-	for (std::vector<SplitTransaction>::iterator it = m_aSplits.begin(); it != m_aSplits.end(); ++it)
+	std::vector<SplitTransaction>::iterator it = m_aSplits.begin();
+	std::vector<SplitTransaction>::iterator itEnd = m_aSplits.end();
+	
+	for (; it != m_aSplits.end(); ++it)
 	{
 		total += (*it).getAmount();
 	}

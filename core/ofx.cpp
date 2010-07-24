@@ -136,8 +136,9 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
 	stream << "      <DTEND>" << dtEnd.FormattedDate(OFX) << "</DTEND>\n\n";
 	
 	std::vector<OFXStatementTransaction>::iterator it = m_aTransactions.begin();
+	std::vector<OFXStatementTransaction>::iterator itEnd = m_aTransactions.end();
 	
-	for (; it != m_aTransactions.end(); ++it)
+	for (; it != itEnd; ++it)
 	{
 		OFXStatementTransaction &trs = (*it);
 		
@@ -163,7 +164,8 @@ void OFXStatementResponse::addOFXTransactionsForAccount(Account &account)
 {
 	int FITID = 1;
 	std::vector<Transaction>::iterator it = account.begin();
-	for (; it != account.end(); ++it)
+	std::vector<Transaction>::iterator itEnd = account.end();
+	for (; it != itEnd; ++it)
 	{
 		Transaction &trans = (*it);
 		
@@ -281,8 +283,9 @@ bool OFXData::exportDataToFile(std::string path, bool xml)
 		writeXMLStartToStream(fileStream);
 	
 	OFXStTrResIt responseIt = begin();
+	OFXStTrResIt responseItEnd = end();
 	
-	for (; responseIt != end(); ++responseIt)
+	for (; responseIt != responseItEnd; ++responseIt)
 	{
 		OFXStatementTransactionResponse &response = (*responseIt);
 		
@@ -641,16 +644,17 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 
 bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled, bool ignoreDuplicates)
 {
-	OFXStTrIt transactionsIt = statement.begin();
-	
 	if (reverseTransactions)
 	{
 		statement.reverseTransactionOrder();
 	}
 	
+	OFXStTrIt transactionsIt = statement.begin();
+	OFXStTrIt transactionsItEnd = statement.end();
+	
 	bool ignoreThisOne = false;
 	
-	for (; transactionsIt != statement.end(); ++transactionsIt)
+	for (; transactionsIt != transactionsItEnd; ++transactionsIt)
 	{
 		OFXStatementTransaction itemTrans = (*transactionsIt);
 		

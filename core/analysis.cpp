@@ -51,13 +51,13 @@ void AreaChartItem::addAmountToValue(fixed amount)
 }
 
 void AreaChartItem::combineItem(AreaChartItem &item)
-{
-	std::vector<fixed>::iterator thisIt = m_amounts.begin();
+{	
 	std::vector<fixed>::iterator itemIt = item.m_amounts.begin();
+	std::vector<fixed>::iterator itemItEnd = item.m_amounts.end();
 	
 	if (m_blank)
-	{
-		for (; itemIt != item.m_amounts.end(); ++itemIt)
+	{		
+		for (; itemIt != itemItEnd; ++itemIt)
 		{
 			fixed &itemValue = (*itemIt);
 			
@@ -71,7 +71,10 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 	}
 	else
 	{
-		for (; thisIt != m_amounts.end(); ++thisIt, ++itemIt)
+		std::vector<fixed>::iterator thisIt = m_amounts.begin();
+		std::vector<fixed>::iterator thisItEnd = m_amounts.end();
+		
+		for (; thisIt != thisItEnd; ++thisIt, ++itemIt)
 		{
 			fixed &thisValue = (*thisIt);
 			
@@ -96,8 +99,9 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 	std::map<std::string, fixed>::iterator itFind = aMap.end();
 	
 	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
+	std::vector<Transaction>::const_iterator itEnd = criteria.m_pAccount->end();
 
-	for (; it != criteria.m_pAccount->end(); ++it)
+	for (; it != itEnd; ++it)
 	{
 		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
@@ -196,14 +200,14 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
 	
 	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
+	std::vector<Transaction>::const_iterator itEnd = criteria.m_pAccount->end();
 	
-	for (; it != criteria.m_pAccount->end(); ++it)
+	for (; it != itEnd; ++it)
 	{
 		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if (expense && (*it).getAmount().IsPositive() ||
-			!expense && !(*it).getAmount().IsPositive())
+		if (expense && (*it).getAmount().IsPositive() || !expense && !(*it).getAmount().IsPositive())
 		{
 			continue;
 		}
@@ -346,10 +350,11 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &
 	// copy values to the vector
 	
 	std::map<std::string, fixed>::iterator itMap = aMap.begin();
+	std::map<std::string, fixed>::iterator itMapEnd = aMap.end();
 	
 	double dGroupSmaller = static_cast<double>(criteria.m_groupSmaller);
 	
-	for (; itMap != aMap.end(); ++itMap)
+	for (; itMap != itMapEnd; ++itMap)
 	{
 		std::string title = (*itMap).first;
 		
@@ -433,16 +438,18 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	//	for each item, for each date that exists in the aDates set, create an AreaChartItem for that date and the item
 	
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItem = aMap.begin();
+	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemEnd = aMap.end();
 	
-	for (; itItem != aMap.end(); ++itItem)
+	for (; itItem != itItemEnd; ++itItem)
 	{
 		std::string title = (*itItem).first;
 		
 		std::map<MonthYear, fixed>::iterator itDate = aDateTotals.begin();
+		std::map<MonthYear, fixed>::iterator itDateEnd = aDateTotals.end();
 		
 		AreaChartItem newItem(title);
 		
-		for (; itDate != aDateTotals.end(); ++itDate)
+		for (; itDate != itDateEnd; ++itDate)
 		{
 			std::map<MonthYear, fixed> &dateMap = (*itItem).second;
 			
@@ -483,8 +490,11 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		AreaChartItem otherItem(criteria.m_groupSmallerName);
 		
 		std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
+		std::vector<AreaChartItem>::iterator itPurgeItemEnd = criteria.m_aValues.end();
 		
-		while (itPurgeItem != criteria.m_aValues.end())
+		/// might be issue here
+		
+		while (itPurgeItem != itPurgeItemEnd)
 		{
 			if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
 			{
@@ -500,7 +510,9 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		
 		// In case there's an other item already, we need to combine the existing and our new one
 		std::vector<AreaChartItem>::iterator itExistingOtherItem = criteria.m_aValues.begin();
-		while (itExistingOtherItem != criteria.m_aValues.end())
+		std::vector<AreaChartItem>::iterator itExistingOtherItemEnd = criteria.m_aValues.end();
+		
+		while (itExistingOtherItem != itExistingOtherItemEnd)
 		{
 			if ((*itExistingOtherItem).getTitle() == criteria.m_groupSmallerName)
 				break;
@@ -527,8 +539,9 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		
 	// add dateitems to vector
 	std::map<MonthYear, fixed>::iterator itDate2 = aDateTotals.begin();
+	std::map<MonthYear, fixed>::iterator itDate2End = aDateTotals.end();
 	
-	for (; itDate2 != aDateTotals.end(); ++itDate2)
+	for (; itDate2 != itDate2End; ++itDate2)
 	{
 		MonthYear myDate = (*itDate2).first;
 		
@@ -569,8 +582,9 @@ bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<Overvi
 	bool income = true;
 	
 	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
+	std::vector<Transaction>::const_iterator itEnd = criteria.m_pAccount->end();
 	
-	for (; it != criteria.m_pAccount->end(); ++it)
+	for (; it != itEnd; ++it)
 	{
 		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
@@ -613,7 +627,10 @@ bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<Overvi
 		}
 	}
 	
-	for (itDateFind = aBuildItems.begin(); itDateFind != aBuildItems.end(); ++itDateFind)
+	itDateFind = aBuildItems.begin();
+	std::map<MonthYear, OverviewChartItem>::iterator itDateFindEnd = aBuildItems.end();
+	
+	for (; itDateFind != itDateFindEnd; ++itDateFind)
 	{
 		if ((*itDateFind).second.m_income > criteria.m_overallMax)
 		{

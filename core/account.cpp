@@ -67,7 +67,10 @@ void Account::Store(std::fstream &stream)
 	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());	
 	stream.write((char *) &numTransactions, sizeof(unsigned int));
 	
-	for (std::vector<Transaction>::iterator it = m_aTransactions.begin(); it != m_aTransactions.end(); ++it)
+	std::vector<Transaction>::iterator it = m_aTransactions.begin();
+	std::vector<Transaction>::iterator itEnd = m_aTransactions.end();
+	
+	for (; it != itEnd; ++it)
 	{
 		(*it).Store(stream);
 	}

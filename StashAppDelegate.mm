@@ -816,6 +816,8 @@ toolbarViewGroupTag;
 	}
 	
 	std::vector<Transaction>::const_iterator it = m_pAccount->begin();
+	std::vector<Transaction>::const_iterator itEnd = m_pAccount->end();
+	
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
@@ -832,8 +834,9 @@ toolbarViewGroupTag;
 		dateNow.DecrementDays(nRecentDuration);
 		
 		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
+		std::vector<Transaction>::const_iterator itTempEnd = m_pAccount->end();
 		
-		for (; itTemp != m_pAccount->end(); ++itTemp)
+		for (; itTemp != itTempEnd; ++itTemp)
 		{
 			if ((*itTemp).getDate1() >= dateNow)
 				break;
@@ -854,8 +857,9 @@ toolbarViewGroupTag;
 		Date dateComp(1, 1, dateNow.getYear());
 		
 		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
+		std::vector<Transaction>::const_iterator itTempEnd = m_pAccount->end();
 		
-		for (; itTemp != m_pAccount->end(); ++itTemp)
+		for (; itTemp != itTempEnd; ++itTemp)
 		{
 			if ((*itTemp).getDate1() >= dateComp)
 				break;
@@ -882,7 +886,7 @@ toolbarViewGroupTag;
 	BOOL bShowNegAmountsInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegAmountsRed"];
 	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
 	
-	for (; it != m_pAccount->end(); ++it, nTransaction++)
+	for (; it != itEnd; ++it, nTransaction++)
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
 		
@@ -4446,9 +4450,10 @@ NSDate *convertToNSDate(MonthYear &date)
 	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin() + m_nTransactionOffset + nIndex;
+	std::vector<Transaction>::iterator itEnd = m_pAccount->end();
 	
 	int nTransItemIndex = nIndex;
-	for (; it != m_pAccount->end(); ++it, nTransItemIndex++)
+	for (; it != itEnd; ++it, nTransItemIndex++)
 	{
 		TransactionItem *aTransaction = [m_aTransactionItems objectAtIndex:nTransItemIndex];
 		
