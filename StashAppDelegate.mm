@@ -821,47 +821,32 @@ toolbarViewGroupTag;
 	int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
-	if (ShowTransactionsViewType == RECENT)
+	if (ShowTransactionsViewType != ALL)
 	{
-		int nRecentDuration = [[NSUserDefaults standardUserDefaults] integerForKey:@"TransactionsRecentDuration"];
+		Date dateCompare;
+		dateCompare.Now();
 		
-		if (nRecentDuration <= 0)
-			nRecentDuration = 30;
-		
-		Date dateNow;
-		dateNow.Now();
-		
-		dateNow.DecrementDays(nRecentDuration);
-		
-		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
-		std::vector<Transaction>::const_iterator itTempEnd = m_pAccount->end();
-		
-		for (; itTemp != itTempEnd; ++itTemp)
+		if (ShowTransactionsViewType == RECENT)
 		{
-			if ((*itTemp).getDate1() >= dateNow)
-				break;
+			int nRecentDuration = [[NSUserDefaults standardUserDefaults] integerForKey:@"TransactionsRecentDuration"];
 			
-			localBalance += (*itTemp).getAmount();
-			nTransaction++;
+			if (nRecentDuration <= 0)
+				nRecentDuration = 30;
+			
+			dateCompare.DecrementDays(nRecentDuration);
+		}
+		else // all this year
+		{
+			dateCompare.setDay(1);
+			dateCompare.setMonth(1);
 		}
 		
-		it = itTemp;
-		
-		m_nTransactionOffset = nTransaction;
-	}
-	else if (ShowTransactionsViewType == ALL_THIS_YEAR)
-	{
-		Date dateNow;
-		dateNow.Now();
-		
-		Date dateComp(1, 1, dateNow.getYear());
-		
 		std::vector<Transaction>::const_iterator itTemp = m_pAccount->begin();
 		std::vector<Transaction>::const_iterator itTempEnd = m_pAccount->end();
 		
 		for (; itTemp != itTempEnd; ++itTemp)
 		{
-			if ((*itTemp).getDate1() >= dateComp)
+			if ((*itTemp).getDate1() >= dateCompare)
 				break;
 			
 			localBalance += (*itTemp).getAmount();
@@ -917,7 +902,7 @@ toolbarViewGroupTag;
 		
 		[newTransaction setTransaction:nTransaction];
 		
-		int recon = it->isCleared();
+		int cleared = it->isCleared();
 		
 		BOOL bIsAmountNeg = NO;
 		BOOL bIsBalanceNeg = NO;
@@ -928,7 +913,7 @@ toolbarViewGroupTag;
 		if (bShowNegBalancesInRed && !localBalance.IsPositive())
 			bIsBalanceNeg = YES;
 		
-		[newTransaction setIntValue:recon forKey:@"Cleared"];
+		[newTransaction setIntValue:cleared forKey:@"Cleared"];
 		[newTransaction setValue:sTDate forKey:@"Date"];
 		[newTransaction setValue:sTPayee forKey:@"Payee"];
 		[newTransaction setValue:sTDescription forKey:@"Description"];
@@ -1350,8 +1335,6 @@ toolbarViewGroupTag;
 		
 		[aDates addObject:sDate];
 	}
-	
-	
 	
 	if (nLongestDateIndex >= 0)
 	{
