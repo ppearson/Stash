@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -22,6 +22,7 @@
 
 #import "IndexBar.h"
 #import "IndexItem.h"
+#import "IndexBarTextCell.h"
 
 @implementation IndexBar
 
@@ -31,7 +32,22 @@
 	m_dItems = [[NSMutableDictionary alloc] init];
 	
 	[self setDataSource:self];
-	[self setDelegate:self];	
+	[self setDelegate:self];
+	
+	NSTableColumn *tableColumn;
+	IndexBarTextCell *customCell;
+	
+	// Our folders have images next to them.
+	tableColumn = [self tableColumnWithIdentifier:@"Name"];
+	customCell = [[[IndexBarTextCell alloc] init] autorelease];
+	[customCell setEditable:YES];
+	
+	// we have to copy the font across from the old cell, otherwise it doesn't take notice of
+	// the xib's control size of small
+	NSCell *pOldCell = [tableColumn dataCell];
+	[customCell setFont:[pOldCell font]];
+	
+	[tableColumn setDataCell:customCell];
 }
 
 - (void)dealloc
@@ -313,6 +329,20 @@
 	if (row >= 0)
 	{
 		[self editColumn:0 row:row withEvent:nil select:YES];
+	}
+}
+
+- (void)outlineView:(NSOutlineView *)olv willDisplayCell:(NSCell *)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item 
+{
+	if ([[tableColumn identifier] isEqualToString:@"Name"]) 
+	{
+		IndexItem *thisItem = (IndexItem *)item;
+
+		IndexBarTextCell *realCell = (IndexBarTextCell *)cell;
+		
+		NSString *sAmount = [thisItem amount];
+		
+		[realCell setAmount:sAmount];
 	}
 }
 

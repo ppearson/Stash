@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -30,6 +30,8 @@
 	IBOutlet NSMenu *fAccountMenu;
 	IBOutlet NSMenu *fMiscMenu;
 }
+
+-(void)outlineView:(NSOutlineView *)olv willDisplayCell:(NSCell *)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item;
 
 - (int)getItemIndex;
 - (id)getSelectedItemKey;

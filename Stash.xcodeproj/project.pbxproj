@@ -57,6 +57,7 @@
 		D0A1F936112C5EE30026885B /* Preferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0A1F92B112C5EE30026885B /* Preferences.xib */; };
 		D0A460D010A224FD007CB217 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CE10A224FD007CB217 /* down.png */; };
 		D0A460D110A224FD007CB217 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D0A460CF10A224FD007CB217 /* up.png */; };
+		D0A6DDE811FB8768009DA15B /* IndexBarTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A6DDE711FB8768009DA15B /* IndexBarTextCell.m */; };
 		D0A95F4710F48985008F28B6 /* ofx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0A95F4610F48985008F28B6 /* ofx.cpp */; };
 		D0AD4AD110EF81CE008226E6 /* stash.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0AD4ACF10EF81CE008226E6 /* stash.icns */; };
 		D0AD4AD210EF81CE008226E6 /* stashdocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D0AD4AD010EF81CE008226E6 /* stashdocument.icns */; };
@@ -168,6 +169,8 @@
 		D0A1F942112C5EF10026885B /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/Preferences.xib; sourceTree = "<group>"; };
 		D0A460CE10A224FD007CB217 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
 		D0A460CF10A224FD007CB217 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		D0A6DDE611FB8768009DA15B /* IndexBarTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBarTextCell.h; sourceTree = "<group>"; };
+		D0A6DDE711FB8768009DA15B /* IndexBarTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexBarTextCell.m; sourceTree = "<group>"; };
 		D0A95F4510F48985008F28B6 /* ofx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofx.h; sourceTree = "<group>"; };
 		D0A95F4610F48985008F28B6 /* ofx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofx.cpp; sourceTree = "<group>"; };
 		D0AD4ACF10EF81CE008226E6 /* stash.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = stash.icns; sourceTree = "<group>"; };
@@ -205,6 +208,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D0A6DDE611FB8768009DA15B /* IndexBarTextCell.h */,
+				D0A6DDE711FB8768009DA15B /* IndexBarTextCell.m */,
 				D01E77FB11517B2E00DBFCF5 /* OverviewChartView.h */,
 				D01E77FC11517B2E00DBFCF5 /* OverviewChartView.mm */,
 				D07D51E610FA1FEC00BC37F9 /* DropDownDate.h */,
@@ -519,6 +524,7 @@
 				D01E77FD11517B2E00DBFCF5 /* OverviewChartView.mm in Sources */,
 				D08F2A6E115660A0007EC06F /* NSPreProcessTextField.mm in Sources */,
 				D0EED7CA115AA42A005E640F /* expression_parser.cpp in Sources */,
+				D0A6DDE811FB8768009DA15B /* IndexBarTextCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
