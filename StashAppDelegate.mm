@@ -377,32 +377,42 @@ toolbarViewGroupTag;
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
-{
-    NSToolbarItem * item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
-	
+{	
     if ([ident isEqualToString:TOOLBAR_ADDACCOUNT])
     {
+		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
+		
         [item setLabel:NSLocalizedString(@"Add Account", "Main Toolbar -> Add Account")];
         [item setImage:[NSImage imageNamed:@"add_account.png"]];
         [item setTarget:self];
         [item setAction:@selector(AddAccount:)];
         [item setAutovalidates:NO];
+		
+		return item;
     }
     else if ([ident isEqualToString:TOOLBAR_ADDGRAPH])
     {
+		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
+		
         [item setLabel:NSLocalizedString(@"Add Graph", "Main Toolbar -> Add Graph")];
         [item setImage:[NSImage imageNamed:@"add_graph.png"]];
         [item setTarget:self];
         [item setAction:@selector(AddGraph:)];
         [item setAutovalidates:NO];
+		
+		return item;
     }
 	else if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
     {
+		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
+		
         [item setLabel:NSLocalizedString(@"Make Transfer", "Main Toolbar -> Make Transfer")];
         [item setImage:[NSImage imageNamed:@"make_transfer.png"]];
         [item setTarget:self];
         [item setAction:@selector(MakeTransfer:)];
         [item setAutovalidates:YES];
+		
+		return item;
     }
 	else if ([ident isEqualToString: TOOLBAR_VIEWTYPE])
     {
@@ -444,13 +454,8 @@ toolbarViewGroupTag;
         [segmentedControl release];
         return [groupItem autorelease];
     }
-	else
-    {
-        [item release];
-        return nil;
-    }
 	
-    return [item autorelease];
+    return nil;
 }
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
@@ -972,6 +977,7 @@ toolbarViewGroupTag;
 				splitValue -= split.getAmount();
 				
 				[newTransaction addChild:newSplit];
+				[newSplit release];
 				
 				[sSPayee release];
 				[sSDescription release];
@@ -1000,10 +1006,12 @@ toolbarViewGroupTag;
 				
 				[newTransaction addChild:newSplit];
 				[sSAmount release];
+				[newSplit release];
 			}
 		}		
 		
 		[m_aTransactionItems addObject:newTransaction];
+		[newTransaction release];
 		[sTPayee release];
 		[sTDescription release];
 		[sTCategory release];
@@ -1371,6 +1379,7 @@ toolbarViewGroupTag;
 		
 		NSDate *thisDate = convertToNSDate((*itOverview).m_date);
 		NSString *sDate = [[dateFormatter stringFromDate:thisDate] retain];
+
 		[dict setValue:sDate forKey:@"date"];
 		
 		[aOverviewItems addObject:dict];		
@@ -1395,6 +1404,8 @@ toolbarViewGroupTag;
 		
 		[transactionsPayee addItemWithObjectValue:sPayee];
 		[scheduledPayee addItemWithObjectValue:sPayee];
+		
+		[sPayee release];
 	}
 	
 	[transactionsCategory removeAllItems];
@@ -1408,6 +1419,8 @@ toolbarViewGroupTag;
 		
 		[transactionsCategory addItemWithObjectValue:sCategory];
 		[scheduledCategory addItemWithObjectValue:sCategory];
+		
+		[sCategory release];
 	}
 }
 
@@ -3428,8 +3441,8 @@ NSDate *convertToNSDate(Date &date)
     [dateComponents setSecond:0];
 	
 	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
-//	[dateComponents release];
-//	[gregorian release];
+	[dateComponents release];
+	[gregorian release];
 	
     return nsDate;
 }
@@ -3448,8 +3461,8 @@ NSDate *convertToNSDate(MonthYear &date)
     [dateComponents setSecond:0];
 	
 	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
-	//	[dateComponents release];
-	//	[gregorian release];
+	[dateComponents release];
+	[gregorian release];
 	
     return nsDate;	
 }
@@ -4261,6 +4274,8 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	[defs setInteger:self.ShowTransactionsViewType forKey:@"TransactionsViewType"];
 	[defs synchronize];
+	
+	[m_aTransactionItems removeAllObjects];
 	
 	[m_aTransactionItems release];
 	[m_aPayeeItems release];

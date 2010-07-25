@@ -52,6 +52,8 @@
 
 - (void)dealloc
 {
+	[self clearAllItems];
+	
 	[m_aSections release];
 	[m_dItems release];
 	
@@ -101,6 +103,8 @@
 	{
 		[parentItem addChild:newItem];
 	}
+	
+	[newItem release];
 }
 
 - (void)addItem:(id)parentKey key:(id)key title:(NSString*)sTitle amount:(NSString*)sAmount item:(int)item action:(SEL)selector target:(id)target type:(int)type rename:(SEL)renamer renameTarget:(id)reTarget
@@ -126,6 +130,8 @@
 	{
 		[parentItem addChild:newItem];
 	}
+	
+	[newItem release];
 }
 
 - (void)updateAmount:(id)key amount:(NSString*)sAmount

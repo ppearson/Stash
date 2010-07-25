@@ -9,6 +9,9 @@ Version 0.8
 * Localised column names are now shown in the main transaction view column selector menu
 * When the Scheduled Transaction window appears, the first item is now automatically selected
 * Added Account Balances to the IndexBar on the left
+* Fixed bug which meant that the Transfer window didn't always have an up-to-date list of Accounts
+* Code optimisation for potential speed improvements
+* Fix memory leaks
 
 Version 0.75
 ------------
