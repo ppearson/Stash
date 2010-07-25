@@ -143,11 +143,11 @@
 	// draw gloss gradient
 	
 	NSGradient* aGradient = [[[NSGradient alloc]
-							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.5f], (CGFloat)0.0,
+							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.35f], (CGFloat)0.0,
 							  [[NSColor whiteColor] colorWithAlphaComponent:0.2f], (CGFloat)1.0, nil] autorelease];
 	
-	double dGlossRadious = m_dMainRadius + dPushoutDistance;
-	NSRect glossRect = NSMakeRect(m_centrepoint.x - (dGlossRadious), m_centrepoint.y - (dGlossRadious), dGlossRadious * 2.0, dGlossRadious * 2.0);
+	double dGlossRadius = m_dMainRadius + dPushoutDistance;
+	NSRect glossRect = NSMakeRect(m_centrepoint.x - (dGlossRadius), m_centrepoint.y - (dGlossRadius), dGlossRadius * 2.0, dGlossRadius * 2.0);
 	
 	[path appendBezierPathWithOvalInRect:glossRect];
 	
