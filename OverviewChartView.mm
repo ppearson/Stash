@@ -74,9 +74,9 @@
 	
 	// work out how many months we can fit in a screen
 	
-	int nBarWidth = 36;
-	int nGapBetweenMonths = 16;
-	int nGapBetweenBars = 4;
+	int nBarWidth = 28;
+	int nGapBetweenMonths = 8;
+	int nGapBetweenBars = 2;
 	int nItemWidth = (nBarWidth * 2) + nGapBetweenMonths + nGapBetweenBars;
 	
 	int nMonthsToShow = plotArea.size.width / nItemWidth;
