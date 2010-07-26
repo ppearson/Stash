@@ -3193,6 +3193,9 @@ toolbarViewGroupTag;
 					trans->setCleared(false);
 				}
 				
+				// need to update the balance in the IndexBar
+				[self updateBalancesFromTransactionIndex:nTrans - m_nTransactionOffset];
+				
 				m_UnsavedChanges = true;
 			}
 		}
@@ -4445,6 +4448,8 @@ NSDate *convertToNSDate(MonthYear &date)
 		localBalance = m_aBalance.back();
 	}
 	
+	fixed clearedBalance = localBalance;
+	
 	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
 	
 	std::vector<Transaction>::iterator it = m_pAccount->begin() + m_nTransactionOffset + nIndex;
@@ -4456,6 +4461,9 @@ NSDate *convertToNSDate(MonthYear &date)
 		TransactionItem *aTransaction = [m_aTransactionItems objectAtIndex:nTransItemIndex];
 		
 		localBalance += it->getAmount();
+		
+		if (it->isCleared())
+			clearedBalance += it->getAmount();
 		
 		m_aBalance.push_back(localBalance);
 		
@@ -4476,7 +4484,7 @@ NSDate *convertToNSDate(MonthYear &date)
 	
 	// need to update IndexBar account balance
 	
-	NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
+	NSNumber *nTBalance = [NSNumber numberWithDouble:clearedBalance.ToDouble()];
 	NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
 	
 	NSString *itemKey = [indexBar getSelectedItemKey];
