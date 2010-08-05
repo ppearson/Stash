@@ -74,7 +74,7 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 		std::vector<fixed>::iterator thisIt = m_amounts.begin();
 		std::vector<fixed>::iterator thisItEnd = m_amounts.end();
 		
-		for (; thisIt != thisItEnd; ++thisIt, ++itemIt)
+		for (; thisIt != thisItEnd && itemIt != itemItEnd; ++thisIt, ++itemIt)
 		{
 			fixed &thisValue = (*thisIt);
 			
@@ -490,11 +490,8 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		AreaChartItem otherItem(criteria.m_groupSmallerName);
 		
 		std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
-		std::vector<AreaChartItem>::iterator itPurgeItemEnd = criteria.m_aValues.end();
 		
-		/// might be issue here
-		
-		while (itPurgeItem != itPurgeItemEnd)
+		while (itPurgeItem != criteria.m_aValues.end())
 		{
 			if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
 			{
