@@ -490,13 +490,17 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 		AreaChartItem otherItem(criteria.m_groupSmallerName);
 		
 		std::vector<AreaChartItem>::iterator itPurgeItem = criteria.m_aValues.begin();
+		std::vector<AreaChartItem>::iterator itPurgeItemEnd = criteria.m_aValues.end();
 		
-		while (itPurgeItem != criteria.m_aValues.end())
+		while (itPurgeItem != itPurgeItemEnd)
 		{
 			if ((*itPurgeItem).getMaxValue().ToDouble() < dPurgeValue)
 			{
 				otherItem.combineItem(*itPurgeItem);
+				
 				itPurgeItem = criteria.m_aValues.erase(itPurgeItem);
+				itPurgeItemEnd = criteria.m_aValues.end();
+				
 				bAddOther = true;
 			}
 			else
