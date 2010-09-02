@@ -642,7 +642,7 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 	return true;
 }
 
-bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool reconciled, bool ignoreDuplicates)
+bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool cleared, bool ignoreDuplicates)
 {
 	if (reverseTransactions)
 	{
@@ -661,9 +661,9 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 		Transaction newTransaction(itemTrans.getMemo(), itemTrans.getName(), "", itemTrans.getAmount(), itemTrans.getDate());
 		newTransaction.setType(itemTrans.getType());
 		
-		if (reconciled)
+		if (cleared)
 		{
-			newTransaction.setReconciled(true);
+			newTransaction.setCleared(true);
 		}
 		
 		ignoreThisOne = false;
