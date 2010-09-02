@@ -33,6 +33,8 @@ class Document
 public:
 	Document();
 	
+	static Document* getInstance();
+	
 	int addAccount(Account &acc) { m_aAccounts.push_back(acc); return m_aAccounts.size() - 1; }
 	Account &getAccount(int acc) { return m_aAccounts[acc]; }
 	Account *getAccountPtr(int acc) { return &m_aAccounts[acc]; }
@@ -81,12 +83,19 @@ public:
 	
 	fixed getBalance(bool onlyReconciled);
 	
+	bool hasUnsavedChanges() { return m_unsavedChanges; }
+	void setUnsavedChanges(bool value) { m_unsavedChanges = value; }
+	
 protected:
 	std::vector<Account> m_aAccounts;	
 	std::set<std::string> m_aPayees;
 	std::set<std::string> m_aCategories;
 	std::vector<ScheduledTransaction> m_aScheduledTransactions;
 	std::vector<Graph> m_aGraphs;
+	
+	bool m_unsavedChanges;
+	
+	static Document* m_pInstance;
 	
 };
 

@@ -64,6 +64,7 @@
 		D0B430DC10ED1AAB00D63206 /* area_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430D910ED1AAB00D63206 /* area_prefs.png */; };
 		D0B430DD10ED1AAB00D63206 /* pie_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430DA10ED1AAB00D63206 /* pie_prefs.png */; };
 		D0B430DE10ED1AAB00D63206 /* trans_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D0B430DB10ED1AAB00D63206 /* trans_prefs.png */; };
+		D0BC89C0122A89950034CBFB /* TransactionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0BC89BF122A89950034CBFB /* TransactionsController.mm */; };
 		D0C0116810ACC74900BFA7A1 /* scheduled_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */; };
 		D0C5987B10943E55002326F0 /* cleared_unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = D0C5987A10943E55002326F0 /* cleared_unchecked.png */; };
 		D0CE3EE8109B8982004CB9B0 /* SIndexSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3EE7109B8982004CB9B0 /* SIndexSplitView.m */; };
@@ -178,6 +179,8 @@
 		D0B430D910ED1AAB00D63206 /* area_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = area_prefs.png; sourceTree = "<group>"; };
 		D0B430DA10ED1AAB00D63206 /* pie_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pie_prefs.png; sourceTree = "<group>"; };
 		D0B430DB10ED1AAB00D63206 /* trans_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trans_prefs.png; sourceTree = "<group>"; };
+		D0BC89BE122A89950034CBFB /* TransactionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsController.h; sourceTree = "<group>"; };
+		D0BC89BF122A89950034CBFB /* TransactionsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransactionsController.mm; sourceTree = "<group>"; };
 		D0C0116610ACC74900BFA7A1 /* scheduled_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduled_transaction.cpp; sourceTree = "<group>"; };
 		D0C0116710ACC74900BFA7A1 /* scheduled_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduled_transaction.h; sourceTree = "<group>"; };
 		D0C5987A10943E55002326F0 /* cleared_unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cleared_unchecked.png; sourceTree = "<group>"; };
@@ -242,6 +245,8 @@
 				256AC3D90F4B6AC300CF3369 /* StashAppDelegate.mm */,
 				D08F2A6C115660A0007EC06F /* NSPreProcessTextField.h */,
 				D08F2A6D115660A0007EC06F /* NSPreProcessTextField.mm */,
+				D0BC89BE122A89950034CBFB /* TransactionsController.h */,
+				D0BC89BF122A89950034CBFB /* TransactionsController.mm */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -525,6 +530,7 @@
 				D08F2A6E115660A0007EC06F /* NSPreProcessTextField.mm in Sources */,
 				D0EED7CA115AA42A005E640F /* expression_parser.cpp in Sources */,
 				D0A6DDE811FB8768009DA15B /* IndexBarTextCell.m in Sources */,
+				D0BC89C0122A89950034CBFB /* TransactionsController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

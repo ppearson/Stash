@@ -38,13 +38,6 @@
 #import "ExportOFXController.h"
 #import "OverviewChartView.h"
 
-enum TransactionsToShow
-{
-	RECENT,
-	ALL_THIS_YEAR,
-	ALL
-};
-
 @interface StashAppDelegate : NSObject
 {
     NSWindow *window;
@@ -63,36 +56,10 @@ enum TransactionsToShow
 	IBOutlet NSView *vTransactionsView, *vPayeesView, *vCategoriesView, *vScheduledView, *vGraphView;
 	
 	int nViewType;
-	
-	// Transactions
-	NSMenu *transactionsTableHeaderMenu;
-	IBOutlet NSOutlineView *transactionsTableView;
-	IBOutlet NSSplitView *transactionsverticalSplitView;
-	IBOutlet NSComboBox *transactionsPayee;
-	IBOutlet NSComboBox *transactionsCategory;
-	IBOutlet NSTextField *transactionsDescription;
-	IBOutlet NSTextField *transactionsAmount;
-	IBOutlet NSPopUpButton *transactionsType;
-	IBOutlet id transactionsDateCntl;
-	IBOutlet id transactionsCleared;
-	
-	IBOutlet NSButton *addTransaction;
-	IBOutlet NSButton *deleteTransaction;
-	IBOutlet NSButton *splitTransaction;
-	IBOutlet NSButton *moveUp;
-	IBOutlet NSButton *moveDown;
-	IBOutlet NSButton *refresh;
-	
-	int ShowTransactionsViewType;
-	
-	NSMutableArray *m_aTransactionItems;
-	
 	bool m_bEditing;
 	
-	int m_nTransactionOffset;
-	
-	TransactionItem *m_SelectedIndex;
-	TransactionItem *m_SelectedTransaction;	
+	int ShowTransactionsViewType;
+		
 	
 	// Payees
 	IBOutlet NSTableView *payeesTableView;
@@ -152,7 +119,6 @@ enum TransactionsToShow
 	int m_nGraphDateSegment;
 	
 	std::string m_DocumentFile;
-	bool m_UnsavedChanges;
 	
 	NSString *m_sPendingOpenFile;
 	bool m_HasFinishedLoading;
@@ -161,7 +127,7 @@ enum TransactionsToShow
 @property (assign) int ShowTransactionsViewType;
 
 - (void)buildIndexTree;
-- (void)buildTransactionsTree;
+
 - (void)buildPayeesList;
 - (void)buildCategoriesList;
 - (void)buildSchedTransList;
@@ -183,29 +149,13 @@ enum TransactionsToShow
 				   number:(NSString*)number note:(NSString*)note type:(AccountType)type;
 
 - (IBAction)DeleteAccount:(id)sender;
-- (IBAction)AddTransaction:(id)sender;
-- (IBAction)DeleteTransaction:(id)sender;
-- (IBAction)SplitTransaction:(id)sender;
 
 - (IBAction)MakeTransfer:(id)sender;
 - (void)makeTransferItem:(MakeTransferController *)makeTransferController;
 
-- (NSString*)transactionTypeToString:(TransactionType)type;
-- (NSString*)convertUSNegAmount:(NSString*)string;
-
-- (IBAction)MoveUp:(id)sender;
-- (IBAction)MoveDown:(id)sender;
-- (void)SwapTransactions:(int)from to:(int)to;
-- (void)RefreshView:(id)sender;
-
-- (TransactionItem*)createTransactionItem:(Transaction&)transaction index:(int)index;
-
-- (IBAction)showRecentTransactions:(id)sender;
-- (IBAction)showAllTransactionsThisYear:(id)sender;
-- (IBAction)showAllTransactions:(id)sender;
-
 - (void)viewToolbarClicked:(id)sender;
-- (void)transactionTableColumnMenu:(id)sender;
+
+- (NSString*)convertUSNegAmount:(NSString*)string;
 
 
 // Payees
@@ -241,6 +191,10 @@ enum TransactionsToShow
 - (bool)OpenFileAt:(std::string)path;
 - (bool)SaveFileTo:(std::string)path;
 
+- (IBAction)showRecentTransactions:(id)sender;
+- (IBAction)showAllTransactionsThisYear:(id)sender;
+- (IBAction)showAllTransactions:(id)sender;
+
 - (IBAction)ImportQIF:(id)sender;
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController;
 
@@ -253,9 +207,6 @@ enum TransactionsToShow
 - (void)deleteExportOFXController;
 
 - (IBAction)ExportQIF:(id)sender;
-
-- (void)TransactionSelectionDidChange:(NSNotification *)notification;
-- (IBAction)updateTransaction:(id)sender;
 
 - (void)ScheduledSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateScheduled:(id)sender;
@@ -277,13 +228,8 @@ enum TransactionsToShow
 
 - (IBAction)showPreferencesWindow:(id)sender;
 
-NSDate *convertToNSDate(Date &date);
 NSDate *convertToNSDate(MonthYear &date);
 
-- (void)updateBalancesFromTransactionIndex:(int)nIndex;
-- (void)updateTransactionsFromTransactionIndex:(int)nIndex;
-
-- (void)handleTransactionsSettingsUpdate:(NSNotification *)note;
 - (void)handleGraphSettingsUpdate:(NSNotification *)note;
 
 - (IBAction)gotoWebsite:(id)sender;

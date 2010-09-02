@@ -25,9 +25,18 @@
 
 #define FILE_VERSION 5
 
+Document* Document::m_pInstance = NULL;
+
 Document::Document()
 {
+	//
 	
+	m_pInstance = this;
+}
+
+Document* Document::getInstance()
+{
+	return m_pInstance;
 }
 
 bool Document::Load(std::fstream &stream)

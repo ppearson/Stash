@@ -12,8 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="567"/>
-			<integer value="533"/>
+			<integer value="296"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1057,7 +1056,7 @@
 				<string key="NSClassName">NSFontManager</string>
 			</object>
 			<object class="NSCustomView" id="585576901">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1210,11 +1209,10 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{267, 386}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="834574435">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1345,7 +1343,7 @@
 					<object class="NSButton" id="675085059">
 						<reference key="NSNextResponder" ref="834574435"/>
 						<int key="NSvFlags">256</int>
-						<string key="NSFrame">{{-1.5, -2}, {31, 23}}</string>
+						<string key="NSFrame">{{-1, -2}, {31, 23}}</string>
 						<reference key="NSSuperview" ref="834574435"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="94444807">
@@ -1654,7 +1652,6 @@
 										</object>
 										<string key="NSFrame">{{0, 17}, {854, 410}}</string>
 										<reference key="NSSuperview" ref="800188037"/>
-										<reference key="NSNextKeyView" ref="781317227"/>
 										<reference key="NSDocView" ref="781317227"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1666,6 +1663,7 @@
 										<reference key="NSSuperview" ref="800188037"/>
 										<reference key="NSTarget" ref="800188037"/>
 										<string key="NSAction">_doScroller:</string>
+										<double key="NSCurValue">0.053658536585365853</double>
 										<double key="NSPercent">0.96240601503759393</double>
 									</object>
 									<object class="NSScroller" id="185413264">
@@ -1687,7 +1685,6 @@
 										</object>
 										<string key="NSFrameSize">{854, 17}</string>
 										<reference key="NSSuperview" ref="800188037"/>
-										<reference key="NSNextKeyView" ref="347113208"/>
 										<reference key="NSDocView" ref="347113208"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1696,7 +1693,6 @@
 								</object>
 								<string key="NSFrameSize">{854, 427}</string>
 								<reference key="NSSuperview" ref="966867876"/>
-								<reference key="NSNextKeyView" ref="573510658"/>
 								<int key="NSsFlags">560</int>
 								<reference key="NSVScroller" ref="875781203"/>
 								<reference key="NSHScroller" ref="185413264"/>
@@ -2146,7 +2142,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{854, 609}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSUserDefaultsController" id="616500614">
@@ -4089,6 +4084,7 @@
 				<string key="NSFrameSize">{147, 154}</string>
 				<string key="NSClassName">NSView</string>
 			</object>
+			<object class="NSViewController" id="9798764"/>
 			<object class="NSMenu" id="623953355">
 				<string key="NSTitle"/>
 				<object class="NSMutableArray" key="NSMenuItems">
@@ -4444,46 +4440,6 @@
 					<int key="connectionID">532</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">dataSource</string>
-						<reference key="source" ref="781317227"/>
-						<reference key="destination" ref="976324537"/>
-					</object>
-					<int key="connectionID">607</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">dataSource</string>
-						<reference key="source" ref="211320460"/>
-						<reference key="destination" ref="976324537"/>
-					</object>
-					<int key="connectionID">608</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">AddTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="997950312"/>
-					</object>
-					<int key="connectionID">618</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">SplitTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="666464348"/>
-					</object>
-					<int key="connectionID">621</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">updateTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="870403480"/>
-					</object>
-					<int key="connectionID">634</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">OpenFile:</string>
 						<reference key="source" ref="976324537"/>
@@ -4549,14 +4505,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsTableView</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="781317227"/>
-					</object>
-					<int key="connectionID">704</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">indexView</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="585576901"/>
@@ -4572,124 +4520,12 @@
 					<int key="connectionID">716</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showAllTransactions:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="967952364"/>
-					</object>
-					<int key="connectionID">724</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showAllTransactionsThisYear:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="452538556"/>
-					</object>
-					<int key="connectionID">725</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">indexBar</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="211320460"/>
 					</object>
 					<int key="connectionID">726</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">AddTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="675085059"/>
-					</object>
-					<int key="connectionID">735</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">SplitTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="505180288"/>
-					</object>
-					<int key="connectionID">738</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">DeleteTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="555646048"/>
-					</object>
-					<int key="connectionID">744</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">DeleteTransaction:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="437104165"/>
-					</object>
-					<int key="connectionID">745</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">addTransaction</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="675085059"/>
-					</object>
-					<int key="connectionID">746</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">deleteTransaction</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="555646048"/>
-					</object>
-					<int key="connectionID">747</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">splitTransaction</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="505180288"/>
-					</object>
-					<int key="connectionID">748</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">moveUp</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="778830808"/>
-					</object>
-					<int key="connectionID">753</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">moveDown</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="493014426"/>
-					</object>
-					<int key="connectionID">754</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">MoveUp:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="778830808"/>
-					</object>
-					<int key="connectionID">755</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">MoveDown:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="493014426"/>
-					</object>
-					<int key="connectionID">756</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">RefreshView:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1030921581"/>
-					</object>
-					<int key="connectionID">759</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4762,70 +4598,6 @@
 						<reference key="destination" ref="560115281"/>
 					</object>
 					<int key="connectionID">800</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">refresh</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1030921581"/>
-					</object>
-					<int key="connectionID">801</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsAmount</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="724451679"/>
-					</object>
-					<int key="connectionID">867</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsCategory</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="508288264"/>
-					</object>
-					<int key="connectionID">868</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsDateCntl</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="992951619"/>
-					</object>
-					<int key="connectionID">869</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsDescription</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="519023726"/>
-					</object>
-					<int key="connectionID">870</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsPayee</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="148142050"/>
-					</object>
-					<int key="connectionID">871</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsType</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="642794364"/>
-					</object>
-					<int key="connectionID">873</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsverticalSplitView</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="966867876"/>
-					</object>
-					<int key="connectionID">874</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -5093,14 +4865,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">showRecentTransactions:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="29370033"/>
-					</object>
-					<int key="connectionID">973</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
 						<string key="label">dateBarClicked:</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="81505167"/>
@@ -5234,22 +4998,6 @@
 						<reference key="destination" ref="1030242500"/>
 					</object>
 					<int key="connectionID">1008</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">MoveUp:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="679681961"/>
-					</object>
-					<int key="connectionID">1012</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">MoveDown:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="925148832"/>
-					</object>
-					<int key="connectionID">1013</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -5516,14 +5264,6 @@
 					<int key="connectionID">1106</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">transactionsCleared</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="697506675"/>
-					</object>
-					<int key="connectionID">1107</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">AddPayee:</string>
 						<reference key="source" ref="976324537"/>
@@ -5546,6 +5286,254 @@
 						<reference key="destination" ref="430332011"/>
 					</object>
 					<int key="connectionID">1113</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="781317227"/>
+						<reference key="destination" ref="9798764"/>
+					</object>
+					<int key="connectionID">1121</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsTableView</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="781317227"/>
+					</object>
+					<int key="connectionID">1122</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsAmount</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="724451679"/>
+					</object>
+					<int key="connectionID">1124</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsCategory</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="508288264"/>
+					</object>
+					<int key="connectionID">1125</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsCleared</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="697506675"/>
+					</object>
+					<int key="connectionID">1126</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsDateCntl</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="992951619"/>
+					</object>
+					<int key="connectionID">1127</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsDescription</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="519023726"/>
+					</object>
+					<int key="connectionID">1128</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsPayee</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="148142050"/>
+					</object>
+					<int key="connectionID">1129</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsType</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="642794364"/>
+					</object>
+					<int key="connectionID">1130</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">transactionsverticalSplitView</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="966867876"/>
+					</object>
+					<int key="connectionID">1131</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">AddTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="675085059"/>
+					</object>
+					<int key="connectionID">1132</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">DeleteTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="555646048"/>
+					</object>
+					<int key="connectionID">1133</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">SplitTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="505180288"/>
+					</object>
+					<int key="connectionID">1134</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">MoveUp:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="778830808"/>
+					</object>
+					<int key="connectionID">1135</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">MoveDown:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="493014426"/>
+					</object>
+					<int key="connectionID">1136</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">RefreshView:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="1030921581"/>
+					</object>
+					<int key="connectionID">1137</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="870403480"/>
+					</object>
+					<int key="connectionID">1138</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">addTransaction</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="675085059"/>
+					</object>
+					<int key="connectionID">1140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">deleteTransaction</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="555646048"/>
+					</object>
+					<int key="connectionID">1141</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">moveDown</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="493014426"/>
+					</object>
+					<int key="connectionID">1142</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">moveUp</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="778830808"/>
+					</object>
+					<int key="connectionID">1143</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">refresh</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="1030921581"/>
+					</object>
+					<int key="connectionID">1144</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">splitTransaction</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="505180288"/>
+					</object>
+					<int key="connectionID">1145</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">AddTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="997950312"/>
+					</object>
+					<int key="connectionID">1146</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">SplitTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="666464348"/>
+					</object>
+					<int key="connectionID">1147</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">MoveUp:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="679681961"/>
+					</object>
+					<int key="connectionID">1148</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">MoveDown:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="925148832"/>
+					</object>
+					<int key="connectionID">1149</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">DeleteTransaction:</string>
+						<reference key="source" ref="9798764"/>
+						<reference key="destination" ref="437104165"/>
+					</object>
+					<int key="connectionID">1150</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showRecentTransactions:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="29370033"/>
+					</object>
+					<int key="connectionID">1151</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showAllTransactionsThisYear:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="452538556"/>
+					</object>
+					<int key="connectionID">1152</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showAllTransactions:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="967952364"/>
+					</object>
+					<int key="connectionID">1153</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -8153,6 +8141,11 @@
 						<reference key="object" ref="430332011"/>
 						<reference key="parent" ref="157362889"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1119</int>
+						<reference key="object" ref="9798764"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -8212,6 +8205,8 @@
 					<string>1110.IBPluginDependency</string>
 					<string>1111.IBPluginDependency</string>
 					<string>1112.IBPluginDependency</string>
+					<string>1119.CustomClassName</string>
+					<string>1119.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>124.ImportedFromIB2</string>
 					<string>125.IBPluginDependency</string>
@@ -8690,6 +8685,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>TransactionsController</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8742,7 +8739,7 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{575, 520}, {261, 283}}</string>
+					<string>{{1076, 628}, {261, 283}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{187, 434}, {243, 243}}</string>
@@ -8791,13 +8788,13 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{463, 803}, {493, 20}}</string>
+					<string>{{964, 911}, {493, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{619, 690}, {265, 113}}</string>
+					<string>{{1120, 798}, {265, 113}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{475, 832}, {234, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8915,7 +8912,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{861, 462}, {267, 386}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{320, 199}, {854, 609}}</string>
+					<string>{{323, 121}, {854, 609}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9137,7 +9134,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1118</int>
+			<int key="maxID">1153</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -9398,25 +9395,19 @@
 							<string>AddGraph:</string>
 							<string>AddPayee:</string>
 							<string>AddScheduledTransaction:</string>
-							<string>AddTransaction:</string>
 							<string>DeleteAccount:</string>
 							<string>DeleteCategory:</string>
 							<string>DeletePayee:</string>
 							<string>DeleteScheduledTransaction:</string>
-							<string>DeleteTransaction:</string>
 							<string>ExportOFX:</string>
 							<string>ExportQIF:</string>
 							<string>ImportOFX:</string>
 							<string>ImportQIF:</string>
 							<string>MakeTransfer:</string>
-							<string>MoveDown:</string>
-							<string>MoveUp:</string>
 							<string>NewFile:</string>
 							<string>OpenFile:</string>
-							<string>RefreshView:</string>
 							<string>SaveFile:</string>
 							<string>SaveFileAs:</string>
-							<string>SplitTransaction:</string>
 							<string>accountRenamed:</string>
 							<string>accountSelected:</string>
 							<string>addGraphItem:</string>
@@ -9437,20 +9428,12 @@
 							<string>showAllTransactionsThisYear:</string>
 							<string>showPreferencesWindow:</string>
 							<string>showRecentTransactions:</string>
-							<string>transactionTableColumnMenu:</string>
 							<string>updateGraph:</string>
 							<string>updateScheduled:</string>
-							<string>updateTransaction:</string>
 							<string>viewToolbarClicked:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -9493,8 +9476,6 @@
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
@@ -9507,25 +9488,19 @@
 							<string>AddGraph:</string>
 							<string>AddPayee:</string>
 							<string>AddScheduledTransaction:</string>
-							<string>AddTransaction:</string>
 							<string>DeleteAccount:</string>
 							<string>DeleteCategory:</string>
 							<string>DeletePayee:</string>
 							<string>DeleteScheduledTransaction:</string>
-							<string>DeleteTransaction:</string>
 							<string>ExportOFX:</string>
 							<string>ExportQIF:</string>
 							<string>ImportOFX:</string>
 							<string>ImportQIF:</string>
 							<string>MakeTransfer:</string>
-							<string>MoveDown:</string>
-							<string>MoveUp:</string>
 							<string>NewFile:</string>
 							<string>OpenFile:</string>
-							<string>RefreshView:</string>
 							<string>SaveFile:</string>
 							<string>SaveFileAs:</string>
-							<string>SplitTransaction:</string>
 							<string>accountRenamed:</string>
 							<string>accountSelected:</string>
 							<string>addGraphItem:</string>
@@ -9546,10 +9521,8 @@
 							<string>showAllTransactionsThisYear:</string>
 							<string>showPreferencesWindow:</string>
 							<string>showRecentTransactions:</string>
-							<string>transactionTableColumnMenu:</string>
 							<string>updateGraph:</string>
 							<string>updateScheduled:</string>
-							<string>updateTransaction:</string>
 							<string>viewToolbarClicked:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -9579,10 +9552,6 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">AddTransaction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">DeleteAccount:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -9596,10 +9565,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">DeleteScheduledTransaction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">DeleteTransaction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9623,14 +9588,6 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">MoveDown:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">MoveUp:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">NewFile:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -9639,19 +9596,11 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">RefreshView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">SaveFile:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">SaveFileAs:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">SplitTransaction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9735,19 +9684,11 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">transactionTableColumnMenu:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">updateGraph:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">updateScheduled:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">updateTransaction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9760,13 +9701,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addTransaction</string>
 							<string>areaChartView</string>
 							<string>categoriesTableView</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
 							<string>deleteScheduled</string>
-							<string>deleteTransaction</string>
 							<string>graphAccount</string>
 							<string>graphEndDateCntrl</string>
 							<string>graphIgnoreTransfers</string>
@@ -9779,12 +9718,9 @@
 							<string>indexBarSplitView</string>
 							<string>indexView</string>
 							<string>indexViewPlaceholder</string>
-							<string>moveDown</string>
-							<string>moveUp</string>
 							<string>overviewChartView</string>
 							<string>payeesTableView</string>
 							<string>pieChartView</string>
-							<string>refresh</string>
 							<string>scheduledAccount</string>
 							<string>scheduledAmount</string>
 							<string>scheduledCategory</string>
@@ -9796,16 +9732,6 @@
 							<string>scheduledTransactionsTableView</string>
 							<string>scheduledType</string>
 							<string>scheduledverticalSplitView</string>
-							<string>splitTransaction</string>
-							<string>transactionsAmount</string>
-							<string>transactionsCategory</string>
-							<string>transactionsCleared</string>
-							<string>transactionsDateCntl</string>
-							<string>transactionsDescription</string>
-							<string>transactionsPayee</string>
-							<string>transactionsTableView</string>
-							<string>transactionsType</string>
-							<string>transactionsverticalSplitView</string>
 							<string>vCategoriesView</string>
 							<string>vGraphView</string>
 							<string>vPayeesView</string>
@@ -9816,12 +9742,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSButton</string>
 							<string>AreaChartView</string>
 							<string>NSTableView</string>
 							<string>NSView</string>
 							<string>NSView</string>
-							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>id</string>
@@ -9835,12 +9759,9 @@
 							<string>NSSplitView</string>
 							<string>NSView</string>
 							<string>NSView</string>
-							<string>NSButton</string>
-							<string>NSButton</string>
 							<string>OverviewChartView</string>
 							<string>NSTableView</string>
 							<string>PieChartView</string>
-							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSTextField</string>
 							<string>NSComboBox</string>
@@ -9850,16 +9771,6 @@
 							<string>NSPopUpButton</string>
 							<string>NSComboBox</string>
 							<string>NSTableView</string>
-							<string>NSPopUpButton</string>
-							<string>NSSplitView</string>
-							<string>NSButton</string>
-							<string>NSTextField</string>
-							<string>NSComboBox</string>
-							<string>id</string>
-							<string>id</string>
-							<string>NSTextField</string>
-							<string>NSComboBox</string>
-							<string>NSOutlineView</string>
 							<string>NSPopUpButton</string>
 							<string>NSSplitView</string>
 							<string>NSView</string>
@@ -9875,13 +9786,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>addTransaction</string>
 							<string>areaChartView</string>
 							<string>categoriesTableView</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
 							<string>deleteScheduled</string>
-							<string>deleteTransaction</string>
 							<string>graphAccount</string>
 							<string>graphEndDateCntrl</string>
 							<string>graphIgnoreTransfers</string>
@@ -9894,12 +9803,9 @@
 							<string>indexBarSplitView</string>
 							<string>indexView</string>
 							<string>indexViewPlaceholder</string>
-							<string>moveDown</string>
-							<string>moveUp</string>
 							<string>overviewChartView</string>
 							<string>payeesTableView</string>
 							<string>pieChartView</string>
-							<string>refresh</string>
 							<string>scheduledAccount</string>
 							<string>scheduledAmount</string>
 							<string>scheduledCategory</string>
@@ -9911,16 +9817,6 @@
 							<string>scheduledTransactionsTableView</string>
 							<string>scheduledType</string>
 							<string>scheduledverticalSplitView</string>
-							<string>splitTransaction</string>
-							<string>transactionsAmount</string>
-							<string>transactionsCategory</string>
-							<string>transactionsCleared</string>
-							<string>transactionsDateCntl</string>
-							<string>transactionsDescription</string>
-							<string>transactionsPayee</string>
-							<string>transactionsTableView</string>
-							<string>transactionsType</string>
-							<string>transactionsverticalSplitView</string>
 							<string>vCategoriesView</string>
 							<string>vGraphView</string>
 							<string>vPayeesView</string>
@@ -9931,10 +9827,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">addTransaction</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">areaChartView</string>
 								<string key="candidateClassName">AreaChartView</string>
@@ -9953,10 +9845,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">deleteScheduled</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">deleteTransaction</string>
 								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -10008,14 +9896,6 @@
 								<string key="candidateClassName">NSView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">moveDown</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">moveUp</string>
-								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">overviewChartView</string>
 								<string key="candidateClassName">OverviewChartView</string>
 							</object>
@@ -10026,10 +9906,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">pieChartView</string>
 								<string key="candidateClassName">PieChartView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">refresh</string>
-								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scheduledAccount</string>
@@ -10076,6 +9952,206 @@
 								<string key="candidateClassName">NSSplitView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">vCategoriesView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">vGraphView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">vPayeesView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">vScheduledView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">vTransactionsView</string>
+								<string key="candidateClassName">NSView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">viewingPeriodSegmentControl</string>
+								<string key="candidateClassName">NSSegmentedControl</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">window</string>
+								<string key="candidateClassName">NSWindow</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">StashAppDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TransactionsController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>AddTransaction:</string>
+							<string>DeleteTransaction:</string>
+							<string>MoveDown:</string>
+							<string>MoveUp:</string>
+							<string>RefreshView:</string>
+							<string>SplitTransaction:</string>
+							<string>transactionTableColumnMenu:</string>
+							<string>updateTransaction:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>AddTransaction:</string>
+							<string>DeleteTransaction:</string>
+							<string>MoveDown:</string>
+							<string>MoveUp:</string>
+							<string>RefreshView:</string>
+							<string>SplitTransaction:</string>
+							<string>transactionTableColumnMenu:</string>
+							<string>updateTransaction:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">AddTransaction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">DeleteTransaction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">MoveDown:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">MoveUp:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">RefreshView:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">SplitTransaction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">transactionTableColumnMenu:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">updateTransaction:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addTransaction</string>
+							<string>deleteTransaction</string>
+							<string>indexBar</string>
+							<string>moveDown</string>
+							<string>moveUp</string>
+							<string>refresh</string>
+							<string>splitTransaction</string>
+							<string>transactionsAmount</string>
+							<string>transactionsCategory</string>
+							<string>transactionsCleared</string>
+							<string>transactionsDateCntl</string>
+							<string>transactionsDescription</string>
+							<string>transactionsPayee</string>
+							<string>transactionsTableView</string>
+							<string>transactionsType</string>
+							<string>transactionsverticalSplitView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>IndexBar</string>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>NSButton</string>
+							<string>NSTextField</string>
+							<string>NSComboBox</string>
+							<string>id</string>
+							<string>id</string>
+							<string>NSTextField</string>
+							<string>NSComboBox</string>
+							<string>NSOutlineView</string>
+							<string>NSPopUpButton</string>
+							<string>NSSplitView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addTransaction</string>
+							<string>deleteTransaction</string>
+							<string>indexBar</string>
+							<string>moveDown</string>
+							<string>moveUp</string>
+							<string>refresh</string>
+							<string>splitTransaction</string>
+							<string>transactionsAmount</string>
+							<string>transactionsCategory</string>
+							<string>transactionsCleared</string>
+							<string>transactionsDateCntl</string>
+							<string>transactionsDescription</string>
+							<string>transactionsPayee</string>
+							<string>transactionsTableView</string>
+							<string>transactionsType</string>
+							<string>transactionsverticalSplitView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">addTransaction</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">deleteTransaction</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">indexBar</string>
+								<string key="candidateClassName">IndexBar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">moveDown</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">moveUp</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">refresh</string>
+								<string key="candidateClassName">NSButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">splitTransaction</string>
 								<string key="candidateClassName">NSButton</string>
 							</object>
@@ -10115,39 +10191,11 @@
 								<string key="name">transactionsverticalSplitView</string>
 								<string key="candidateClassName">NSSplitView</string>
 							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">vCategoriesView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">vGraphView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">vPayeesView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">vScheduledView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">vTransactionsView</string>
-								<string key="candidateClassName">NSView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">viewingPeriodSegmentControl</string>
-								<string key="candidateClassName">NSSegmentedControl</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">window</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">StashAppDelegate.h</string>
+						<string key="minorKey">TransactionsController.h</string>
 					</object>
 				</object>
 			</object>
@@ -10848,6 +10896,25 @@
 					<string key="className">NSView</string>
 					<string key="superclassName">NSResponder</string>
 					<reference key="sourceIdentifier" ref="260078765"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSViewController</string>
+					<string key="superclassName">NSResponder</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">view</string>
+						<string key="NS.object.0">NSView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">view</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">view</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSViewController.h</string>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSWindow</string>
