@@ -127,6 +127,13 @@
 		[colour set];
 		[path fill];
 		
+		// draw gloss gradient
+		NSGradient* aGradient = [[[NSGradient alloc]
+								  initWithColorsAndLocations:[[NSColor grayColor] colorWithAlphaComponent:0.35f], (CGFloat)0.0,
+								  [[NSColor whiteColor] colorWithAlphaComponent:0.3f], (CGFloat)1.0, nil] autorelease];
+		
+		[aGradient drawInBezierPath:path angle:90.0];
+		
 		[path setLineWidth:1.0];
 		[[NSColor grayColor] set];
 			
@@ -139,21 +146,6 @@
 		if (nColourIndex > 6)
 			nColourIndex = 1;
 	}
-	
-	// draw gloss gradient
-	
-	NSGradient* aGradient = [[[NSGradient alloc]
-							  initWithColorsAndLocations:[[NSColor whiteColor] colorWithAlphaComponent:0.35f], (CGFloat)0.0,
-							  [[NSColor whiteColor] colorWithAlphaComponent:0.2f], (CGFloat)1.0, nil] autorelease];
-	
-	double dGlossRadius = m_dMainRadius + dPushoutDistance;
-	NSRect glossRect = NSMakeRect(m_centrepoint.x - (dGlossRadius), m_centrepoint.y - (dGlossRadius), dGlossRadius * 2.0, dGlossRadius * 2.0);
-	
-	[path appendBezierPathWithOvalInRect:glossRect];
-	
-	[aGradient drawInBezierPath:path angle:270.0];
-	
-	[path removeAllPoints];
 	
 	// do the same loop again in order to draw selected segments and the labels on top
 	for (item in m_aData)
