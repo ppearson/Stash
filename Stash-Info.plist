@@ -54,8 +54,6 @@
 	<key>NSServices</key>
 	<array>
 		<dict>
-			<key>NSPortName</key>
-			<string>Transmission</string>
 			<key>NSSendTypes</key>
 			<array>
 				<string>NSStringPboardType</string>
