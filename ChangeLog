@@ -1,3 +1,13 @@
+Version 0.81
+------------
+
+* Fix bug which ignored option to set all imported transactions as cleared when importing OFX files
+* Index Bar account amounts now have a drop shadow
+* Area Chart X-axis labels are now drawn centred
+* When clicking on a blank split transaction, the keyboard focus is automatically set to the Payee
+  text field
+* Tweaks to Pie Chart segment shading
+
 Version 0.8
 -----------
 
