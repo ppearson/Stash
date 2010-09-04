@@ -142,6 +142,8 @@
 	if (m_sLongestDate)
 	{
 		NSSize extent = [m_sLongestDate sizeWithAttributes:attributes1];
+		// slight margin so that we ensure that labels don't touch
+		extent.width += 4.0;
 		
 		if (extent.width >= dXIncrement)
 			dateLabelAlternating = 2;
@@ -153,6 +155,9 @@
 	// draw X gridlines and labels
 	
 	NSBezierPath *gridLine = [NSBezierPath bezierPath];
+	NSMutableParagraphStyle* style = [[NSMutableParagraphStyle alloc] init];
+	[style setAlignment:NSCenterTextAlignment];
+	NSDictionary *attr = [NSDictionary dictionaryWithObject:style forKey:NSParagraphStyleAttributeName];
 	
 	for (int i = 0; i < nNumXValues; i++)
 	{
@@ -164,12 +169,18 @@
 		if (i == 0 || i % dateLabelAlternating == 0)
 		{
 			NSString *sDate = [m_aDates objectAtIndex:i];
-		
 			NSSize extent = [sDate sizeWithAttributes:attributes1];
+			
+			// if we're the last label, we're probably going to be off the edge slightly, so push the
+			// extent back a bit
+			if (i == (nNumXValues - 1))
+				extent.width += 15.0;
 		
-			[sDate drawAtPoint:NSMakePoint(dGridX - (extent.width / 2.0), 5) withAttributes:attributes1];
+			[sDate drawInRect:NSMakeRect(dGridX - (extent.width / 2.0), 5, extent.width, 30) withAttributes:attr];
 		}
 	}
+	
+	[style release];
 	
 	[gridLine setLineWidth:1.0];
 	[[NSColor grayColor] set];
