@@ -49,7 +49,7 @@
 		NSFont* font = [super font];
 		
 		NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
-		[shadow setShadowColor:[NSColor colorWithDeviceWhite:1.0 alpha:0.3]];
+		[shadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.5]];
 		[shadow setShadowOffset:NSMakeSize(1.0, -1.5)];
 		[shadow setShadowBlurRadius:1.0];
 		
@@ -58,7 +58,7 @@
 		NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
 							  font, NSFontAttributeName,
 							   highlighted ? [NSColor whiteColor] : [NSColor darkGrayColor], NSForegroundColorAttributeName,
-							  shadow, NSShadowAttributeName,
+							   highlighted ? shadow : nil, highlighted ? NSShadowAttributeName : nil,
 							  nil, nil];
 		
 		NSRect textRect = cellFrame;
@@ -68,7 +68,7 @@
 		NSSize amountSize = [m_amount sizeWithAttributes:attrs];
 		
 		textRect.origin.x = cellFrame.size.width - amountSize.width + cellFrame.origin.x;
-		textRect.origin.y += 2;
+		textRect.origin.y += 3;
 		textRect.size.width = cellFrame.size.width - (textRect.origin.x) + cellFrame.origin.x;
 		
 		// only draw it if we have the space
