@@ -911,6 +911,8 @@ static TransactionsController *gSharedInterface = nil;
 			[transactionsAmount setStringValue:sAmount];
 			[transactionsType selectItemAtIndex:0];
 			
+			[window makeFirstResponder:transactionsPayee];
+			
 			[transactionsCleared setEnabled:NO];
 			[transactionsType setEnabled:NO];
 			[transactionsDateCntl setEnabled:NO];
@@ -957,8 +959,6 @@ static TransactionsController *gSharedInterface = nil;
 		
 		return;
 	}
-	
-	
 	
 	NSDate *ndate1 = [transactionsDateCntl dateValue];
 	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
