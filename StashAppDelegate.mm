@@ -323,7 +323,7 @@ toolbarViewGroupTag;
 		
 		return item;
     }
-	else if ([ident isEqualToString: TOOLBAR_VIEWTYPE])
+	else if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
     {
         ToolbarItemEx *groupItem = [[ToolbarItemEx alloc] initWithItemIdentifier:ident];
         
@@ -358,7 +358,14 @@ toolbarViewGroupTag;
 		[segmentedControl setLabel:NSLocalizedString(@"All", "Main Toolbar -> View Type -> All") forSegment:TOOLBAR_VIEW_ALL_TAG];
         [segmentedCell setToolTip:NSLocalizedString(@"Show all Transactions", "Main Toolbar -> View Type -> All Tooltip") forSegment:TOOLBAR_VIEW_ALL_TAG];
 		
-		[segmentedControl bind:@"selectedIndex" toObject:self withKeyPath:@"ShowTransactionsViewType" options:0];
+		TransactionsController* pTC = [TransactionsController sharedInterface];
+		[segmentedControl bind:@"selectedIndex" toObject:pTC withKeyPath:@"m_showTransactionsViewType" options:0];
+		
+		NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
+		
+		int nTransactionsViewType = [[defs objectForKey:@"TransactionsViewType"] intValue];
+		
+		[segmentedControl setSelectedSegment:nTransactionsViewType];
         
         [segmentedControl release];
         return [groupItem autorelease];
@@ -2886,15 +2893,11 @@ NSDate *convertToNSDate(MonthYear &date)
 	[defs setFloat:[window frame].size.height forKey:@"MainWndHeight"];
 	
 	TransactionsController* pTController = [TransactionsController sharedInterface];
-	
 	[pTController cleanUp];
 	
 	// Save the splitter positions
 	[indexBarSplitView saveLayoutToDefault:@"indexSplitter"];
 	[scheduledverticalSplitView saveLayoutToDefault:@"schedtransSplitter"];
-	
-	[defs setInteger:self.ShowTransactionsViewType forKey:@"TransactionsViewType"];
-	[defs synchronize];
 	
 	[m_aPayeeItems release];
 	[m_aCategoryItems release];

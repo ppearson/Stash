@@ -1572,6 +1572,8 @@ NSDate *convertToNSDate(Date &date)
 	
 	[transactionsverticalSplitView saveLayoutToDefault:@"transactionsSplitter"];
 	
+	[defs setInteger:m_showTransactionsViewType forKey:@"TransactionsViewType"];
+	
 	[defs synchronize];
 	
 	[m_aTransactionItems removeAllObjects];
