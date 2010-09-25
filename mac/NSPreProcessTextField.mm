@@ -21,8 +21,8 @@
  */
 
 #include <string>
-#include "core/expression_parser.h"
-#include "core/fixed.h"
+#include "expression_parser.h"
+#include "fixed.h"
 
 #import "NSPreProcessTextField.h"
 

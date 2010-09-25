@@ -194,10 +194,10 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
 	
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
-	std::map<MonthYear, fixed>::iterator itDateFind = NULL;
+	std::map<MonthYear, fixed>::iterator itDateFind;
 	
 	std::map<MonthYear, fixed> aDateTotals;
-	std::map<MonthYear, fixed>::iterator itDateTotal = NULL;
+	std::map<MonthYear, fixed>::iterator itDateTotal;
 	
 	std::vector<Transaction>::const_iterator it = criteria.m_pAccount->begin();
 	std::vector<Transaction>::const_iterator itEnd = criteria.m_pAccount->end();
@@ -578,7 +578,7 @@ bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, s
 bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<OverviewChartItem> &aItems)
 {
 	std::map<MonthYear, OverviewChartItem> aBuildItems;
-	std::map<MonthYear, OverviewChartItem>::iterator itDateFind = NULL;
+	std::map<MonthYear, OverviewChartItem>::iterator itDateFind;
 	
 	bool income = true;
 	

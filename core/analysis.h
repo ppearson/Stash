@@ -26,7 +26,7 @@
 
 #include "graph.h"
 #include "fixed.h"
-#include "Account.h"
+#include "account.h"
 
 enum PieChartSort
 {

@@ -20,7 +20,7 @@
  *
  */
 
-#include "core/fixed.h"
+#include "fixed.h"
 #import "PieChartView.h"
 
 #define DegToRad(deg) (deg*0.017453)
