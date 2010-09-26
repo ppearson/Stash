@@ -13,6 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="296"/>
+			<integer value="921"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1652,6 +1653,7 @@
 										</object>
 										<string key="NSFrame">{{0, 17}, {854, 410}}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="781317227"/>
 										<reference key="NSDocView" ref="781317227"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1685,6 +1687,7 @@
 										</object>
 										<string key="NSFrameSize">{854, 17}</string>
 										<reference key="NSSuperview" ref="800188037"/>
+										<reference key="NSNextKeyView" ref="347113208"/>
 										<reference key="NSDocView" ref="347113208"/>
 										<reference key="NSBGColor" ref="584327073"/>
 										<int key="NScvFlags">4</int>
@@ -1693,6 +1696,7 @@
 								</object>
 								<string key="NSFrameSize">{854, 427}</string>
 								<reference key="NSSuperview" ref="966867876"/>
+								<reference key="NSNextKeyView" ref="573510658"/>
 								<int key="NSsFlags">560</int>
 								<reference key="NSVScroller" ref="875781203"/>
 								<reference key="NSHScroller" ref="185413264"/>
@@ -3449,7 +3453,7 @@
 				</object>
 			</object>
 			<object class="NSCustomView" id="750146188">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3463,7 +3467,7 @@
 							<object class="NSTabViewItem" id="760957740">
 								<string key="NSIdentifier">1</string>
 								<object class="NSView" key="NSView" id="915138049">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="872192110"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3537,6 +3541,7 @@
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {709, 558}}</string>
+									<reference key="NSSuperview" ref="872192110"/>
 								</object>
 								<string key="NSLabel">Total</string>
 								<reference key="NSColor" ref="660767409"/>
@@ -3566,7 +3571,7 @@
 							<object class="NSTabViewItem" id="644837861">
 								<string key="NSIdentifier">Item 2</string>
 								<object class="NSView" key="NSView" id="157362889">
-									<reference key="NSNextResponder" ref="872192110"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3579,21 +3584,20 @@
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {709, 558}}</string>
-									<reference key="NSSuperview" ref="872192110"/>
 								</object>
 								<string key="NSLabel">Overview</string>
 								<reference key="NSColor" ref="660767409"/>
 								<reference key="NSTabView" ref="872192110"/>
 							</object>
 						</object>
-						<reference key="NSSelectedTabViewItem" ref="644837861"/>
+						<reference key="NSSelectedTabViewItem" ref="760957740"/>
 						<reference key="NSFont" ref="23334817"/>
 						<int key="NSTvFlags">0</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="157362889"/>
+							<reference ref="915138049"/>
 						</object>
 					</object>
 					<object class="NSBox" id="658277095">
@@ -3961,6 +3965,7 @@
 												<reference key="NSSuperview" ref="592702627"/>
 												<reference key="NSTarget" ref="592702627"/>
 												<string key="NSAction">_doScroller:</string>
+												<double key="NSCurValue">0.07281553398058252</double>
 												<double key="NSPercent">0.99516908212560384</double>
 											</object>
 											<object class="NSScroller" id="983794955">
@@ -3971,6 +3976,7 @@
 												<int key="NSsFlags">1</int>
 												<reference key="NSTarget" ref="592702627"/>
 												<string key="NSAction">_doScroller:</string>
+												<double key="NSCurValue">0.03125</double>
 												<double key="NSPercent">0.99378881987577639</double>
 											</object>
 										</object>
@@ -4052,6 +4058,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{920, 606}</string>
+				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="573695519">
@@ -4099,6 +4106,7 @@
 					</object>
 				</object>
 			</object>
+			<object class="NSViewController" id="787825450"/>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
@@ -4777,51 +4785,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphAccount</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1024009950"/>
-					</object>
-					<int key="connectionID">939</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">vGraphView</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="750146188"/>
 					</object>
 					<int key="connectionID">940</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphStartDateCntrl</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="735003874"/>
-					</object>
-					<int key="connectionID">945</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphEndDateCntrl</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="322048669"/>
-					</object>
-					<int key="connectionID">946</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">updateGraph:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="480992162"/>
-					</object>
-					<int key="connectionID">949</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphType</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="292427913"/>
-					</object>
-					<int key="connectionID">956</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4841,14 +4809,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphIgnoreTransfers</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1023375456"/>
-					</object>
-					<int key="connectionID">966</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">indexBarSplitView</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="73944182"/>
@@ -4864,52 +4824,12 @@
 					<int key="connectionID">972</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">dateBarClicked:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="81505167"/>
-					</object>
-					<int key="connectionID">981</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">viewingPeriodSegmentControl</string>
 						<reference key="source" ref="976324537"/>
 						<reference key="destination" ref="81505167"/>
 					</object>
 					<int key="connectionID">982</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">redrawGraph:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="1023375456"/>
-					</object>
-					<int key="connectionID">983</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">redrawGraph:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="292427913"/>
-					</object>
-					<int key="connectionID">986</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">graphDatesManuallyChanged:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="735003874"/>
-					</object>
-					<int key="connectionID">987</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">graphDatesManuallyChanged:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="322048669"/>
-					</object>
-					<int key="connectionID">988</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -5184,70 +5104,6 @@
 					<int key="connectionID">1071</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphItemTypes</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="292471545"/>
-					</object>
-					<int key="connectionID">1091</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphItemsTableView</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="326396473"/>
-					</object>
-					<int key="connectionID">1092</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">dataSource</string>
-						<reference key="source" ref="326396473"/>
-						<reference key="destination" ref="976324537"/>
-					</object>
-					<int key="connectionID">1093</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="326396473"/>
-						<reference key="destination" ref="976324537"/>
-					</object>
-					<int key="connectionID">1094</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">addGraphItem:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="578679670"/>
-					</object>
-					<int key="connectionID">1095</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">deleteGraphItem:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="808661209"/>
-					</object>
-					<int key="connectionID">1096</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">redrawGraph:</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="292471545"/>
-					</object>
-					<int key="connectionID">1099</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">graphViewType</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="872192110"/>
-					</object>
-					<int key="connectionID">1100</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">addSelectedItem:</string>
 						<reference key="source" ref="328060707"/>
@@ -5278,14 +5134,6 @@
 						<reference key="destination" ref="879576349"/>
 					</object>
 					<int key="connectionID">1109</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">overviewChartView</string>
-						<reference key="source" ref="976324537"/>
-						<reference key="destination" ref="430332011"/>
-					</object>
-					<int key="connectionID">1113</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -5534,6 +5382,206 @@
 						<reference key="destination" ref="967952364"/>
 					</object>
 					<int key="connectionID">1153</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">redrawGraph:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="292427913"/>
+					</object>
+					<int key="connectionID">1155</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">redrawGraph:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="1023375456"/>
+					</object>
+					<int key="connectionID">1156</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">graphDatesManuallyChanged:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="735003874"/>
+					</object>
+					<int key="connectionID">1157</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">graphDatesManuallyChanged:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="322048669"/>
+					</object>
+					<int key="connectionID">1158</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">redrawGraph:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="292471545"/>
+					</object>
+					<int key="connectionID">1159</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">addGraphItem:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="578679670"/>
+					</object>
+					<int key="connectionID">1160</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">deleteGraphItem:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="808661209"/>
+					</object>
+					<int key="connectionID">1161</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">updateGraph:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="480992162"/>
+					</object>
+					<int key="connectionID">1162</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphAccount</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="1024009950"/>
+					</object>
+					<int key="connectionID">1163</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphType</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="292427913"/>
+					</object>
+					<int key="connectionID">1164</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphIgnoreTransfers</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="1023375456"/>
+					</object>
+					<int key="connectionID">1165</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphStartDateCntrl</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="735003874"/>
+					</object>
+					<int key="connectionID">1166</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphEndDateCntrl</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="322048669"/>
+					</object>
+					<int key="connectionID">1167</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphItemTypes</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="292471545"/>
+					</object>
+					<int key="connectionID">1168</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphItemsTableView</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="326396473"/>
+					</object>
+					<int key="connectionID">1169</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">viewingPeriodSegmentControl</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="81505167"/>
+					</object>
+					<int key="connectionID">1171</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">overviewChartView</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="430332011"/>
+					</object>
+					<int key="connectionID">1172</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">areaChartView</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="328060707"/>
+					</object>
+					<int key="connectionID">1173</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">pieChartView</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="196219503"/>
+					</object>
+					<int key="connectionID">1174</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="872192110"/>
+					</object>
+					<int key="connectionID">1175</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">graphViewType</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="872192110"/>
+					</object>
+					<int key="connectionID">1176</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="326396473"/>
+						<reference key="destination" ref="787825450"/>
+					</object>
+					<int key="connectionID">1177</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="326396473"/>
+						<reference key="destination" ref="787825450"/>
+					</object>
+					<int key="connectionID">1178</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">dateBarClicked:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="81505167"/>
+					</object>
+					<int key="connectionID">1179</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">redrawGraph:</string>
+						<reference key="source" ref="787825450"/>
+						<reference key="destination" ref="1024009950"/>
+					</object>
+					<int key="connectionID">1180</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -8146,6 +8194,11 @@
 						<reference key="object" ref="9798764"/>
 						<reference key="parent" ref="0"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1154</int>
+						<reference key="object" ref="787825450"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -8207,6 +8260,8 @@
 					<string>1112.IBPluginDependency</string>
 					<string>1119.CustomClassName</string>
 					<string>1119.IBPluginDependency</string>
+					<string>1154.CustomClassName</string>
+					<string>1154.IBPluginDependency</string>
 					<string>124.IBPluginDependency</string>
 					<string>124.ImportedFromIB2</string>
 					<string>125.IBPluginDependency</string>
@@ -8687,6 +8742,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>TransactionsController</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>GraphController</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8788,13 +8845,13 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{964, 911}, {493, 20}}</string>
+					<string>{{635, 836}, {493, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{1120, 798}, {265, 113}}</string>
+					<string>{{791, 723}, {265, 113}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{475, 832}, {234, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9059,7 +9116,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{520, 250}, {920, 606}}</string>
+					<string>{{329, 4}, {920, 606}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9134,7 +9191,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1153</int>
+			<int key="maxID">1180</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -9166,7 +9223,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">AreaChartView.h</string>
+						<string key="minorKey">mac/AreaChartView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9217,7 +9274,184 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">DropDownDate.h</string>
+						<string key="minorKey">mac/DropDownDate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GraphController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGraphItem:</string>
+							<string>addSelectedGraphItem:</string>
+							<string>dateBarClicked:</string>
+							<string>deleteGraphItem:</string>
+							<string>graphDatesManuallyChanged:</string>
+							<string>redrawGraph:</string>
+							<string>updateGraph:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>NSString</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>addGraphItem:</string>
+							<string>addSelectedGraphItem:</string>
+							<string>dateBarClicked:</string>
+							<string>deleteGraphItem:</string>
+							<string>graphDatesManuallyChanged:</string>
+							<string>redrawGraph:</string>
+							<string>updateGraph:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">addGraphItem:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">addSelectedGraphItem:</string>
+								<string key="candidateClassName">NSString</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">dateBarClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">deleteGraphItem:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">graphDatesManuallyChanged:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">redrawGraph:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">updateGraph:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>areaChartView</string>
+							<string>graphAccount</string>
+							<string>graphEndDateCntrl</string>
+							<string>graphIgnoreTransfers</string>
+							<string>graphItemTypes</string>
+							<string>graphItemsTableView</string>
+							<string>graphStartDateCntrl</string>
+							<string>graphType</string>
+							<string>graphViewType</string>
+							<string>overviewChartView</string>
+							<string>pieChartView</string>
+							<string>viewingPeriodSegmentControl</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>AreaChartView</string>
+							<string>NSPopUpButton</string>
+							<string>id</string>
+							<string>id</string>
+							<string>NSPopUpButton</string>
+							<string>NSTableView</string>
+							<string>id</string>
+							<string>NSPopUpButton</string>
+							<string>NSTabView</string>
+							<string>OverviewChartView</string>
+							<string>PieChartView</string>
+							<string>NSSegmentedControl</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>areaChartView</string>
+							<string>graphAccount</string>
+							<string>graphEndDateCntrl</string>
+							<string>graphIgnoreTransfers</string>
+							<string>graphItemTypes</string>
+							<string>graphItemsTableView</string>
+							<string>graphStartDateCntrl</string>
+							<string>graphType</string>
+							<string>graphViewType</string>
+							<string>overviewChartView</string>
+							<string>pieChartView</string>
+							<string>viewingPeriodSegmentControl</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">areaChartView</string>
+								<string key="candidateClassName">AreaChartView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphAccount</string>
+								<string key="candidateClassName">NSPopUpButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphEndDateCntrl</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphIgnoreTransfers</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphItemTypes</string>
+								<string key="candidateClassName">NSPopUpButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphItemsTableView</string>
+								<string key="candidateClassName">NSTableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphStartDateCntrl</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphType</string>
+								<string key="candidateClassName">NSPopUpButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">graphViewType</string>
+								<string key="candidateClassName">NSTabView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">overviewChartView</string>
+								<string key="candidateClassName">OverviewChartView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">pieChartView</string>
+								<string key="candidateClassName">PieChartView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">viewingPeriodSegmentControl</string>
+								<string key="candidateClassName">NSSegmentedControl</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">mac/GraphController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9268,7 +9502,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">IndexBar.h</string>
+						<string key="minorKey">mac/IndexBar.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9276,14 +9510,14 @@
 					<string key="superclassName">NSTextField</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">NSPreProcessTextField.h</string>
+						<string key="minorKey">mac/NSPreProcessTextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSSplitView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">SplitViewEx.h</string>
+						<string key="minorKey">mac/SplitViewEx.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9291,7 +9525,7 @@
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">OverviewChartView.h</string>
+						<string key="minorKey">mac/OverviewChartView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9299,7 +9533,7 @@
 					<string key="superclassName">NSView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">PieChartView.h</string>
+						<string key="minorKey">mac/PieChartView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9339,7 +9573,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">SIndexSplitView.h</string>
+						<string key="minorKey">mac/SIndexSplitView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9379,7 +9613,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">STransactionsSplitView.h</string>
+						<string key="minorKey">mac/STransactionsSplitView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9410,25 +9644,18 @@
 							<string>SaveFileAs:</string>
 							<string>accountRenamed:</string>
 							<string>accountSelected:</string>
-							<string>addGraphItem:</string>
-							<string>addSelectedGraphItem:</string>
 							<string>categoriesSelected:</string>
-							<string>dateBarClicked:</string>
-							<string>deleteGraphItem:</string>
 							<string>deleteMisc:</string>
 							<string>gotoWebsite:</string>
-							<string>graphDatesManuallyChanged:</string>
 							<string>graphRenamed:</string>
 							<string>graphSelected:</string>
 							<string>payeesSelected:</string>
-							<string>redrawGraph:</string>
 							<string>reportBug:</string>
 							<string>scheduledSelected:</string>
 							<string>showAllTransactions:</string>
 							<string>showAllTransactionsThisYear:</string>
 							<string>showPreferencesWindow:</string>
 							<string>showRecentTransactions:</string>
-							<string>updateGraph:</string>
 							<string>updateScheduled:</string>
 							<string>viewToolbarClicked:</string>
 						</object>
@@ -9450,13 +9677,6 @@
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>NSString</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -9503,25 +9723,18 @@
 							<string>SaveFileAs:</string>
 							<string>accountRenamed:</string>
 							<string>accountSelected:</string>
-							<string>addGraphItem:</string>
-							<string>addSelectedGraphItem:</string>
 							<string>categoriesSelected:</string>
-							<string>dateBarClicked:</string>
-							<string>deleteGraphItem:</string>
 							<string>deleteMisc:</string>
 							<string>gotoWebsite:</string>
-							<string>graphDatesManuallyChanged:</string>
 							<string>graphRenamed:</string>
 							<string>graphSelected:</string>
 							<string>payeesSelected:</string>
-							<string>redrawGraph:</string>
 							<string>reportBug:</string>
 							<string>scheduledSelected:</string>
 							<string>showAllTransactions:</string>
 							<string>showAllTransactionsThisYear:</string>
 							<string>showPreferencesWindow:</string>
 							<string>showRecentTransactions:</string>
-							<string>updateGraph:</string>
 							<string>updateScheduled:</string>
 							<string>viewToolbarClicked:</string>
 						</object>
@@ -9612,23 +9825,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">addGraphItem:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">addSelectedGraphItem:</string>
-								<string key="candidateClassName">NSString</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">categoriesSelected:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">dateBarClicked:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">deleteGraphItem:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9637,10 +9834,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">gotoWebsite:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">graphDatesManuallyChanged:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9653,10 +9846,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">payeesSelected:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">redrawGraph:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -9684,10 +9873,6 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">updateGraph:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">updateScheduled:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -9701,26 +9886,15 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>areaChartView</string>
 							<string>categoriesTableView</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
 							<string>deleteScheduled</string>
-							<string>graphAccount</string>
-							<string>graphEndDateCntrl</string>
-							<string>graphIgnoreTransfers</string>
-							<string>graphItemTypes</string>
-							<string>graphItemsTableView</string>
-							<string>graphStartDateCntrl</string>
-							<string>graphType</string>
-							<string>graphViewType</string>
 							<string>indexBar</string>
 							<string>indexBarSplitView</string>
 							<string>indexView</string>
 							<string>indexViewPlaceholder</string>
-							<string>overviewChartView</string>
 							<string>payeesTableView</string>
-							<string>pieChartView</string>
 							<string>scheduledAccount</string>
 							<string>scheduledAmount</string>
 							<string>scheduledCategory</string>
@@ -9737,31 +9911,19 @@
 							<string>vPayeesView</string>
 							<string>vScheduledView</string>
 							<string>vTransactionsView</string>
-							<string>viewingPeriodSegmentControl</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>AreaChartView</string>
 							<string>NSTableView</string>
 							<string>NSView</string>
 							<string>NSView</string>
 							<string>NSButton</string>
-							<string>NSPopUpButton</string>
-							<string>id</string>
-							<string>id</string>
-							<string>NSPopUpButton</string>
-							<string>NSTableView</string>
-							<string>id</string>
-							<string>NSPopUpButton</string>
-							<string>NSTabView</string>
 							<string>IndexBar</string>
 							<string>NSSplitView</string>
 							<string>NSView</string>
 							<string>NSView</string>
-							<string>OverviewChartView</string>
 							<string>NSTableView</string>
-							<string>PieChartView</string>
 							<string>NSPopUpButton</string>
 							<string>NSTextField</string>
 							<string>NSComboBox</string>
@@ -9778,7 +9940,6 @@
 							<string>NSView</string>
 							<string>NSView</string>
 							<string>NSView</string>
-							<string>NSSegmentedControl</string>
 							<string>NSWindow</string>
 						</object>
 					</object>
@@ -9786,26 +9947,15 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>areaChartView</string>
 							<string>categoriesTableView</string>
 							<string>contentView</string>
 							<string>contentViewPlaceholder</string>
 							<string>deleteScheduled</string>
-							<string>graphAccount</string>
-							<string>graphEndDateCntrl</string>
-							<string>graphIgnoreTransfers</string>
-							<string>graphItemTypes</string>
-							<string>graphItemsTableView</string>
-							<string>graphStartDateCntrl</string>
-							<string>graphType</string>
-							<string>graphViewType</string>
 							<string>indexBar</string>
 							<string>indexBarSplitView</string>
 							<string>indexView</string>
 							<string>indexViewPlaceholder</string>
-							<string>overviewChartView</string>
 							<string>payeesTableView</string>
-							<string>pieChartView</string>
 							<string>scheduledAccount</string>
 							<string>scheduledAmount</string>
 							<string>scheduledCategory</string>
@@ -9822,15 +9972,10 @@
 							<string>vPayeesView</string>
 							<string>vScheduledView</string>
 							<string>vTransactionsView</string>
-							<string>viewingPeriodSegmentControl</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">areaChartView</string>
-								<string key="candidateClassName">AreaChartView</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">categoriesTableView</string>
 								<string key="candidateClassName">NSTableView</string>
@@ -9846,38 +9991,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">deleteScheduled</string>
 								<string key="candidateClassName">NSButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphAccount</string>
-								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphEndDateCntrl</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphIgnoreTransfers</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphItemTypes</string>
-								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphItemsTableView</string>
-								<string key="candidateClassName">NSTableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphStartDateCntrl</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphType</string>
-								<string key="candidateClassName">NSPopUpButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">graphViewType</string>
-								<string key="candidateClassName">NSTabView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">indexBar</string>
@@ -9896,16 +10009,8 @@
 								<string key="candidateClassName">NSView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">overviewChartView</string>
-								<string key="candidateClassName">OverviewChartView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">payeesTableView</string>
 								<string key="candidateClassName">NSTableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pieChartView</string>
-								<string key="candidateClassName">PieChartView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">scheduledAccount</string>
@@ -9972,10 +10077,6 @@
 								<string key="candidateClassName">NSView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">viewingPeriodSegmentControl</string>
-								<string key="candidateClassName">NSSegmentedControl</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">window</string>
 								<string key="candidateClassName">NSWindow</string>
 							</object>
@@ -9983,7 +10084,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">StashAppDelegate.h</string>
+						<string key="minorKey">mac/StashAppDelegate.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -10195,7 +10296,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">TransactionsController.h</string>
+						<string key="minorKey">mac/TransactionsController.h</string>
 					</object>
 				</object>
 			</object>
@@ -10951,7 +11052,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../Stash.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../Stash.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>

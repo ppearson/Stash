@@ -31,12 +31,9 @@
 #import "IndexBar.h"
 #import "DueScheduledTransactionsController.h"
 #import "PreferencesController.h"
-#import "PieChartView.h"
-#import "AreaChartView.h"
 #import "MakeTransferController.h"
 #import "ImportOFXController.h"
 #import "ExportOFXController.h"
-#import "OverviewChartView.h"
 
 @interface StashAppDelegate : NSObject
 {
@@ -87,23 +84,6 @@
 	IBOutlet NSButton *deleteScheduled;
 	
 	NSMutableArray *m_aScheduledTransactions;
-		
-	// Graphs
-	
-	IBOutlet NSSegmentedControl* viewingPeriodSegmentControl;
-	IBOutlet NSTabView *graphViewType;
-	IBOutlet PieChartView *pieChartView;
-	IBOutlet AreaChartView *areaChartView;
-	IBOutlet OverviewChartView *overviewChartView;
-	IBOutlet NSPopUpButton *graphAccount;
-	IBOutlet NSPopUpButton *graphType;
-	IBOutlet id graphStartDateCntrl;
-	IBOutlet id graphEndDateCntrl;
-	IBOutlet id graphIgnoreTransfers;
-	IBOutlet NSPopUpButton *graphItemTypes;
-	IBOutlet NSTableView *graphItemsTableView;
-	
-	NSMutableArray *m_aGraphItems;
 	
 	PreferencesController *prefController;
 	MakeTransferController *makeTransferController;
@@ -114,9 +94,6 @@
 	Account *m_pAccount;
 	
 	std::vector<fixed> m_aBalance;
-	
-	Graph *m_pGraph;
-	int m_nGraphDateSegment;
 	
 	std::string m_DocumentFile;
 	
@@ -131,7 +108,6 @@
 - (void)buildPayeesList;
 - (void)buildCategoriesList;
 - (void)buildSchedTransList;
-- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers;
 - (void)refreshLibraryItems;
 
 - (void)setWindowTitleWithDocName:(NSString*)path;
@@ -211,26 +187,12 @@
 - (void)ScheduledSelectionDidChange:(NSNotification *)notification;
 - (IBAction)updateScheduled:(id)sender;
 
-- (IBAction)redrawGraph:(id)sender;
-- (IBAction)dateBarClicked:(id)sender;
-- (IBAction)graphDatesManuallyChanged:(id)sender;
-
-- (IBAction)addGraphItem:(id)sender;
-- (IBAction)addSelectedGraphItem:(NSString *)item;
-- (IBAction)deleteGraphItem:(id)sender;
-
-- (IBAction)updateGraph:(id)sender;
-
 - (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem;
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender;
 - (void)applicationWillTerminate:(NSNotification *)aNotification;
 
 - (IBAction)showPreferencesWindow:(id)sender;
-
-NSDate *convertToNSDate(MonthYear &date);
-
-- (void)handleGraphSettingsUpdate:(NSNotification *)note;
 
 - (IBAction)gotoWebsite:(id)sender;
 - (IBAction)reportBug:(id)sender;

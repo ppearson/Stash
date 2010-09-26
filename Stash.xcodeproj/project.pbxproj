@@ -82,6 +82,7 @@
 		D082AD99124E2BD500C525E1 /* stashdocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = D082AD8B124E2BD500C525E1 /* stashdocument.icns */; };
 		D082AD9A124E2BD500C525E1 /* trans_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D082AD8C124E2BD500C525E1 /* trans_prefs.png */; };
 		D082AD9B124E2BD500C525E1 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D082AD8D124E2BD500C525E1 /* up.png */; };
+		D09FE557124EBCAC00F68813 /* GraphController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D09FE556124EBCAC00F68813 /* GraphController.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +206,8 @@
 		D082AD8B124E2BD500C525E1 /* stashdocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = stashdocument.icns; sourceTree = "<group>"; };
 		D082AD8C124E2BD500C525E1 /* trans_prefs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trans_prefs.png; sourceTree = "<group>"; };
 		D082AD8D124E2BD500C525E1 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		D09FE555124EBCAC00F68813 /* GraphController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphController.h; path = mac/GraphController.h; sourceTree = "<group>"; };
+		D09FE556124EBCAC00F68813 /* GraphController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GraphController.mm; path = mac/GraphController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,6 +226,8 @@
 			isa = PBXGroup;
 			children = (
 				D082ACEA124E2B8600C525E1 /* TransactionsController.h */,
+				D09FE555124EBCAC00F68813 /* GraphController.h */,
+				D09FE556124EBCAC00F68813 /* GraphController.mm */,
 				D082ACEB124E2B8600C525E1 /* TransactionsController.mm */,
 				D082ACEC124E2B8600C525E1 /* PieChartView.mm */,
 				D082ACED124E2B8600C525E1 /* AreaChartView.mm */,
@@ -561,6 +566,7 @@
 				D082AD37124E2B8600C525E1 /* ToolbarItemEx.m in Sources */,
 				D082AD38124E2B8600C525E1 /* SplitViewEx.m in Sources */,
 				D082AD39124E2B8600C525E1 /* main.m in Sources */,
+				D09FE557124EBCAC00F68813 /* GraphController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
