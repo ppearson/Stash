@@ -22,6 +22,7 @@
 
 #include "fixed.h"
 #import "PieChartView.h"
+#import "GraphController.h"
 
 #define DegToRad(deg) (deg*0.017453)
 #define RadToDeg(deg) (deg*57.2958)
@@ -43,6 +44,8 @@
 		[m_aColours addObject:[NSColor blueColor]];
 		[m_aColours addObject:[NSColor orangeColor]];
 		[m_aColours addObject:[NSColor brownColor]];
+		
+		m_mouseDownSegment = -1;
     }
     return self;
 }
@@ -82,8 +85,6 @@
 	
 	if (selectionType == 1)
 		bPushoutSelected = YES;
-	
-	double dPushoutDistance = 10.0;
 	
 	id colour;
 	int nColourIndex = 0;
@@ -268,6 +269,9 @@
 		}
 	}
 	
+	m_mouseDownSegment = -1;
+	
+	int segment = 0;
 	for (slice in m_aData)
 	{
 		double dStartAngle = [[slice valueForKey:@"startangle"] doubleValue];
@@ -281,12 +285,12 @@
 			
 			[slice setValue:[NSNumber numberWithBool:bSelected] forKey:@"selected"];
 			
-			if (!([theEvent modifierFlags] & NSCommandKeyMask))
-			{
-				// If Command not held down, we're only selecting this one
-				break;
-			}
+			m_mouseDownSegment = segment;
+			
+			break;
+			
 		}
+		segment++;
 	}
 	
 	[self setNeedsDisplay:YES];	
@@ -311,6 +315,29 @@
 - (BOOL)isOpaque
 {
 	return YES;
+}
+
+- (NSMenu*)menuForEvent:(NSEvent*)event
+{
+    if (m_mouseDownSegment != -1)
+		return fMenu;
+	
+	return nil;
+}
+
+- (IBAction)addSelectedItem:(id)sender
+{
+	if (m_mouseDownSegment == -1)
+		return;
+	
+	NSMutableDictionary *item = [m_aData objectAtIndex:m_mouseDownSegment];
+	
+	NSString *sTitle = [item objectForKey:@"title"];
+	
+	GraphController* pGC = [GraphController sharedInterface];
+	[pGC addSelectedGraphItem:sTitle];
+	
+	m_mouseDownSegment = -1;
 }
 
 @end

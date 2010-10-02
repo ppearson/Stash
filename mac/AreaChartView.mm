@@ -21,6 +21,7 @@
  */
 
 #import "AreaChartView.h"
+#import "GraphController.h"
 
 @implementation AreaChartView
 
@@ -391,7 +392,8 @@
 	
 	NSString *sTitle = [item objectForKey:@"title"];
 	
-	[[NSApp delegate] addSelectedGraphItem:sTitle];
+	GraphController* pGC = [GraphController sharedInterface];
+	[pGC addSelectedGraphItem:sTitle];
 	
 	m_selectedPlot = -1;
 }

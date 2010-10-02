@@ -31,9 +31,14 @@
 	
 	double m_dMainRadius;
 	NSPoint m_centrepoint;
+	
+	IBOutlet NSMenu *fMenu;
+	int m_mouseDownSegment;
 }
 
 - (void)setData:(NSMutableArray*)data;
 - (void)setTotal:(NSString*)total;
+
+- (IBAction)addSelectedItem:(id)sender;
 
 @end

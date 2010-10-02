@@ -531,6 +531,18 @@ static GraphController *gSharedInterface = nil;
 
 - (IBAction)addSelectedGraphItem:(NSString *)item
 {
+	// if this is the first item added and we're in view all mode, change to View all excluding mode
+	if ([m_aGraphItems count] == 0)
+	{
+		int nItemsType = [graphItemTypes indexOfSelectedItem];
+		GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
+		
+		if (eItemsType == AllItems)
+			eItemsType = AllItemsExceptSpecified;
+		
+		[graphItemTypes selectItemAtIndex:eItemsType];
+	}
+	
 	[m_aGraphItems addObject:item];
 	
 	[graphItemsTableView reloadData];
