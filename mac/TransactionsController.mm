@@ -575,41 +575,57 @@ static TransactionsController *gSharedInterface = nil;
 	int nTransaction = [item intKeyValue:@"Transaction"];
 	Transaction &trans = m_pAccount->getTransaction(nTransaction);
 	
-	fixed splitValue = trans.getAmount();
-	TransactionItem *newSplit = [[TransactionItem alloc] init];
-	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	
-	NSNumber *nAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
-	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
-	
-	[newSplit setValue:@"Split Value" forKey:@"Description"];
-	[newSplit setValue:@"Split Value" forKey:@"Payee"];
-	[newSplit setValue:sAmount forKey:@"Amount"];
-	
-	[newSplit setTransaction:nTransaction];
-	[newSplit setIntValue:nTransaction forKey:@"Transaction"];
-	
-	[newSplit setSplitTransaction:-2];
-	[newSplit setIntValue:-2 forKey:@"Split"];
-	
-	[item addChild:newSplit];
-	
-	[transactionsTableView reloadData];
-	
-	[transactionsTableView expandItem:item];
-	
-	row = [transactionsTableView rowForItem:newSplit];
+	if (!trans.isSplit())
+	{
+		fixed splitValue = trans.getAmount();
+		TransactionItem *newSplit = [[TransactionItem alloc] init];
+		
+		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		
+		NSNumber *nAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
+		NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+		
+		[newSplit setValue:@"Split Value" forKey:@"Description"];
+		[newSplit setValue:@"Split Value" forKey:@"Payee"];
+		[newSplit setValue:sAmount forKey:@"Amount"];
+		
+		[newSplit setTransaction:nTransaction];
+		[newSplit setIntValue:nTransaction forKey:@"Transaction"];
+		
+		[newSplit setSplitTransaction:-2];
+		[newSplit setIntValue:-2 forKey:@"Split"];
+		
+		[item addChild:newSplit];
+		
+		[transactionsTableView reloadData];
+		
+		[numberFormatter release];
+		
+		m_pDocument->setUnsavedChanges(true);
+		
+		[transactionsTableView expandItem:item];
+		
+		row = [transactionsTableView rowForItem:newSplit];
+	}
+	else
+	{
+		[transactionsTableView expandItem:item];
+		
+		int nSplits = trans.getSplitCount();
+		row += nSplits;
+		
+		fixed remainderAmount = trans.getAmount() - trans.getSplitTotal();
+		if (!remainderAmount.IsZero())
+		{
+			row += 1;
+		}
+	}
 	
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 	[transactionsTableView scrollRowToVisible:row];
 	
 	[window makeFirstResponder:transactionsPayee];
-	
-	[numberFormatter release];
-	
-	m_pDocument->setUnsavedChanges(true);
 }
 
 - (IBAction)MoveUp:(id)sender
