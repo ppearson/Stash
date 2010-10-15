@@ -30,7 +30,7 @@
 #include "account.h"
 
 bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringFormat dateFormat);
-bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep, bool bMarkReconciled);
+bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep, bool bMarkCleared);
 bool getDateFormatSampleFromQIFFile(const std::string path, std::string &sample);
 bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFormat);
 

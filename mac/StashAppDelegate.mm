@@ -1823,6 +1823,26 @@ toolbarViewGroupTag;
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC buildTransactionsTree];
 	}
+	
+	// update the balance in the IndexBar
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	
+	fixed accountBalance = m_pAccount->getBalance(true);	
+	
+	NSNumber *nBalance = [NSNumber numberWithDouble:accountBalance.ToDouble()];
+	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
+	
+	NSString *itemKey = [indexBar getSelectedItemKey];
+	
+	if (itemKey)
+	{
+		[indexBar updateAmount:itemKey amount:sBalance];
+		
+		[indexBar reloadData];
+	}
+	
+	[numberFormatter release];
 }
 
 - (IBAction)ImportOFX:(id)sender
