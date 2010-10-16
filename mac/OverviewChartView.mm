@@ -212,6 +212,10 @@
 	
 	int nPlot = 0;
 	
+	NSMutableParagraphStyle* style = [[NSMutableParagraphStyle alloc] init];
+	[style setAlignment:NSCenterTextAlignment];
+	NSDictionary *attr = [NSDictionary dictionaryWithObject:style forKey:NSParagraphStyleAttributeName];
+	
 	for (int index = nStartItem; index < nMaxItem; index++, nPlot++)
 	{
 		NSMutableDictionary *plotItem = [m_aData objectAtIndex:index];
@@ -241,7 +245,7 @@
 		NSString *sDate = [plotItem valueForKey:@"date"];
 		NSSize extent = [sDate sizeWithAttributes:attributes1];
 		
-		[sDate drawAtPoint:NSMakePoint(dXStart + (nItemWidth / 2) - (extent.width / 2.0), 5) withAttributes:attributes1];
+		[sDate drawInRect:NSMakeRect(dXStart, 5, nItemWidth - nGapBetweenMonths, 30) withAttributes:attr];
 	}	
 }
 
