@@ -1740,6 +1740,7 @@ toolbarViewGroupTag;
 	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), today);
 	
 	newTransaction.setType(schedTrans.getType());
+	newTransaction.setCleared(true);
 	
 	Account &oAccount = m_Document.getAccount(schedTrans.getAccount());
 	
