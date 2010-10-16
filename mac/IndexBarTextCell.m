@@ -48,17 +48,17 @@
 	{
 		NSFont* font = [super font];
 		
-		NSShadow *shadow = [[[NSShadow alloc] init] autorelease];
-		[shadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.5]];
-		[shadow setShadowOffset:NSMakeSize(1.0, -1.5)];
-		[shadow setShadowBlurRadius:1.0];
+		NSShadow *textShadow = [[[NSShadow alloc] init] autorelease];
+		[textShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.5]];
+		[textShadow setShadowOffset:NSMakeSize(1.0, -1.5)];
+		[textShadow setShadowBlurRadius:1.0];
 		
 		BOOL highlighted = [self isHighlighted];
 		
 		NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
 							  font, NSFontAttributeName,
 							   highlighted ? [NSColor whiteColor] : [NSColor darkGrayColor], NSForegroundColorAttributeName,
-							   highlighted ? shadow : nil, highlighted ? NSShadowAttributeName : nil,
+							   highlighted ? textShadow : nil, highlighted ? NSShadowAttributeName : nil,
 							  nil, nil];
 		
 		NSRect textRect = cellFrame;

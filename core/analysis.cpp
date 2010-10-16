@@ -117,7 +117,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 		
 		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
+			for (unsigned int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				const SplitTransaction &split = (*it).getSplit(i);
 				
@@ -194,7 +194,6 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
 	
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
-	std::map<MonthYear, fixed>::iterator itDateFind;
 	
 	std::map<MonthYear, fixed> aDateTotals;
 	std::map<MonthYear, fixed>::iterator itDateTotal;
@@ -219,7 +218,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 	
 		if ((*it).isSplit() && (*it).getSplitCount() > 0)
 		{
-			for (int i = 0; i < (*it).getSplitCount(); i++)
+			for (unsigned int i = 0; i < (*it).getSplitCount(); i++)
 			{
 				const SplitTransaction &split = (*it).getSplit(i);
 				

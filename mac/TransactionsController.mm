@@ -251,7 +251,7 @@ static TransactionsController *gSharedInterface = nil;
 	std::vector<Transaction>::const_iterator it = m_pAccount->begin();
 	std::vector<Transaction>::const_iterator itEnd = m_pAccount->end();
 	
-	int nTransaction = 0;
+	unsigned int nTransaction = 0;
 	m_nTransactionOffset = 0;
 	
 	if (m_showTransactionsViewType != ALL)
@@ -362,11 +362,11 @@ static TransactionsController *gSharedInterface = nil;
 		
 		if (it->isSplit())
 		{
-			int nSplits = it->getSplitCount();
+			unsigned int nSplits = it->getSplitCount();
 			
 			fixed splitValue = it->getAmount();
 			
-			for (int i = 0; i < nSplits; i++)
+			for (unsigned int i = 0; i < nSplits; i++)
 			{
 				const SplitTransaction &split = it->getSplit(i);
 				
@@ -682,18 +682,18 @@ static TransactionsController *gSharedInterface = nil;
 	}
 }
 
-- (void)SwapTransactions:(int)from to:(int)to
+- (void)SwapTransactions:(unsigned int)from to:(unsigned int)to
 {
 	if (from < 0 || to < 0)
 		return;
 	
-	int top = m_pAccount->getTransactionCount();
+	unsigned int top = m_pAccount->getTransactionCount();
 	
 	if (from >= top || to >= top)
 		return;
 	
-	int nItemFrom = from - m_nTransactionOffset;
-	int nItemTo = to - m_nTransactionOffset;
+	unsigned int nItemFrom = from - m_nTransactionOffset;
+	unsigned int nItemTo = to - m_nTransactionOffset;
 	
 	m_pAccount->swapTransactions(from, to);
 	[m_aTransactionItems exchangeObjectAtIndex:nItemFrom withObjectAtIndex:nItemTo];
@@ -722,7 +722,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	[transactionsTableView reloadData];
 	
-	int nNewRow = [transactionsTableView rowForItem:toItem];
+	unsigned int nNewRow = [transactionsTableView rowForItem:toItem];
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:nNewRow] byExtendingSelection:NO];
 	[transactionsTableView scrollRowToVisible:nNewRow];
 	
@@ -1478,7 +1478,7 @@ NSDate *convertToNSDate(Date &date)
 }
 
 // update the balances of all transactions from the given index down
-- (void)updateBalancesFromTransactionIndex:(int)nIndex
+- (void)updateBalancesFromTransactionIndex:(unsigned int)nIndex
 {
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -1553,7 +1553,7 @@ NSDate *convertToNSDate(Date &date)
 }
 
 // update the transaction indexes after a deletion
-- (void)updateTransactionsFromTransactionIndex:(int)nIndex
+- (void)updateTransactionsFromTransactionIndex:(unsigned int)nIndex
 {
 	int nTotalItems = [m_aTransactionItems count];
 	

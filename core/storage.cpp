@@ -116,7 +116,7 @@ bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringForma
 		if (line.length() == 0)
 			continue;
 		
-		if (bDOSFormat && (line.find('\n') != -1))
+		if (bDOSFormat && (line.find('\n') != std::string::npos))
 			line = line.erase(0, 1);
 
 		std::string itemData;
@@ -234,7 +234,7 @@ bool getDateFormatSampleFromQIFFile(std::string path, std::string &sample)
 		if (line.length() == 0)
 			continue;
 		
-		if (bDOSFormat && (line.find('\n') != -1))
+		if (bDOSFormat && (line.find('\n') != std::string::npos))
 			line = line.erase(0, 1);
 		
 		std::string itemData;
@@ -332,16 +332,16 @@ bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFor
 	
 	endChar = '\n';
 	bDOSFormat = false;
-	if (strTest.find("\r\n") != -1)
+	if (strTest.find("\r\n") != std::string::npos)
 	{
 		bDOSFormat = true;
 		endChar = '\r';
 	}
-	else if (strTest.find('\r') != -1)
+	else if (strTest.find('\r') != std::string::npos)
 	{
 		endChar = '\r';
 	}
-	else if (strTest.find('\n') != -1)
+	else if (strTest.find('\n') != std::string::npos)
 	{
 		endChar = '\n';
 	}

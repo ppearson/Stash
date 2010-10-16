@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -28,9 +28,7 @@
 Document* Document::m_pInstance = NULL;
 
 Document::Document()
-{
-	//
-	
+{	
 	m_pInstance = this;
 }
 
@@ -245,7 +243,7 @@ int Document::addScheduledTransaction(ScheduledTransaction &schedTransaction)
 	return m_aScheduledTransactions.size() - 1;
 }
 
-void Document::disabledScheduledTransactionsForAccount(int nAccount)
+void Document::disabledScheduledTransactionsForAccount(unsigned int nAccount)
 {
 	for (std::vector<ScheduledTransaction>::iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
 	{
@@ -259,7 +257,7 @@ void Document::disabledScheduledTransactionsForAccount(int nAccount)
 		
 		if (it->isEnabled())
 		{
-			int nLocalAccount = it->getAccount();
+			unsigned int nLocalAccount = it->getAccount();
 			
 			if (nLocalAccount > nAccount)
 			{

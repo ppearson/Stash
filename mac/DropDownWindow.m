@@ -158,7 +158,6 @@
 	NSEvent *thisEvent;
 	BOOL maintain = YES;
 	unsigned int mask;
-	BOOL invertedTracking = NO;
 	
 	mask = NSLeftMouseUpMask | NSLeftMouseDraggedMask |
 	NSRightMouseUpMask | NSRightMouseDraggedMask | NSAppKitDefined |
@@ -177,7 +176,6 @@
 			case NSLeftMouseUp:
 				if  ([thisEvent timestamp] - startTime < 0.25 || !bHandleFirstClick)
 				{
-					invertedTracking = YES;
 					mask |= (NSLeftMouseDownMask | NSRightMouseDownMask | NSMouseMovedMask);
 				}
 				else

@@ -88,7 +88,7 @@ int Account::addTransaction(Transaction &trans, bool bFITID)
 	return m_aTransactions.size() - 1;
 }
 
-void Account::swapTransactions(int from, int to)
+void Account::swapTransactions(unsigned int from, unsigned int to)
 {
 	iter_swap(m_aTransactions.begin() + from, m_aTransactions.begin() + to);
 }

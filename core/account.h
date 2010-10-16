@@ -57,15 +57,15 @@ public:
 	AccountType getType() { return m_type; }
 	
 	int addTransaction(Transaction &trans, bool bFITID = false);
-	Transaction &getTransaction(int trans) { return m_aTransactions[trans]; }
-	int getTransactionCount() { return m_aTransactions.size(); }
-	void deleteTransaction(int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
+	Transaction &getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
+	unsigned int getTransactionCount() { return m_aTransactions.size(); }
+	void deleteTransaction(unsigned int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
 	
 	bool doesFITIDExist(const std::string &FITID);
 	void addFITID(std::string &FITID) { m_aFITIDs.insert(FITID); }
 	void deleteFITID(std::string &FITID);
 	
-	void swapTransactions(int from, int to);
+	void swapTransactions(unsigned int from, unsigned int to);
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream);

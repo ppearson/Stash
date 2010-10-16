@@ -126,11 +126,11 @@ static GraphController *gSharedInterface = nil;
 	
 	[graphAccount removeAllItems];
 	
-	std::vector<Account>::iterator it = m_pDocument->AccountBegin();
+	std::vector<Account>::iterator itAccount = m_pDocument->AccountBegin();
 	
-	for (; it != m_pDocument->AccountEnd(); ++it)
+	for (; itAccount != m_pDocument->AccountEnd(); ++itAccount)
 	{
-		std::string strName = it->getName();
+		std::string strName = itAccount->getName();
 		NSString *sName = [[NSString alloc] initWithUTF8String:strName.c_str()];
 		[graphAccount addItemWithTitle:sName];
 		
@@ -167,9 +167,9 @@ static GraphController *gSharedInterface = nil;
 	
 	std::set<std::string> &aItems = m_pGraph->getItems();
 	
-	for (std::set<std::string>::iterator it = aItems.begin(); it != aItems.end(); ++it)
+	for (std::set<std::string>::iterator itItems = aItems.begin(); itItems != aItems.end(); ++itItems)
 	{
-		std::string strItem = (*it);
+		std::string strItem = (*itItems);
 		
 		NSString *sItem = [[NSString alloc] initWithUTF8String:strItem.c_str()];
 		
@@ -411,8 +411,8 @@ static GraphController *gSharedInterface = nil;
 	
 	std::vector<MonthYear>::iterator itDate = aDateItems.begin();
 	
-	int nLongestDateLength = 0;
-	int nLongestDateIndex = -1;
+	unsigned int nLongestDateLength = 0;
+	unsigned int nLongestDateIndex = -1;
 	
 	int nIndex = 0;
 	

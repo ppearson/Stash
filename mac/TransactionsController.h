@@ -66,11 +66,10 @@ enum TransactionsToShow
 	
 	bool m_bEditing;
 	
-	int m_nTransactionOffset;
+	unsigned int m_nTransactionOffset;
 	
 	TransactionItem *m_SelectedIndex;
-	TransactionItem *m_SelectedTransaction;
-	
+	TransactionItem *m_SelectedTransaction;	
 	
 	///
 	
@@ -102,7 +101,7 @@ enum TransactionsToShow
 
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;
-- (void)SwapTransactions:(int)from to:(int)to;
+- (void)SwapTransactions:(unsigned int)from to:(unsigned int)to;
 - (IBAction)RefreshView:(id)sender;
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification;
@@ -114,8 +113,8 @@ enum TransactionsToShow
 
 NSDate *convertToNSDate(Date &date);
 
-- (void)updateBalancesFromTransactionIndex:(int)nIndex;
-- (void)updateTransactionsFromTransactionIndex:(int)nIndex;
+- (void)updateBalancesFromTransactionIndex:(unsigned int)nIndex;
+- (void)updateTransactionsFromTransactionIndex:(unsigned int)nIndex;
 
 - (void)handleTransactionsSettingsUpdate:(NSNotification *)note;
 

@@ -242,7 +242,8 @@ typedef std::vector<OFXStatementTransactionResponse>::iterator OFXStTrResIt;
 
 class OFXData
 {
-public:	
+public:
+	OFXData() { }
 	void addStatementTransactionResponse(std::auto_ptr<OFXStatementTransactionResponse> pResponse) { m_aStatements.push_back(*pResponse.get()); }
 	void addStatementTransactionResponse(OFXStatementTransactionResponse &response) { m_aStatements.push_back(response); }
 

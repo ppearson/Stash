@@ -85,9 +85,9 @@ public:
 	
 	void addSplit(SplitTransaction &split) { m_aSplits.push_back(split); }
 	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);
-	SplitTransaction & getSplit(int item) { return m_aSplits[item]; }
-	const SplitTransaction & getSplit(int item) const { return m_aSplits[item]; }
-	int getSplitCount() const { return m_aSplits.size(); }
+	SplitTransaction & getSplit(unsigned int item) { return m_aSplits[item]; }
+	const SplitTransaction & getSplit(unsigned int item) const { return m_aSplits[item]; }
+	unsigned int getSplitCount() const { return m_aSplits.size(); }
 	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
 	fixed getSplitTotal();
 	

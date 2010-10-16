@@ -50,16 +50,16 @@ public:
 	void deleteCategory(std::string Category);
 	
 	int addScheduledTransaction(ScheduledTransaction &schedTransaction);
-	ScheduledTransaction &getScheduledTransaction(int schedTrans) { return m_aScheduledTransactions[schedTrans]; }
-	void deleteScheduledTransaction(int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
+	ScheduledTransaction &getScheduledTransaction(unsigned int schedTrans) { return m_aScheduledTransactions[schedTrans]; }
+	void deleteScheduledTransaction(unsigned int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
 	
-	void disabledScheduledTransactionsForAccount(int nAccount);
+	void disabledScheduledTransactionsForAccount(unsigned int nAccount);
 	
 	int addGraph(Graph &graph) { m_aGraphs.push_back(graph); return m_aGraphs.size() - 1; }
-	Graph &getGraph(int graph) { return m_aGraphs[graph]; }
-	Graph *getGraphPtr(int graph) { return &m_aGraphs[graph]; }
-	int getGraphCount() { return m_aGraphs.size(); }
-	void deleteGraph(int graph) { m_aGraphs.erase(m_aGraphs.begin() + graph); }
+	Graph &getGraph(unsigned int graph) { return m_aGraphs[graph]; }
+	Graph *getGraphPtr(unsigned int graph) { return &m_aGraphs[graph]; }
+	unsigned int getGraphCount() { return m_aGraphs.size(); }
+	void deleteGraph(unsigned int graph) { m_aGraphs.erase(m_aGraphs.begin() + graph); }
 	
 	void clear();
 	

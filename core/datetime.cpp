@@ -209,7 +209,7 @@ void Date::setDate(std::string date, char cSep, DateStringFormat dateFormat)
 	}
 	else
 	{
-		if (date.find(cSep) == -1)
+		if (date.find(cSep) == std::string::npos)
 			return;
 
 		std::replace(date.begin(), date.end(), cSep, ' ');

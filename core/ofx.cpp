@@ -400,30 +400,30 @@ bool detectOFXType(std::string path, OFX_TYPE &eType, std::string &encoding, std
 		if (line.length() == 0)
 			continue;
 		
-		if (bDOSFormat && (line.find('\n') != -1))
+		if (bDOSFormat && (line.find('\n') != std::string::npos))
 			line = line.erase(0, 1);
 		
-		if (line.find("DATA:OFXSGML") != -1)
+		if (line.find("DATA:OFXSGML") != std::string::npos)
 		{
 			bOFX1 = true;
 		}
-		else if (line.find("<?") != -1)
+		else if (line.find("<?") != std::string::npos)
 		{
 			bXML = true;
 		}
-		else if (line.find("OFXHEADER=\"2") != -1)
+		else if (line.find("OFXHEADER=\"2") != std::string::npos)
 		{
 			bOFX2 = true;
 		}
-		else if (line.find("ENCODING:USASCII") != -1)
+		else if (line.find("ENCODING:USASCII") != std::string::npos)
 		{
 			bASCII = true;
 		}
-		else if (line.find("CHARSET:1252") != -1)
+		else if (line.find("CHARSET:1252") != std::string::npos)
 		{
 			charset = "1252";
 		}
-		else if (line.find("CHARSET:ISO-8859-1") != -1)
+		else if (line.find("CHARSET:ISO-8859-1") != std::string::npos)
 		{
 			charset = "ISO-8859-1";
 		}
@@ -532,13 +532,13 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 		if (line.length() == 0)
 			continue;
 		
-		if (bDOSFormat && (line.find('\n') != -1))
+		if (bDOSFormat && (line.find('\n') != std::string::npos))
 			line = line.erase(0, 1);
 		
-		int nTagStart = line.find('<');
-		int nTagEnd = line.find('>');
+		size_t nTagStart = line.find('<');
+		size_t nTagEnd = line.find('>');
 		
-		if (nTagStart > -1 && nTagEnd > nTagStart)
+		if (nTagStart != std::string::npos && nTagEnd > nTagStart)
 		{
 			std::string tag = line.substr(nTagStart + 1, nTagEnd - nTagStart - 1);
 			

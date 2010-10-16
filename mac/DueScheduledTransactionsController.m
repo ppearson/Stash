@@ -66,8 +66,6 @@
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
 	return [m_aTransactions count];
-	
-	return 0;
 }
 
 - (void)addTransaction:(id)sender
