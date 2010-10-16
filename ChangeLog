@@ -1,7 +1,16 @@
+Version 0.82
+------------
+
+* Fixed bug which ignored Cleared flag of transactions when importing QIF files
+* Scheduled Transactions are now added to the Account in Cleared state
+* Added right-click Add Selected Item menu to the Pie Chart graph
+* Splitting an already split transaction now opens up the transaction and selects the last
+  item ready for editing
+
 Version 0.81
 ------------
 
-* Fix bug which ignored option to set all imported transactions as cleared when importing OFX files
+* Fixed bug which ignored option to set all imported transactions as cleared when importing OFX files
 * Index Bar account amounts now have a drop shadow
 * Area Chart X-axis labels are now drawn centred
 * When clicking on a blank split transaction, the keyboard focus is automatically set to the Payee
@@ -21,7 +30,7 @@ Version 0.8
 * Added Account Balances to the IndexBar on the left
 * Fixed bug which meant that the Transfer window didn't always have an up-to-date list of Accounts
 * Code optimisation for potential speed improvements
-* Fix memory leaks
+* Fixed memory leaks
 
 Version 0.75
 ------------
