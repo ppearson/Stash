@@ -6,6 +6,9 @@ Version 0.82
 * Added right-click Add Selected Item menu to the Pie Chart graph
 * Splitting an already split transaction now opens up the transaction and selects the last
   item ready for editing
+* Date labels for Overview Chart are now drawn centred
+* Changed the way Currency number interpretation is done to try to alleviate problems encountered
+  using different input locales
 
 Version 0.81
 ------------
