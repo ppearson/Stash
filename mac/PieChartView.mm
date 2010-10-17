@@ -23,6 +23,7 @@
 #include "fixed.h"
 #import "PieChartView.h"
 #import "GraphController.h"
+#import "ValueFormatter.h"
 
 #define DegToRad(deg) (deg*0.017453)
 #define RadToDeg(deg) (deg*57.2958)
@@ -221,15 +222,9 @@
 		[strText drawAtPoint:labelPosition withAttributes:attributes1];
 	}
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *nSelAmount = [NSNumber numberWithDouble:selectedAmount.ToDouble()];
-	
-	NSString *sSelAmount = [[numberFormatter stringFromNumber:nSelAmount] retain];
-	
-	[numberFormatter release];
+	NSString *sSelAmount = [[valueFormatter currencyStringFromFixed:selectedAmount] retain];
 	
 	if (m_total)
 	{

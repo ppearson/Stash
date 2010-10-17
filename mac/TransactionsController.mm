@@ -28,7 +28,7 @@
 #import "NSDateEx.h"
 #import "SplitViewEx.h"
 #import "IndexItem.h"
-
+#import "ValueFormatter.h"
 
 @implementation TransactionsController
 
@@ -298,8 +298,7 @@ static TransactionsController *gSharedInterface = nil;
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	BOOL bShowNegAmountsInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegAmountsRed"];
 	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
@@ -319,9 +318,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		NSString *sTType = [self transactionTypeToString:it->getType()];
 		
-		NSNumber *nTAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
-		
-		NSString *sTAmount = [[numberFormatter stringFromNumber:nTAmount] retain];
+		NSString *sTAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->getDate1()));
 		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
@@ -330,8 +327,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		m_aBalance.push_back(localBalance);
 		
-		NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
-		NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
+		NSString *sTBalance = [[valueFormatter currencyStringFromFixed:localBalance] retain];
 		
 		[newTransaction setTransaction:nTransaction];
 		
@@ -381,8 +377,7 @@ static TransactionsController *gSharedInterface = nil;
 				std::string strSCategory = split.getCategory();
 				NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 				
-				NSNumber *nSAmount = [NSNumber numberWithDouble:split.getAmount().ToDouble()];
-				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+				NSString *sSAmount = [[valueFormatter currencyStringFromFixed:split.getAmount()] retain];
 				
 				bIsAmountNeg = NO;
 				
@@ -419,8 +414,7 @@ static TransactionsController *gSharedInterface = nil;
 			{
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				NSNumber *nSAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
-				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+				NSString *sSAmount = [[valueFormatter currencyStringFromFixed:splitValue] retain];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Description"];
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
@@ -449,7 +443,6 @@ static TransactionsController *gSharedInterface = nil;
 	}
 	
 	[dateFormatter release];
-	[numberFormatter release];
 	
 	[transactionsTableView reloadData];
 	
@@ -580,11 +573,9 @@ static TransactionsController *gSharedInterface = nil;
 		fixed splitValue = trans.getAmount();
 		TransactionItem *newSplit = [[TransactionItem alloc] init];
 		
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 		
-		NSNumber *nAmount = [NSNumber numberWithDouble:splitValue.ToDouble()];
-		NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+		NSString *sAmount = [[valueFormatter currencyStringFromFixed:splitValue] retain];
 		
 		[newSplit setValue:@"Split Value" forKey:@"Description"];
 		[newSplit setValue:@"Split Value" forKey:@"Payee"];
@@ -599,8 +590,6 @@ static TransactionsController *gSharedInterface = nil;
 		[item addChild:newSplit];
 		
 		[transactionsTableView reloadData];
-		
-		[numberFormatter release];
 		
 		m_pDocument->setUnsavedChanges(true);
 		
@@ -751,11 +740,9 @@ static TransactionsController *gSharedInterface = nil;
 	
 	NSString *sType = [self transactionTypeToString:transaction.getType()];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *nAmount = [NSNumber numberWithDouble:transaction.getAmount().ToDouble()];
-	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+	NSString *sAmount = [[valueFormatter currencyStringFromFixed:transaction.getAmount()] retain];
 	
 	NSDate *transDate = convertToNSDate(const_cast<Date&>(transaction.getDate1()));
 	
@@ -780,10 +767,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	localBalance += transaction.getAmount();
 	
-	NSNumber *nBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
-	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
-	
-	[numberFormatter release];
+	NSString *sBalance = [[valueFormatter currencyStringFromFixed:localBalance] retain];
 	
 	[newItem setTransaction:index];
 	
@@ -832,9 +816,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		m_SelectedTransaction = item;
 		
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		[numberFormatter setLenient:YES];
+		ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 		
 		if (trans && !split && nSplit != -2) // A normal transaction
 		{
@@ -853,8 +835,7 @@ static TransactionsController *gSharedInterface = nil;
 			std::string strCategory = trans->getCategory();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			NSNumber *nAmount = [NSNumber numberWithDouble:trans->getAmount().ToDouble()];
-			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+			NSString *sAmount = [[valueFormatter currencyStringFromFixed:trans->getAmount()] retain];
 			
 			TransactionType eType = trans->getType();
 			
@@ -905,8 +886,7 @@ static TransactionsController *gSharedInterface = nil;
 			std::string strCategory = split->getCategory();
 			NSString *sCategory = [[NSString alloc] initWithUTF8String:strCategory.c_str()];
 			
-			NSNumber *nAmount = [NSNumber numberWithDouble:split->getAmount().ToDouble()];
-			NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+			NSString *sAmount = [[valueFormatter currencyStringFromFixed:split->getAmount()] retain];
 			
 			[transactionsPayee setStringValue:sPayee];
 			[transactionsDescription setStringValue:sDescription];
@@ -947,8 +927,6 @@ static TransactionsController *gSharedInterface = nil;
 			[transactionsType setEnabled:NO];
 			[transactionsDateCntl setEnabled:NO];
 		}
-		
-		[numberFormatter release];
 	}
 	else
 	{
@@ -1011,21 +989,14 @@ static TransactionsController *gSharedInterface = nil;
 	std::string strDesc = [[transactionsDescription stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strCategory = [[transactionsCategory stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	NSString* sTransactionAmount = [transactionsAmount stringValue];
 	
-	NSString *sTransactionAmount = [transactionsAmount stringValue];
-	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
-	{
-		sTransactionAmount = [self convertUSNegAmount:sTransactionAmount];
-	}
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *nAmount = [numberFormatter numberFromString:sTransactionAmount];	
-	fixed fAmount = [nAmount doubleValue];
+	fixed fAmount = [valueFormatter fixedFromString:sTransactionAmount];
 	
 	// reformat the number again, in case an abbreviation was used
-	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+	NSString *sAmount = [[valueFormatter currencyStringFromFixed:fAmount] retain];
 	
 	int nType = [transactionsType indexOfSelectedItem];
 	TransactionType eType = static_cast<TransactionType>(nType);
@@ -1178,8 +1149,7 @@ static TransactionsController *gSharedInterface = nil;
 				
 				TransactionItem *newSplit = [[TransactionItem alloc] init];
 				
-				NSNumber *nSAmount = [NSNumber numberWithDouble:diff.ToDouble()];
-				NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+				NSString *sSAmount = [[valueFormatter currencyStringFromFixed:diff] retain];
 				
 				[newSplit setValue:@"Split Value" forKey:@"Payee"];
 				[newSplit setValue:@"Split Value" forKey:@"Description"];
@@ -1208,8 +1178,6 @@ static TransactionsController *gSharedInterface = nil;
 			}
 		}		
 	}
-	
-	[numberFormatter release];
 	
 	m_pDocument->setUnsavedChanges(true);
 }
@@ -1480,8 +1448,7 @@ NSDate *convertToNSDate(Date &date)
 // update the balances of all transactions from the given index down
 - (void)updateBalancesFromTransactionIndex:(unsigned int)nIndex
 {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	fixed localBalance = 0.0;
 	
@@ -1525,8 +1492,7 @@ NSDate *convertToNSDate(Date &date)
 		if (bShowNegBalancesInRed && !localBalance.IsPositive())
 			bIsBalanceNeg = YES;
 		
-		NSNumber *nTBalance = [NSNumber numberWithDouble:localBalance.ToDouble()];
-		NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
+		NSString *sTBalance = [[valueFormatter currencyStringFromFixed:localBalance] retain];
 		
 		[aTransaction setValue:sTBalance forKey:@"Balance"];
 		
@@ -1537,8 +1503,7 @@ NSDate *convertToNSDate(Date &date)
 	
 	// need to update IndexBar account balance
 	
-	NSNumber *nTBalance = [NSNumber numberWithDouble:clearedBalance.ToDouble()];
-	NSString *sTBalance = [[numberFormatter stringFromNumber:nTBalance] retain];
+	NSString *sTBalance = [[valueFormatter currencyStringFromFixed:clearedBalance] retain];
 	
 	NSString *itemKey = [indexBar getSelectedItemKey];
 	
@@ -1548,8 +1513,6 @@ NSDate *convertToNSDate(Date &date)
 		
 		[indexBar reloadData];
 	}
-	
-	[numberFormatter release];
 }
 
 // update the transaction indexes after a deletion
@@ -1684,18 +1647,9 @@ NSDate *convertToNSDate(Date &date)
 	std::string strCategory = [sCategory cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strDescription = [sDescription cStringUsingEncoding:NSUTF8StringEncoding];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
-	{
-		sAmount = [self convertUSNegAmount:sAmount];
-	}
-	
-	NSNumber *nAmount = [numberFormatter numberFromString:sAmount];
-	
-	fixed amount = [nAmount doubleValue];
+	fixed amount = [valueFormatter fixedFromString:sAmount];
 	
 	NSCalendarDate *CalDate = [dtDate dateWithCalendarFormat:0 timeZone:0];
 	
@@ -1767,8 +1721,7 @@ NSDate *convertToNSDate(Date &date)
 	fixed fromBalance = pFromAccount->getBalance(true);
 	fixed toBalance = pToAccount->getBalance(true);
 	
-	NSNumber *nFromBalance = [NSNumber numberWithDouble:fromBalance.ToDouble()];
-	NSString *sFromBalance = [[numberFormatter stringFromNumber:nFromBalance] retain];
+	NSString *sFromBalance = [[valueFormatter currencyStringFromFixed:fromBalance] retain];
 	
 	NSString *sFromAccountKey = [NSString stringWithFormat:@"a%d", nFromAccount];
 	
@@ -1777,8 +1730,7 @@ NSDate *convertToNSDate(Date &date)
 		[indexBar updateAmount:sFromAccountKey amount:sFromBalance];		
 	}
 	
-	NSNumber *nToBalance = [NSNumber numberWithDouble:toBalance.ToDouble()];
-	NSString *sToBalance = [[numberFormatter stringFromNumber:nToBalance] retain];
+	NSString *sToBalance = [[valueFormatter currencyStringFromFixed:toBalance] retain];
 	
 	NSString *sToAccountKey = [NSString stringWithFormat:@"a%d", nToAccount];
 	
@@ -1788,8 +1740,6 @@ NSDate *convertToNSDate(Date &date)
 	}
 	
 	[indexBar reloadData];
-	
-	[numberFormatter release];
 }
 
 - (void)setTransactionsViewType:(int)type

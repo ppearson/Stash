@@ -22,6 +22,7 @@
 
 #import "AreaChartView.h"
 #import "GraphController.h"
+#import "ValueFormatter.h"
 
 @implementation AreaChartView
 
@@ -106,12 +107,10 @@
 		return;
 	}
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	NSNumber *nMaxAmount = [NSNumber numberWithDouble:m_dMaxValue];
-	NSString *sMaxAmount = [numberFormatter stringFromNumber:nMaxAmount];
+	NSString *sMaxAmount = [valueFormatter currencyStringFromNumber:nMaxAmount];
 	NSSize maxAmountSize = [sMaxAmount sizeWithAttributes:attributes1];	
 	
 	double dMarginX = maxAmountSize.width + 30;
@@ -209,14 +208,12 @@
 		[gridLine lineToPoint:NSMakePoint(plotArea.origin.x + plotArea.size.width, dYValue)];
 		
 		NSNumber *nScaleAmount = [NSNumber numberWithDouble:(dYInc * i)];
-		NSString *sScaleAmount = [[numberFormatter stringFromNumber:nScaleAmount] retain];
+		NSString *sScaleAmount = [[valueFormatter currencyStringFromNumber:nScaleAmount] retain];
 		
 		NSSize extent = [sScaleAmount sizeWithAttributes:attributes1];
 		
 		[sScaleAmount drawAtPoint:NSMakePoint(plotArea.origin.x - extent.width - 3, dYValue - (extent.height / 2.0)) withAttributes:attributes1];				
 	}
-	
-	[numberFormatter release];
 	
 	[gridLine setLineWidth:1.0];
 	[[NSColor grayColor] set];

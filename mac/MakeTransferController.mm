@@ -21,6 +21,7 @@
  */
 
 #import "MakeTransferController.h"
+#import "ValueFormatter.h"
 
 @implementation MakeTransferController
 
@@ -65,15 +66,11 @@
 	[fromAccount selectItemAtIndex:initAccount];
 	[toAccount selectItemAtIndex:0];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *number = [NSNumber numberWithInt:0];
-	m_amount = [numberFormatter stringFromNumber:number];
+	m_amount = [valueFormatter currencyStringFromNumber:[NSNumber numberWithInt:0]];
 	
 	[amount setStringValue:m_amount];
-	
-	[numberFormatter release];
 	
 	[category removeAllItems];
 	

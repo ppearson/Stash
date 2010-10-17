@@ -21,6 +21,7 @@
  */
 
 #import "AddAccountController.h"
+#import "ValueFormatter.h"
 
 @interface AddAccountController (Private)
 
@@ -42,11 +43,9 @@
 
 - (void)awakeFromNib
 {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *number = [NSNumber numberWithInt:0];
-	sStartingBalance = [numberFormatter stringFromNumber:number];
+	sStartingBalance = [valueFormatter currencyStringFromNumber:[NSNumber numberWithInt:0]];
 	
 	[fStartingBalance setStringValue:sStartingBalance];
 	
@@ -62,8 +61,6 @@
 	[fAccountType addItemWithTitle:NSLocalizedString(@"Other", "Account Type -> Other")];
 	
 	[fAccountType selectItemAtIndex:0];
-	
-	[numberFormatter release];
 }
 
 - (void)dealloc

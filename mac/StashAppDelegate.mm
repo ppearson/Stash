@@ -31,6 +31,7 @@
 #import "ToolbarItemEx.h"
 #import "TransactionsController.h"
 #import "GraphController.h"
+#import "ValueFormatter.h"
 
 #define TOOLBAR_ADDACCOUNT		@"TOOLBAR_ADDACCOUNT"
 #define TOOLBAR_ADDGRAPH		@"TOOLBAR_ADDGRAPH"
@@ -373,8 +374,7 @@ toolbarViewGroupTag;
 	
 	[indexBar addSection:@"accounts" title:NSLocalizedString(@"ACCOUNTS", "IndexBar -> ACCOUNTS")];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	std::vector<Account>::iterator it = m_Document.AccountBegin();
 	int nAccount = 0;
@@ -386,9 +386,7 @@ toolbarViewGroupTag;
 		
 		fixed accBalance = it->getBalance(true);
 		
-		NSNumber *nAccBalance = [NSNumber numberWithDouble:accBalance.ToDouble()];
-		
-		NSString *sAccBalance = [[numberFormatter stringFromNumber:nAccBalance] retain];
+		NSString *sAccBalance = [[valueFormatter currencyStringFromFixed:accBalance] retain];
 		
 		NSString *sAccountKey = [NSString stringWithFormat:@"a%d", nAccount];
 
@@ -396,8 +394,6 @@ toolbarViewGroupTag;
 		
 		[sName release];
 	}
-	
-	[numberFormatter release];
 	
 	[indexBar addSection:@"manage" title:NSLocalizedString(@"MANAGE", "IndexBar -> MANAGE")];
 	[indexBar addItem:@"manage" key:@"payees" title:NSLocalizedString(@"Payees", "IndexBar -> Payees") item:0 action:@selector(payeesSelected:) target:self type:2 rename:nil renameTarget:nil];
@@ -639,8 +635,7 @@ toolbarViewGroupTag;
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	std::vector<ScheduledTransaction>::iterator it = m_Document.SchedTransBegin();
 	
@@ -656,9 +651,7 @@ toolbarViewGroupTag;
 		std::string strSCategory = it->getCategory();
 		NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 		
-		NSNumber *nSAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
-		
-		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+		NSString *sSAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 		
 		NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 		NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
@@ -690,7 +683,6 @@ toolbarViewGroupTag;
 	}
 	
 	[dateFormatter release];
-	[numberFormatter release];
 	
 	[scheduledTransactionsTableView reloadData];
 }
@@ -748,18 +740,9 @@ toolbarViewGroupTag;
 	std::string strNumber = [sNumber cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strNote = [sNote cStringUsingEncoding:NSUTF8StringEncoding];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
-	{
-		sStartingBalance = [self convertUSNegAmount:sStartingBalance];
-	}
-	
-	NSNumber *nStartingBalance = [numberFormatter numberFromString:sStartingBalance];
-	
-	fixed startingBalance = [nStartingBalance doubleValue];
+	fixed startingBalance = [valueFormatter fixedFromString:sStartingBalance];
 	
 	Account newAccount;
 	newAccount.setName(strName);
@@ -785,8 +768,7 @@ toolbarViewGroupTag;
 	
 	// format starting balance to string again for IndexBar
 	
-	NSNumber *nBalance = [NSNumber numberWithDouble:startingBalance.ToDouble()];
-	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
+	NSString *sBalance = [[valueFormatter currencyStringFromFixed:startingBalance] retain];
 	
 	int nAccountNum = m_Document.addAccount(newAccount);
 	
@@ -795,7 +777,6 @@ toolbarViewGroupTag;
 	[indexBar addItem:@"accounts" key:sAccountKey title:sAccountName amount:sBalance item:nAccountNum action:@selector(accountSelected:) target:self type:1 rename:@selector(accountRenamed:) renameTarget:self];
 	
 	[addAccountController release];
-	[numberFormatter release];
 	
 	m_Document.setUnsavedChanges(true);
 	
@@ -1037,21 +1018,14 @@ toolbarViewGroupTag;
 	std::string strDesc = [[scheduledDescription stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strCategory = [[scheduledCategory stringValue] cStringUsingEncoding:NSUTF8StringEncoding];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
-	
 	NSString *sScheduledAmount = [scheduledAmount stringValue];
-	if ([[numberFormatter currencyCode] isEqualToString:@"USD"])
-	{
-		sScheduledAmount = [self convertUSNegAmount:sScheduledAmount];
-	}
+
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	NSNumber *nAmount = [numberFormatter numberFromString:sScheduledAmount];	
-	fixed fAmount = [nAmount doubleValue];
+	fixed fAmount = [valueFormatter fixedFromString:sScheduledAmount];
 	
 	// reformat the number again, in case an abbreviation was used
-	NSString *sAmount = [[numberFormatter stringFromNumber:nAmount] retain];
+	NSString *sAmount = [[valueFormatter currencyStringFromFixed:fAmount] retain];
 	
 	int nType = [scheduledType indexOfSelectedItem];
 	TransactionType eType = static_cast<TransactionType>(nType);
@@ -1085,8 +1059,6 @@ toolbarViewGroupTag;
 	[oSchedTransItem setValue:[scheduledFrequency titleOfSelectedItem] forKey:@"frequency"];
 	[oSchedTransItem setValue:sDate forKey:@"nextdate"];
 	[oSchedTransItem setValue:[scheduledAccount titleOfSelectedItem] forKey:@"account"];	
-	
-	[numberFormatter release];
 	
 	[scheduledTransactionsTableView reloadData];
 	
@@ -1239,8 +1211,7 @@ toolbarViewGroupTag;
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 
 	NSMutableDictionary *item = [[NSMutableDictionary alloc] init];
 	
@@ -1250,9 +1221,7 @@ toolbarViewGroupTag;
 	std::string strSCategory = newST.getCategory();
 	NSString *sSCategory = [[NSString alloc] initWithUTF8String:strSCategory.c_str()];
 	
-	NSNumber *nSAmount = [NSNumber numberWithDouble:newST.getAmount().ToDouble()];
-	
-	NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+	NSString *sSAmount = [[valueFormatter currencyStringFromFixed:newST.getAmount()] retain];
 	
 	NSString *sSDate = [[dateFormatter stringFromDate:ndate1] retain];	
 	
@@ -1266,7 +1235,6 @@ toolbarViewGroupTag;
 	[m_aScheduledTransactions addObject:item];
 	
 	[dateFormatter release];
-	[numberFormatter release];
 	
 	[scheduledTransactionsTableView reloadData];
 	
@@ -1669,8 +1637,7 @@ toolbarViewGroupTag;
 	
 	int schedTransIndex = 0;
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1691,9 +1658,7 @@ toolbarViewGroupTag;
 			std::string strSDesc = it->getDescription();
 			NSString *sSDesc = [[NSString alloc] initWithUTF8String:strSDesc.c_str()];
 			
-			NSNumber *nSAmount = [NSNumber numberWithDouble:it->getAmount().ToDouble()];
-			
-			NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+			NSString *sSAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 			
 			NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
 			NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
@@ -1718,7 +1683,6 @@ toolbarViewGroupTag;
 		}
 	}
 	
-	[numberFormatter release];
 	[dateFormatter release];
 	
 	if ([array count] > 0)
@@ -1826,13 +1790,11 @@ toolbarViewGroupTag;
 	}
 	
 	// update the balance in the IndexBar
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	fixed accountBalance = m_pAccount->getBalance(true);	
 	
-	NSNumber *nBalance = [NSNumber numberWithDouble:accountBalance.ToDouble()];
-	NSString *sBalance = [[numberFormatter stringFromNumber:nBalance] retain];
+	NSString *sBalance = [[valueFormatter currencyStringFromFixed:accountBalance] retain];
 	
 	NSString *itemKey = [indexBar getSelectedItemKey];
 	
@@ -1842,8 +1804,6 @@ toolbarViewGroupTag;
 		
 		[indexBar reloadData];
 	}
-	
-	[numberFormatter release];
 }
 
 - (IBAction)ImportOFX:(id)sender
@@ -1885,8 +1845,7 @@ toolbarViewGroupTag;
 		bool bFoundReverse = false;
 		BOOL bReverseTransactions = NO;
 		
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 		
 		NSMutableArray *aAccountsData = [[NSMutableArray alloc] init];
 		
@@ -1920,8 +1879,7 @@ toolbarViewGroupTag;
 			
 			fixed balance = stResp.getBalance();
 			
-			NSNumber *nSBalance = [NSNumber numberWithDouble:balance.ToDouble()];
-			NSString *sBalance = [[numberFormatter stringFromNumber:nSBalance] retain];
+			NSString *sBalance = [[valueFormatter currencyStringFromFixed:balance] retain];
 						
 			[importItem setValue:sAccountNumber forKey:@"accno"];
 			[importItem setValue:sTransactionCount forKey:@"transcount"];
@@ -1935,8 +1893,6 @@ toolbarViewGroupTag;
 			
 			[aAccountsData addObject:importItem];			
 		}
-		
-		[numberFormatter release];		
 		
 		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
 		

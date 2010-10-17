@@ -25,6 +25,7 @@
 #import "GraphController.h"
 #import "TransactionsController.h"
 #import "NSDateEx.h"
+#import "ValueFormatter.h"
 
 @implementation GraphController
 
@@ -296,9 +297,7 @@ static GraphController *gSharedInterface = nil;
 	else if (type == DepositPayees)
 		buildPieChartItems(m_pGraph, pieCriteria, false, false);
 	
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[numberFormatter setLenient:YES];
+	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	NSMutableArray *aPieItems = [[NSMutableArray alloc] init];
 	
@@ -317,7 +316,7 @@ static GraphController *gSharedInterface = nil;
 		NSString *sTitle = [[NSString alloc] initWithUTF8String:strTitle.c_str()];
 		
 		NSNumber *nSAmount = [NSNumber numberWithDouble:amount.ToDouble()];
-		NSString *sSAmount = [[numberFormatter stringFromNumber:nSAmount] retain];
+		NSString *sSAmount = [[valueFormatter currencyStringFromNumber:nSAmount] retain];
 		
 		[dict setValue:[NSNumber numberWithDouble:angle] forKey:@"angle"];
 		
@@ -335,10 +334,7 @@ static GraphController *gSharedInterface = nil;
 		[aPieItems addObject:dict];		
 	}
 	
-	NSNumber *nTotal = [NSNumber numberWithDouble:overallTotal.ToDouble()];
-	NSString *sTotal = [[numberFormatter stringFromNumber:nTotal] retain];
-	
-	[numberFormatter release];
+	NSString *sTotal = [[valueFormatter currencyStringFromFixed:overallTotal] retain];
 	
 	[pieChartView setTotal:sTotal];
 	[pieChartView setData:aPieItems];

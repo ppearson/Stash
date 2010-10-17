@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		D04734721269F4E1002E5A71 /* ValueFormatter.mm in Sources */ = {isa = PBXBuildFile; fileRef = D04734711269F4E1002E5A71 /* ValueFormatter.mm */; };
 		D082ACDB124E2B2C00C525E1 /* account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACC2124E2B2C00C525E1 /* account.cpp */; };
 		D082ACDC124E2B2C00C525E1 /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACC4124E2B2C00C525E1 /* analysis.cpp */; };
 		D082ACDD124E2B2C00C525E1 /* datetime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACC6124E2B2C00C525E1 /* datetime.cpp */; };
@@ -35,7 +36,7 @@
 		D082AD2B124E2B8600C525E1 /* OverviewChartView.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082ACF8124E2B8600C525E1 /* OverviewChartView.mm */; };
 		D082AD2C124E2B8600C525E1 /* IndexItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D082ACFB124E2B8600C525E1 /* IndexItem.m */; };
 		D082AD2D124E2B8600C525E1 /* NSPreProcessTextField.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082ACFD124E2B8600C525E1 /* NSPreProcessTextField.mm */; };
-		D082AD2E124E2B8600C525E1 /* MakeTransferController.m in Sources */ = {isa = PBXBuildFile; fileRef = D082AD02124E2B8600C525E1 /* MakeTransferController.m */; };
+		D082AD2E124E2B8600C525E1 /* MakeTransferController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082AD02124E2B8600C525E1 /* MakeTransferController.mm */; };
 		D082AD2F124E2B8600C525E1 /* DropDownDate.m in Sources */ = {isa = PBXBuildFile; fileRef = D082AD04124E2B8600C525E1 /* DropDownDate.m */; };
 		D082AD30124E2B8600C525E1 /* ImportOFXController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082AD07124E2B8600C525E1 /* ImportOFXController.mm */; };
 		D082AD31124E2B8600C525E1 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = D082AD0B124E2B8600C525E1 /* PreferencesController.m */; };
@@ -91,6 +92,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D04734701269F4E1002E5A71 /* ValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ValueFormatter.h; path = mac/ValueFormatter.h; sourceTree = "<group>"; };
+		D04734711269F4E1002E5A71 /* ValueFormatter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ValueFormatter.mm; path = mac/ValueFormatter.mm; sourceTree = "<group>"; };
 		D082ACC2124E2B2C00C525E1 /* account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = account.cpp; sourceTree = "<group>"; };
 		D082ACC3124E2B2C00C525E1 /* account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = account.h; sourceTree = "<group>"; };
 		D082ACC4124E2B2C00C525E1 /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
@@ -141,7 +144,7 @@
 		D082ACFF124E2B8600C525E1 /* DropDownWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropDownWindow.h; path = mac/DropDownWindow.h; sourceTree = "<group>"; };
 		D082AD00124E2B8600C525E1 /* OverviewChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OverviewChartView.h; path = mac/OverviewChartView.h; sourceTree = "<group>"; };
 		D082AD01124E2B8600C525E1 /* TransactionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TransactionItem.h; path = mac/TransactionItem.h; sourceTree = "<group>"; };
-		D082AD02124E2B8600C525E1 /* MakeTransferController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MakeTransferController.m; path = mac/MakeTransferController.m; sourceTree = "<group>"; };
+		D082AD02124E2B8600C525E1 /* MakeTransferController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MakeTransferController.mm; path = mac/MakeTransferController.mm; sourceTree = "<group>"; };
 		D082AD03124E2B8600C525E1 /* MakeTransferController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MakeTransferController.h; path = mac/MakeTransferController.h; sourceTree = "<group>"; };
 		D082AD04124E2B8600C525E1 /* DropDownDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DropDownDate.m; path = mac/DropDownDate.m; sourceTree = "<group>"; };
 		D082AD05124E2B8600C525E1 /* DropDownDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DropDownDate.h; path = mac/DropDownDate.h; sourceTree = "<group>"; };
@@ -225,6 +228,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D04734701269F4E1002E5A71 /* ValueFormatter.h */,
+				D04734711269F4E1002E5A71 /* ValueFormatter.mm */,
 				D082ACEA124E2B8600C525E1 /* TransactionsController.h */,
 				D09FE555124EBCAC00F68813 /* GraphController.h */,
 				D09FE556124EBCAC00F68813 /* GraphController.mm */,
@@ -250,7 +255,7 @@
 				D082ACFF124E2B8600C525E1 /* DropDownWindow.h */,
 				D082AD00124E2B8600C525E1 /* OverviewChartView.h */,
 				D082AD01124E2B8600C525E1 /* TransactionItem.h */,
-				D082AD02124E2B8600C525E1 /* MakeTransferController.m */,
+				D082AD02124E2B8600C525E1 /* MakeTransferController.mm */,
 				D082AD03124E2B8600C525E1 /* MakeTransferController.h */,
 				D082AD04124E2B8600C525E1 /* DropDownDate.m */,
 				D082AD05124E2B8600C525E1 /* DropDownDate.h */,
@@ -554,7 +559,7 @@
 				D082AD2B124E2B8600C525E1 /* OverviewChartView.mm in Sources */,
 				D082AD2C124E2B8600C525E1 /* IndexItem.m in Sources */,
 				D082AD2D124E2B8600C525E1 /* NSPreProcessTextField.mm in Sources */,
-				D082AD2E124E2B8600C525E1 /* MakeTransferController.m in Sources */,
+				D082AD2E124E2B8600C525E1 /* MakeTransferController.mm in Sources */,
 				D082AD2F124E2B8600C525E1 /* DropDownDate.m in Sources */,
 				D082AD30124E2B8600C525E1 /* ImportOFXController.mm in Sources */,
 				D082AD31124E2B8600C525E1 /* PreferencesController.m in Sources */,
@@ -567,6 +572,7 @@
 				D082AD38124E2B8600C525E1 /* SplitViewEx.m in Sources */,
 				D082AD39124E2B8600C525E1 /* main.m in Sources */,
 				D09FE557124EBCAC00F68813 /* GraphController.mm in Sources */,
+				D04734721269F4E1002E5A71 /* ValueFormatter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,9 +787,9 @@
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_SHADOW = NO;
 				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNUSED_VALUE = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-liconv";
 				PREBINDING = NO;
