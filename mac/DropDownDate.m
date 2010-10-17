@@ -64,6 +64,8 @@
 	[fLinkedItem setDateValue:date];
 	
 	[fWindow setShouldCloseWhenViewTrackingReturns:YES];
+	
+	[[self window] makeFirstResponder:fLinkedItem];
 }
 
 @end
