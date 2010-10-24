@@ -580,7 +580,7 @@ toolbarViewGroupTag;
 	NSString *sWindowTitle;
 	if (path)
 	{
-		sWindowTitle = [NSString stringWithFormat:@"Stash - %@", [[NSURL fileURLWithPath:path] lastPathComponent]];
+		sWindowTitle = [NSString stringWithFormat:@"Stash - %@", [path lastPathComponent]];
 	}
 	else
 	{
