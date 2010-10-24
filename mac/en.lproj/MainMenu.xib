@@ -14,7 +14,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="29"/>
 			<integer value="845"/>
-			<integer value="977"/>
+			<integer value="920"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3470,7 +3470,7 @@
 							<object class="NSTabViewItem" id="760957740">
 								<string key="NSIdentifier">1</string>
 								<object class="NSView" key="NSView" id="915138049">
-									<nil key="NSNextResponder"/>
+									<reference key="NSNextResponder" ref="872192110"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3502,7 +3502,8 @@
 														<string key="NSSegmentItemLabel"/>
 														<string key="NSSegmentItemTooltip">Move back one</string>
 														<int key="NSSegmentItemTag">-1</int>
-														<int key="NSSegmentItemImageScaling">2</int>
+														<bool key="NSSegmentItemSelected">YES</bool>
+														<int key="NSSegmentItemImageScaling">0</int>
 													</object>
 													<object class="NSSegmentItem">
 														<string key="NSSegmentItemLabel">Week</string>
@@ -3525,7 +3526,6 @@
 														<string key="NSSegmentItemLabel">User selection</string>
 														<string key="NSSegmentItemTooltip">User defined date range</string>
 														<int key="NSSegmentItemTag">1</int>
-														<bool key="NSSegmentItemSelected">YES</bool>
 														<int key="NSSegmentItemImageScaling">0</int>
 													</object>
 													<object class="NSSegmentItem">
@@ -3538,12 +3538,12 @@
 														<int key="NSSegmentItemImageScaling">0</int>
 													</object>
 												</object>
-												<int key="NSSelectedSegment">4</int>
 												<int key="NSSegmentStyle">5</int>
 											</object>
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {709, 558}}</string>
+									<reference key="NSSuperview" ref="872192110"/>
 								</object>
 								<string key="NSLabel">Total</string>
 								<reference key="NSColor" ref="660767409"/>
@@ -3552,7 +3552,7 @@
 							<object class="NSTabViewItem" id="129401384">
 								<string key="NSIdentifier">2</string>
 								<object class="NSView" key="NSView" id="882678032">
-									<reference key="NSNextResponder" ref="872192110"/>
+									<nil key="NSNextResponder"/>
 									<int key="NSvFlags">256</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3565,7 +3565,6 @@
 										</object>
 									</object>
 									<string key="NSFrame">{{10, 33}, {709, 558}}</string>
-									<reference key="NSSuperview" ref="872192110"/>
 								</object>
 								<string key="NSLabel">Over Time</string>
 								<reference key="NSColor" ref="660767409"/>
@@ -3593,14 +3592,14 @@
 								<reference key="NSTabView" ref="872192110"/>
 							</object>
 						</object>
-						<reference key="NSSelectedTabViewItem" ref="129401384"/>
+						<reference key="NSSelectedTabViewItem" ref="760957740"/>
 						<reference key="NSFont" ref="23334817"/>
 						<int key="NSTvFlags">0</int>
 						<bool key="NSAllowTruncatedLabels">YES</bool>
 						<bool key="NSDrawsBackground">YES</bool>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="882678032"/>
+							<reference ref="915138049"/>
 						</object>
 					</object>
 					<object class="NSBox" id="658277095">
@@ -9154,7 +9153,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{392, 19}, {920, 606}}</string>
+					<string>{{285, 166}, {920, 606}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -9203,7 +9202,7 @@
 					<integer value="0"/>
 					<integer value="0"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<integer value="5"/>
+					<integer value="0"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
