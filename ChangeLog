@@ -9,6 +9,7 @@ Version 0.82
 * Date labels for Overview Chart are now drawn centred
 * Changed the way Currency number interpretation is done to try to alleviate problems encountered
   using different input locales
+* Improve compatibility with OS X 10.5 for certain machines
 
 Version 0.81
 ------------
