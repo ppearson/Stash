@@ -131,7 +131,7 @@
 
 - (void)viewToolbarClicked:(id)sender;
 
-- (NSString*)convertUSNegAmount:(NSString*)string;
+- (void)setDocumentModified:(BOOL)modified;
 
 
 // Payees

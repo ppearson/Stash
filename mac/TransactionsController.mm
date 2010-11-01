@@ -104,6 +104,11 @@ static TransactionsController *gSharedInterface = nil;
 	[super dealloc];
 }
 
+- (void)setMainController:(StashAppDelegate *)controller
+{
+	fMainController = controller;
+}
+
 - (void)awakeFromNib
 {
 	m_bEditing = false;	
@@ -497,7 +502,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	[window makeFirstResponder:transactionsPayee];
 	
-	m_pDocument->setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)DeleteTransaction:(id)sender
@@ -552,7 +557,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		[transactionsTableView deselectAll:self];
 		
-		m_pDocument->setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 	}	
 }
 
@@ -591,7 +596,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		[transactionsTableView reloadData];
 		
-		m_pDocument->setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 		
 		[transactionsTableView expandItem:item];
 		
@@ -715,7 +720,7 @@ static TransactionsController *gSharedInterface = nil;
 	[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:nNewRow] byExtendingSelection:NO];
 	[transactionsTableView scrollRowToVisible:nNewRow];
 	
-	m_pDocument->setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)RefreshView:(id)sender
@@ -1179,7 +1184,7 @@ static TransactionsController *gSharedInterface = nil;
 		}		
 	}
 	
-	m_pDocument->setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 // Transactions OutlineView Start
@@ -1258,7 +1263,7 @@ static TransactionsController *gSharedInterface = nil;
 				// need to update the balance in the IndexBar
 				[self updateBalancesFromTransactionIndex:nTrans - m_nTransactionOffset];
 				
-				m_pDocument->setUnsavedChanges(true);
+				[self setDocumentModified:TRUE];
 			}
 		}
 	}
@@ -1414,35 +1419,6 @@ NSDate *convertToNSDate(Date &date)
 	}
 	
 	return string;	
-}
-
-- (NSString*)convertUSNegAmount:(NSString*)string
-{
-	NSRange r;
-	
-	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
-	
-	if (r.length == 0)
-	{
-		return string;
-	}
-	
-	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"("]];
-	
-	if (r.length != 0)
-	{
-		return string;
-	}
-	
-	NSMutableString *mutableString = [NSMutableString stringWithString:string];
-	
-	r = [mutableString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
-	
-	[mutableString deleteCharactersInRange:r];
-	
-	NSString *newString = [NSString stringWithFormat:@"(%@)", mutableString];
-	
-	return newString;	
 }
 
 // update the balances of all transactions from the given index down
@@ -1690,7 +1666,7 @@ NSDate *convertToNSDate(Date &date)
 		[transactionsCategory addItemWithObjectValue:sCategory];
 	}
 	
-	m_pDocument->setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	if (m_pAccount && (m_pAccount == pFromAccount || m_pAccount == pToAccount))
 	{
@@ -1775,4 +1751,10 @@ NSDate *convertToNSDate(Date &date)
 		
 	return YES;
 }
+
+- (void)setDocumentModified:(BOOL)modified
+{
+	[fMainController setDocumentModified:modified];
+}
+
 @end

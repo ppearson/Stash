@@ -29,6 +29,8 @@
 #import "MakeTransferController.h"
 #import "IndexBar.h"
 
+@class StashAppDelegate;
+
 enum TransactionsToShow
 {
 	RECENT,
@@ -38,6 +40,8 @@ enum TransactionsToShow
 
 @interface TransactionsController : NSViewController
 {
+	StashAppDelegate *fMainController;
+	
 	NSWindow *window;
 	IBOutlet IndexBar *indexBar;
 	
@@ -88,6 +92,8 @@ enum TransactionsToShow
 
 -(id)init;
 
+- (void)setMainController:(StashAppDelegate *)controller;
+
 - (void)showTransactionsForAccount:(Account*)account;
 
 - (void)buildTransactionsTree;
@@ -97,7 +103,6 @@ enum TransactionsToShow
 - (IBAction)SplitTransaction:(id)sender;
 
 - (NSString*)transactionTypeToString:(TransactionType)type;
-- (NSString*)convertUSNegAmount:(NSString*)string;
 
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;
@@ -128,5 +133,6 @@ NSDate *convertToNSDate(Date &date);
 - (void)refreshLibraryItems;
 - (void)makeTransferItem:(MakeTransferController *)makeTransferCont;
 
+- (void)setDocumentModified:(BOOL)modified;
 
 @end

@@ -30,8 +30,12 @@
 #import "AreaChartView.h"
 #import "OverviewChartView.h"
 
+@class StashAppDelegate;
+
 @interface GraphController : NSViewController
 {
+	StashAppDelegate *fMainController;
+	
 	IBOutlet NSSegmentedControl* viewingPeriodSegmentControl;
 	IBOutlet NSTabView *graphViewType;
 	IBOutlet PieChartView *pieChartView;
@@ -61,6 +65,8 @@
 
 -(id)init;
 
+- (void)setMainController:(StashAppDelegate *)controller;
+
 - (void)showGraph:(Graph*)graph;
 
 - (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers;
@@ -80,5 +86,7 @@ NSDate *convertToNSDate(MonthYear &date);
 - (void)handleGraphSettingsUpdate:(NSNotification *)note;
 
 - (void)cleanUp;
+
+- (void)setDocumentModified:(BOOL)modified;
 
 @end

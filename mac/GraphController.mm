@@ -76,10 +76,6 @@ static GraphController *gSharedInterface = nil;
 - (id)init
 {
 	self = [super init];
-	if (self)
-	{
-		
-	}
 	
 	return self;
 }
@@ -87,6 +83,11 @@ static GraphController *gSharedInterface = nil;
 - (void)dealloc
 {	
 	[super dealloc];
+}
+
+- (void)setMainController:(StashAppDelegate *)controller
+{
+	fMainController = controller;
 }
 
 - (void)awakeFromNib
@@ -730,7 +731,7 @@ static GraphController *gSharedInterface = nil;
 		aItems.insert(strItem);
 	}
 	
-	m_pDocument->setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[self redrawGraph:self];
 }
@@ -808,7 +809,12 @@ NSDate *convertToNSDate(MonthYear &date)
 
 - (void)handleGraphSettingsUpdate:(NSNotification *)note
 {
-	[self redrawGraph:self];	
+	[self redrawGraph:self];
+}
+
+- (void)setDocumentModified:(BOOL)modified
+{
+	[fMainController setDocumentModified:modified];
 }
 
 @end

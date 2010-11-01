@@ -195,6 +195,10 @@ toolbarViewGroupTag;
 	TransactionsController* pTC = [TransactionsController sharedInterface];
 	[pTC setWindow:[self window]];
 	[pTC setIndexBar:indexBar];
+	[pTC setMainController:self];
+	
+	GraphController* pGC = [GraphController sharedInterface];
+	[pGC setMainController:self];
 	
 	// Load the splitter positions
 	[indexBarSplitView loadLayoutFromDefault:@"indexSplitter"];
@@ -549,7 +553,7 @@ toolbarViewGroupTag;
 	
 	m_pAccount->setName(strName);
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[indexBar reloadData];
 	[indexBar setNeedsDisplay:YES];
@@ -570,7 +574,7 @@ toolbarViewGroupTag;
 	
 	pGraph->setName(strName);
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[indexBar reloadData];
 }
@@ -778,7 +782,7 @@ toolbarViewGroupTag;
 	
 	[addAccountController release];
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[indexBar reloadData];
 	
@@ -837,7 +841,7 @@ toolbarViewGroupTag;
 	oAccount.setNumber(strNumber);
 	oAccount.setNote(strNote);
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[self buildIndexTree];
 }
@@ -863,7 +867,7 @@ toolbarViewGroupTag;
 		
 		m_Document.disabledScheduledTransactionsForAccount(nAccount);
 		
-		m_Document.setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 		
 		[self buildIndexTree];
 	}
@@ -1062,7 +1066,7 @@ toolbarViewGroupTag;
 	
 	[scheduledTransactionsTableView reloadData];
 	
-	m_Document.setUnsavedChanges(true);	
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)deleteMisc:(id)sender
@@ -1085,7 +1089,7 @@ toolbarViewGroupTag;
 		
 		m_Document.deleteGraph(nGraph);
 		
-		m_Document.setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 		
 		[self buildIndexTree];
 	}	
@@ -1155,7 +1159,7 @@ toolbarViewGroupTag;
 		
 		[payeesTableView reloadData];
 		
-		m_Document.setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 	}
 }
 
@@ -1186,7 +1190,7 @@ toolbarViewGroupTag;
 		
 		[categoriesTableView reloadData];
 		
-		m_Document.setUnsavedChanges(true);
+		[self setDocumentModified:TRUE];
 	}
 }
 
@@ -1245,7 +1249,7 @@ toolbarViewGroupTag;
 	
 	[window makeFirstResponder:scheduledPayee];
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)DeleteScheduledTransaction:(id)sender
@@ -1259,7 +1263,7 @@ toolbarViewGroupTag;
 	}
 	
 	[scheduledTransactionsTableView reloadData];
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)AddGraph:(id)sender
@@ -1293,7 +1297,7 @@ toolbarViewGroupTag;
 	
 	[indexBar addItem:@"graphs" key:sGraphKey title:sNewGraph item:nGraphNum action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 	
 	[indexBar reloadData];
 	
@@ -1382,7 +1386,7 @@ toolbarViewGroupTag;
 				oSchedTrans.setEnabled(false);
 			}
 			
-			m_Document.setUnsavedChanges(true);
+			[self setDocumentModified:TRUE];
 		}			
 	}
 	else if (aTableView == payeesTableView)
@@ -1401,7 +1405,7 @@ toolbarViewGroupTag;
 			
 			[payeesTableView reloadData];
 			
-			m_Document.setUnsavedChanges(true);
+			[self setDocumentModified:TRUE];
 		}
 	}
 	else if (aTableView == categoriesTableView)
@@ -1420,7 +1424,7 @@ toolbarViewGroupTag;
 			
 			[categoriesTableView reloadData];
 			
-			m_Document.setUnsavedChanges(true);
+			[self setDocumentModified:TRUE];
 		}
 	}
 }
@@ -1455,7 +1459,7 @@ toolbarViewGroupTag;
 		}
     }
 	
-	m_Document.setUnsavedChanges(false);
+	[self setDocumentModified:FALSE];
 	m_DocumentFile = "";
 	
 	m_pAccount = 0;
@@ -1524,7 +1528,7 @@ toolbarViewGroupTag;
 		[self setWindowTitleWithDocName:fileToOpen];
 		
 		m_DocumentFile = strFile;
-		m_Document.setUnsavedChanges(false);
+		[self setDocumentModified:FALSE];
 		
 		m_pAccount = 0;
 		
@@ -1545,7 +1549,7 @@ toolbarViewGroupTag;
 	{
 		if ([self SaveFileTo:m_DocumentFile] == true)
 		{
-			m_Document.setUnsavedChanges(false);
+			[self setDocumentModified:FALSE];
 		}
 	}
 }
@@ -1583,7 +1587,7 @@ toolbarViewGroupTag;
 			[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:fileToSave]];
 			
 			m_DocumentFile = strFile;
-			m_Document.setUnsavedChanges(false);
+			[self setDocumentModified:FALSE];
 		}
 	}
 }
@@ -1715,7 +1719,7 @@ toolbarViewGroupTag;
 	
 	schedTrans.AdvanceNextDate();
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (void)SkipDueScheduledTransaction:(int)index
@@ -1724,7 +1728,7 @@ toolbarViewGroupTag;
 	
 	schedTrans.AdvanceNextDate();
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
 }
 
 - (IBAction)ImportQIF:(id)sender
@@ -1787,6 +1791,8 @@ toolbarViewGroupTag;
 	{
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC buildTransactionsTree];
+		
+		[self setDocumentModified:TRUE];
 	}
 	
 	// update the balance in the IndexBar
@@ -1991,7 +1997,8 @@ toolbarViewGroupTag;
 		}		
 	}
 	
-	m_Document.setUnsavedChanges(true);
+	[self setDocumentModified:TRUE];
+	
 	[self buildIndexTree];
 	
 	if (selectedKey != nil)
@@ -2150,7 +2157,6 @@ toolbarViewGroupTag;
         return YES;
     }
 	
-	
 	if (action == @selector(MakeTransfer:))
 	{
 		if (m_Document.getAccountCount() < 2)
@@ -2265,7 +2271,7 @@ toolbarViewGroupTag;
 	[[NSDocumentController sharedDocumentController] noteNewRecentDocumentURL:[NSURL fileURLWithPath:filename]];
 	
 	m_DocumentFile = strFile;
-	m_Document.setUnsavedChanges(false);
+	[self setDocumentModified:FALSE];
 	
 	[self buildIndexTree];
 	[self refreshLibraryItems];
@@ -2285,34 +2291,10 @@ toolbarViewGroupTag;
 	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://stash.lighthouseapp.com/"]];
 }
 
-- (NSString*)convertUSNegAmount:(NSString*)string
+- (void)setDocumentModified:(BOOL)modified
 {
-	NSRange r;
-	
-	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
-	
-	if (r.length == 0)
-	{
-		return string;
-	}
-	
-	r = [string rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"("]];
-	
-	if (r.length != 0)
-	{
-		return string;
-	}
-	
-	NSMutableString *mutableString = [NSMutableString stringWithString:string];
-	
-	r = [mutableString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"]];
-	
-	[mutableString deleteCharactersInRange:r];
-	
-	NSString *newString = [NSString stringWithFormat:@"(%@)", mutableString];
-	
-	return newString;	
+	m_Document.setUnsavedChanges(modified);
+	[[self window] setDocumentEdited:modified];
 }
-
 
 @end
