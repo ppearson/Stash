@@ -2297,4 +2297,14 @@ toolbarViewGroupTag;
 	[[self window] setDocumentEdited:modified];
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)application
+{
+    return YES;
+}
+
+- (void)windowWillClose:(NSNotification *)aNotification
+{
+	[NSApp terminate:self];
+}
+
 @end
