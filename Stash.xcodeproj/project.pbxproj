@@ -230,9 +230,9 @@
 			children = (
 				D04734701269F4E1002E5A71 /* ValueFormatter.h */,
 				D04734711269F4E1002E5A71 /* ValueFormatter.mm */,
-				D082ACEA124E2B8600C525E1 /* TransactionsController.h */,
 				D09FE555124EBCAC00F68813 /* GraphController.h */,
 				D09FE556124EBCAC00F68813 /* GraphController.mm */,
+				D082ACEA124E2B8600C525E1 /* TransactionsController.h */,
 				D082ACEB124E2B8600C525E1 /* TransactionsController.mm */,
 				D082ACEC124E2B8600C525E1 /* PieChartView.mm */,
 				D082ACED124E2B8600C525E1 /* AreaChartView.mm */,

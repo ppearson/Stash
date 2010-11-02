@@ -1000,20 +1000,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	fixed fAmount = [valueFormatter fixedFromString:sTransactionAmount];
 	
-	// reformat the number again, in case an abbreviation was used
-	NSString *sAmount = [[valueFormatter currencyStringFromFixed:fAmount] retain];
-	
-	int nType = [transactionsType indexOfSelectedItem];
-	TransactionType eType = static_cast<TransactionType>(nType);
-	
-	NSString *sType = [self transactionTypeToString:eType];
-	
-	bool bCleared = false;
-	
-	if ([transactionsCleared state] == NSOnState)
-		bCleared = true;
-	
-	int nTrans = [m_SelectedTransaction transaction];
+	unsigned int nTrans = [m_SelectedTransaction transaction];
 	int nSplit = [m_SelectedTransaction splitTransaction];
 	
 	Transaction *trans = NULL;
@@ -1024,6 +1011,49 @@ static TransactionsController *gSharedInterface = nil;
 	
 	if (nSplit >= 0)
 		split = &trans->getSplit(nSplit);
+	
+	int nType = [transactionsType indexOfSelectedItem];
+	TransactionType eType = static_cast<TransactionType>(nType);
+	
+	NSString *sType = [self transactionTypeToString:eType];
+	
+	// if it's a Normal transaction
+	if (trans && !split && nSplit != -2)
+	{
+		// if type is a negative type, make sure amount is negative
+		bool bNegType = false;
+		
+		switch (eType)
+		{
+			case Withdrawal:
+			case PointOfSale:
+			case Debit:
+			case ATM:
+				bNegType = true;
+				break;
+			default:
+				break;
+		}
+		
+		if (bNegType)
+			fAmount.setNegative();
+	}
+	else // split
+	{
+		// if its Parent Transaction amount is Negative, make sure its amount is negative
+		
+		fixed transactionAmount = trans->getAmount();
+		if (!transactionAmount.IsPositive())
+			fAmount.setNegative();
+	}
+	
+	// reformat the number again, in case an abbreviation was used, or we've made it negative
+	NSString *sAmount = [[valueFormatter currencyStringFromFixed:fAmount] retain];
+	
+	bool bCleared = false;
+	
+	if ([transactionsCleared state] == NSOnState)
+		bCleared = true;
 	
 	BOOL bIsAmountNeg = NO;
 	
@@ -1036,7 +1066,10 @@ static TransactionsController *gSharedInterface = nil;
 		
 	}
 	
-	if (trans && !split && nSplit != -2)
+	bool bBlankSplitAdded = false;
+	TransactionItem *newSplit = NULL;
+	
+	if (trans && !split && nSplit != -2) // normal transactions
 	{
 		trans->setDate(date1);
 		trans->setPayee(strPayee);
@@ -1057,31 +1090,11 @@ static TransactionsController *gSharedInterface = nil;
 			bIsAmountNeg = YES;
 		
 		[m_SelectedTransaction setValue:sDate forKey:@"Date"];
-		[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
-		[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
-		[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
 		[m_SelectedTransaction setValue:sType forKey:@"Type"];
-		[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-		[m_SelectedTransaction setIntValue:bCleared forKey:@"Cleared"];
-		[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
-		
-		if (!strPayee.empty() && !pDocument->doesPayeeExist(strPayee))
-		{
-			pDocument->addPayee(strPayee);
-			[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
-		}
-		
-		if (!strCategory.empty() && !pDocument->doesCategoryExist(strCategory))
-		{
-			pDocument->addCategory(strCategory);
-			[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
-		}
-		
-		[transactionsTableView reloadData];
 	}
 	else
 	{
-		if (nSplit != -2)
+		if (nSplit != -2) // was an existing Split Transaction
 		{
 			split->setPayee(strPayee);
 			split->setDescription(strDesc);
@@ -1090,27 +1103,6 @@ static TransactionsController *gSharedInterface = nil;
 			
 			if (bShowNegAmountsInRed && !fAmount.IsPositive())
 				bIsAmountNeg = YES;
-			
-			[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
-			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
-			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
-			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-			[m_SelectedTransaction setIntValue:bCleared forKey:@"Cleared"];
-			[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
-			
-			if (!strPayee.empty() && !pDocument->doesPayeeExist(strPayee))
-			{
-				pDocument->addPayee(strPayee);
-				[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
-			}
-			
-			if (!strCategory.empty() && !pDocument->doesCategoryExist(strCategory))
-			{
-				pDocument->addCategory(strCategory);
-				[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
-			}
-			
-			[transactionsTableView reloadData];
 		}
 		else if (nSplit == -2) // Dummy value, so convert to a real split
 		{
@@ -1124,35 +1116,17 @@ static TransactionsController *gSharedInterface = nil;
 			int nSplitsNumber = trans->getSplitCount() - 1;
 			[m_SelectedTransaction setSplitTransaction:nSplitsNumber];
 			[m_SelectedTransaction setIntValue:nSplitsNumber forKey:@"Split"];
-			[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
-			[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
-			[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
-			[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
-			[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
-			
-			if (!strPayee.empty() && !pDocument->doesPayeeExist(strPayee))
-			{
-				pDocument->addPayee(strPayee);
-				[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
-			}
-			
-			if (!strCategory.empty() && !pDocument->doesCategoryExist(strCategory))
-			{
-				pDocument->addCategory(strCategory);
-				[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
-			}
 			
 			fixed splitValue = trans->getSplitTotal();
 			
 			fixed diff = transValue -= splitValue;
 			
 			// Then add a new dummy value if needed
-			
 			if (!diff.IsZero())
 			{
 				TransactionItem *transIndex = [m_aTransactionItems objectAtIndex:nTrans - m_nTransactionOffset];
 				
-				TransactionItem *newSplit = [[TransactionItem alloc] init];
+				newSplit = [[TransactionItem alloc] init];
 				
 				NSString *sSAmount = [[valueFormatter currencyStringFromFixed:diff] retain];
 				
@@ -1168,23 +1142,43 @@ static TransactionsController *gSharedInterface = nil;
 				
 				[transIndex addChild:newSplit];
 				
-				[transactionsTableView reloadData];
-				
-				NSInteger row = [transactionsTableView rowForItem:newSplit];
-				
-				[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
-				[transactionsTableView scrollRowToVisible:row];
-				
-				[window makeFirstResponder:transactionsPayee];
-			}
-			else
-			{
-				[transactionsTableView reloadData];
+				bBlankSplitAdded = true;
 			}
 		}		
 	}
 	
+	[m_SelectedTransaction setValue:[transactionsPayee stringValue] forKey:@"Payee"];
+	[m_SelectedTransaction setValue:[transactionsDescription stringValue] forKey:@"Description"];
+	[m_SelectedTransaction setValue:[transactionsCategory stringValue] forKey:@"Category"];
+	[m_SelectedTransaction setIntValue:bCleared forKey:@"Cleared"];
+	[m_SelectedTransaction setValue:sAmount forKey:@"Amount"];
+	[m_SelectedTransaction setBoolValue:bIsAmountNeg forKey:@"AmoNeg"];
+	
+	if (!strPayee.empty() && !pDocument->doesPayeeExist(strPayee))
+	{
+		pDocument->addPayee(strPayee);
+		[transactionsPayee addItemWithObjectValue:[transactionsPayee stringValue]];
+	}
+	
+	if (!strCategory.empty() && !pDocument->doesCategoryExist(strCategory))
+	{
+		pDocument->addCategory(strCategory);
+		[transactionsCategory addItemWithObjectValue:[transactionsCategory stringValue]];
+	}
+	
+	[transactionsTableView reloadData];
+	
 	[self setDocumentModified:TRUE];
+	
+	if (bBlankSplitAdded)
+	{
+		unsigned int newSplitIndex = [transactionsTableView rowForItem:newSplit];
+		
+		[transactionsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newSplitIndex] byExtendingSelection:NO];
+		[transactionsTableView scrollRowToVisible:newSplitIndex];
+		
+		[window makeFirstResponder:transactionsPayee];
+	}
 }
 
 // Transactions OutlineView Start
