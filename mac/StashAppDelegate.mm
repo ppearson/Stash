@@ -1288,10 +1288,10 @@ toolbarViewGroupTag;
 	Date currentDate;
 	currentDate.Now();
 	
-	newGraph.setStartDate(currentDate);
-	
-	currentDate.setDay(1);
 	newGraph.setEndDate(currentDate);
+	
+	currentDate.DecrementMonths(1);
+	newGraph.setStartDate(currentDate);
 	
 	int nGraphNum = m_Document.addGraph(newGraph);
 	
