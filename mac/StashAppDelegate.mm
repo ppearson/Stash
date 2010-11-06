@@ -124,10 +124,12 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralOpenLastFile"];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"GeneralCreateBackupOnSave"];
 	
+	[defaultValues setObject:[NSNumber numberWithInt:30] forKey:@"TransactionsRecentDuration"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsScrollToLatest"];
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsNegAmountsRed"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];
-	[defaultValues setObject:[NSNumber numberWithInt:30] forKey:@"TransactionsRecentDuration"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForCategories"];
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForSplit"];	
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSelectionType"];

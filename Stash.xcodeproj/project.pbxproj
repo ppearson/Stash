@@ -108,7 +108,7 @@
 		D0135D0A12761A8F0000C529 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = mac/Localizable.strings; sourceTree = "<group>"; };
 		D0135D0B12761A8F0000C529 /* MainMenu.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = MainMenu.strings; path = mac/MainMenu.strings; sourceTree = "<group>"; };
 		D0135D0C12761A8F0000C529 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = mac/MainMenu.xib; sourceTree = "<group>"; };
-		D0135D0D12761A8F0000C529 /* MakeTransfer.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = MakeTransfer.strings; path = mac/MakeTransfer.strings; sourceTree = "<group>"; };
+		D0135D0D12761A8F0000C529 /* MakeTransfer.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = MakeTransfer.strings; path = mac/MakeTransfer.strings; sourceTree = "<group>"; };
 		D0135D0E12761A8F0000C529 /* MakeTransfer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MakeTransfer.xib; path = mac/MakeTransfer.xib; sourceTree = "<group>"; };
 		D0135D0F12761A8F0000C529 /* Preferences.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Preferences.strings; path = mac/Preferences.strings; sourceTree = "<group>"; };
 		D0135D1012761A8F0000C529 /* Preferences.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Preferences.xib; path = mac/Preferences.xib; sourceTree = "<group>"; };

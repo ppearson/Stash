@@ -1020,31 +1020,39 @@ static TransactionsController *gSharedInterface = nil;
 	// if it's a Normal transaction
 	if (trans && !split && nSplit != -2)
 	{
-		// if type is a negative type, make sure amount is negative
-		bool bNegType = false;
-		
-		switch (eType)
+		BOOL bEnforceNegativeCategories = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsEnforceNegForCategories"];
+		if (bEnforceNegativeCategories)
 		{
-			case Withdrawal:
-			case PointOfSale:
-			case Debit:
-			case ATM:
-				bNegType = true;
-				break;
-			default:
-				break;
+			// if type is a negative type, make sure amount is negative
+			bool bNegType = false;
+			
+			switch (eType)
+			{
+				case Withdrawal:
+				case PointOfSale:
+				case Debit:
+				case ATM:
+					bNegType = true;
+					break;
+				default:
+					break;
+			}
+			
+			if (bNegType)
+				fAmount.setNegative();
 		}
-		
-		if (bNegType)
-			fAmount.setNegative();
 	}
 	else // split
 	{
-		// if its Parent Transaction amount is Negative, make sure its amount is negative
-		
-		fixed transactionAmount = trans->getAmount();
-		if (!transactionAmount.IsPositive())
-			fAmount.setNegative();
+		BOOL bEnforceNegativeSplits = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsEnforceNegForSplit"];
+		if (bEnforceNegativeSplits)
+		{
+			// if its Parent Transaction amount is Negative, make sure its amount is negative
+			
+			fixed transactionAmount = trans->getAmount();
+			if (!transactionAmount.IsPositive())
+				fAmount.setNegative();
+		}
 	}
 	
 	// reformat the number again, in case an abbreviation was used, or we've made it negative
