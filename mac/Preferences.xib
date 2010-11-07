@@ -59,11 +59,6 @@
 				<bool key="NSAppliesImmediately">YES</bool>
 			</object>
 			<object class="NSUserDefaultsController" id="526319124">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>TransactionsEnforceNegForCategories</string>
-					<string>TransactionsEnforceNegForSplit</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 			<object class="NSCustomView" id="1018902850">
@@ -164,7 +159,7 @@
 						<object class="NSButtonCell" key="NSCell" id="123432164">
 							<int key="NSCellFlags">-2080244224</int>
 							<int key="NSCellFlags2">0</int>
-							<string key="NSContents">Enforce negative amounts of Transactions for appropriate categories</string>
+							<string key="NSContents">Enforce negative amounts of Transactions for appropriate types</string>
 							<reference key="NSSupport" ref="278382982"/>
 							<reference key="NSControlView" ref="1040611896"/>
 							<int key="NSButtonFlags">1211912703</int>

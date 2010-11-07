@@ -4,8 +4,8 @@ Version 0.83
 * A dot is now shown in the red title bar circle when the document has unsaved changes
 * After importing QIF transactions, the document is now marked as unsaved
 * Closing Stash's window now quits Stash
-* Added option to enforce negative amounts for certain Transaction categories
-* Added option to enforce negative amounts for Split Transactions if the parent Transaction
+* Added Preference to enforce negative amounts for certain Transaction types
+* Added Preference to enforce negative amounts for Split Transactions if the parent Transaction
   has a negative amount
 
 Version 0.82
