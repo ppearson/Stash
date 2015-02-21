@@ -1,5 +1,4 @@
-Stash
------
+#Stash
 
 Stash is a fast, simple personal finance application.
 It is currently only for Mac OS X, with a native Cocoa interface,
