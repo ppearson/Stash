@@ -106,8 +106,8 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if (expense && (*it).getAmount().IsPositive() ||
-			!expense && !(*it).getAmount().IsPositive())
+		if ((expense && (*it).getAmount().IsPositive()) ||
+			(!expense && !(*it).getAmount().IsPositive()))
 		{
 			continue;
 		}
@@ -206,7 +206,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 		if ((*it).getDate() < criteria.m_startDate || (*it).getDate() > criteria.m_endDate)
 			continue;
 		
-		if (expense && (*it).getAmount().IsPositive() || !expense && !(*it).getAmount().IsPositive())
+		if ((expense && (*it).getAmount().IsPositive()) || (!expense && !(*it).getAmount().IsPositive()))
 		{
 			continue;
 		}

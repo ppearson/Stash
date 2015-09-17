@@ -32,7 +32,7 @@
 
 @class StashAppDelegate;
 
-@interface GraphController : NSViewController
+@interface GraphController : NSViewController <NSTableViewDelegate>
 {
 	StashAppDelegate *fMainController;
 	

@@ -23,7 +23,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface SIndexSplitView : NSSplitView
+@interface SIndexSplitView : NSSplitView <NSSplitViewDelegate>
 {
 	id indexSubView;
 	id contentSubView;

@@ -38,7 +38,7 @@ enum TransactionsToShow
 	ALL
 };
 
-@interface TransactionsController : NSViewController
+@interface TransactionsController : NSViewController <NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
 	StashAppDelegate *fMainController;
 	

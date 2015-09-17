@@ -23,7 +23,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface PreferencesController : NSWindowController
+@interface PreferencesController : NSWindowController <NSToolbarDelegate>
 {
 	NSUserDefaults *uDefaults;
     BOOL bHasLoaded;

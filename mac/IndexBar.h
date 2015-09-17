@@ -22,7 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface IndexBar : NSOutlineView
+@interface IndexBar : NSOutlineView <NSOutlineViewDataSource, NSOutlineViewDelegate>
 {
 	NSMutableArray *m_aSections;
 	NSMutableDictionary *m_dItems;

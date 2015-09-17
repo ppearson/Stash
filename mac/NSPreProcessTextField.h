@@ -22,7 +22,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSPreProcessTextField : NSTextField
+@interface NSPreProcessTextField : NSTextField <NSTextFieldDelegate>
 {
 
 }

@@ -52,4 +52,4 @@ private:
 	fixed m_Amount;
 
 };
-#endif SPLITTRANSACTION_H
+#endif // SPLITTRANSACTION_H

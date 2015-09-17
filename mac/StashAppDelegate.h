@@ -99,6 +99,8 @@
 	
 	NSString *m_sPendingOpenFile;
 	bool m_HasFinishedLoading;
+    
+    
 }
 
 @property (assign) int ShowTransactionsViewType;
