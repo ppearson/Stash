@@ -791,6 +791,11 @@ toolbarViewGroupTag;
 	if (nAccountNum == 0) // if first account added, select it
 	{
 		[indexBar selectItem:sAccountKey];
+        
+        // update data structures
+        m_pAccount = m_Document.getAccountPtr(0);
+		TransactionsController* pTC = [TransactionsController sharedInterface];
+		[pTC showTransactionsForAccount:m_pAccount];
 	}
 	else // otherwise, we need to update m_pAccount as that will have become invalidated
 	{
@@ -1473,7 +1478,13 @@ toolbarViewGroupTag;
 	[self buildIndexTree];
 
 	[self buildSchedTransList];
+    
+    // calling this don't do anything, as we don't have an account
 	[self refreshLibraryItems];
+    
+    // so has a hack to clear the transactions list, let's do this:
+    TransactionsController* pTC = [TransactionsController sharedInterface];
+	[pTC showTransactionsForAccount:Nil];
 }
 
 - (IBAction)OpenFile:(id)sender

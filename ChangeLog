@@ -1,3 +1,11 @@
+Version 0.84
+------------
+
+* Updated code to build against OS X SDK for 10.6 and fixed a few compiler warnings
+* Fixed bug which meant that creating a new document didn't clear the transactions view
+* Fixed bug which meant that creating a new transaction after creating a new account in a
+  new document wasn't possible without selecting the new account manually first
+
 Version 0.83
 ------------
 
