@@ -138,6 +138,8 @@ static TransactionsController *gSharedInterface = nil;
 	NSMutableArray *transactionColumnOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnOrder"];
 	
 	[[transactionsTableView headerView] setMenu:transactionsTableHeaderMenu];
+    
+//    [transactionsTableView setFont:<#(NSFont * _Nullable)#>]
 	
 	int nMenuIndex = 0;
 	for (NSTableColumn *tc in [[transactionsTableView tableColumns] reverseObjectEnumerator])
@@ -678,7 +680,7 @@ static TransactionsController *gSharedInterface = nil;
 
 - (void)SwapTransactions:(unsigned int)from to:(unsigned int)to
 {
-	if (from < 0 || to < 0)
+	if (from == -1u || to == -1u)
 		return;
 	
 	unsigned int top = m_pAccount->getTransactionCount();
@@ -1006,7 +1008,7 @@ static TransactionsController *gSharedInterface = nil;
 	Transaction *trans = NULL;
 	SplitTransaction *split = NULL;
 	
-	if (nTrans >= 0)
+	if (nTrans != -1)
 		trans = &m_pAccount->getTransaction(nTrans);
 	
 	if (nSplit >= 0)

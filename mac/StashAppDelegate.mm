@@ -163,7 +163,7 @@ toolbarViewGroupTag;
 									 [NSNumber numberWithFloat:83], @"Balance",
 									 nil];
 	
-	NSDictionary *transactionColumnOrder = [NSArray arrayWithObjects:@"Cleared", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
+	NSArray *transactionColumnOrder = [NSArray arrayWithObjects:@"Cleared", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
 	
 	[defaultValues setObject:visibleTransactionColumns forKey:@"VisibleTransactionColumns"];
 	[defaultValues setObject:transactionColumnSizes forKey:@"TransactionColumnSizes"];

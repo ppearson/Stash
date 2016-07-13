@@ -64,6 +64,10 @@
     [toolbar release];
     
     [self setPrefView:nil];
+    
+    [fTransactionClearedStatus removeAllItems];
+    [fTransactionClearedStatus addItemWithTitle:@"Uncleared"];
+    [fTransactionClearedStatus addItemWithTitle:@"Cleared"];
 	
 	[fPieSegmentSort removeAllItems];
 	[fPieSegmentSort addItemWithTitle:NSLocalizedString(@"Size", "Preferences -> Pie Chart -> Sort -> Size")];

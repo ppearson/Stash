@@ -1,4 +1,4 @@
-/* 
+	/* 
  * Stash:  A Personal Finance app for OS X.
  * Copyright (C) 2010 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root

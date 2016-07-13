@@ -33,6 +33,8 @@
 	// General
 	
 	// Transactons
+    
+   	IBOutlet NSPopUpButton *fTransactionClearedStatus;
 	
 	// Pie Chart
 	

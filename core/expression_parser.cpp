@@ -26,6 +26,7 @@
 #include <string>
 #include <queue>
 #include <algorithm>
+#include <stdlib.h>
 
 #include "expression_parser.h"
 

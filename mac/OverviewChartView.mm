@@ -52,7 +52,7 @@
 	[[NSColor blackColor] set];
 	[NSBezierPath strokeRect:bounds];
 	
-	NSMutableDictionary *attributes1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12], NSFontAttributeName, nil];
+	NSDictionary *attributes1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12], NSFontAttributeName, nil];
 	
 	int nNumXValues = [m_aData count];
 	

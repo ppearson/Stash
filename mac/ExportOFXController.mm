@@ -22,6 +22,8 @@
 
 #import "ExportOFXController.h"
 
+#import "StashAppDelegate.h"
+
 @implementation ExportOFXController
 
 - (id)initWithAccountData:(NSMutableArray *)availableAccounts file:(std::string)path
