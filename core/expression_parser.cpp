@@ -23,6 +23,8 @@
 // very simple maths expression parser
 // only copes with + and -
 
+#include <stdlib.h>
+
 #include <string>
 #include <queue>
 #include <algorithm>

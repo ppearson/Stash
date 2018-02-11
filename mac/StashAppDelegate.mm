@@ -163,7 +163,7 @@ toolbarViewGroupTag;
 									 [NSNumber numberWithFloat:83], @"Balance",
 									 nil];
 	
-	NSDictionary *transactionColumnOrder = [NSArray arrayWithObjects:@"Cleared", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
+	NSArray *transactionColumnOrder = [NSArray arrayWithObjects:@"Cleared", @"Date", @"Payee", @"Category", @"Description", @"Amount", @"Balance", nil];
 	
 	[defaultValues setObject:visibleTransactionColumns forKey:@"VisibleTransactionColumns"];
 	[defaultValues setObject:transactionColumnSizes forKey:@"TransactionColumnSizes"];
@@ -684,8 +684,15 @@ toolbarViewGroupTag;
 		[item setValue:sSDate forKey:@"nextdate"];
 		[item setValue:sFrequency forKey:@"frequency"];
 		[item setValue:sAccount forKey:@"account"];
+        
+        [sSCategory release];
+        [sSAmount release];
+        [sSDate release];
+        [sFrequency release];
 		
 		[m_aScheduledTransactions addObject:item];
+        
+        [item release];
 	}
 	
 	[dateFormatter release];
@@ -1697,6 +1704,8 @@ toolbarViewGroupTag;
 				
 				[array addObject:item];
 			}
+            
+            [item release];
 		}
 	}
 	

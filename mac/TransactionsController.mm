@@ -678,9 +678,6 @@ static TransactionsController *gSharedInterface = nil;
 
 - (void)SwapTransactions:(unsigned int)from to:(unsigned int)to
 {
-	if (from < 0 || to < 0)
-		return;
-	
 	unsigned int top = m_pAccount->getTransactionCount();
 	
 	if (from >= top || to >= top)
@@ -789,7 +786,13 @@ static TransactionsController *gSharedInterface = nil;
 	
 	[newItem setIntValue:index forKey:@"Transaction"];
 	
-	return newItem;
+    [sPayee release];
+    [sDescription release];
+    [sCategory release];
+    [sType release];
+    [sBalance release];
+    
+    return newItem;
 }
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
@@ -1000,7 +1003,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	fixed fAmount = [valueFormatter fixedFromString:sTransactionAmount];
 	
-	unsigned int nTrans = [m_SelectedTransaction transaction];
+	int nTrans = [m_SelectedTransaction transaction];
 	int nSplit = [m_SelectedTransaction splitTransaction];
 	
 	Transaction *trans = NULL;
@@ -1491,6 +1494,8 @@ NSDate *convertToNSDate(Date &date)
 		
 		[indexBar reloadData];
 	}
+    
+    [sTBalance release];
 }
 
 // update the transaction indexes after a deletion
