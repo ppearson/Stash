@@ -21,6 +21,8 @@
  */
 
 #import "AddAccountController.h"
+#import "StashAppDelegate.h"
+
 #import "ValueFormatter.h"
 
 @interface AddAccountController (Private)
