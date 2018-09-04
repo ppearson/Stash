@@ -28,7 +28,7 @@
 #include <memory>
 
 #include "fixed.h"
-#include "DateTime.h"
+#include "datetime.h"
 #include "document.h"
 
 enum OFX_TYPE
