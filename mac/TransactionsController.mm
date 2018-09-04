@@ -29,6 +29,7 @@
 #import "SplitViewEx.h"
 #import "IndexItem.h"
 #import "ValueFormatter.h"
+#import "TransactionItem.h"
 
 @implementation TransactionsController
 
@@ -1252,7 +1253,7 @@ static TransactionsController *gSharedInterface = nil;
 		{
 			[item setValue:object forKey:identifier];
 			
-			int nTrans = [item transaction];
+			int nTrans = [(TransactionItem *)item transaction];
 			
 			Transaction *trans = NULL;
 			
