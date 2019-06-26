@@ -126,7 +126,7 @@
 		
 		colour = [[m_aColours objectAtIndex:nColourIndex] colorWithAlphaComponent:0.8f];
 		
-		[colour set];
+		[(NSColor*)colour set];
 		[path fill];
 		
 		// draw gloss gradient

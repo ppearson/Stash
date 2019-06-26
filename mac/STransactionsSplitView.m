@@ -26,7 +26,7 @@
 
 - (void)awakeFromNib
 {
-	[self setDelegate:self];
+	[self setDelegate:(id)self];
 	
 	transactionsSubView = [[self subviews] objectAtIndex:0];
 	editSubView = [[self subviews] objectAtIndex:1];

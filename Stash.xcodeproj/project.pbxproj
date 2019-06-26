@@ -92,17 +92,17 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0135CFD12761A8F0000C529 /* AccountInfo.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = AccountInfo.strings; path = mac/AccountInfo.strings; sourceTree = "<group>"; };
+		D0135CFD12761A8F0000C529 /* AccountInfo.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = AccountInfo.strings; path = mac/AccountInfo.strings; sourceTree = "<group>"; };
 		D0135CFE12761A8F0000C529 /* AccountInfo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AccountInfo.xib; path = mac/AccountInfo.xib; sourceTree = "<group>"; };
-		D0135CFF12761A8F0000C529 /* AddAccount.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = AddAccount.strings; path = mac/AddAccount.strings; sourceTree = "<group>"; };
+		D0135CFF12761A8F0000C529 /* AddAccount.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = AddAccount.strings; path = mac/AddAccount.strings; sourceTree = "<group>"; };
 		D0135D0012761A8F0000C529 /* AddAccount.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddAccount.xib; path = mac/AddAccount.xib; sourceTree = "<group>"; };
-		D0135D0112761A8F0000C529 /* DueScheduledTransactions.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = DueScheduledTransactions.strings; path = mac/DueScheduledTransactions.strings; sourceTree = "<group>"; };
+		D0135D0112761A8F0000C529 /* DueScheduledTransactions.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = DueScheduledTransactions.strings; path = mac/DueScheduledTransactions.strings; sourceTree = "<group>"; };
 		D0135D0212761A8F0000C529 /* DueScheduledTransactions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DueScheduledTransactions.xib; path = mac/DueScheduledTransactions.xib; sourceTree = "<group>"; };
-		D0135D0312761A8F0000C529 /* ExportOFX.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ExportOFX.strings; path = mac/ExportOFX.strings; sourceTree = "<group>"; };
+		D0135D0312761A8F0000C529 /* ExportOFX.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ExportOFX.strings; path = mac/ExportOFX.strings; sourceTree = "<group>"; };
 		D0135D0412761A8F0000C529 /* ExportOFX.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ExportOFX.xib; path = mac/ExportOFX.xib; sourceTree = "<group>"; };
-		D0135D0512761A8F0000C529 /* ImportOFX.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ImportOFX.strings; path = mac/ImportOFX.strings; sourceTree = "<group>"; };
+		D0135D0512761A8F0000C529 /* ImportOFX.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ImportOFX.strings; path = mac/ImportOFX.strings; sourceTree = "<group>"; };
 		D0135D0612761A8F0000C529 /* ImportOFX.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImportOFX.xib; path = mac/ImportOFX.xib; sourceTree = "<group>"; };
-		D0135D0712761A8F0000C529 /* ImportQIF.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ImportQIF.strings; path = mac/ImportQIF.strings; sourceTree = "<group>"; };
+		D0135D0712761A8F0000C529 /* ImportQIF.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ImportQIF.strings; path = mac/ImportQIF.strings; sourceTree = "<group>"; };
 		D0135D0812761A8F0000C529 /* ImportQIF.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ImportQIF.xib; path = mac/ImportQIF.xib; sourceTree = "<group>"; };
 		D0135D0912761A8F0000C529 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = mac/InfoPlist.strings; sourceTree = "<group>"; };
 		D0135D0A12761A8F0000C529 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = mac/Localizable.strings; sourceTree = "<group>"; };
@@ -455,18 +455,18 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 1020;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Stash" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
 				en,
+				ja,
+				de,
+				fr,
+				Base,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Stash */;
 			projectDirPath = "";
@@ -578,10 +578,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -599,6 +599,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = mac;
@@ -619,20 +620,41 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_SHADOW = NO;
 				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-liconv";
-				PREBINDING = NO;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -640,16 +662,37 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = NO;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_SHADOW = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				OTHER_LDFLAGS = "-liconv";
-				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = macosx;
 			};

@@ -1251,8 +1251,10 @@ static TransactionsController *gSharedInterface = nil;
 		if (outlineView == transactionsTableView)
 		{
 			[item setValue:object forKey:identifier];
+            
+            TransactionItem* transItem = (TransactionItem*)item;
 			
-			int nTrans = [item transaction];
+			int nTrans = [transItem transaction];
 			
 			Transaction *trans = NULL;
 			
@@ -1752,7 +1754,7 @@ NSDate *convertToNSDate(Date &date)
 	}
 	
 	if (action == @selector(MoveUp:) || action == @selector(MoveDown:) || action == @selector(SplitTransaction:) ||
-		action == @selector(deleteTransaction:))
+		action == @selector(DeleteTransaction:))
 	{
 		if (!m_pAccount)
 			return NO;

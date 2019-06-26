@@ -308,7 +308,7 @@
 			[separatorLine stroke];			
 		}
 		
-		[colour set];
+		[(NSColor*)colour set];
 		[plotShape fill];
 		
 		[m_aPlotShapes addObject:plotShape];

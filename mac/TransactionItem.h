@@ -31,7 +31,7 @@
 	
 	int m_trans;
 	int m_split;
-}
+}	
 
 - (int)transaction;
 - (void)setTransaction:(int)transaction;

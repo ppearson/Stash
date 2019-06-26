@@ -100,7 +100,7 @@ toolbarViewGroupTag;
 		m_HasFinishedLoading = false;
 		m_sPendingOpenFile = nil;
 		
-		[NSApp setDelegate: self];
+		[NSApp setDelegate: (id)self];
 	}
 	
 	return self;
@@ -174,7 +174,7 @@ toolbarViewGroupTag;
 
 - (void)awakeFromNib
 {
-	[window setDelegate:self];
+	[window setDelegate:(id)self];
 	
 	[indexView setFrameSize:[indexViewPlaceholder frame].size];
 	[indexViewPlaceholder addSubview:indexView];
@@ -187,7 +187,7 @@ toolbarViewGroupTag;
 	nViewType = 0;
 	
 	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier:@"Toolbar"];
-    [toolbar setDelegate:self];
+    [toolbar setDelegate:(id)self];
     [toolbar setAllowsUserCustomization:NO];
     [toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
     [toolbar setSizeMode:NSToolbarSizeModeRegular];
@@ -270,9 +270,9 @@ toolbarViewGroupTag;
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(ScheduledSelectionDidChange:) name:NSTableViewSelectionDidChangeNotification object:scheduledTransactionsTableView];
 	
-	[payeesTableView setDelegate:self];	
-	[categoriesTableView setDelegate:self];
-	[scheduledTransactionsTableView setDelegate:self];
+	[payeesTableView setDelegate:(id)self];
+	[categoriesTableView setDelegate:(id)self];
+	[scheduledTransactionsTableView setDelegate:(id)self];
 }
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
