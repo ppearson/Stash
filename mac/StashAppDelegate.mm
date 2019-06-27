@@ -1740,6 +1740,9 @@ toolbarViewGroupTag;
 	[pTC buildTransactionsTree];
 	
 	schedTrans.AdvanceNextDate();
+    
+    // update the index view so the accounts show the correct new final balance
+    [self buildIndexTree];
 	
 	[self setDocumentModified:TRUE];
 }
