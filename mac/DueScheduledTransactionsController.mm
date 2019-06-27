@@ -21,7 +21,7 @@
  */
 
 #import "DueScheduledTransactionsController.h"
-
+#import "StashAppDelegate.h"
 
 @implementation DueScheduledTransactionsController
 
@@ -89,6 +89,11 @@
 	{
 		[[self window] performClose:sender];
 	}
+    else
+    {
+        // select the next item
+        [fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+    }
 }
 
 - (void)skipTransaction:(id)sender
@@ -112,6 +117,11 @@
 	{
 		[[self window] performClose:sender];
 	}
+    else
+    {
+        // select the next item
+        [fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+    }
 }
 
 - (void)closeWindow:(id)sender
