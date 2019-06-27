@@ -24,6 +24,7 @@
 #define ACCOUNT_H
 
 #include <set>
+#include <vector>
 
 #include "transaction.h"
 
