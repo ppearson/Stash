@@ -1,3 +1,11 @@
+Version 0.85
+------------
+
+* Updated build infrastructure to build on modern MacOS versions.
+* Fixed several compile issues building on modern MacOS versions.
+* Added new Transactions preference "New transactions are marked 'cleared' by default"
+  which allows control over the default state of the cleared flag for new transactions.
+
 Version 0.84
 ------------
 
