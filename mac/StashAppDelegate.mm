@@ -129,7 +129,8 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsNegAmountsRed"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForCategories"];
-	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForSplit"];	
+	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForSplit"];
+    [defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsAreClearedByDefault"];
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSelectionType"];

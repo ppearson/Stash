@@ -478,8 +478,15 @@ static TransactionsController *gSharedInterface = nil;
 	int nDay = [CalDate dayOfMonth];
 	
 	Date date1(nDay, nMonth, nYear);
+    
+    BOOL bTransactionsAreClearedByDefault = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsAreClearedByDefault"];
 	
 	Transaction newTransaction("", "", "", 0.0, date1);
+    
+    if (bTransactionsAreClearedByDefault)
+    {
+        newTransaction.setCleared(true);
+    }
 	
 	int nTransaction = m_pAccount->addTransaction(newTransaction);
 	
@@ -488,7 +495,8 @@ static TransactionsController *gSharedInterface = nil;
 	[transactionsCategory setStringValue:@""];
 	[transactionsAmount setStringValue:@""];
 	[transactionsType selectItemAtIndex:0];
-	[transactionsCleared setState:NSOffState];
+    
+    [transactionsCleared setState:(bTransactionsAreClearedByDefault ? NSOnState : NSOffState)];
 	
 	TransactionItem *newIndex = [self createTransactionItem:newTransaction index:nTransaction];
 	
