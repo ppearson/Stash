@@ -101,7 +101,7 @@
 			pImage = [NSImage imageNamed:NSImageNameGoLeftTemplate];
 			[pImage setSize:NSMakeSize(16, 16)];
 			m_leftArrow = NSMakeRect(16, bounds.size.height - 24, 16, 16);
-			[pImage compositeToPoint:m_leftArrow.origin operation:NSCompositeSourceOver];		
+			[pImage drawAtPoint:m_leftArrow.origin fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 		}
 		
 		if (m_nCurrentPage < (nPages - 1))
@@ -109,7 +109,7 @@
 			pImage = [NSImage imageNamed:NSImageNameGoRightTemplate];
 			[pImage setSize:NSMakeSize(16, 16)];
 			m_rightArrow = NSMakeRect(bounds.size.width - 16 - 16, bounds.size.height - 24, 16, 16);
-			[pImage compositeToPoint:m_rightArrow.origin operation:NSCompositeSourceOver];
+			[pImage drawAtPoint:m_rightArrow.origin fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 		}
 		
 		// draw page circles at top

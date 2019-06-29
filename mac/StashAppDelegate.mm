@@ -689,7 +689,6 @@ toolbarViewGroupTag;
         [sSCategory release];
         [sSAmount release];
         [sSDate release];
-        [sFrequency release];
 		
 		[m_aScheduledTransactions addObject:item];
         
@@ -1308,7 +1307,7 @@ toolbarViewGroupTag;
 	
 	int nGraphNum = m_Document.addGraph(newGraph);
 	
-	NSString *sGraphKey = [NSString stringWithFormat:@"g@s", nGraphNum];
+	NSString *sGraphKey = [NSString stringWithFormat:@"g%d", nGraphNum];
 	
 	[indexBar addItem:@"graphs" key:sGraphKey title:sNewGraph item:nGraphNum action:@selector(graphSelected:) target:self type:3 rename:@selector(graphRenamed:) renameTarget:self];
 	
@@ -1528,7 +1527,8 @@ toolbarViewGroupTag;
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-		fileToOpen = [oPanel filename];
+        NSURL* urlToOpen = [[oPanel URL] retain];
+		fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		if ([self OpenFileAt:strFile] == false)
@@ -1582,12 +1582,12 @@ toolbarViewGroupTag;
 	std::string strFile = "";
 	
 	[sPanel setTitle:NSLocalizedString(@"Save Document", "Save Document Title")];
-	[sPanel setRequiredFileType:@"stash"];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"stash", nil]];
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-		fileToSave = [sPanel filename];
+        NSURL* urlToSave = [[sPanel URL] retain];
+        fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		if ([self SaveFileTo:strFile] == false)
@@ -1772,13 +1772,13 @@ toolbarViewGroupTag;
 	std::string strFile = "";
 	[oPanel setAllowsMultipleSelection:NO];
 	[oPanel setResolvesAliases:YES];
-	[oPanel setRequiredFileType:@"qif"];
 	[oPanel setTitle:NSLocalizedString(@"Import QIF file", "Import QIF Title")];
 	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"qif", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-		fileToOpen = [oPanel filename];
+        NSURL* urlToOpen = [[oPanel URL] retain];
+        fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		std::string strDateSample = "";
@@ -1845,13 +1845,13 @@ toolbarViewGroupTag;
 	std::string strFile = "";
 	[oPanel setAllowsMultipleSelection:NO];
 	[oPanel setResolvesAliases:YES];
-	[oPanel setRequiredFileType:@"ofx"];
 	[oPanel setTitle:NSLocalizedString(@"Select OFX file to Import", "Import OFX Title")];
 	[oPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-		fileToOpen = [oPanel filename];
+        NSURL* urlToOpen = [[oPanel URL] retain];
+        fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		OFXData dataItem;
@@ -2048,13 +2048,13 @@ toolbarViewGroupTag;
 	NSSavePanel *sPanel = [NSSavePanel savePanel];
 	NSString *fileToSave;
 	std::string strFile = "";
-	[sPanel setRequiredFileType:@"ofx"];
 	[sPanel setTitle:NSLocalizedString(@"Select OFX file to Export to", "Export OFX Title")];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"ofx", nil]];
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-		fileToSave = [sPanel filename];
+        NSURL* urlToSave = [[sPanel URL] retain];
+        fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
@@ -2142,12 +2142,12 @@ toolbarViewGroupTag;
 	std::string strFile = "";
 	
 	[sPanel setTitle:NSLocalizedString(@"Export to QIF file", "Export QIF Title")];
-	[sPanel setRequiredFileType:@"qif"];
 	[sPanel setAllowedFileTypes:[NSArray arrayWithObjects: @"qif", nil]];
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-		fileToSave = [sPanel filename];
+        NSURL* urlToSave = [[sPanel URL] retain];
+        fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		exportAccountToQIFFile(m_pAccount, strFile, UK);

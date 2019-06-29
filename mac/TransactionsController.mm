@@ -525,15 +525,11 @@ static TransactionsController *gSharedInterface = nil;
 	{
 		NSInteger row = [rows lastIndex];
 		
-		int nRow = row;
-		
 		int nSplit = -1;
 		int nTransaction = -1;
 		
 		while (row != NSNotFound)
 		{
-			nRow = row;
-			
 			TransactionItem *item = [transactionsTableView itemAtRow:row];
 			
 			nSplit = [item intKeyValue:@"Split"];
@@ -802,7 +798,6 @@ static TransactionsController *gSharedInterface = nil;
     [sPayee release];
     [sDescription release];
     [sCategory release];
-    [sType release];
     [sBalance release];
     
     return newItem;

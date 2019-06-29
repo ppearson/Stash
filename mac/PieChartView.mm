@@ -106,12 +106,6 @@
 		
 		double dMidPointAngle = ((dEndAngle - dStartAngle) / 2.0) + dStartAngle;
 		
-		double dRad = DegToRad(dMidPointAngle);
-		double dX, dY = 0.0;
-		
-		dY = sin(dRad);
-		dX = cos(dRad);
-		
 		double dRadius = m_dMainRadius;
 		
 		if (bPushoutSelected && bSelected)

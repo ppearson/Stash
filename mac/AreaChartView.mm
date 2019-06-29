@@ -69,7 +69,7 @@
 	[[NSColor blackColor] set];
 	[NSBezierPath strokeRect:bounds];
 	
-	NSMutableDictionary *attributes1 = [NSDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12], NSFontAttributeName, nil];
+	NSMutableDictionary *attributes1 = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSFont fontWithName:@"Helvetica" size:12], NSFontAttributeName, nil];
 	
 	bool bProblem = false;
 	
@@ -246,8 +246,6 @@
 		// Draw baseline amounts		
 		for (int nAmountIndex = 1; nAmountIndex < nNumXValues; nAmountIndex++)
 		{
-			amount = [itemValues objectAtIndex:nAmountIndex];
-			
 			dYValue = aBaseItems[nAmountIndex] * dYScale;
 			
 			[plotShape lineToPoint:NSMakePoint(dLeftStart + (nAmountIndex * dXIncrement), dBottomStart + dYValue)];			

@@ -72,7 +72,7 @@
 	
 	[window retain];
 	
-	point = [[event window] convertBaseToScreen:point];
+	point = [[event window] convertPointToScreen:point];
 	
 	// if the popup window is going to fall off the screen, move it
 	NSRect screenRect = [[NSScreen mainScreen] frame];
@@ -169,7 +169,7 @@
 		
 		switch([thisEvent type])
 		{
-			case NSMouseMovedMask:
+			case NSMouseMoved:
 				[[self containedView] mouseMoved:thisEvent];
 				break;				
 			case NSRightMouseUp:

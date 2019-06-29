@@ -26,7 +26,7 @@
 
 - (id)init
 {
-	[super init];
+	self = [super init];
 	children = [[NSMutableArray alloc] init];
 	data = [[NSMutableDictionary alloc] init];
 	
