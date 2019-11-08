@@ -27,7 +27,7 @@
 - (NSDate*)addWeeks:(int)weeks
 {
 	NSDateComponents* components = [[NSDateComponents alloc] init];
-	[components setWeek:weeks];
+	[components setWeekOfYear:weeks];
 	return [self addComponents:components];
 }
 
