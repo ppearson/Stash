@@ -88,6 +88,8 @@ static TransactionsController *gSharedInterface = nil;
 		[nc addObserver:self selector:@selector(handleTransactionsSettingsUpdate:) name:@"TransactionsSettingsUpdate" object:nil];
 		
 		m_pDocument = NULL;
+        
+        m_monoSpaceFont = NULL;
 	}
 	
 	return self;
@@ -139,7 +141,20 @@ static TransactionsController *gSharedInterface = nil;
 	
 	[[transactionsTableView headerView] setMenu:transactionsTableHeaderMenu];
     
-//    [transactionsTableView setFont:<#(NSFont * _Nullable)#>]
+    if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)])
+    {
+        // This does return a monospaced font, but setting it doesn't seem to do what we want, as the numeric values are obviously
+        // not monospaced and kerning is still being applied (which Finder seems to be doing these days as well
+        // on dates and file sizes).
+        
+        // But later on setting the font to be NULL / nil, *does* seem to do what we want (set the cells to use a monospaced font)
+        // so something's wrong, but given how poor Apple's docs are, I really can't be bothered to try and work it out.
+        
+        // m_monoSpaceFont = [NSFont monospacedDigitSystemFontOfSize:[NSFont smallSystemFontSize] weight:NSFontWeightRegular];
+        
+        // So this whole if clause is currently useless, as we always leave m_monoSpaceFont to be nil by design, and set
+        // fonts to be that nil value, which seems to currently (MacOS 10.14) correctly set a monospaced font for us.
+    }
 	
 	int nMenuIndex = 0;
 	for (NSTableColumn *tc in [[transactionsTableView tableColumns] reverseObjectEnumerator])
@@ -1333,21 +1348,30 @@ static TransactionsController *gSharedInterface = nil;
 		{
 			fontColor = [NSColor blackColor];
 		}
-	}	
+	}
+    
+    // Note: Cell fonts are purposefully being set to Nil/NULL, as doing that currently seems to
+    //       'correctly' set the font for the cell to be monospaced.
+    if ([[tableColumn identifier] isEqualToString:@"Date"])
+    {
+        [cell setFont:m_monoSpaceFont];
+    }
 	
 	if ([[tableColumn identifier] isEqualToString:@"Amount"])
 	{
 		if ([item boolKeyValue:@"AmoNeg"] == YES)
 		{
 			fontColor = [NSColor redColor];
-		}		
+		}
+        [cell setFont:m_monoSpaceFont];
 	}
 	else if ([[tableColumn identifier] isEqualToString:@"Balance"])
 	{
 		if ([item boolKeyValue:@"BalNeg"] == YES)
 		{
 			fontColor = [NSColor redColor];
-		}		
+		}
+        [cell setFont:m_monoSpaceFont];
 	}
 	
 	[cell setTextColor:fontColor];

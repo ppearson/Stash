@@ -81,6 +81,8 @@ enum TransactionsToShow
 	Account *m_pAccount;
 	
 	std::vector<fixed> m_aBalance;
+    
+    NSFont*     m_monoSpaceFont;
 }
 
 + (TransactionsController*)sharedInterface;

@@ -47,6 +47,12 @@
 	if (m_amount)
 	{
 		NSFont* font = [super font];
+        NSFont* drawFont = font;
+        
+        if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)])
+        {
+            drawFont = [NSFont monospacedDigitSystemFontOfSize:[NSFont smallSystemFontSize] weight:NSFontWeightRegular];
+        }
 		
 		NSShadow *textShadow = [[[NSShadow alloc] init] autorelease];
 		[textShadow setShadowColor:[[NSColor blackColor] colorWithAlphaComponent:0.5]];
@@ -56,7 +62,7 @@
 		BOOL highlighted = [self isHighlighted];
 		
 		NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-							  font, NSFontAttributeName,
+							  drawFont, NSFontAttributeName,
 							   highlighted ? [NSColor whiteColor] : [NSColor darkGrayColor], NSForegroundColorAttributeName,
 							   highlighted ? textShadow : nil, highlighted ? NSShadowAttributeName : nil,
 							  nil, nil];
