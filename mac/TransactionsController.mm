@@ -43,37 +43,37 @@ static TransactionsController *gSharedInterface = nil;
 			gSharedInterface = [[super allocWithZone:NULL] init];
 		}
 	}
-    return gSharedInterface;
+	return gSharedInterface;
 }
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [[self sharedInterface] retain];
+	return [[self sharedInterface] retain];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    return self;
+	return self;
 }
 
 - (id)retain
 {
-    return self;
+	return self;
 }
 
 - (NSUInteger)retainCount
 {
-    return NSUIntegerMax;
+	return NSUIntegerMax;
 }
 
 - (void)release
 {
-    // do nothing
+	// do nothing
 }
 
 - (id)autorelease
 {
-    return self;
+	return self;
 }
 
 - (id)init
@@ -88,8 +88,8 @@ static TransactionsController *gSharedInterface = nil;
 		[nc addObserver:self selector:@selector(handleTransactionsSettingsUpdate:) name:@"TransactionsSettingsUpdate" object:nil];
 		
 		m_pDocument = NULL;
-        
-        m_monoSpaceFont = NULL;
+		
+		m_monoSpaceFont = NULL;
 	}
 	
 	return self;
@@ -140,21 +140,21 @@ static TransactionsController *gSharedInterface = nil;
 	NSMutableArray *transactionColumnOrder = [[NSUserDefaults standardUserDefaults] objectForKey:@"TransactionColumnOrder"];
 	
 	[[transactionsTableView headerView] setMenu:transactionsTableHeaderMenu];
-    
-    if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)])
-    {
-        // This does return a monospaced font, but setting it doesn't seem to do what we want, as the numeric values are obviously
-        // not monospaced and kerning is still being applied (which Finder seems to be doing these days as well
-        // on dates and file sizes).
-        
-        // But later on setting the font to be NULL / nil, *does* seem to do what we want (set the cells to use a monospaced font)
-        // so something's wrong, but given how poor Apple's docs are, I really can't be bothered to try and work it out.
-        
-        // m_monoSpaceFont = [NSFont monospacedDigitSystemFontOfSize:[NSFont smallSystemFontSize] weight:NSFontWeightRegular];
-        
-        // So this whole if clause is currently useless, as we always leave m_monoSpaceFont to be nil by design, and set
-        // fonts to be that nil value, which seems to currently (MacOS 10.14) correctly set a monospaced font for us.
-    }
+	
+	if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)])
+	{
+		// This does return a monospaced font, but setting it doesn't seem to do what we want, as the numeric values are obviously
+		// not monospaced and kerning is still being applied (which Finder seems to be doing these days as well
+		// on dates and file sizes).
+		
+		// But later on setting the font to be NULL / nil, *does* seem to do what we want (set the cells to use a monospaced font)
+		// so something's wrong, but given how poor Apple's docs are, I really can't be bothered to try and work it out.
+		
+		// m_monoSpaceFont = [NSFont monospacedDigitSystemFontOfSize:[NSFont smallSystemFontSize] weight:NSFontWeightRegular];
+		
+		// So this whole if clause is currently useless, as we always leave m_monoSpaceFont to be nil by design, and set
+		// fonts to be that nil value, which seems to currently (MacOS 10.14) correctly set a monospaced font for us.
+	}
 	
 	int nMenuIndex = 0;
 	for (NSTableColumn *tc in [[transactionsTableView tableColumns] reverseObjectEnumerator])
@@ -493,15 +493,15 @@ static TransactionsController *gSharedInterface = nil;
 	int nDay = [CalDate dayOfMonth];
 	
 	Date date1(nDay, nMonth, nYear);
-    
-    BOOL bTransactionsAreClearedByDefault = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsAreClearedByDefault"];
+	
+	BOOL bTransactionsAreClearedByDefault = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsAreClearedByDefault"];
 	
 	Transaction newTransaction("", "", "", 0.0, date1);
-    
-    if (bTransactionsAreClearedByDefault)
-    {
-        newTransaction.setCleared(true);
-    }
+	
+	if (bTransactionsAreClearedByDefault)
+	{
+		newTransaction.setCleared(true);
+	}
 	
 	int nTransaction = m_pAccount->addTransaction(newTransaction);
 	
@@ -510,8 +510,8 @@ static TransactionsController *gSharedInterface = nil;
 	[transactionsCategory setStringValue:@""];
 	[transactionsAmount setStringValue:@""];
 	[transactionsType selectItemAtIndex:0];
-    
-    [transactionsCleared setState:(bTransactionsAreClearedByDefault ? NSOnState : NSOffState)];
+
+	[transactionsCleared setState:(bTransactionsAreClearedByDefault ? NSOnState : NSOffState)];
 	
 	TransactionItem *newIndex = [self createTransactionItem:newTransaction index:nTransaction];
 	
@@ -810,12 +810,12 @@ static TransactionsController *gSharedInterface = nil;
 	
 	[newItem setIntValue:index forKey:@"Transaction"];
 	
-    [sPayee release];
-    [sDescription release];
-    [sCategory release];
-    [sBalance release];
-    
-    return newItem;
+	[sPayee release];
+	[sDescription release];
+	[sCategory release];
+	[sBalance release];
+
+	return newItem;
 }
 
 - (void)TransactionSelectionDidChange:(NSNotification *)notification
@@ -1226,25 +1226,25 @@ static TransactionsController *gSharedInterface = nil;
 	else
 	{
 		return [(TransactionItem*)item childAtIndex:index];
-    }
+	}
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    return [item expandable];
+	return [item expandable];
 }
 
 -(NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-    if (item == nil)
+	if (item == nil)
 	{
 		if (outlineView == transactionsTableView)
 		{
 			return [m_aTransactionItems count];
 		}
-    }
+	}
 	
-    return [item childrenCount];
+	return [item childrenCount];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
@@ -1257,7 +1257,7 @@ static TransactionsController *gSharedInterface = nil;
 		return [NSNumber numberWithInt:nCleared];
 	}
 	
-    return [item keyValue:identifier];
+	return [item keyValue:identifier];
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
@@ -1269,8 +1269,8 @@ static TransactionsController *gSharedInterface = nil;
 		if (outlineView == transactionsTableView)
 		{
 			[item setValue:object forKey:identifier];
-            
-            TransactionItem* transItem = (TransactionItem*)item;
+			
+			TransactionItem* transItem = (TransactionItem*)item;
 			
 			int nTrans = [transItem transaction];
 			
@@ -1349,13 +1349,13 @@ static TransactionsController *gSharedInterface = nil;
 			fontColor = [NSColor blackColor];
 		}
 	}
-    
-    // Note: Cell fonts are purposefully being set to Nil/NULL, as doing that currently seems to
-    //       'correctly' set the font for the cell to be monospaced.
-    if ([[tableColumn identifier] isEqualToString:@"Date"])
-    {
-        [cell setFont:m_monoSpaceFont];
-    }
+	
+	// Note: Cell fonts are purposefully being set to Nil/NULL, as doing that currently seems to
+	//       'correctly' set the font for the cell to be monospaced.
+	if ([[tableColumn identifier] isEqualToString:@"Date"])
+	{
+		[cell setFont:m_monoSpaceFont];
+	}
 	
 	if ([[tableColumn identifier] isEqualToString:@"Amount"])
 	{
@@ -1363,7 +1363,7 @@ static TransactionsController *gSharedInterface = nil;
 		{
 			fontColor = [NSColor redColor];
 		}
-        [cell setFont:m_monoSpaceFont];
+		[cell setFont:m_monoSpaceFont];
 	}
 	else if ([[tableColumn identifier] isEqualToString:@"Balance"])
 	{
@@ -1371,7 +1371,7 @@ static TransactionsController *gSharedInterface = nil;
 		{
 			fontColor = [NSColor redColor];
 		}
-        [cell setFont:m_monoSpaceFont];
+		[cell setFont:m_monoSpaceFont];
 	}
 	
 	[cell setTextColor:fontColor];
@@ -1382,21 +1382,21 @@ static TransactionsController *gSharedInterface = nil;
 NSDate *convertToNSDate(Date &date)
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    [dateComponents setYear:date.getYear()];
-    [dateComponents setMonth:date.getMonth()];
-    [dateComponents setDay:date.getDay()];
-    
-    [dateComponents setHour:0];
-    [dateComponents setMinute:0];
-    [dateComponents setSecond:0];
+
+	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+	[dateComponents setYear:date.getYear()];
+	[dateComponents setMonth:date.getMonth()];
+	[dateComponents setDay:date.getDay()];
+
+	[dateComponents setHour:0];
+	[dateComponents setMinute:0];
+	[dateComponents setSecond:0];
 	
 	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
 	[dateComponents release];
 	[gregorian release];
 	
-    return nsDate;
+	return nsDate;
 }
 
 - (void)transactionTableColumnMenu:(id)sender
@@ -1528,8 +1528,8 @@ NSDate *convertToNSDate(Date &date)
 		
 		[indexBar reloadData];
 	}
-    
-    [sTBalance release];
+	
+	[sTBalance release];
 }
 
 // update the transaction indexes after a deletion
@@ -1772,7 +1772,7 @@ NSDate *convertToNSDate(Date &date)
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
-    SEL action = [menuItem action];
+	SEL action = [menuItem action];
 	
 	if (action == @selector(AddTransaction:))
 	{
