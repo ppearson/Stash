@@ -51,6 +51,7 @@
 	if (!makeTransferWindow)
 	{
 		[NSBundle loadNibNamed:@"MakeTransfer" owner:self];
+//		[NSBundle loadNibNamed:@"MakeTransfer" owner:self topLevelObjects:nil];
 	}
 	
 	[fromAccount removeAllItems];
