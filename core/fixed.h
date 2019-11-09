@@ -50,7 +50,7 @@ public:
 	void setNegative() { m_positive = false; }
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 	
 	friend std::ostream& operator<< (std::ostream & os, const fixed & d);
 	friend std::istream& operator>> (std::istream & stream, fixed & d);

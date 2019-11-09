@@ -1622,8 +1622,21 @@ toolbarViewGroupTag;
 		return false;
 	}
 	
-	if (!m_Document.Load(fileStream))
+	// hacky, but...
+	// this will be set to true if Load() returns false due to a future file format
+	// version we don't know about...
+	bool isFutureFileVersion = false;
+	
+	if (!m_Document.Load(fileStream, isFutureFileVersion))
+	{
+		fileStream.close();
+		
+		NSRunAlertPanel(@"Unrecognised Stash file format version",
+						@"The file format of the Stash document you are trying to open is from a newer version of Stash which this version of Stash does not know about or understand, so it can not open this document. Please use a newer version of Stash to open this document.",
+						@"OK", nil, nil);
+		
 		return false;
+	}
 	
 	fileStream.close();
 	
@@ -1896,8 +1909,8 @@ toolbarViewGroupTag;
 			
 			if (!bFoundReverse && nMaxLook > 1)
 			{
-				const Date &dtStart = stResp.getTransaction1(0).getDate1();				
-				const Date &dtEnd = stResp.getTransaction1(nMaxLook).getDate1();
+				const Date &dtStart = stResp.getTransaction(0).getDate();
+				const Date &dtEnd = stResp.getTransaction(nMaxLook).getDate();
 				
 				if (dtStart > dtEnd)
 				{

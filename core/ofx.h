@@ -60,7 +60,7 @@ private:
 	AccountType		m_type;
 };
 
-static AccountType StringToAccountType(std::string &string)
+static AccountType StringToAccountType(const std::string &string)
 {
 	if (string == "SAVINGS")
 		return Savings;
@@ -83,8 +83,7 @@ public:
 	void setFITID(std::string &FITID) { m_fitid = FITID; }
 	
 	TransactionType	getType() { return m_type; }
-	Date			getDate() { return m_date; }
-	const Date &	getDate1() const { return m_date; }
+	const Date&		getDate() const { return m_date; }
 	fixed			getAmount() { return m_amount; }
 	std::string		getName() { return m_name; }
 	std::string		getMemo() { return m_memo; }
@@ -102,7 +101,7 @@ private:
 	std::string		m_fitid;
 };
 
-static TransactionType StringToTransactionType(std::string &string)
+static TransactionType StringToTransactionType(const std::string &string)
 {
 	if (string == "CASH" || string == "ATM")
 		return ATM;
@@ -192,12 +191,11 @@ public:
 	const OFXBankAccount &getAccount() const { return m_account; }
 	
 	int getTransactionCount() { return m_aTransactions.size(); }
-	const OFXStatementTransaction &getTransaction1(int trans) { return m_aTransactions[trans]; }
-	OFXStatementTransaction getTransaction(int trans) { return m_aTransactions[trans]; }
+	const OFXStatementTransaction &getTransaction(int trans) const { return m_aTransactions[trans]; }
 	
 	const fixed &getBalance() const { return m_balance; }
 	
-	void addOFXTransactionsForAccount(Account &account);	
+	void addOFXTransactionsForAccount(const Account& account);
 	
 	void writeToSGMLStream(std::fstream &stream);
 	void writeToXMLStream(std::fstream &stream);

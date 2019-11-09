@@ -76,7 +76,7 @@ void Graph::Load(std::fstream &stream, int version)
 	}
 }
 
-void Graph::Store(std::fstream &stream)
+void Graph::Store(std::fstream &stream) const
 {
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 512 accounts...

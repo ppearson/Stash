@@ -39,6 +39,8 @@ void Account::Load(std::fstream &stream, int version)
 	
 	unsigned int numTransactions = 0;	
 	stream.read((char *) &numTransactions, sizeof(unsigned int));
+    
+    m_aTransactions.reserve(numTransactions);
 	
 	for (unsigned int i = 0; i < numTransactions; i++)
 	{
@@ -55,7 +57,7 @@ void Account::Load(std::fstream &stream, int version)
 	}
 }
 
-void Account::Store(std::fstream &stream)
+void Account::Store(std::fstream &stream) const
 {
 	StoreString(m_name, stream);
 	StoreString(m_institution, stream);
@@ -67,8 +69,8 @@ void Account::Store(std::fstream &stream)
 	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());	
 	stream.write((char *) &numTransactions, sizeof(unsigned int));
 	
-	std::vector<Transaction>::iterator it = m_aTransactions.begin();
-	std::vector<Transaction>::iterator itEnd = m_aTransactions.end();
+	std::vector<Transaction>::const_iterator it = m_aTransactions.begin();
+	std::vector<Transaction>::const_iterator itEnd = m_aTransactions.end();
 	
 	for (; it != itEnd; ++it)
 	{
@@ -111,12 +113,12 @@ void Account::deleteFITID(std::string &FITID)
 		m_aFITIDs.erase(it);
 }
 
-fixed Account::getBalance(bool onlyCleared, int endIndex)
+fixed Account::getBalance(bool onlyCleared, int endIndex) const
 {
 	fixed balance = 0.0;
 	
-	std::vector<Transaction>::iterator it = m_aTransactions.begin();
-	std::vector<Transaction>::iterator itEnd = m_aTransactions.end();
+	std::vector<Transaction>::const_iterator it = m_aTransactions.begin();
+	std::vector<Transaction>::const_iterator itEnd = m_aTransactions.end();
 	
 	if (endIndex != -1)
 	{

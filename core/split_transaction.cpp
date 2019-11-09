@@ -44,7 +44,7 @@ void SplitTransaction::Load(std::fstream &stream, int version)
 	m_Amount.Load(stream, version);	
 }
 
-void SplitTransaction::Store(std::fstream &stream)
+void SplitTransaction::Store(std::fstream &stream) const
 {
 	StoreString(m_Description, stream);
 	StoreString(m_Payee, stream);

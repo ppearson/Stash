@@ -143,10 +143,10 @@ static GraphController *gSharedInterface = nil;
 	
 	[graphAccount selectItemAtIndex:nAccount];
 	
-	NSDate *nsStartDate = convertToNSDate(const_cast<Date&>(m_pGraph->getStartDate1()));
+	NSDate *nsStartDate = convertToNSDate(const_cast<Date&>(m_pGraph->getStartDate()));
 	[graphStartDateCntrl setDateValue:nsStartDate];
 	
-	NSDate *nsEndDate = convertToNSDate(const_cast<Date&>(m_pGraph->getEndDate1()));
+	NSDate *nsEndDate = convertToNSDate(const_cast<Date&>(m_pGraph->getEndDate()));
 	[graphEndDateCntrl setDateValue:nsEndDate];
 	
 	GraphType eType = m_pGraph->getType();
@@ -765,9 +765,7 @@ static GraphController *gSharedInterface = nil;
 	
 	if (aTableView == graphItemsTableView)
 	{
-		NSString *sItem = [m_aGraphItems objectAtIndex:rowIndex];
-		
-		sItem = object;
+		NSString* sItem = object;
 		
 		[m_aGraphItems replaceObjectAtIndex:rowIndex withObject:sItem];
 		

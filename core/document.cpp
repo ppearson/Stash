@@ -23,7 +23,7 @@
 #include "document.h"
 #include "string.h"
 
-#define FILE_VERSION 5
+static const int kDocumentVersion = 5;
 
 Document* Document::m_pInstance = NULL;
 
@@ -37,7 +37,7 @@ Document* Document::getInstance()
 	return m_pInstance;
 }
 
-bool Document::Load(std::fstream &stream)
+bool Document::Load(std::fstream &stream, bool& futureVersion)
 {
 	unsigned char fileID = 0;
 	stream.read((char *) &fileID, sizeof(unsigned char));
@@ -50,9 +50,10 @@ bool Document::Load(std::fstream &stream)
 	unsigned char fileVersion = 0;
 	stream.read((char *) &fileVersion, sizeof(unsigned char));
 	
-	if (fileVersion > FILE_VERSION)
+	if (fileVersion > kDocumentVersion)
 	{
 		// we can't read this file as we don't know about it
+		futureVersion = true;
 		return false;
 	}
 	
@@ -132,7 +133,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned char fileID = 42;
 	stream.write((char *) &fileID, sizeof(unsigned char));
 	
-	unsigned char fileVersion = FILE_VERSION;
+	unsigned char fileVersion = kDocumentVersion;
 	stream.write((char *) &fileVersion, sizeof(unsigned char));
 	
 	unsigned int numAccounts = static_cast<unsigned int>(m_aAccounts.size());	

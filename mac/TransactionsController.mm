@@ -301,7 +301,7 @@ static TransactionsController *gSharedInterface = nil;
 		
 		for (; itTemp != itTempEnd; ++itTemp)
 		{
-			if ((*itTemp).getDate1() >= dateCompare)
+			if ((*itTemp).getDate() >= dateCompare)
 				break;
 			
 			localBalance += (*itTemp).getAmount();
@@ -325,6 +325,10 @@ static TransactionsController *gSharedInterface = nil;
 	BOOL bShowNegAmountsInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegAmountsRed"];
 	BOOL bShowNegBalancesInRed = [[NSUserDefaults standardUserDefaults] boolForKey:@"TransactionsNegBalancesRed"];
 	
+	// cache these for efficiency reasons
+	NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents* dateComponents = [[NSDateComponents alloc] init];
+	
 	for (; it != itEnd; ++it, nTransaction++)
 	{
 		TransactionItem *newTransaction = [[TransactionItem alloc] init];
@@ -342,7 +346,8 @@ static TransactionsController *gSharedInterface = nil;
 		
 		NSString *sTAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 		
-		NSDate *date = convertToNSDate(const_cast<Date&>(it->getDate1()));
+		// use cached version
+		NSDate *date = convertToNSDate(it->getDate(), gregorian, dateComponents);
 		NSString *sTDate = [[dateFormatter stringFromDate:date] retain];
 		
 		localBalance += it->getAmount();
@@ -464,6 +469,9 @@ static TransactionsController *gSharedInterface = nil;
 		[sTBalance release];
 	}
 	
+	[dateComponents release];
+	[gregorian release];
+	
 	[dateFormatter release];
 	
 	[transactionsTableView reloadData];
@@ -516,7 +524,7 @@ static TransactionsController *gSharedInterface = nil;
 	TransactionItem *newIndex = [self createTransactionItem:newTransaction index:nTransaction];
 	
 	[m_aTransactionItems addObject:newIndex];
-	[newIndex release];
+	//[newIndex release];
 	
 	[transactionsTableView reloadData];
 	
@@ -770,7 +778,7 @@ static TransactionsController *gSharedInterface = nil;
 	
 	NSString *sAmount = [[valueFormatter currencyStringFromFixed:transaction.getAmount()] retain];
 	
-	NSDate *transDate = convertToNSDate(const_cast<Date&>(transaction.getDate1()));
+	NSDate *transDate = convertToNSDate(const_cast<Date&>(transaction.getDate()));
 	
 	[NSDateFormatter setDefaultFormatterBehavior:NSDateFormatterBehavior10_4];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -1378,12 +1386,12 @@ static TransactionsController *gSharedInterface = nil;
 }
 
 // Transactions OutlineView End
-
-NSDate *convertToNSDate(Date &date)
+// stand-alone, but inefficient version
+NSDate* convertToNSDate(const Date &date)
 {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-
-	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+	NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents* dateComponents = [[NSDateComponents alloc] init];
+	
 	[dateComponents setYear:date.getYear()];
 	[dateComponents setMonth:date.getMonth()];
 	[dateComponents setDay:date.getDay()];
@@ -1396,6 +1404,20 @@ NSDate *convertToNSDate(Date &date)
 	[dateComponents release];
 	[gregorian release];
 	
+	return nsDate;
+}
+
+NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponents* dateComponents)
+{
+	[dateComponents setYear:date.getYear()];
+	[dateComponents setMonth:date.getMonth()];
+	[dateComponents setDay:date.getDay()];
+	
+	[dateComponents setHour:0];
+	[dateComponents setMinute:0];
+	[dateComponents setSecond:0];
+	
+	NSDate* nsDate = [gregorian dateFromComponents:dateComponents];
 	return nsDate;
 }
 
@@ -1723,7 +1745,7 @@ NSDate *convertToNSDate(Date &date)
 		}
 		
 		[m_aTransactionItems addObject:newTransaction];
-		[newTransaction release];
+//		[newTransaction release];
 		
 		[transactionsTableView reloadData];
 		

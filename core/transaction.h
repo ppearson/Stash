@@ -50,7 +50,7 @@ class Transaction
 {
 public:
 	Transaction();
-	Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date);
+	Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date);
 	
 	bool isCleared() const { return m_Cleared; }
 	void setCleared(bool cleared) { m_Cleared = cleared; }
@@ -59,20 +59,17 @@ public:
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
 	
-	Date getDate() const { return m_Date; }
-	const Date &getDate1() const { return m_Date; }
-	void setDate(Date date) { m_Date = date; }
+	const Date& getDate() const { return m_Date; }
+	void setDate(const Date& date) { m_Date = date; }
 	std::string getCategory() const { return m_Category; }
 	void setCategory(std::string Category) { m_Category = Category; }
 	std::string getDescription() const { return m_Description; }
 	void setDescription(std::string Description) { m_Description = Description; }
 	std::string getPayee() const { return m_Payee; }
 	void setPayee(std::string Payee) { m_Payee = Payee; }
-	fixed getAmount() const { return m_Amount; }
-	const fixed &getAmount1() { return m_Amount; }
+	const fixed& getAmount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	TransactionType getType() const { return m_Type; }
-	const TransactionType &getType1() { return m_Type; }
 	void setType(TransactionType type) { m_Type = type; }
 	std::string getFITID() const { return m_FITID; }
 	void setFITID(std::string FITID) { m_FITID = FITID; }
@@ -89,10 +86,10 @@ public:
 	const SplitTransaction & getSplit(unsigned int item) const { return m_aSplits[item]; }
 	unsigned int getSplitCount() const { return m_aSplits.size(); }
 	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
-	fixed getSplitTotal();
+	fixed getSplitTotal() const;
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 
 private:
 	bool m_Cleared;

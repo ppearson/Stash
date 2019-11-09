@@ -55,7 +55,7 @@ Date::Date(int Day, int Month, int Year) :
 	SetTimeFromVars();
 }
 
-Date::Date(std::string date, char cSep, DateStringFormat dateFormat) : m_Separator(cSep)
+Date::Date(const std::string& date, char cSep, DateStringFormat dateFormat) : m_Separator(cSep)
 {
 	setDate(date, cSep, dateFormat);
 }
@@ -286,29 +286,81 @@ void Date::setDate(int Day, int Month, int Year)
 	SetTimeFromVars();
 }
 
+void Date::LoadNew(std::fstream &stream, int version)
+{
+	if (version > 5)
+	{
+		// new one:
+		// Use more portable and space-efficient method:
+		
+		// day is stored in left-most 5 bits
+		// month is stored in next 4 bits
+		// year in right-most 16 bits
+		
+		// day shift 27 - mask: 0xF8000000
+		// month shift 23 - mask: 0x7800000
+		// year shift 0 - mask: 0xFFFF
+		
+		uint32_t packedDate = 0;
+		stream.read((char *)&packedDate, sizeof(uint32_t));
+		
+		uint32_t day = (packedDate & 0xF8000000) >> 27;
+		uint32_t month = (packedDate & 0x7800000) >> 23;
+		uint32_t year = (packedDate & 0xFFFF);
+		
+		m_Year = year;
+		m_Month = month;
+		m_Day = day;
+		
+		SetTimeFromVars();
+	}
+	else
+	{
+		Load(stream, version);
+	}
+}
+
+void Date::StoreNew(std::fstream &stream) const
+{
+	// new one:
+	// Use more portable and space-efficient method:
+	
+	// day is stored in left-most 5 bits
+	// month is stored in next 4 bits
+	// year in right-most 16 bits
+
+	// day shift 27 - mask: 0xF8000000
+	// month shift 23 - mask: 0x7800000
+	// year shift 0 - mask: 0xFFFF
+
+	uint32_t packedDate = ((unsigned int)m_Day << 27) | ((unsigned int)m_Month << 23) | (unsigned int)m_Year;
+	stream.write((char *)&packedDate, sizeof(uint32_t));
+}
+
+// old code that wasn't portable between systems (and was wasteful as well)
 void Date::Load(std::fstream &stream, int version)
 {
 	// time_t is different sizes on 32/64 bit systems
-/*	long long tempTime = 0;
-	stream.read((char *) &tempTime, sizeof(long long));
-	m_Time = static_cast<time_t>(tempTime);
-*/	
+	/*    long long tempTime = 0;
+	 stream.read((char *) &tempTime, sizeof(long long));
+	 m_Time = static_cast<time_t>(tempTime);
+	 */
 	uint64_t tempTime = 0;
 	stream.read((char *) &tempTime, sizeof(uint64_t));
 	m_Time = static_cast<time_t>(tempTime);
-	
+
 	SetVarsFromTime();
 }
 
-void Date::Store(std::fstream &stream)
+// old code that wasn't portable between systems (and was wasteful as well)
+void Date::Store(std::fstream &stream) const
 {
 	// time_t is different sizes on 32/64 bit systems
-/*	long long tempTime = static_cast<long long>(m_Time);
-	stream.write((char *) &tempTime, sizeof(long long));
-*/
+	/*    long long tempTime = static_cast<long long>(m_Time);
+	 stream.write((char *) &tempTime, sizeof(long long));
+	 */
 	uint64_t tempTime = static_cast<uint64_t>(m_Time);
 	stream.write((char *) &tempTime, sizeof(uint64_t));
-
 }
 
 std::ostream & operator <<( std::ostream & os, const Date & d)

@@ -118,7 +118,11 @@ enum TransactionsToShow
 
 - (void)transactionTableColumnMenu:(id)sender;
 
-NSDate *convertToNSDate(Date &date);
+// stand alone, but inefficient version...
+NSDate* convertToNSDate(const Date& date);
+
+// more efficient version
+NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponents* dateComponents);
 
 - (void)updateBalancesFromTransactionIndex:(unsigned int)nIndex;
 - (void)updateTransactionsFromTransactionIndex:(unsigned int)nIndex;

@@ -35,7 +35,7 @@ Transaction::Transaction() : m_Split(false), m_Type(None), m_Cleared(false), m_F
 	
 }
 
-Transaction::Transaction(std::string Description, std::string Payee, std::string Category, fixed Amount, Date date) :
+Transaction::Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date) :
 	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Type(None),
 	m_Cleared(false), m_Reconciled(false), m_Flagged(false), m_HasFITID(false)
 {
@@ -71,20 +71,25 @@ void Transaction::Load(std::fstream &stream, int version)
 			LoadString(m_FITID, stream);
 		}
 	}
-	
-	unsigned char numSplits = 0;	
-	stream.read((char *) &numSplits, sizeof(unsigned char));
-		
-	for (int i = 0; i < numSplits; i++)
+
+	// old document versions always saved the number of splits, even if we knew
+	// there weren't any.
+	if (version < 6 || m_Split)
 	{
-		SplitTransaction tempSplit;
-		tempSplit.Load(stream, version);
+		unsigned char numSplits = 0;
+		stream.read((char *) &numSplits, sizeof(unsigned char));
 		
-		m_aSplits.push_back(tempSplit);
+		for (int i = 0; i < numSplits; i++)
+		{
+			SplitTransaction tempSplit;
+			tempSplit.Load(stream, version);
+			
+			m_aSplits.push_back(tempSplit);
+		}
 	}
 }
 
-void Transaction::Store(std::fstream &stream)
+void Transaction::Store(std::fstream &stream) const
 {
 	m_Date.Store(stream);
 	StoreString(m_Description, stream);
@@ -108,16 +113,19 @@ void Transaction::Store(std::fstream &stream)
 	{
 		StoreString(m_FITID, stream);
 	}
-	
-	unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
-	stream.write((char *) &numSplits, sizeof(unsigned char));
-	
-	std::vector<SplitTransaction>::iterator it = m_aSplits.begin();
-	std::vector<SplitTransaction>::iterator itEnd = m_aSplits.end();
-	
-	for (; it != itEnd; ++it)
+
+//	if (m_Split)
 	{
-		(*it).Store(stream);
+		unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
+		stream.write((char *) &numSplits, sizeof(unsigned char));
+		
+		std::vector<SplitTransaction>::const_iterator it = m_aSplits.begin();
+		std::vector<SplitTransaction>::const_iterator itEnd = m_aSplits.end();
+		
+		for (; it != itEnd; ++it)
+		{
+			(*it).Store(stream);
+		}
 	}
 }
 
@@ -129,12 +137,12 @@ void Transaction::addSplit(std::string Description, std::string Payee, std::stri
 	m_Split = true;
 }
 
-fixed Transaction::getSplitTotal()
+fixed Transaction::getSplitTotal() const
 {
 	fixed total = 0.0;
 	
-	std::vector<SplitTransaction>::iterator it = m_aSplits.begin();
-	std::vector<SplitTransaction>::iterator itEnd = m_aSplits.end();
+	std::vector<SplitTransaction>::const_iterator it = m_aSplits.begin();
+	std::vector<SplitTransaction>::const_iterator itEnd = m_aSplits.end();
 	
 	for (; it != m_aSplits.end(); ++it)
 	{

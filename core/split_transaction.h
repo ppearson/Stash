@@ -42,7 +42,7 @@ public:
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 
 private:
 	

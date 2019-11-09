@@ -72,22 +72,20 @@ public:
 	void setDateType(GraphDateType type) { m_dateType = type; }
 	void setItemsType(GraphItemsType type) { m_itemsType = type; }
 	
-	std::string		getName() { return m_name; }
-	int				getAccount() { return m_account; }
-	GraphViewType	getViewType() { return m_viewType; }
-	Date			getStartDate() { return m_startDate; }
-	Date			getEndDate() { return m_endDate; }
-	const Date	   &getStartDate1() { return m_startDate; }
-	const Date     &getEndDate1() { return m_endDate; }
-	GraphType		getType() { return m_type; }
-	bool			getIgnoreTransfers() { return m_ignoreTransfers; }
-	GraphDateType	getDateType() { return m_dateType; }
-	GraphItemsType	getItemsType() { return m_itemsType; }
+	const std::string&		getName() const { return m_name; }
+	int					getAccount() const { return m_account; }
+	GraphViewType		getViewType() const { return m_viewType; }
+	const Date&			getStartDate() const { return m_startDate; }
+	const Date&			getEndDate() const { return m_endDate; }
+	GraphType		getType() const { return m_type; }
+	bool			getIgnoreTransfers() const { return m_ignoreTransfers; }
+	GraphDateType	getDateType() const { return m_dateType; }
+	GraphItemsType	getItemsType() const { return m_itemsType; }
 	
 	std::set<std::string> &getItems() { return m_items; }
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 	
 protected:
 	std::string		m_name;

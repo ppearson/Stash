@@ -51,11 +51,11 @@ public:
 	void setNote(std::string note) { m_note = note; }
 	void setType(AccountType type) { m_type = type; }
 	
-	std::string getName() { return m_name; }
+	std::string getName() const { return m_name; }
 	std::string getInstitution() { return m_institution; }
 	std::string getNumber() { return m_number; }
 	std::string getNote() { return m_note; }
-	AccountType getType() { return m_type; }
+	AccountType getType() const { return m_type; }
 	
 	int addTransaction(Transaction &trans, bool bFITID = false);
 	Transaction &getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
@@ -69,14 +69,14 @@ public:
 	void swapTransactions(unsigned int from, unsigned int to);
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 	
 	inline std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }
 	inline std::vector<Transaction>::iterator end() { return m_aTransactions.end(); }
 	inline std::vector<Transaction>::const_iterator begin() const { return m_aTransactions.begin(); }
 	inline std::vector<Transaction>::const_iterator end() const { return m_aTransactions.end(); }
 	
-	fixed getBalance(bool onlyCleared, int endIndex = -1);
+	fixed getBalance(bool onlyCleared, int endIndex = -1) const;
 
 protected:
 	std::string m_name;

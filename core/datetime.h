@@ -44,7 +44,7 @@ public:
 	Date(const Date &rhs);
 	Date(time_t Time);
 	Date(int Day, int Month, int Year = -1);
-	Date(std::string date, char cSep, DateStringFormat dateFormat = UK);
+	Date(const std::string& date, char cSep, DateStringFormat dateFormat = UK);
 
 	const Date& operator=(const Date& rhs);
 	const Date& operator=(time_t Time);
@@ -84,8 +84,12 @@ public:
 	void SetVarsFromTime();
 	void SetTimeFromVars();
 
+	void LoadNew(std::fstream &stream, int version);
+	void StoreNew(std::fstream &stream) const;
+
+	// these versions are old ones
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 
 	friend std::ostream& operator<< (std::ostream & os, const Date & d);
 

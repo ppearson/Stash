@@ -63,7 +63,7 @@ public:
 	
 	void clear();
 	
-	bool Load(std::fstream &stream);
+	bool Load(std::fstream &stream, bool& futureVersion);
 	bool Store(std::fstream &stream);
 	
 	inline std::vector<Account>::iterator AccountBegin() { return m_aAccounts.begin(); }

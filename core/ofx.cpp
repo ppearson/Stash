@@ -160,19 +160,19 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
 	stream << "     </STMTRS>\n";
 }
 
-void OFXStatementResponse::addOFXTransactionsForAccount(Account &account)
+void OFXStatementResponse::addOFXTransactionsForAccount(const Account& account)
 {
 	int FITID = 1;
-	std::vector<Transaction>::iterator it = account.begin();
-	std::vector<Transaction>::iterator itEnd = account.end();
+	std::vector<Transaction>::const_iterator it = account.begin();
+	std::vector<Transaction>::const_iterator itEnd = account.end();
 	for (; it != itEnd; ++it)
 	{
-		Transaction &trans = (*it);
+		const Transaction &trans = (*it);
 		
 		std::string strName = trans.getPayee();
 		std::string strMemo = trans.getDescription();
 		
-		OFXStatementTransaction newStatementTransaction(trans.getType1(), trans.getDate1(), trans.getAmount1(), strName, FITID++);
+		OFXStatementTransaction newStatementTransaction(trans.getType(), trans.getDate(), trans.getAmount(), strName, FITID++);
 		newStatementTransaction.setMemo(strMemo);
 		
 		m_aTransactions.push_back(newStatementTransaction);		

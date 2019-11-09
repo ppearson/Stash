@@ -167,7 +167,7 @@ void fixed::Load(std::fstream &stream, int version)
 		m_positive = false;
 }
 
-void fixed::Store(std::fstream &stream)
+void fixed::Store(std::fstream &stream) const
 {
 	// Strictly speaking, this isn't right, as m_num is an unsigned long,
 	// but as it's very unlikely that an individual transaction is going to
