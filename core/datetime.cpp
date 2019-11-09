@@ -286,7 +286,7 @@ void Date::setDate(int Day, int Month, int Year)
 	SetTimeFromVars();
 }
 
-void Date::LoadNew(std::fstream &stream, int version)
+void Date::Load(std::fstream &stream, int version)
 {
 	if (version > 5)
 	{
@@ -316,11 +316,11 @@ void Date::LoadNew(std::fstream &stream, int version)
 	}
 	else
 	{
-		Load(stream, version);
+		LoadOld(stream, version);
 	}
 }
 
-void Date::StoreNew(std::fstream &stream) const
+void Date::Store(std::fstream &stream) const
 {
 	// new one:
 	// Use more portable and space-efficient method:
@@ -338,7 +338,7 @@ void Date::StoreNew(std::fstream &stream) const
 }
 
 // old code that wasn't portable between systems (and was wasteful as well)
-void Date::Load(std::fstream &stream, int version)
+void Date::LoadOld(std::fstream &stream, int version)
 {
 	// time_t is different sizes on 32/64 bit systems
 	/*    long long tempTime = 0;
@@ -353,7 +353,7 @@ void Date::Load(std::fstream &stream, int version)
 }
 
 // old code that wasn't portable between systems (and was wasteful as well)
-void Date::Store(std::fstream &stream) const
+void Date::StoreOld(std::fstream &stream) const
 {
 	// time_t is different sizes on 32/64 bit systems
 	/*    long long tempTime = static_cast<long long>(m_Time);

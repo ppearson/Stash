@@ -23,7 +23,7 @@
 #include "document.h"
 #include "string.h"
 
-static const int kDocumentVersion = 5;
+static const int kDocumentVersion = 6;
 
 Document* Document::m_pInstance = NULL;
 

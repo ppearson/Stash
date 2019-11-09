@@ -114,7 +114,7 @@ void Transaction::Store(std::fstream &stream) const
 		StoreString(m_FITID, stream);
 	}
 
-//	if (m_Split)
+	if (m_Split)
 	{
 		unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
 		stream.write((char *) &numSplits, sizeof(unsigned char));

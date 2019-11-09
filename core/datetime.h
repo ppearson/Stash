@@ -84,12 +84,12 @@ public:
 	void SetVarsFromTime();
 	void SetTimeFromVars();
 
-	void LoadNew(std::fstream &stream, int version);
-	void StoreNew(std::fstream &stream) const;
-
-	// these versions are old ones
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream) const;
+
+	// these versions are old ones
+	void LoadOld(std::fstream &stream, int version);
+	void StoreOld(std::fstream &stream) const;
 
 	friend std::ostream& operator<< (std::ostream & os, const Date & d);
 

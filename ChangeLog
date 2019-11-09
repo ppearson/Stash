@@ -1,3 +1,13 @@
+Version 0.9
+-----------
+
+* Breaking file format change: older versions of Stash will not be able to open documents
+  created with this new version.
+* Dates are now stored in Stash's file format in a more compact and portable way
+* Number of Split Transactions are only stored in a Transaction record if there are split
+  transactions for that Transaction
+* Dates and currencies are now displayed with a monospaced font, so numbers line up
+
 Version 0.85
 ------------
 
