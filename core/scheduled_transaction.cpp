@@ -61,7 +61,7 @@ void ScheduledTransaction::Load(std::fstream &stream, int version)
 	stream.read((char *) &m_constraint, sizeof(unsigned char));
 }
 
-void ScheduledTransaction::Store(std::fstream &stream)
+void ScheduledTransaction::Store(std::fstream &stream) const
 {
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 512 accounts...

@@ -1,6 +1,6 @@
-/* 
+/*
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -59,7 +59,7 @@ public:
 	
 	int addTransaction(Transaction &trans, bool bFITID = false);
 	Transaction &getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
-	unsigned int getTransactionCount() { return m_aTransactions.size(); }
+	unsigned int getTransactionCount() const { return m_aTransactions.size(); }
 	void deleteTransaction(unsigned int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
 	
 	bool doesFITIDExist(const std::string &FITID);

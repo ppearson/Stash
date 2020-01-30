@@ -76,7 +76,7 @@ public:
 	void setConstraint(Constraint constraint) { m_constraint = constraint; }
 	
 	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream);
+	void Store(std::fstream &stream) const;
 	
 	void AdvanceNextDate();
 	

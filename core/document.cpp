@@ -128,7 +128,7 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	return true;
 }
 
-bool Document::Store(std::fstream &stream)
+bool Document::Store(std::fstream &stream) const
 {
 	unsigned char fileID = 42;
 	stream.write((char *) &fileID, sizeof(unsigned char));
@@ -139,7 +139,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned int numAccounts = static_cast<unsigned int>(m_aAccounts.size());	
 	stream.write((char *) &numAccounts, sizeof(unsigned int));
 	
-	for (std::vector<Account>::iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
+	for (std::vector<Account>::const_iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
 	{
 		(*it).Store(stream);
 	}
@@ -147,7 +147,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned int numSchedTrans = static_cast<unsigned int>(m_aScheduledTransactions.size());	
 	stream.write((char *) &numSchedTrans, sizeof(unsigned int));
 	
-	for (std::vector<ScheduledTransaction>::iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
+	for (std::vector<ScheduledTransaction>::const_iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
 	{
 		(*it).Store(stream);
 	}
@@ -155,7 +155,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned int numPayees = static_cast<unsigned int>(m_aPayees.size());
 	stream.write((char *) &numPayees, sizeof(unsigned int));
 	
-	for (std::set<std::string>::iterator it = m_aPayees.begin(); it != m_aPayees.end(); ++it)
+	for (std::set<std::string>::const_iterator it = m_aPayees.begin(); it != m_aPayees.end(); ++it)
 	{
 		StoreString((*it), stream);
 	}
@@ -163,7 +163,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned int numCategories = static_cast<unsigned int>(m_aCategories.size());
 	stream.write((char *) &numCategories, sizeof(unsigned int));
 	
-	for (std::set<std::string>::iterator it = m_aCategories.begin(); it != m_aCategories.end(); ++it)
+	for (std::set<std::string>::const_iterator it = m_aCategories.begin(); it != m_aCategories.end(); ++it)
 	{
 		StoreString((*it), stream);
 	}
@@ -171,7 +171,7 @@ bool Document::Store(std::fstream &stream)
 	unsigned int numGraphs = static_cast<unsigned int>(m_aGraphs.size());	
 	stream.write((char *) &numGraphs, sizeof(unsigned int));
 	
-	for (std::vector<Graph>::iterator it = m_aGraphs.begin(); it != m_aGraphs.end(); ++it)
+	for (std::vector<Graph>::const_iterator it = m_aGraphs.begin(); it != m_aGraphs.end(); ++it)
 	{
 		(*it).Store(stream);
 	}
@@ -188,11 +188,11 @@ void Document::clear()
 	m_aGraphs.clear();
 }
 
-fixed Document::getBalance(bool onlyReconciled)
+fixed Document::getBalance(bool onlyReconciled) const
 {
 	fixed balance = 0.0;
 	
-	std::vector<Account>::iterator it = m_aAccounts.begin();
+	std::vector<Account>::const_iterator it = m_aAccounts.begin();
 	
 	for (; it != m_aAccounts.end(); ++it)
 	{			

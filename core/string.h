@@ -20,10 +20,12 @@
  *
  */
 
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <cstring>
+
+#define USE_STACK_BUFFER 1
 
 inline void StoreString(const std::string& string, std::fstream& stream)
 {
@@ -49,17 +51,22 @@ inline void StoreString(const std::string& string, std::fstream& stream)
 
 inline void LoadString(std::string& string, std::fstream& stream)
 {
-	char* buf = 0;
-	
 	unsigned char size = 0;
 	stream.read((char *) &size, sizeof(unsigned char));
 	
-	buf = new char[size + 1];
+#if USE_STACK_BUFFER
+	char buf[256];
+#else
+	char* buf = new char[size + 1];
+#endif
 	stream.read(buf, size);
 	buf[size] = 0;
 	
 	string.assign(buf);
-	
+
+#if USE_STACK_BUFFER
+#else
 	delete [] buf;
+#endif
 }
 
