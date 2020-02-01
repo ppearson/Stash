@@ -117,7 +117,7 @@ void StashCLIApp::listAccountTransactions(unsigned int accountIndex, unsigned in
 
 				if (count >= startPrintIndex)
 				{
-					fprintf(stderr, "%s\t\t%s\t\t%0.2f\t\t%0.2f\n", transaction.getDate().FormattedDate(UK).c_str(), transaction.getPayee().c_str(), transaction.getAmount().ToDouble(),
+					fprintf(stderr, "%s\t\t%s\t\t%0.2f\t\t%0.2f\n", transaction.getDate().FormattedDate(Date::UK).c_str(), transaction.getPayee().c_str(), transaction.getAmount().ToDouble(),
 											balance.ToDouble());
 				}
 

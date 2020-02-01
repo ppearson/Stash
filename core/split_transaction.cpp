@@ -30,7 +30,7 @@
 #include "split_transaction.h"
 #include "string.h"
 
-SplitTransaction::SplitTransaction(std::string Description, std::string Payee, std::string Category, fixed Amount) :
+SplitTransaction::SplitTransaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount) :
 		m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount)
 {
 

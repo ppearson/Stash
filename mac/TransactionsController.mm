@@ -876,7 +876,7 @@ static TransactionsController *gSharedInterface = nil;
 			
 			NSString *sAmount = [[valueFormatter currencyStringFromFixed:trans->getAmount()] retain];
 			
-			TransactionType eType = trans->getType();
+			Transaction::Type eType = trans->getType();
 			
 			Date date1 = trans->getDate();
 			NSDate *datetemp = convertToNSDate(date1);
@@ -1047,7 +1047,7 @@ static TransactionsController *gSharedInterface = nil;
 		split = &trans->getSplit(nSplit);
 	
 	int nType = [transactionsType indexOfSelectedItem];
-	TransactionType eType = static_cast<TransactionType>(nType);
+	Transaction::Type eType = static_cast<Transaction::Type>(nType);
 	
 	NSString *sType = [self transactionTypeToString:eType];
 	
@@ -1062,10 +1062,10 @@ static TransactionsController *gSharedInterface = nil;
 			
 			switch (eType)
 			{
-				case Withdrawal:
-				case PointOfSale:
-				case Debit:
-				case ATM:
+				case Transaction::Withdrawal:
+				case Transaction::PointOfSale:
+				case Transaction::Debit:
+				case Transaction::ATM:
 					bNegType = true;
 					break;
 				default:
@@ -1435,46 +1435,46 @@ NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponent
 	}
 }
 
-- (NSString*)transactionTypeToString:(TransactionType)type
+- (NSString*)transactionTypeToString:(Transaction::Type)type
 {
 	NSString *string;
 	
 	switch (type)
 	{
-		case None:
+		case Transaction::None:
 			string = NSLocalizedString(@"None", "Transaction Type -> None");
 			break;
-		case Deposit:
+		case Transaction::Deposit:
 			string = NSLocalizedString(@"Deposit", "Transaction Type -> Deposit");
 			break;
-		case Withdrawal:
+		case Transaction::Withdrawal:
 			string = NSLocalizedString(@"Withdrawal", "Transaction Type -> Withdrawal");
 			break;
-		case Transfer:
+		case Transaction::Transfer:
 			string = NSLocalizedString(@"Transfer", "Transaction Type -> Transfer");
 			break;
-		case StandingOrder:
+		case Transaction::StandingOrder:
 			string = NSLocalizedString(@"Standing Order", "Transaction Type -> Standing Order");
 			break;
-		case DirectDebit:
+		case Transaction::DirectDebit:
 			string = NSLocalizedString(@"Direct Debit", "Transaction Type -> Direct Debit");
 			break;
-		case PointOfSale:
+		case Transaction::PointOfSale:
 			string = NSLocalizedString(@"Point Of Sale", "Transaction Type -> Point Of Sale");
 			break;
-		case Charge:
+		case Transaction::Charge:
 			string = NSLocalizedString(@"Charge", "Transaction Type -> Charge");
 			break;
-		case ATM:
+		case Transaction::ATM:
 			string = NSLocalizedString(@"ATM", "Transaction Type -> ATM");
 			break;
-		case Cheque:
+		case Transaction::Cheque:
 			string = NSLocalizedString(@"Check", "Transaction Type -> Check");
 			break;
-		case Credit:
+		case Transaction::Credit:
 			string = NSLocalizedString(@"Credit", "Transaction Type -> Credit");
 			break;
-		case Debit:
+		case Transaction::Debit:
 			string = NSLocalizedString(@"Debit", "Transaction Type -> Debit");
 			break;
 	}
@@ -1666,14 +1666,11 @@ NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponent
 	if (!pDocument)
 		return;
 	
-	Account *pFromAccount = NULL;
-	pFromAccount = pDocument->getAccountPtr(nFromAccount);
-	Account *pToAccount = NULL;
-	pToAccount = pDocument->getAccountPtr(nToAccount);
+	Account* pFromAccount = &pDocument->getAccount(nFromAccount);
+	Account* pToAccount = &pDocument->getAccount(nToAccount);
 	
 	if (!pFromAccount || !pToAccount)
 	{
-		
 		return;
 	}
 	
@@ -1704,7 +1701,7 @@ NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponent
 	amount.setNegative();
 	
 	Transaction fromTransaction(strDescription, strToAccountName, strCategory, amount, date1);
-	fromTransaction.setType(Transfer);
+	fromTransaction.setType(Transaction::Transfer);
 	if (bMakeCleared)
 	{
 		fromTransaction.setCleared(true);
@@ -1714,7 +1711,7 @@ NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponent
 	amount.setPositive();
 	
 	Transaction toTransaction(strDescription, strFromAccountName, strCategory, amount, date1);
-	toTransaction.setType(Transfer);
+	toTransaction.setType(Transaction::Transfer);
 	if (bMakeCleared)
 	{
 		toTransaction.setCleared(true);

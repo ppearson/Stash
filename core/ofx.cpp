@@ -80,8 +80,8 @@ void OFXStatementResponse::writeToSGMLStream(std::fstream &stream)
 		dtEnd = getTransaction(numTransactions - 1).getDate();
 	}
 	
-	stream << "      <DTSTART>" << dtStart.FormattedDate(OFX) << "\n";
-	stream << "      <DTEND>" << dtEnd.FormattedDate(OFX) << "\n\n";
+	stream << "      <DTSTART>" << dtStart.FormattedDate(Date::OFX) << "\n";
+	stream << "      <DTEND>" << dtEnd.FormattedDate(Date::OFX) << "\n\n";
 	
 	std::vector<OFXStatementTransaction>::iterator it = m_aTransactions.begin();
 		 
@@ -102,7 +102,7 @@ void OFXStatementResponse::writeToSGMLStream(std::fstream &stream)
 	Date dt;
 	dt.Now();
 	
-	stream << "       <DTASOF>" << dt.FormattedDate(OFX) << "\n";
+	stream << "       <DTASOF>" << dt.FormattedDate(Date::OFX) << "\n";
 	stream << "      </LEDGERBAL>\n";
 	stream << "     </STMTRS>\n";
 }
@@ -132,8 +132,8 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
 		dtEnd = getTransaction(numTransactions - 1).getDate();
 	}
 	
-	stream << "      <DTSTART>" << dtStart.FormattedDate(OFX) << "</DTSTART>\n";
-	stream << "      <DTEND>" << dtEnd.FormattedDate(OFX) << "</DTEND>\n\n";
+	stream << "      <DTSTART>" << dtStart.FormattedDate(Date::OFX) << "</DTSTART>\n";
+	stream << "      <DTEND>" << dtEnd.FormattedDate(Date::OFX) << "</DTEND>\n\n";
 	
 	std::vector<OFXStatementTransaction>::iterator it = m_aTransactions.begin();
 	std::vector<OFXStatementTransaction>::iterator itEnd = m_aTransactions.end();
@@ -155,7 +155,7 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
 	Date dt;
 	dt.Now();
 	
-	stream << "       <DTASOF>" << dt.FormattedDate(OFX) << "</DTASOF>\n";
+	stream << "       <DTASOF>" << dt.FormattedDate(Date::OFX) << "</DTASOF>\n";
 	stream << "      </LEDGERBAL>\n";
 	stream << "     </STMTRS>\n";
 }
@@ -182,7 +182,7 @@ void OFXStatementResponse::addOFXTransactionsForAccount(const Account& account)
 	m_account.setAccountID(account.getName());
 }
 
-OFXStatementTransaction::OFXStatementTransaction(const TransactionType &type, const Date &date, const fixed &amount, std::string &name, int FITID) :
+OFXStatementTransaction::OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, std::string &name, int FITID) :
 									m_type(type), m_date(date), m_amount(amount), m_name(name)
 {
 	std::stringstream ss;
@@ -193,14 +193,14 @@ OFXStatementTransaction::OFXStatementTransaction(const TransactionType &type, co
 
 void OFXStatementTransaction::setDate(std::string &date)
 {
-	m_date.setDate(date, 0, OFX);
+	m_date.setDate(date, 0, Date::OFX);
 }
 
 void OFXStatementTransaction::writeToSGMLStream(std::fstream &stream)
 {
 	stream << "        <STMTTRN>\n";
 	stream << "          <TRNTYPE>" << TransactionTypeToString(m_type) << "\n";
-	stream << "          <DTPOSTED>" << m_date.FormattedDate(OFX) << "\n";
+	stream << "          <DTPOSTED>" << m_date.FormattedDate(Date::OFX) << "\n";
 	stream << "          <TRNAMT>" << m_amount << "\n";
 	stream << "          <FITID>" << m_fitid << "\n";
 	stream << "          <NAME>" << m_name << "\n";
@@ -217,7 +217,7 @@ void OFXStatementTransaction::writeToXMLStream(std::fstream &stream)
 {
 	stream << "        <STMTTRN>\n";
 	stream << "          <TRNTYPE>" << TransactionTypeToString(m_type) << "</TRNTYPE>\n";
-	stream << "          <DTPOSTED>" << m_date.FormattedDate(OFX) << "</DTPOSTED>\n";
+	stream << "          <DTPOSTED>" << m_date.FormattedDate(Date::OFX) << "</DTPOSTED>\n";
 	stream << "          <TRNAMT>" << m_amount << "</TRNAMT>\n";
 	stream << "          <FITID>" << m_fitid << "</FITID>\n";
 	stream << "          <NAME>" << m_name << "</NAME>\n";
@@ -329,7 +329,7 @@ void OFXData::writeSGMLStartToStream(std::fstream &stream)
 	Date dtNow;
 	dtNow.Now();
 	
-	stream << "    <DTSERVER>" << dtNow.FormattedDate(OFX) << "\n";
+	stream << "    <DTSERVER>" << dtNow.FormattedDate(Date::OFX) << "\n";
 	stream << "    <LANGUAGE>ENG\n";
 	stream << "   </SONRS>\n";
 	stream << " </SIGNONMSGSRSV1>\n\n";
@@ -352,7 +352,7 @@ void OFXData::writeXMLStartToStream(std::fstream &stream)
 	Date dtNow;
 	dtNow.Now();
 	
-	stream << " <DTSERVER>" << dtNow.FormattedDate(OFX) << "</DTSERVER>\n";
+	stream << " <DTSERVER>" << dtNow.FormattedDate(Date::OFX) << "</DTSERVER>\n";
 	stream << " <LANGUAGE>ENG</LANGUAGE>\n";
 	stream << " <FI>\n";
 	stream << " </FI>\n";

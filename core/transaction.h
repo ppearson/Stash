@@ -30,27 +30,27 @@
 
 #include "split_transaction.h"
 
-enum TransactionType
-{
-	None,
-	Deposit,
-	Withdrawal,
-	Transfer,
-	StandingOrder,
-	DirectDebit,
-	PointOfSale,
-	Charge,
-	ATM,
-	Cheque,
-	Credit,
-	Debit
-};
-
 class Transaction
 {
 public:
 	Transaction();
 	Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date);
+
+	enum Type
+	{
+		None,
+		Deposit,
+		Withdrawal,
+		Transfer,
+		StandingOrder,
+		DirectDebit,
+		PointOfSale,
+		Charge,
+		ATM,
+		Cheque,
+		Credit,
+		Debit
+	};
 	
 	bool isCleared() const { return m_Cleared; }
 	void setCleared(bool cleared) { m_Cleared = cleared; }
@@ -69,8 +69,8 @@ public:
 	void setPayee(std::string Payee) { m_Payee = Payee; }
 	const fixed& getAmount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
-	TransactionType getType() const { return m_Type; }
-	void setType(TransactionType type) { m_Type = type; }
+	Type getType() const { return m_Type; }
+	void setType(Type type) { m_Type = type; }
 	std::string getFITID() const { return m_FITID; }
 	void setFITID(std::string FITID) { m_FITID = FITID; }
 	
@@ -92,21 +92,22 @@ public:
 	void Store(std::fstream &stream) const;
 
 private:
-	bool m_Cleared;
-	bool m_Flagged;
-	bool m_Reconciled;
+	// TODO: memory packing / ordering
+	bool			m_Cleared;
+	bool			m_Flagged;
+	bool			m_Reconciled;
 		
-	Date m_Date;
-	std::string m_Category;
-	std::string m_Description;
-	std::string m_Payee;
-	fixed m_Amount;
-	TransactionType m_Type;
+	Date			m_Date;
+	std::string		m_Category;
+	std::string		m_Description;
+	std::string		m_Payee;
+	fixed			m_Amount;
+	Type			m_Type;
 	
-	bool m_HasFITID;
-	std::string m_FITID;
+	bool			m_HasFITID;
+	std::string		m_FITID;
 	
-	bool m_Split;
+	bool			m_Split;
 	
 	std::vector<SplitTransaction> m_aSplits;
 };

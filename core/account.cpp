@@ -31,7 +31,7 @@ Account::Account()
 	m_type = Cash;
 }
 
-void Account::Load(std::fstream &stream, int version)
+void Account::Load(std::fstream& stream, int version)
 {
 	LoadString(m_name, stream);
 	LoadString(m_institution, stream);
@@ -60,7 +60,7 @@ void Account::Load(std::fstream &stream, int version)
 	}
 }
 
-void Account::Store(std::fstream &stream) const
+void Account::Store(std::fstream& stream) const
 {
 	StoreString(m_name, stream);
 	StoreString(m_institution, stream);
@@ -81,7 +81,7 @@ void Account::Store(std::fstream &stream) const
 	}
 }
 
-int Account::addTransaction(Transaction &trans, bool bFITID)
+int Account::addTransaction(const Transaction& trans, bool bFITID)
 {
 	if (bFITID && trans.hasFITID())
 	{
@@ -98,7 +98,7 @@ void Account::swapTransactions(unsigned int from, unsigned int to)
 	iter_swap(m_aTransactions.begin() + from, m_aTransactions.begin() + to);
 }
 
-bool Account::doesFITIDExist(const std::string &FITID)
+bool Account::doesFITIDExist(const std::string& FITID) const
 {
 	std::set<std::string>::iterator it = m_aFITIDs.find(FITID);
 	
@@ -108,7 +108,7 @@ bool Account::doesFITIDExist(const std::string &FITID)
 	return true;
 }
 
-void Account::deleteFITID(std::string &FITID)
+void Account::deleteFITID(const std::string& FITID)
 {
 	std::set<std::string>::iterator it = m_aFITIDs.find(FITID);
 	

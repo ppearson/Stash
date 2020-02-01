@@ -81,10 +81,10 @@
 	
 	// do the format
 	
-	nDateFormat = UK;
+	nDateFormat = Date::UK;
 	
 	if (nSelectedFormat > 3)
-		nDateFormat = US;
+		nDateFormat = Date::US;
 		
 	switch (nSelectedFormat)
 	{

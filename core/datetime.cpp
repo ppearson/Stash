@@ -366,7 +366,7 @@ void Date::StoreOld(std::fstream &stream) const
 
 std::ostream & operator <<( std::ostream & os, const Date & d)
 {
-	os << d.FormattedDate(UK);
+	os << d.FormattedDate(Date::UK);
 	return os;
 }
 

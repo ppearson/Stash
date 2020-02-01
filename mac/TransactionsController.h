@@ -104,7 +104,7 @@ enum TransactionsToShow
 - (IBAction)DeleteTransaction:(id)sender;
 - (IBAction)SplitTransaction:(id)sender;
 
-- (NSString*)transactionTypeToString:(TransactionType)type;
+- (NSString*)transactionTypeToString:(Transaction::Type)type;
 
 - (IBAction)MoveUp:(id)sender;
 - (IBAction)MoveDown:(id)sender;

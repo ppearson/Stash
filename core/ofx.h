@@ -73,7 +73,7 @@ class OFXStatementTransaction
 {
 public:
 	OFXStatementTransaction() { }
-	OFXStatementTransaction(const TransactionType &type, const Date &date, const fixed &amount, std::string &name, int FITID);
+	OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, std::string &name, int FITID);
 	virtual ~OFXStatementTransaction() { }
 	
 	void setType(std::string &type);
@@ -83,84 +83,84 @@ public:
 	void setMemo(std::string &memo) { m_memo = memo; }
 	void setFITID(std::string &FITID) { m_fitid = FITID; }
 	
-	TransactionType	getType() { return m_type; }
-	const Date&		getDate() const { return m_date; }
-	fixed			getAmount() { return m_amount; }
-	std::string		getName() { return m_name; }
-	std::string		getMemo() { return m_memo; }
-	std::string		getFITID() { return m_fitid; }
+	Transaction::Type	getType() { return m_type; }
+	const Date&			getDate() const { return m_date; }
+	fixed				getAmount() { return m_amount; }
+	std::string			getName() { return m_name; }
+	std::string			getMemo() { return m_memo; }
+	std::string			getFITID() { return m_fitid; }
 	
 	void writeToSGMLStream(std::fstream &stream);
 	void writeToXMLStream(std::fstream &stream);
 	
 private:
-	TransactionType	m_type;
-	Date			m_date;
-	fixed			m_amount;
-	std::string		m_name;
-	std::string		m_memo;
-	std::string		m_fitid;
+	Transaction::Type	m_type;
+	Date				m_date;
+	fixed				m_amount;
+	std::string			m_name;
+	std::string			m_memo;
+	std::string			m_fitid;
 };
 
-static TransactionType StringToTransactionType(const std::string &string)
+static Transaction::Type StringToTransactionType(const std::string &string)
 {
 	if (string == "CASH" || string == "ATM")
-		return ATM;
+		return Transaction::ATM;
 	else if (string == "DEBIT")
-		return Debit;
+		return Transaction::Debit;
 	else if (string == "REPEATPMT")
-		return StandingOrder;
+		return Transaction::StandingOrder;
 	else if (string == "DIRECTDEBIT")
-		return DirectDebit;
+		return Transaction::DirectDebit;
 	else if (string == "PAYMENT" || string == "POS")
-		return PointOfSale;
+		return Transaction::PointOfSale;
 	else if (string == "XFER")
-		return Transfer;
+		return Transaction::Transfer;
 	else if (string == "SRVCHG")
-		return Charge;
+		return Transaction::Charge;
 	else if (string == "DEP" || string == "DIRECTDEP")
-		return Deposit;
+		return Transaction::Deposit;
 	else if (string == "CHECK")
-		return Cheque;
+		return Transaction::Cheque;
 	else if (string == "CREDIT")
-		return Credit;
+		return Transaction::Credit;
 	
-	return None;
+	return Transaction::None;
 }
 
-static std::string TransactionTypeToString(TransactionType type)
+static std::string TransactionTypeToString(Transaction::Type type)
 {
 	std::string strType;
 	switch (type)
 	{
-		case ATM:
+		case Transaction::ATM:
 			strType = "ATM";
 			break;
-		case StandingOrder:
+		case Transaction::StandingOrder:
 			strType = "REPEATPMT";
 			break;
-		case DirectDebit:
+		case Transaction::DirectDebit:
 			strType = "DIRECTDEBIT";
 			break;
-		case PointOfSale:
+		case Transaction::PointOfSale:
 			strType = "POS";
 			break;
-		case Transfer:
+		case Transaction::Transfer:
 			strType = "XFER";
 			break;
-		case Charge:
+		case Transaction::Charge:
 			strType = "SRVCHG";
 			break;
-		case Deposit:
+		case Transaction::Deposit:
 			strType = "DEP";
 			break;
-		case Cheque:
+		case Transaction::Cheque:
 			strType = "CHECK";
 			break;
-		case Credit:
+		case Transaction::Credit:
 			strType = "CREDIT";
 			break;
-		case Debit:
+		case Transaction::Debit:
 			strType = "DEBIT";
 			break;
 		default:

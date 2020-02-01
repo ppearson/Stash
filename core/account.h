@@ -45,31 +45,51 @@ class Account
 public:
 	Account();
 	
-	void setName(std::string name) { m_name = name; }
-	void setInstitution(std::string institution) { m_institution = institution; }
-	void setNumber(std::string number) { m_number = number; }
-	void setNote(std::string note) { m_note = note; }
-	void setType(AccountType type) { m_type = type; }
+	void setName(const std::string& name)
+	{
+		m_name = name;
+	}
+
+	void setInstitution(const std::string& institution)
+	{
+		m_institution = institution;
+	}
+
+	void setNumber(const std::string& number)
+	{
+		m_number = number;
+	}
+
+	void setNote(const std::string& note)
+	{
+		m_note = note;
+	}
+
+	void setType(AccountType type)
+	{
+		m_type = type;
+	}
 	
-	std::string getName() const { return m_name; }
-	std::string getInstitution() { return m_institution; }
-	std::string getNumber() { return m_number; }
-	std::string getNote() { return m_note; }
+	const std::string& getName() const { return m_name; }
+	const std::string& getInstitution() const { return m_institution; }
+	const std::string& getNumber() const { return m_number; }
+	const std::string& getNote() const { return m_note; }
 	AccountType getType() const { return m_type; }
 	
-	int addTransaction(Transaction &trans, bool bFITID = false);
-	Transaction &getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
+	int addTransaction(const Transaction& trans, bool bFITID = false);
+	Transaction& getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
+	const Transaction& getTransaction(unsigned int trans) const { return m_aTransactions[trans]; }
 	unsigned int getTransactionCount() const { return m_aTransactions.size(); }
 	void deleteTransaction(unsigned int trans) { m_aTransactions.erase(m_aTransactions.begin() + trans); }
 	
-	bool doesFITIDExist(const std::string &FITID);
-	void addFITID(std::string &FITID) { m_aFITIDs.insert(FITID); }
-	void deleteFITID(std::string &FITID);
+	bool doesFITIDExist(const std::string& FITID) const;
+	void addFITID(const std::string& FITID) { m_aFITIDs.insert(FITID); }
+	void deleteFITID(const std::string& FITID);
 	
 	void swapTransactions(unsigned int from, unsigned int to);
 	
-	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream) const;
+	void Load(std::fstream& stream, int version);
+	void Store(std::fstream& stream) const;
 	
 	inline std::vector<Transaction>::iterator begin() { return m_aTransactions.begin(); }
 	inline std::vector<Transaction>::iterator end() { return m_aTransactions.end(); }

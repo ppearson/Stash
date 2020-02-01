@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -35,36 +35,88 @@ public:
 	
 	static Document* getInstance();
 	
-	int addAccount(Account &acc) { m_aAccounts.push_back(acc); return m_aAccounts.size() - 1; }
-	Account &getAccount(int acc) { return m_aAccounts[acc]; }
-	Account *getAccountPtr(int acc) { return &m_aAccounts[acc]; }
-	unsigned int getAccountCount() const { return m_aAccounts.size(); }
-	void deleteAccount(int acc) { m_aAccounts.erase(m_aAccounts.begin() + acc); }
+	int addAccount(const Account& acc)
+	{
+		m_aAccounts.push_back(acc);
+		return m_aAccounts.size() - 1;
+	}
+
+	Account& getAccount(int acc)
+	{
+		return m_aAccounts[acc];
+	}
+
+	const Account& getAccount(int acc) const
+	{
+		return m_aAccounts[acc];
+	}
+
+	unsigned int getAccountCount() const
+	{
+		return m_aAccounts.size();
+	}
+
+	void deleteAccount(int acc)
+	{
+		m_aAccounts.erase(m_aAccounts.begin() + acc);
+	}
 	
-	bool doesPayeeExist(std::string Payee);
-	void addPayee(std::string Payee) { m_aPayees.insert(Payee); }
-	void deletePayee(std::string Payee);
+	bool doesPayeeExist(const std::string& payee) const;
+	void addPayee(const std::string& payee)
+	{
+		m_aPayees.insert(payee);
+	}
+	void deletePayee(const std::string& payee);
 	
-	bool doesCategoryExist(std::string Category);
-	void addCategory(std::string Category) { m_aCategories.insert(Category); }
-	void deleteCategory(std::string Category);
+	bool doesCategoryExist(const std::string& Category) const;
+	void addCategory(const std::string& Category)
+	{
+		m_aCategories.insert(Category);
+	}
+	void deleteCategory(const std::string& Category);
 	
-	int addScheduledTransaction(ScheduledTransaction &schedTransaction);
-	ScheduledTransaction &getScheduledTransaction(unsigned int schedTrans) { return m_aScheduledTransactions[schedTrans]; }
+	int addScheduledTransaction(const ScheduledTransaction& schedTransaction);
+	ScheduledTransaction& getScheduledTransaction(unsigned int schedTrans)
+	{
+		return m_aScheduledTransactions[schedTrans];
+	}
+	const ScheduledTransaction& getScheduledTransaction(unsigned int schedTrans) const
+	{
+		return m_aScheduledTransactions[schedTrans];
+	}
+
 	void deleteScheduledTransaction(unsigned int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
 	
 	void disabledScheduledTransactionsForAccount(unsigned int nAccount);
 	
-	int addGraph(Graph &graph) { m_aGraphs.push_back(graph); return m_aGraphs.size() - 1; }
-	Graph &getGraph(unsigned int graph) { return m_aGraphs[graph]; }
-	Graph *getGraphPtr(unsigned int graph) { return &m_aGraphs[graph]; }
-	unsigned int getGraphCount() { return m_aGraphs.size(); }
-	void deleteGraph(unsigned int graph) { m_aGraphs.erase(m_aGraphs.begin() + graph); }
+	int addGraph(const Graph& graph)
+	{
+		m_aGraphs.push_back(graph);
+		return m_aGraphs.size() - 1;
+	}
+
+	Graph& getGraph(unsigned int graph)
+	{
+		return m_aGraphs[graph];
+	}
+	const Graph& getGraph(unsigned int graph) const
+	{
+		return m_aGraphs[graph];
+	}
+
+	unsigned int getGraphCount() const
+	{
+		return m_aGraphs.size();
+	}
+	void deleteGraph(unsigned int graph)
+	{
+		m_aGraphs.erase(m_aGraphs.begin() + graph);
+	}
 	
 	void clear();
 	
-	bool Load(std::fstream &stream, bool& futureVersion);
-	bool Store(std::fstream &stream) const;
+	bool Load(std::fstream& stream, bool& futureVersion);
+	bool Store(std::fstream& stream) const;
 
 	const std::vector<Account>& getAccounts() const
 	{
@@ -88,7 +140,7 @@ public:
 	
 	fixed getBalance(bool onlyReconciled) const;
 	
-	bool hasUnsavedChanges() { return m_unsavedChanges; }
+	bool hasUnsavedChanges() const { return m_unsavedChanges; }
 	void setUnsavedChanges(bool value) { m_unsavedChanges = value; }
 	
 protected:

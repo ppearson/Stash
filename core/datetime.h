@@ -28,18 +28,18 @@
 #include <ctime>
 #include <fstream>
 
-enum DateStringFormat
-{
-	UK,
-	US,
-	OFX
-};
-
 #define SECONDS_IN_DAY 86400
 
 class Date
 {
 public:
+	enum DateStringFormat
+	{
+		UK,
+		US,
+		OFX
+	};
+
 	Date();
 	Date(const Date &rhs);
 	Date(time_t Time);
@@ -114,8 +114,8 @@ public:
 	MonthYear() : m_month(-1), m_year(0) { } // needed for std::map[]
 	MonthYear(int month, int year);
 	
-	int getMonth() { return m_month; }
-	int getYear() { return m_year; }
+	int getMonth() const { return m_month; }
+	int getYear() const { return m_year; }
 	
 	void increment1();
 	

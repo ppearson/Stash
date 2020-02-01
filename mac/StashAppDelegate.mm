@@ -445,7 +445,7 @@ toolbarViewGroupTag;
 	
 	int nAccount = [sender getItemIndex];
 		
-	m_pAccount = m_Document.getAccountPtr(nAccount);			
+	m_pAccount = &m_Document.getAccount(nAccount);
 	
 	[vTransactionsView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vTransactionsView];
@@ -527,7 +527,7 @@ toolbarViewGroupTag;
 	
 	int nGraph = [sender getItemIndex];
 	
-	Graph* pGraph = m_Document.getGraphPtr(nGraph);
+	Graph* pGraph = &m_Document.getGraph(nGraph);
 	
 	if (!pGraph)
 		return;
@@ -548,7 +548,7 @@ toolbarViewGroupTag;
 {
 	int nAccount = [sender getItemIndex];
 	
-	m_pAccount = m_Document.getAccountPtr(nAccount);
+	m_pAccount = &m_Document.getAccount(nAccount);
 	
 	NSString *title = [sender title];
 	
@@ -566,7 +566,7 @@ toolbarViewGroupTag;
 {
 	int nGraph = [sender getItemIndex];
 	
-	Graph *pGraph = m_Document.getGraphPtr(nGraph);
+	Graph* pGraph = &m_Document.getGraph(nGraph);
 	
 	if (!pGraph)
 		return;
@@ -660,7 +660,7 @@ toolbarViewGroupTag;
 		
 		NSString *sSAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 		
-		NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
+		NSDate *date = convertToNSDate(it->getNextDate());
 		NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
 		
 		int nFreq = it->getFrequency();
@@ -800,7 +800,7 @@ toolbarViewGroupTag;
 		[indexBar selectItem:sAccountKey];
         
         // update data structures
-        m_pAccount = m_Document.getAccountPtr(0);
+        m_pAccount = &m_Document.getAccount(0);
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC showTransactionsForAccount:m_pAccount];
 	}
@@ -808,7 +808,7 @@ toolbarViewGroupTag;
 	{
 		int nSelectedAccount = [indexBar getItemIndex];
 		
-		m_pAccount = m_Document.getAccountPtr(nSelectedAccount);
+		m_pAccount = &m_Document.getAccount(nSelectedAccount);
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC showTransactionsForAccount:m_pAccount];
 	}
@@ -955,7 +955,7 @@ toolbarViewGroupTag;
 		
 		ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(row);
 		
-		TransactionType eType = schedTrans.getType();
+		Transaction::Type eType = schedTrans.getType();
 		
 		Date date1 = schedTrans.getNextDate();
 		NSDate *datetemp = convertToNSDate(date1);
@@ -971,12 +971,12 @@ toolbarViewGroupTag;
 		
 		[scheduledAmount setStringValue:[item valueForKey:@"amount"]];
 		
-		Frequency eFreq = schedTrans.getFrequency();
+		ScheduledTransaction::Frequency eFreq = schedTrans.getFrequency();
 		
 		[scheduledFrequency selectItemAtIndex:eFreq];
 		[scheduledType selectItemAtIndex:eType];
 		
-		Constraint eConstraint = schedTrans.getConstraint();
+		ScheduledTransaction::Constraint eConstraint = schedTrans.getConstraint();
 		[scheduledConstraint selectItemAtIndex:eConstraint];
 		
 		[scheduledDateCntl setDateValue:datetemp];
@@ -1046,15 +1046,15 @@ toolbarViewGroupTag;
 	NSString *sAmount = [[valueFormatter currencyStringFromFixed:fAmount] retain];
 	
 	int nType = [scheduledType indexOfSelectedItem];
-	TransactionType eType = static_cast<TransactionType>(nType);
+	Transaction::Type eType = static_cast<Transaction::Type>(nType);
 	
 	int nAccount = [scheduledAccount indexOfSelectedItem];
 	
 	int nFrequency = [scheduledFrequency indexOfSelectedItem];
-	Frequency eFreq = static_cast<Frequency>(nFrequency);
+	ScheduledTransaction::Frequency eFreq = static_cast<ScheduledTransaction::Frequency>(nFrequency);
 	
 	int nConstraint = [scheduledConstraint indexOfSelectedItem];
-	Constraint eConstraint = static_cast<Constraint>(nConstraint);
+	ScheduledTransaction::Constraint eConstraint = static_cast<ScheduledTransaction::Constraint>(nConstraint);
 	
 	// update the actual ScheduledTransaction
 	
@@ -1698,7 +1698,7 @@ toolbarViewGroupTag;
 			
 			NSString *sSAmount = [[valueFormatter currencyStringFromFixed:it->getAmount()] retain];
 			
-			NSDate *date = convertToNSDate(const_cast<Date&>(it->getNextDate2()));
+			NSDate *date = convertToNSDate(it->getNextDate());
 			NSString *sSDate = [[dateFormatter stringFromDate:date] retain];
 			
 			int nAccount = it->getAccount();
@@ -1810,7 +1810,7 @@ toolbarViewGroupTag;
 - (void)importQIFConfirmed:(ImportQIFController *)importQIFController
 {
 	int nDateFormat = [importQIFController dateFormat];
-	DateStringFormat dateFormat = static_cast<DateStringFormat>(nDateFormat);
+	Date::DateStringFormat dateFormat = static_cast<Date::DateStringFormat>(nDateFormat);
 	
 	char cSeparator = [importQIFController separator];
 	
@@ -2163,7 +2163,7 @@ toolbarViewGroupTag;
         fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
-		exportAccountToQIFFile(m_pAccount, strFile, UK);
+		exportAccountToQIFFile(m_pAccount, strFile, Date::UK);
 	}	
 }
 

@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009-2010 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -202,9 +202,9 @@ fixed Document::getBalance(bool onlyReconciled) const
 	return balance;
 }
 
-bool Document::doesPayeeExist(std::string Payee)
+bool Document::doesPayeeExist(const std::string& payee) const
 {
-	std::set<std::string>::iterator it = m_aPayees.find(Payee);
+	std::set<std::string>::iterator it = m_aPayees.find(payee);
 	
 	if (it == m_aPayees.end())
 		return false;
@@ -212,15 +212,15 @@ bool Document::doesPayeeExist(std::string Payee)
 	return true;
 }
 
-void Document::deletePayee(std::string Payee)
+void Document::deletePayee(const std::string& payee)
 {
-	std::set<std::string>::iterator it = m_aPayees.find(Payee);
+	std::set<std::string>::iterator it = m_aPayees.find(payee);
 	
 	if (it != m_aPayees.end())
 		m_aPayees.erase(it);
 }
 
-bool Document::doesCategoryExist(std::string Category)
+bool Document::doesCategoryExist(const std::string& Category) const
 {
 	std::set<std::string>::iterator it = m_aCategories.find(Category);
 	
@@ -230,7 +230,7 @@ bool Document::doesCategoryExist(std::string Category)
 	return true;
 }
 
-void Document::deleteCategory(std::string Category)
+void Document::deleteCategory(const std::string& Category)
 {
 	std::set<std::string>::iterator it = m_aCategories.find(Category);
 	
@@ -238,7 +238,7 @@ void Document::deleteCategory(std::string Category)
 		m_aCategories.erase(it);
 }
 
-int Document::addScheduledTransaction(ScheduledTransaction &schedTransaction)
+int Document::addScheduledTransaction(const ScheduledTransaction& schedTransaction)
 {
 	m_aScheduledTransactions.push_back(schedTransaction);
 	return m_aScheduledTransactions.size() - 1;

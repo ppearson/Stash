@@ -30,16 +30,47 @@ class SplitTransaction
 {
 public:
 	SplitTransaction() { }
-	SplitTransaction(std::string Description, std::string Payee, std::string Category, fixed Amount);
+	SplitTransaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount);
 	
-	std::string getDescription() const { return m_Description; }
-	void setDescription(std::string Description) { m_Description = Description; }
-	std::string getPayee() const { return m_Payee; }
-	void setPayee(std::string Payee) { m_Payee = Payee; }
-	std::string getCategory() const { return m_Category; }
-	void setCategory(std::string Category) { m_Category = Category; }
-	fixed getAmount() const { return m_Amount; }
-	void setAmount(fixed Amount) { m_Amount = Amount; }
+	const std::string& getDescription() const
+	{
+		return m_Description;
+	}
+
+	void setDescription(const std::string& Description)
+	{
+		m_Description = Description;
+	}
+
+	const std::string& getPayee() const
+	{
+		return m_Payee;
+	}
+
+	void setPayee(const std::string& Payee)
+	{
+		m_Payee = Payee;
+	}
+
+	const std::string& getCategory() const
+	{
+		return m_Category;
+	}
+
+	void setCategory(const std::string& Category)
+	{
+		m_Category = Category;
+	}
+
+	fixed getAmount() const
+	{
+		return m_Amount;
+	}
+
+	void setAmount(fixed Amount)
+	{
+		m_Amount = Amount;
+	}
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream) const;

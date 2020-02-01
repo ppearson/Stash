@@ -24,7 +24,7 @@
 
 #include <string.h> // for memset()
 
-bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringFormat dateFormat)
+bool exportAccountToQIFFile(Account *pAccount, std::string path, Date::DateStringFormat dateFormat)
 {
 	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::trunc);
 	
@@ -89,7 +89,7 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringForma
 	return true;
 }
 
-bool importQIFFileToAccount(Account *pAccount, std::string path, DateStringFormat dateFormat, char cDateFieldSep, bool bMarkCleared)
+bool importQIFFileToAccount(Account *pAccount, std::string path, Date::DateStringFormat dateFormat, char cDateFieldSep, bool bMarkCleared)
 {
 	bool bDOSFormat = false;
 	char lineEndings;
@@ -299,7 +299,7 @@ void clearTransaction(Transaction &trans)
 	trans.setDescription("");
 	trans.setPayee("");
 	trans.setReconciled(false);
-	trans.setType(None);
+	trans.setType(Transaction::None);
 	trans.setSplit(false);
 
 	int numSplits = trans.getSplitCount();

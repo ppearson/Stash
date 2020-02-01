@@ -28,41 +28,40 @@
 #include "datetime.h"
 #include <string>
 
-enum Frequency
-{
-	Weekly,
-	TwoWeeks,
-	FourWeeks,
-	Monthly,
-	TwoMonths,
-	Quarterly,
-	Annually
-};
-
-enum Constraint
-{
-	ExactDate,
-	ExactOrNextWorkingDay,
-	LastWorkingDayOfMonth	
-};
-
 class ScheduledTransaction
 {
 public:
 	ScheduledTransaction();
-	~ScheduledTransaction() {};
+	~ScheduledTransaction() {}
+
+	enum Frequency
+	{
+		Weekly,
+		TwoWeeks,
+		FourWeeks,
+		Monthly,
+		TwoMonths,
+		Quarterly,
+		Annually
+	};
+
+	enum Constraint
+	{
+		ExactDate,
+		ExactOrNextWorkingDay,
+		LastWorkingDayOfMonth
+	};
 	
-	unsigned int getAccount() { return m_account; }
-	bool isEnabled() { return m_enabled; }
-	std::string getPayee() { return m_payee; }
-	fixed getAmount() { return m_amount; }
-	std::string getCategory() { return m_category; }
-	std::string getDescription() { return m_description; }
-	Frequency getFrequency() { return m_frequency; }
-	Date getNextDate() { return m_nextDate; }
-	const Date &getNextDate2() { return m_nextDate; }
-	TransactionType getType() { return m_type; }
-	Constraint getConstraint() { return m_constraint; }
+	unsigned int getAccount() const { return m_account; }
+	bool isEnabled() const { return m_enabled; }
+	const std::string& getPayee() const { return m_payee; }
+	fixed getAmount() const { return m_amount; }
+	const std::string& getCategory() const { return m_category; }
+	const std::string& getDescription() const { return m_description; }
+	Frequency getFrequency() const { return m_frequency; }
+	const Date& getNextDate() const { return m_nextDate; }
+	Transaction::Type getType() const { return m_type; }
+	Constraint getConstraint() const { return m_constraint; }
 	
 	void setAccount(unsigned int account) { m_account = account; }
 	void setEnabled(bool enabled) { m_enabled = enabled; }
@@ -72,7 +71,7 @@ public:
 	void setDescription(std::string description) { m_description = description; }
 	void setFrequency(Frequency frequency) { m_frequency = frequency; }
 	void setNextDate(Date nextDate) { m_nextDate = nextDate; }
-	void setType(TransactionType type) { m_type = type; }
+	void setType(Transaction::Type type) { m_type = type; }
 	void setConstraint(Constraint constraint) { m_constraint = constraint; }
 	
 	void Load(std::fstream &stream, int version);
@@ -81,17 +80,17 @@ public:
 	void AdvanceNextDate();
 	
 protected:
-	unsigned int m_account;
-	bool m_enabled;
-	std::string m_payee;
-	fixed m_amount;
-	std::string m_category;
-	std::string m_description;	
+	unsigned int		m_account;
+	bool				m_enabled;
+	std::string			m_payee;
+	fixed				m_amount;
+	std::string			m_category;
+	std::string			m_description;
 	
-	Frequency m_frequency;
-	Date m_nextDate;
-	TransactionType m_type;
-	Constraint m_constraint;
+	Frequency			m_frequency;
+	Date				m_nextDate;
+	Transaction::Type	m_type;
+	Constraint			m_constraint;
 	
 };
 

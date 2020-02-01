@@ -112,7 +112,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 			continue;
 		}
 		
-		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transaction::Transfer)
 			continue;
 		
 		if ((*it).isSplit() && (*it).getSplitCount() > 0)
@@ -211,7 +211,7 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 			continue;
 		}
 		
-		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transaction::Transfer)
 			continue;
 		
 		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());		
@@ -594,7 +594,7 @@ bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<Overvi
 		else
 			income = false;
 		
-		if (criteria.m_ignoreTransfers && (*it).getType() == Transfer)
+		if (criteria.m_ignoreTransfers && (*it).getType() == Transaction::Transfer)
 			continue;
 		
 		MonthYear my((*it).getDate().getMonth(), (*it).getDate().getYear());

@@ -24,7 +24,7 @@
 #include <bitset>
 #include "scheduled_transaction.h"
 
-ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(None), m_constraint(ExactDate)
+ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(Transaction::None), m_constraint(ExactDate)
 {
 	m_nextDate.Now();
 }

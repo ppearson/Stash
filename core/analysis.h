@@ -38,7 +38,7 @@ class PieChartItem
 {
 public:
 	PieChartItem(std::string title, double angle, fixed amount);
-	~PieChartItem() { };
+	~PieChartItem() { }
 	
 	void setTitle(std::string title) { m_title = title; }
 	void setAngle(double angle) { m_angle = angle; }
