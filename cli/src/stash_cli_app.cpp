@@ -81,7 +81,7 @@ void StashCLIApp::listAccounts(bool showBalances) const
 		fixed totalBalance = m_document.getBalance(true);
 		double dTotalBalance = totalBalance.ToDouble();
 
-		fprintf(stderr, "\nTotal balace: $%0.2f\n", dTotalBalance);
+		fprintf(stderr, "\nTotal balance: $%0.2f\n", dTotalBalance);
 	}
 }
 

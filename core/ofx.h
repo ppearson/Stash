@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "fixed.h"
 #include "datetime.h"
@@ -43,7 +44,7 @@ class OFXBankAccount
 public:
 	OFXBankAccount() { }
 	OFXBankAccount(std::string bankID, std::string accountID, std::string type);
-	virtual ~OFXBankAccount() { };
+	virtual ~OFXBankAccount() { }
 	
 	void setBankID(std::string id) { m_bankID = id; }
 	void setAccountID(std::string id) { m_accountID = id; }
@@ -71,7 +72,7 @@ static AccountType StringToAccountType(const std::string &string)
 class OFXStatementTransaction
 {
 public:
-	OFXStatementTransaction() { };
+	OFXStatementTransaction() { }
 	OFXStatementTransaction(const TransactionType &type, const Date &date, const fixed &amount, std::string &name, int FITID);
 	virtual ~OFXStatementTransaction() { }
 	
@@ -177,7 +178,7 @@ class OFXStatementResponse
 public:
 	OFXStatementResponse() { }
 	OFXStatementResponse(const OFXBankAccount &account);
-	virtual ~OFXStatementResponse() { };
+	virtual ~OFXStatementResponse() { }
 	
 	void addTransaction(std::auto_ptr<OFXStatementTransaction> transaction) { m_aTransactions.push_back(*transaction); }
 	

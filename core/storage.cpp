@@ -22,6 +22,8 @@
 
 #include "storage.h"
 
+#include <string.h> // for memset()
+
 bool exportAccountToQIFFile(Account *pAccount, std::string path, DateStringFormat dateFormat)
 {
 	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::trunc);

@@ -28,4 +28,11 @@ INCLUDE_DIRECTORIES("src")
 FILE(GLOB_RECURSE stash_cli_SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 ADD_EXECUTABLE(stash_cli ${stash_core_SOURCES} ${stash_cli_SOURCES})
-TARGET_LINK_LIBRARIES(stash_cli "iconv")
+
+# OS X needs iconv at link time, but Linux doesn't for some reason.
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	TARGET_LINK_LIBRARIES(stash_cli "iconv")
+ELSE()
+    TARGET_LINK_LIBRARIES(stash_cli)
+ENDIF()
+
