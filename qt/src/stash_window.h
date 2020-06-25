@@ -46,6 +46,9 @@ public:
 	StashWindow();
 	virtual ~StashWindow();
 	
+	
+	virtual void closeEvent(QCloseEvent* event);
+	
 protected:
 	
 	void setupWindow();
@@ -70,6 +73,8 @@ public slots:
 	void fileExportOFXFile();
 	void fileExportQIFFile();
 	
+	void fileOpenRecentFile();
+	
 	void viewShowToolbar(bool visible);
 	
 	void viewShowRecentTransactions();
@@ -80,11 +85,19 @@ public slots:
 	void insertGraph();
 	
 	void transactionAddNewTransaction();
+	void transactionDeleteTransaction();
 	void transactionSplitTransaction();
-	
-	
+	void transactionMoveUp();
+	void transactionMoveDown();
+	void transactionMakeTransfer();
 	
 	void docIndexSelectionHasChanged(DocumentIndexType type, int index);
+	
+	
+protected:
+	void updateRecentFileActions();
+	void setCurrentFile(const QString& fileName);
+	bool shouldDiscardCurrentDocument();
 	
 	
 protected:
@@ -101,6 +114,7 @@ protected:
 	QAction*				m_pViewMenuShowAllTransactions;
 	
 	QAction*				m_pTransactionAddNewTransaction;
+	QAction*				m_pTransactionDeleteTransaction;
 	QAction*				m_pTransactionSplitTransaction;
 	QAction*				m_pTransactionMoveUp;
 	QAction*				m_pTransactionMoveDown;
@@ -117,7 +131,11 @@ protected:
 	TransactionsViewWidget*	m_pTransactionsViewWidget;
 	
 	// other state
-	std::string				m_currentFilePath;
+	QString					m_currentFile;
+	
+	QStringList				m_recentFiles;
+	enum { MaxRecentFiles = 5 };
+	QAction*				m_recentFileActions[MaxRecentFiles];
 };
 
 #endif // STASH_WINDOW_H

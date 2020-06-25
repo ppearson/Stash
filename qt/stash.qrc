@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/stash">
+        <file>images/down.png</file>
+        <file>images/split.png</file>
+        <file>images/up.png</file>
+        <file>images/add_new.svg</file>
+        <file>images/delete_new.svg</file>
+        <file>images/down_new.svg</file>
+        <file>images/up_new.svg</file>
+    </qresource>
+</RCC>

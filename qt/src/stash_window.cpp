@@ -27,6 +27,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 
+#include <QCloseEvent>
 #include <QScrollArea>
 #include <QSignalMapper>
 #include <QSplitter>
@@ -51,9 +52,21 @@ StashWindow::~StashWindow()
 	
 }
 
+void StashWindow::closeEvent(QCloseEvent* event)
+{
+	if (shouldDiscardCurrentDocument())
+	{
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
 void StashWindow::setupWindow()
 {
-	resize(836, 575);
+	resize(900, 575);
 	
     setTabShape(QTabWidget::Rounded);
 	
@@ -81,14 +94,19 @@ void StashWindow::setupWindow()
 	m_pMainLayout->addWidget(m_pIndexSplitter);
 	
 	m_pIndexView = new DocumentIndexView(m_documentController.getDocument(), m_pIndexSplitter);
-	m_pIndexView->setMinimumWidth(200);
-	m_pIndexView->setMaximumWidth(300);
-	m_pIndexView->setMinimumHeight(300);
+	m_pIndexView->setMinimumWidth(80);
+	m_pIndexView->setMaximumWidth(250);
+	m_pIndexView->setMinimumHeight(200);
+	// Qt seems to ignore the 'Preferred' policy here (docs say it should use sizeHint() as initial
+	// preferred width, while still allowing optional contraction and expansion, which is what we want),
+	// and uses the MaximumWidth value as the initial width instead, which *isn't* what we want.
+	// So we'll use 'Fixed' instead for the moment, as it's the least bad option (although it still sets
+	// the initial width to the MaxiumWidth value, but at least it doesn't automatically expand further).
 	m_pIndexView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	
 	connect(m_pIndexView, SIGNAL(indexSelectionHasChanged(DocumentIndexType,int)), this, SLOT(docIndexSelectionHasChanged(DocumentIndexType,int)));
 	
-	m_pTransactionsViewWidget = new TransactionsViewWidget(this);
+	m_pTransactionsViewWidget = new TransactionsViewWidget(this, this); // bit odd, but prevents need to cast to get both...
 	
 	m_pIndexSplitter->addWidget(m_pIndexView);
 	m_pIndexSplitter->addWidget(m_pTransactionsViewWidget);
@@ -97,7 +115,7 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setCollapsible(1, false);
 	
 	QList<int> mainSizes;
-	mainSizes.push_back(200);
+	mainSizes.push_back(150);
 	mainSizes.push_back(500);
 	
 	m_pIndexSplitter->setSizes(mainSizes);
@@ -105,7 +123,11 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setStretchFactor(0, 0);
 	m_pIndexSplitter->setStretchFactor(0, 2);
 	
+	m_pIndexView->resize(100, 50);
+	
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowRecent);
+	
+	setCurrentFile("");
 }
 
 void StashWindow::setupMenu()
@@ -122,6 +144,12 @@ void StashWindow::setupMenu()
 	QAction* pFileSaveAction = new QAction(this);
 	QAction* pFileSaveAsAction = new QAction(this);
 	
+	QAction* pFileImportOFXFileAction = new QAction(this);
+	QAction* pFileImportQIFFileAction = new QAction(this);
+	
+	QAction* pFileExportOFXFileAction = new QAction(this);
+	QAction* pFileExportQIFFileAction = new QAction(this);
+	
 	pFileNewAction->setText(QApplication::translate("StashWindow", "File New", 0, QApplication::UnicodeUTF8));
 	
 	pFileOpenAction->setText(QApplication::translate("StashWindow", "File Open...", 0, QApplication::UnicodeUTF8));
@@ -133,6 +161,12 @@ void StashWindow::setupMenu()
 	pFileSaveAsAction->setText(QApplication::translate("StashWindow", "Save As...", 0, QApplication::UnicodeUTF8));
     pFileSaveAsAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+S", 0, QApplication::UnicodeUTF8));
 	
+	pFileImportOFXFileAction->setText(QApplication::translate("StashWindow", "Import OFX...", 0, QApplication::UnicodeUTF8));
+	pFileImportQIFFileAction->setText(QApplication::translate("StashWindow", "Import QIF...", 0, QApplication::UnicodeUTF8));
+	
+	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0, QApplication::UnicodeUTF8));
+	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0, QApplication::UnicodeUTF8));
+	
 	menuFile->addAction(pFileNewAction);
 	menuFile->addSeparator();
 	menuFile->addAction(pFileOpenAction);
@@ -141,11 +175,35 @@ void StashWindow::setupMenu()
 	menuFile->addAction(pFileSaveAsAction);
 	menuFile->addSeparator();
 	
+	menuFile->addAction(pFileImportOFXFileAction);
+	menuFile->addAction(pFileImportQIFFileAction);
+	menuFile->addSeparator();
+	menuFile->addAction(pFileExportOFXFileAction);
+	menuFile->addAction(pFileExportQIFFileAction);
+	
 	connect(pFileNewAction, SIGNAL(triggered()), this, SLOT(fileNew()));
 	connect(pFileOpenAction, SIGNAL(triggered()), this, SLOT(fileOpen()));
 	connect(pFileSaveAction, SIGNAL(triggered()), this, SLOT(fileSave()));
 	connect(pFileSaveAsAction, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
 	
+	connect(pFileImportOFXFileAction, SIGNAL(triggered()), this, SLOT(fileImportOFXFile()));
+	connect(pFileImportQIFFileAction, SIGNAL(triggered()), this, SLOT(fileImportQIFFile()));
+	connect(pFileExportOFXFileAction, SIGNAL(triggered()), this, SLOT(fileExportOFXFile()));
+	connect(pFileExportQIFFileAction, SIGNAL(triggered()), this, SLOT(fileExportQIFFile()));
+	
+	menuFile->addSeparator();
+	
+	for (int i = 0; i < MaxRecentFiles; i++)
+	{
+		m_recentFileActions[i] = new QAction(this);
+		menuFile->addAction(m_recentFileActions[i]);
+	}
+
+	for (int i = 0; i < MaxRecentFiles; ++i)
+	{
+		m_recentFileActions[i]->setVisible(false);
+		connect(m_recentFileActions[i], SIGNAL(triggered()), this, SLOT(fileOpenRecentFile()));
+	}
 	
     QMenu* menuEdit = new QMenu("Edit", m_pMenuBar);
     menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
@@ -200,17 +258,43 @@ void StashWindow::setupMenu()
 	menuTransaction->setObjectName(QString::fromUtf8("menuTransaction"));
 	
 	m_pTransactionAddNewTransaction = new QAction(this);
+	m_pTransactionDeleteTransaction = new QAction(this);
 	m_pTransactionSplitTransaction = new QAction(this);
+	
+	m_pTransactionMoveUp = new QAction(this);
+	m_pTransactionMoveDown = new QAction(this);
+	m_pTransactionMakeTransfer = new QAction(this);
 	
 	m_pTransactionAddNewTransaction->setText(QApplication::translate("StashWindow", "New Transaction", 0, QApplication::UnicodeUTF8));
     m_pTransactionAddNewTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+N", 0, QApplication::UnicodeUTF8));
+	m_pTransactionDeleteTransaction->setText(QApplication::translate("StashWindow", "Delete Transaction", 0, QApplication::UnicodeUTF8));
+//	m_pTransactionDeleteTransaction->setShortcut(QApplication::translate("StashWindow", "Del", 0, QApplication::UnicodeUTF8));
 	m_pTransactionSplitTransaction->setText(QApplication::translate("StashWindow", "Split Transaction", 0, QApplication::UnicodeUTF8));
+	m_pTransactionSplitTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+L", 0, QApplication::UnicodeUTF8));
+	
+	m_pTransactionMoveUp->setText(QApplication::translate("StashWindow", "Move Up", 0, QApplication::UnicodeUTF8));
+	m_pTransactionMoveDown->setText(QApplication::translate("StashWindow", "Move Down", 0, QApplication::UnicodeUTF8));
+	
+	m_pTransactionMakeTransfer->setText(QApplication::translate("StashWindow", "Make Transfer...", 0, QApplication::UnicodeUTF8));
+	m_pTransactionMakeTransfer->setShortcut(QApplication::translate("StashWindow", "Ctrl+T", 0, QApplication::UnicodeUTF8));
 	
 	connect(m_pTransactionAddNewTransaction, SIGNAL(triggered()), this, SLOT(transactionAddNewTransaction()));
+	connect(m_pTransactionDeleteTransaction, SIGNAL(triggered()), this, SLOT(transactionDeleteTransaction()));
 	connect(m_pTransactionSplitTransaction, SIGNAL(triggered()), this, SLOT(transactionSplitTransaction()));
 	
+	connect(m_pTransactionMoveUp, SIGNAL(triggered()), this, SLOT(transactionMoveUp()));
+	connect(m_pTransactionMoveDown, SIGNAL(triggered()), this, SLOT(transactionMoveDown()));
+	connect(m_pTransactionMakeTransfer, SIGNAL(triggered()), this, SLOT(transactionMakeTransfer()));
+	
 	menuTransaction->addAction(m_pTransactionAddNewTransaction);
+	menuTransaction->addAction(m_pTransactionDeleteTransaction);
+	menuTransaction->addSeparator();
 	menuTransaction->addAction(m_pTransactionSplitTransaction);
+	menuTransaction->addSeparator();
+	menuTransaction->addAction(m_pTransactionMoveUp);
+	menuTransaction->addAction(m_pTransactionMoveDown);
+	menuTransaction->addSeparator();
+	menuTransaction->addAction(m_pTransactionMakeTransfer);
 	
 	m_pMenuBar->addMenu(menuFile);
 	m_pMenuBar->addMenu(menuEdit);
@@ -219,6 +303,8 @@ void StashWindow::setupMenu()
 	m_pMenuBar->addMenu(menuTransaction);
 	
 	setMenuBar(m_pMenuBar);
+	
+	updateRecentFileActions();
 }
 
 void StashWindow::setupToolbar()
@@ -243,16 +329,14 @@ bool StashWindow::loadDocument(const QString& fileName)
 	{
 		fileStream.close();
 
-		fprintf(stderr, "Error: Unrecognised stash file format version.\nIt's likely that the file format of the Stash document you are trying to open is from a newer version of Stash.\n");
+		QMessageBox::information(this, "Open Error", "Unrecognised stash file format version.\nIt's likely that the file format of the Stash document you are trying to open is from a newer version of Stash.");
 
 		return false;
 	}
 
 	fileStream.close();
 	
-	m_currentFilePath = fileName.toStdString();
-	
-	setWindowTitle(QString("Stash - ") + fileName);
+	setCurrentFile(fileName);
 	
 	// update views
 	
@@ -273,11 +357,12 @@ bool StashWindow::loadDocument(const QString& fileName)
 // menu actions
 void StashWindow::fileNew()
 {
+	if (!shouldDiscardCurrentDocument())
+		return;
+	
 	m_documentController.getDocument().clear();
 	
-	m_currentFilePath = "";
-	
-	setWindowTitle(QString("Stash"));
+	setCurrentFile("");
 	
 	m_pIndexView->rebuildFromDocument();
 	
@@ -288,6 +373,9 @@ void StashWindow::fileNew()
 
 void StashWindow::fileOpen()
 {
+	if (!shouldDiscardCurrentDocument())
+		return;
+	
 	QFileDialog dialog(this);
 
 	dialog.setWindowTitle("Open File");
@@ -305,7 +393,7 @@ void StashWindow::fileOpen()
 
 void StashWindow::fileSave()
 {
-	if (m_currentFilePath.empty())
+	if (m_currentFile.isEmpty())
 	{
 		fileSaveAs();
 		return;
@@ -315,17 +403,18 @@ void StashWindow::fileSave()
 	return;
 	
 	// TODO: hook up to settings...
-	bool makeBackup = true;
+	bool makeBackup = false;
 	
 	if (makeBackup)
 	{
-		std::string strPathBackup = m_currentFilePath;
+		QString strPathBackup = m_currentFile;
 		strPathBackup += ".bak";
 		
-		rename(m_currentFilePath.c_str(), strPathBackup.c_str());
+		// TODO: do we want to rename, or copy? copy() would be safer?
+		rename(m_currentFile.toStdString().c_str(), strPathBackup.toStdString().c_str());
 	}
 	
-	std::fstream fileStream(m_currentFilePath.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
+	std::fstream fileStream(m_currentFile.toStdString().c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 	if (!fileStream)
 	{
 		return;
@@ -334,11 +423,47 @@ void StashWindow::fileSave()
 	m_documentController.getDocument().Store(fileStream);
 	
 	fileStream.close();	
+	
+	// to update the window title and remove the modified flag
+	setCurrentFile(m_currentFile);
 }
 
 void StashWindow::fileSaveAs()
 {
+	QFileDialog dialog(this, tr("Save File"));
+	dialog.setNameFilter(tr("Stash documents (*.stash)"));
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setViewMode(QFileDialog::Detail);
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setDefaultSuffix(tr("stash"));
+	dialog.setConfirmOverwrite(true);
+
+	if (!dialog.exec())
+		 return;
+
+	QString fileName = dialog.selectedFiles()[0];
+
+	std::string path = fileName.toStdString();
+
+	if (path.empty())
+		return;
 	
+	std::fstream fileStream(path, std::ios::out | std::ios::binary | std::ios::trunc);
+	if (!fileStream)
+	{
+		return;
+	}
+	
+	if (!m_documentController.getDocument().Store(fileStream))
+	{
+		QMessageBox::information(this, "Save Error", "There was an error saving the document.");
+	}
+	else
+	{
+		setCurrentFile(fileName);
+	}
+	
+	fileStream.close();
 }
 
 void StashWindow::fileImportOFXFile()
@@ -359,6 +484,16 @@ void StashWindow::fileExportOFXFile()
 void StashWindow::fileExportQIFFile()
 {
 	
+}
+
+void StashWindow::fileOpenRecentFile()
+{
+	if (!shouldDiscardCurrentDocument())
+		return;
+	
+	QAction* action = qobject_cast<QAction*>(sender());
+	if (action)
+		loadDocument(action->data().toString());
 }
 
 void StashWindow::viewShowToolbar(bool visible)
@@ -447,9 +582,29 @@ void StashWindow::transactionAddNewTransaction()
 	m_pTransactionsViewWidget->addNewTransaction();
 }
 
+void StashWindow::transactionDeleteTransaction()
+{
+	m_pTransactionsViewWidget->deleteSelectedTransaction();
+}
+
 void StashWindow::transactionSplitTransaction()
 {
 	m_pTransactionsViewWidget->splitCurrentTransaction();	
+}
+
+void StashWindow::transactionMoveUp()
+{
+	m_pTransactionsViewWidget->moveSelectedTransactionUp();
+}
+
+void StashWindow::transactionMoveDown()
+{
+	m_pTransactionsViewWidget->moveSelectedTransactionDown();
+}
+
+void StashWindow::transactionMakeTransfer()
+{
+	
 }
 
 void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
@@ -462,4 +617,72 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		
 		m_pTransactionsViewWidget->rebuildFromAccount();
 	}
+}
+
+void StashWindow::updateRecentFileActions()
+{
+	QMutableStringListIterator it(m_recentFiles);
+	while (it.hasNext())
+	{
+		if (!QFile::exists(it.next()))
+			it.remove();
+	}
+
+	for (int i = 0; i < MaxRecentFiles; i++)
+	{
+		if (i < m_recentFiles.count())
+		{
+			QString text = tr("%1. %2").arg(QString::number(i + 1), QFileInfo(m_recentFiles[i]).fileName());
+			m_recentFileActions[i]->setText(text);
+			m_recentFileActions[i]->setData(m_recentFiles[i]);
+			m_recentFileActions[i]->setVisible(true);
+		}
+		else
+		{
+			m_recentFileActions[i]->setVisible(false);
+		}
+	}
+}
+
+void StashWindow::setCurrentFile(const QString& fileName)
+{
+	m_currentFile = fileName;
+	setWindowModified(false);
+	QString shownDocName = "Untitled";
+	if (!m_currentFile.isEmpty())
+	{
+		shownDocName = QFileInfo(m_currentFile).fileName();
+		m_recentFiles.removeAll(m_currentFile);
+		m_recentFiles.prepend(m_currentFile);
+		updateRecentFileActions();
+
+//		QSettings& settings = Settings::instance().getInternal();
+//		settings.setValue("recentFiles", m_recentFiles);
+	}
+	setWindowTitle(tr("%1[*] - %2").arg(shownDocName).arg(tr("Stash")));
+}
+
+bool StashWindow::shouldDiscardCurrentDocument()
+{
+	if (!isWindowModified())
+		return true;
+
+//	int ret = QMessageBox::warning(this, tr("Stash"), tr("The current document has been modified.\nDo you want to save your changes?"),
+//					QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel | QMessageBox::Escape);
+	int ret = QMessageBox::warning(this, tr("Stash"), tr("The current document has been modified.\nDo you want to save your changes?"),
+					QString("Yes"), QString("No"), QString("Cancel"),
+					0, 2);
+
+	if (ret == QMessageBox::Yes)
+	{
+		// TODO:  ? ...
+		fileSave();
+		return true;
+	}
+	else if (ret == QMessageBox::Cancel)
+	{
+		return false;
+	}
+
+	return true;
 }

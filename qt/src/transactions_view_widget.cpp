@@ -31,9 +31,12 @@
 #include "../../core/transaction.h"
 #include "../../core/split_transaction.h"
 
-#include "form_panels/transaction_form_panel.h"
+#include "stash_window.h"
 
+#include "form_panels/transaction_form_panel.h"
 #include "transactions_view_data_model.h"
+
+#include "item_control_buttons_widget.h"
 
 static const std::string sTableStyle = "QTreeView::item {"
 		"border: 0.5px solid #8c8c8c;"
@@ -42,15 +45,18 @@ static const std::string sTableStyle = "QTreeView::item {"
 		"}"		
 		"QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};";
 
-TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent) : QWidget(pParent),
+TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
+	m_pMainWindow(mainWindow),
     m_pAccount(nullptr),
 	m_pSplitter(nullptr),
     m_pTreeView(nullptr),
     m_pModel(nullptr),
+	m_pTransactionFormPanel(nullptr),
+	m_pItemControlButtons(nullptr),
 	m_transactionIndex(-1),
 	m_splitTransactionIndex(-1)
 {
-	QHBoxLayout* layout = new QHBoxLayout();
+	QVBoxLayout* layout = new QVBoxLayout();
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
@@ -96,12 +102,22 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent) : QWidget(pPare
 	//
 	
 //	m_pModel->rebuildModelFromDocument();
-
+	
+	m_pItemControlButtons = new ItemControlButtonsWidget(ItemControlButtonsWidget::eTransaction, this);
+	layout->addWidget(m_pItemControlButtons);
 
 	connect(m_pTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
 			SLOT(selectionChanged(const QItemSelection&, const QItemSelection&)));
 	
 	connect(m_pTransactionFormPanel, SIGNAL(transactionValuesUpdated()), this, SLOT(transactionValuesUpdated()));
+	
+	connect(m_pItemControlButtons, SIGNAL(addItemButtonClicked()), this, SLOT(addItemClicked()));
+	connect(m_pItemControlButtons, SIGNAL(deleteItemButtonClicked()), this, SLOT(deleteItemClicked()));
+	connect(m_pItemControlButtons, SIGNAL(splitItemButtonClicked()), this, SLOT(splitItemClicked()));
+	connect(m_pItemControlButtons, SIGNAL(moveUpItemButtonClicked()), this, SLOT(moveUpItemClicked()));
+	connect(m_pItemControlButtons, SIGNAL(moveDownItemButtonClicked()), this, SLOT(moveDownItemClicked()));
+	
+	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
 QSize TransactionsViewWidget::minimumSizeHint() const
@@ -129,6 +145,8 @@ void TransactionsViewWidget::rebuildFromAccount()
 	
 	m_transactionIndex = -1;
 	m_splitTransactionIndex = -1;
+	
+	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
 void TransactionsViewWidget::setViewDurationType(TransactionsViewDurationType viewType)
@@ -141,6 +159,8 @@ void TransactionsViewWidget::setViewDurationType(TransactionsViewDurationType vi
 	
 	m_transactionIndex = -1;
 	m_splitTransactionIndex = -1;
+	
+	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
 void TransactionsViewWidget::addNewTransaction()
@@ -162,6 +182,71 @@ void TransactionsViewWidget::addNewTransaction()
 	selectTransaction(nextTransactionIndex);
 	
 	m_pTransactionFormPanel->setFocusPayee();
+	
+	m_pMainWindow->setWindowModified(true);
+}
+
+void TransactionsViewWidget::deleteSelectedTransaction()
+{
+	if (!m_pAccount)
+		return;
+	
+	if (m_transactionIndex == -1)
+		return;
+	
+	QModelIndex selectedModelTransactionIndex = getSingleSelectedIndex();
+	
+	if (m_splitTransactionIndex == -1)
+	{
+		// it's not a split transaction, so just delete the transaction
+		
+		m_pAccount->deleteTransaction(m_transactionIndex);
+		
+		// TODO: use removeRow in the model
+		m_pModel->rebuildModelFromAccount();
+		
+		int deletedRow = selectedModelTransactionIndex.row();
+		if (deletedRow < m_pModel->rowCount())
+		{
+			// select the next one down...
+			QModelIndex newSelection = m_pModel->index(deletedRow, 0);
+			m_pTreeView->selectionModel()->select(newSelection, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+			m_pTreeView->scrollTo(newSelection);
+		}
+		
+		m_pMainWindow->setWindowModified(true);
+	}
+	else if (m_splitTransactionIndex >= 0)
+	{
+		// it's an existing split transaction, so just remove that...
+		
+		Transaction& transaction = m_pAccount->getTransaction(m_transactionIndex);
+		transaction.deleteSplit(m_splitTransactionIndex);
+		
+		int deletedSplitTransModelRow = selectedModelTransactionIndex.row();
+		int mainTransModelRow = selectedModelTransactionIndex.parent().row();
+		
+		// TODO: use removeRow in the model
+		m_pModel->rebuildModelFromAccount();
+		
+		// re-expand the main transaction
+		QModelIndex parentTransactionModelIndex = m_pTreeView->model()->index(mainTransModelRow, 0);
+		m_pTreeView->expand(parentTransactionModelIndex);
+		
+		// given it's not possible to not have model items for splits, we can get the count for this from
+		// the transaction itself, rather than from the model.
+		if (deletedSplitTransModelRow < transaction.getSplitCount())
+		{
+			QModelIndex newSelection = m_pModel->index(deletedSplitTransModelRow, 0, parentTransactionModelIndex);
+			m_pTreeView->selectionModel()->select(newSelection, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+			m_pTreeView->scrollTo(newSelection);
+		}
+		
+		m_pMainWindow->setWindowModified(true);
+	}
+	
+	// might technically be superfluous due to te forced selection above, but...
+	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
 void TransactionsViewWidget::splitCurrentTransaction()
@@ -169,15 +254,18 @@ void TransactionsViewWidget::splitCurrentTransaction()
 	if (!m_pAccount)
 		return;
 	
-	Transaction& transaction = m_pAccount->getTransaction(m_transactionIndex);
+	if (m_transactionIndex == -1)
+		return;
 	
+	Transaction& transaction = m_pAccount->getTransaction(m_transactionIndex);
 	transaction.setSplit(true);
 	
-	QModelIndex newlySplitTransactionIndex = m_pTreeView->selectionModel()->currentIndex();
+	QModelIndex newlySplitTransactionIndex = getSingleSelectedIndex();
 	
 	// save the row index to construct a new QModelIndex after we've refreshed it.
 	int modelRowIndex = newlySplitTransactionIndex.row();	
 	
+	// TODO: less brute force than this...
 	m_pModel->rebuildModelFromAccount();
 	
 	newlySplitTransactionIndex = m_pTreeView->model()->index(modelRowIndex, 0);
@@ -190,6 +278,75 @@ void TransactionsViewWidget::splitCurrentTransaction()
 	
 	m_pTreeView->selectionModel()->select(newChildIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(newChildIndex);
+	
+	m_pMainWindow->setWindowModified(true);
+	
+	// might technically be superfluous due to te forced selection above, but...
+	updateItemButtonsAndMainMenuStateFromSelection();
+}
+
+void TransactionsViewWidget::moveSelectedTransactionUp()
+{
+	if (!m_pAccount)
+		return;
+	
+	if (m_transactionIndex == -1)
+		return;
+	
+	// for the moment, only support moving the main transactions
+	if (m_splitTransactionIndex != -1)
+		return;
+	
+	QModelIndex selectedTransactionModelIndex = getSingleSelectedIndex();
+	
+	if (selectedTransactionModelIndex.row() == 0 || m_transactionIndex == 0)
+		return;
+	
+	m_pAccount->swapTransactions(m_transactionIndex, m_transactionIndex - 1);
+	
+	int transactionModelIndexRow = selectedTransactionModelIndex.row();
+	
+	// TODO: less brute force than this...
+	m_pModel->rebuildModelFromAccount();
+	
+	selectedTransactionModelIndex = m_pTreeView->model()->index(transactionModelIndexRow - 1, 0);
+	
+	m_pTreeView->selectionModel()->select(selectedTransactionModelIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	m_pTreeView->scrollTo(selectedTransactionModelIndex);
+	
+	m_pMainWindow->setWindowModified(true);
+}
+
+void TransactionsViewWidget::moveSelectedTransactionDown()
+{
+	if (!m_pAccount)
+		return;
+	
+	if (m_transactionIndex == -1)
+		return;
+	
+	// for the moment, only support moving the main transactions
+	if (m_splitTransactionIndex != -1)
+		return;
+	
+	QModelIndex selectedTransactionModelIndex = getSingleSelectedIndex();
+	
+	if (m_transactionIndex == (m_pAccount->getTransactionCount() - 1))
+		return;
+	
+	m_pAccount->swapTransactions(m_transactionIndex, m_transactionIndex + 1);
+	
+	int transactionModelIndexRow = selectedTransactionModelIndex.row();
+	
+	// TODO: less brute force than this...
+	m_pModel->rebuildModelFromAccount();
+	
+	selectedTransactionModelIndex = m_pTreeView->model()->index(transactionModelIndexRow + 1, 0);
+	
+	m_pTreeView->selectionModel()->select(selectedTransactionModelIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	m_pTreeView->scrollTo(selectedTransactionModelIndex);
+	
+	m_pMainWindow->setWindowModified(true);
 }
 
 void TransactionsViewWidget::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -237,6 +394,8 @@ void TransactionsViewWidget::selectionChanged(const QItemSelection& selected, co
 			// just use that for the moment...
 			m_pTransactionFormPanel->setParamsForEmptySplitTransaction(item->getAmount().toString());
 		}
+		
+		updateItemButtonsAndMainMenuStateFromSelection();
 	}
 }
 
@@ -260,7 +419,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		
 		m_pTransactionFormPanel->updateTransactionFromParamValues(transaction);
 		
-		mainTransactionItemIndex = m_pTreeView->selectionModel()->currentIndex();
+		mainTransactionItemIndex = getSingleSelectedIndex();
 	}
 	else if (m_splitTransactionIndex >= 0)
 	{
@@ -270,7 +429,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		
 		m_pTransactionFormPanel->updateSplitTransactionFromParamValues(splitTransaction);
 		
-		splitTransactionItemIndex = m_pTreeView->selectionModel()->currentIndex();
+		splitTransactionItemIndex = getSingleSelectedIndex();
 		mainTransactionItemIndex = splitTransactionItemIndex.parent();
 	}
 	else if (m_splitTransactionIndex == -2)
@@ -285,7 +444,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		transaction.addSplit(newSplitTransaction);
 		
 		// TODO: this isn't working properly...
-		splitTransactionItemIndex = m_pTreeView->selectionModel()->currentIndex();
+		splitTransactionItemIndex = getSingleSelectedIndex();
 		mainTransactionItemIndex = splitTransactionItemIndex.parent();
 	}
 	
@@ -312,7 +471,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		
 		// if the split still has a remainder, increment the split index, so we end up
 		// automatically selecting the remainder item...
-		if (transaction.getSplitTotal() > transaction.getAmount())
+		if (m_splitTransactionIndex == -2 && transaction.getSplitTotal() > transaction.getAmount())
 		{
 			splitTransactionModelRowIndex++;
 		}
@@ -322,11 +481,96 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		m_pTreeView->selectionModel()->select(splitTransactionItemIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 		m_pTreeView->scrollTo(splitTransactionItemIndex);
 	}
+	
+	m_pMainWindow->setWindowModified(true);
+}
+
+void TransactionsViewWidget::addItemClicked()
+{
+	addNewTransaction();
+}
+
+void TransactionsViewWidget::deleteItemClicked()
+{
+	deleteSelectedTransaction();
+}
+
+void TransactionsViewWidget::splitItemClicked()
+{
+	splitCurrentTransaction();
+}
+
+void TransactionsViewWidget::moveUpItemClicked()
+{
+	moveSelectedTransactionUp();
+}
+
+void TransactionsViewWidget::moveDownItemClicked()
+{
+	moveSelectedTransactionDown();
 }
 
 void TransactionsViewWidget::selectTransaction(unsigned int transactionIndex, int splitIndex)
 {
-	QModelIndex selectionIndex = m_pTreeView->model()->index(transactionIndex, 0);
+	QModelIndex selectionIndex = m_pTreeView->model()->index((int)transactionIndex, 0);
 	m_pTreeView->selectionModel()->select(selectionIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(selectionIndex);
+}
+
+QModelIndex TransactionsViewWidget::getSingleSelectedIndex() const
+{
+	QModelIndex index;
+	
+	QModelIndexList selectedIndices = m_pTreeView->selectionModel()->selectedIndexes();
+	if (!selectedIndices.empty())
+	{
+		index = selectedIndices[0];
+	}
+	
+	return index;
+}
+
+void TransactionsViewWidget::updateItemButtonsAndMainMenuStateFromSelection()
+{
+	unsigned int buttonsEnabled = 0;
+	
+	if (m_pAccount)
+	{
+		buttonsEnabled = ItemControlButtonsWidget::eBtnAdd;
+		
+		if (m_transactionIndex != -1)
+		{
+			if (m_splitTransactionIndex != -2)
+			{
+				buttonsEnabled |= ItemControlButtonsWidget::eBtnDelete;
+			}
+			if (m_splitTransactionIndex == -1)
+			{
+				if (!m_pAccount->getTransaction(m_transactionIndex).isSplit())
+				{
+					// we're a main transaction that can be split
+					buttonsEnabled |= ItemControlButtonsWidget::eBtnSplit;
+				}
+				
+				if (m_pAccount->getTransactionCount() > 1)
+				{
+					QModelIndex selectedTransactionModelIndex = getSingleSelectedIndex();
+					
+					if (m_transactionIndex != (m_pAccount->getTransactionCount() - 1))
+					{
+						buttonsEnabled |= ItemControlButtonsWidget::eBtnDown;
+					}
+					
+					if (selectedTransactionModelIndex.row() > 0)
+					{
+						buttonsEnabled |= ItemControlButtonsWidget::eBtnUp;
+					}
+				}
+			}
+		}
+	}
+	
+	m_pItemControlButtons->setButtonsEnabled(buttonsEnabled);
+	
+	// TODO: poke something equivalent back to the main StashWindow, to control the Transaction->* menu item states...
 }

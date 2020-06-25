@@ -58,6 +58,8 @@ public:
 	// get hold of the currently-entered date for when adding new transactions
 	Date getEnteredDate() const;
 	
+	virtual void keyReleaseEvent(QKeyEvent* event);
+	
 signals:
 	void transactionValuesUpdated();
 

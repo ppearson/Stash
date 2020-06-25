@@ -30,6 +30,7 @@
 #include <QCalendarWidget>
 #include <QPushButton>
 #include <QLabel>
+#include <QKeyEvent>
 
 #include <QHBoxLayout>
 
@@ -41,6 +42,7 @@
 TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
+	pGridLayout->setMargin(4);
 	
 	QHBoxLayout* pPayeeLayout = new QHBoxLayout();
 	
@@ -91,6 +93,11 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	QLabel* pDateLabel = new QLabel(this);
 	pDateLabel->setText("Date:");
 	
+	m_pDescription = new QLineEdit(this);
+	
+	// create this one intentionally last, such that it's the last tab order (after Description),
+	// as DateEdit control isn't really that helpful with tab order, and matches what we did in ObC
+	// Cocoa version...
 	m_pDate = new QDateEdit(this);
 	// apparently Qt doesn't take the format from the region settings, so...
 	m_pDate->setDisplayFormat("dd/MM/yyyy");
@@ -101,8 +108,6 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	
 	QLabel* pDescriptionLabel = new QLabel(this);
 	pDescriptionLabel->setText("Description:");
-	
-	m_pDescription = new QLineEdit(this);
 	
 	QPushButton* pUpdateButton = new QPushButton(this);
 	pUpdateButton->setText("Update");
@@ -316,6 +321,16 @@ Date TransactionFormPanel::getEnteredDate() const
 	QDate rawDate = m_pDate->date();
 	Date date(rawDate.day(), rawDate.month(), rawDate.year());
 	return date;
+}
+
+void TransactionFormPanel::keyReleaseEvent(QKeyEvent* event)
+{
+	// this fires when a widget which doesn't accept the enter key (i.e. QLineEdit) has focus
+	// and allows conveniently triggering update with the keyboard...
+	if (event->key() == Qt::Key_Return)
+	{
+		updateClicked();
+	}
 }
 
 void TransactionFormPanel::updateClicked()

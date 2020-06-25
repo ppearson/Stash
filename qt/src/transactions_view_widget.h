@@ -24,6 +24,7 @@
 #define TRANSACTIONS_VIEW_WIDGET_H
 
 #include <QWidget>
+#include <QModelIndex>
 
 #include "view_common.h"
 
@@ -34,12 +35,15 @@ class QSplitter;
 class Account;
 class TransactionsViewDataModel;
 class TransactionFormPanel;
+class ItemControlButtonsWidget;
+
+class StashWindow;
 
 class TransactionsViewWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionsViewWidget(QWidget* pParent);
+	TransactionsViewWidget(QWidget* pParent, StashWindow* mainWindow);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
@@ -56,7 +60,11 @@ public:
 	
 	
 	void addNewTransaction();
+	void deleteSelectedTransaction();
 	void splitCurrentTransaction();
+	
+	void moveSelectedTransactionUp();
+	void moveSelectedTransactionDown();
 	
 signals:
 
@@ -65,11 +73,23 @@ public slots:
 	
 	void transactionValuesUpdated();
 	
+	void addItemClicked();
+	void deleteItemClicked();
+	void splitItemClicked();
+	void moveUpItemClicked();
+	void moveDownItemClicked();
 	
 protected:
 	void selectTransaction(unsigned int transactionIndex, int splitIndex = -1);
 	
+	// helper to conveniently get single selected item
+	QModelIndex getSingleSelectedIndex() const;
+	
+	void updateItemButtonsAndMainMenuStateFromSelection();
+	
 protected:
+	StashWindow*				m_pMainWindow;
+	
 	Account*					m_pAccount;
 	
 	QSplitter*					m_pSplitter;
@@ -79,8 +99,10 @@ protected:
 	
 	TransactionFormPanel*		m_pTransactionFormPanel;
 	
+	ItemControlButtonsWidget*	m_pItemControlButtons;
 	
-	// cached indices of transaction selection
+	
+	// Cached indices of transaction selection. These map into the Account/Transaction, *not* the DataModel...
 	unsigned int				m_transactionIndex;
 	int							m_splitTransactionIndex;
 	

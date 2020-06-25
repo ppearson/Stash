@@ -54,20 +54,21 @@ file(GLOB_RECURSE stash_qt_SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 file(GLOB_RECURSE stash_qt_qobject_headers "${CMAKE_SOURCE_DIR}/src/*.h")
 
 set(stash_qt_HEADERS ${stash_qt_qobject_headers})
-#set(stash_qt_RESOURCES "${CMAKE_SOURCE_DIR}/imagine.qrc")
+set(stash_qt_RESOURCES "${CMAKE_SOURCE_DIR}/stash.qrc")
 
 if(${QT5} MATCHES 0)
 	include(${QT_USE_FILE})
 	add_definitions(${QT_DEFINITIONS})
 	QT4_WRAP_CPP(stash_HEADERS_MOC ${stash_qt_HEADERS})
-#	QT4_ADD_RESOURCES(stash_RESOURCES_RCC ${stash_RESOURCES})
+	QT4_ADD_RESOURCES(stash_RESOURCES_RCC ${stash_qt_RESOURCES})
 else()
-    
+	QT5_WRAP_CPP(stash_HEADERS_MOC ${stash_qt_HEADERS})
+	QT5_ADD_RESOURCES(stash_RESOURCES_RCC ${stash_qt_RESOURCES})
 endif()
 
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
-add_executable(stash ${stash_core_SOURCES} ${stash_qt_SOURCES} ${stash_HEADERS_MOC})
+add_executable(stash ${stash_core_SOURCES} ${stash_qt_SOURCES} ${stash_HEADERS_MOC} ${stash_RESOURCES_RCC})
 
 # OS X needs iconv at link time, but Linux doesn't for some reason.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

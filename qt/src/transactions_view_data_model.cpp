@@ -358,6 +358,8 @@ void TransactionsModelItem::extractDetails(const Transaction& transaction, unsig
 			// because we're part of our own class, we can access member variables directly...
 			TransactionsModelItem* pNewSplitItem = new TransactionsModelItem(this);
 			
+			pNewSplitItem->m_payee = splitTrans.getPayee().c_str();
+			
 			pNewSplitItem->m_category = splitTrans.getCategory().c_str();
 			pNewSplitItem->m_description = splitTrans.getDescription().c_str();
 			
