@@ -24,9 +24,9 @@
 
 #include <QMenuBar>
 
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
+#include <QApplication>
 
+#include <QAction>
 #include <QCloseEvent>
 #include <QScrollArea>
 #include <QSignalMapper>
@@ -150,22 +150,22 @@ void StashWindow::setupMenu()
 	QAction* pFileExportOFXFileAction = new QAction(this);
 	QAction* pFileExportQIFFileAction = new QAction(this);
 	
-	pFileNewAction->setText(QApplication::translate("StashWindow", "File New", 0, QApplication::UnicodeUTF8));
+	pFileNewAction->setText(QApplication::translate("StashWindow", "File New", 0));
 	
-	pFileOpenAction->setText(QApplication::translate("StashWindow", "File Open...", 0, QApplication::UnicodeUTF8));
-    pFileOpenAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+O", 0, QApplication::UnicodeUTF8));
+	pFileOpenAction->setText(QApplication::translate("StashWindow", "File Open...", 0));
+	pFileOpenAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+O", 0));
 	
-	pFileSaveAction->setText(QApplication::translate("StashWindow", "Save", 0, QApplication::UnicodeUTF8));
-    pFileSaveAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+S", 0, QApplication::UnicodeUTF8));
+	pFileSaveAction->setText(QApplication::translate("StashWindow", "Save", 0));
+	pFileSaveAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+S", 0));
 	
-	pFileSaveAsAction->setText(QApplication::translate("StashWindow", "Save As...", 0, QApplication::UnicodeUTF8));
-    pFileSaveAsAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+S", 0, QApplication::UnicodeUTF8));
+	pFileSaveAsAction->setText(QApplication::translate("StashWindow", "Save As...", 0));
+	pFileSaveAsAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+S", 0));
 	
-	pFileImportOFXFileAction->setText(QApplication::translate("StashWindow", "Import OFX...", 0, QApplication::UnicodeUTF8));
-	pFileImportQIFFileAction->setText(QApplication::translate("StashWindow", "Import QIF...", 0, QApplication::UnicodeUTF8));
+	pFileImportOFXFileAction->setText(QApplication::translate("StashWindow", "Import OFX...", 0));
+	pFileImportQIFFileAction->setText(QApplication::translate("StashWindow", "Import QIF...", 0));
 	
-	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0, QApplication::UnicodeUTF8));
-	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0, QApplication::UnicodeUTF8));
+	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0));
+	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0));
 	
 	menuFile->addAction(pFileNewAction);
 	menuFile->addSeparator();
@@ -216,14 +216,14 @@ void StashWindow::setupMenu()
 	m_pViewMenuShowThisYearTransactions = new QAction(this);
 	m_pViewMenuShowAllTransactions = new QAction(this);
 	
-	m_pViewMenuShowToolbarAction->setText(QApplication::translate("StashWindow", "Show Toolbar", 0, QApplication::UnicodeUTF8));
+	m_pViewMenuShowToolbarAction->setText(QApplication::translate("StashWindow", "Show Toolbar", 0));
 	m_pViewMenuShowToolbarAction->setCheckable(true);
 	
-	m_pViewMenuShowRecentTransactions->setText(QApplication::translate("StashWindow", "Recent Transactions", 0, QApplication::UnicodeUTF8));
+	m_pViewMenuShowRecentTransactions->setText(QApplication::translate("StashWindow", "Recent Transactions", 0));
 	m_pViewMenuShowRecentTransactions->setCheckable(true);
-	m_pViewMenuShowThisYearTransactions->setText(QApplication::translate("StashWindow", "This Year Transactions", 0, QApplication::UnicodeUTF8));
+	m_pViewMenuShowThisYearTransactions->setText(QApplication::translate("StashWindow", "This Year Transactions", 0));
 	m_pViewMenuShowThisYearTransactions->setCheckable(true);
-	m_pViewMenuShowAllTransactions->setText(QApplication::translate("StashWindow", "All Transactions", 0, QApplication::UnicodeUTF8));
+	m_pViewMenuShowAllTransactions->setText(QApplication::translate("StashWindow", "All Transactions", 0));
 	m_pViewMenuShowAllTransactions->setCheckable(true);
 	
 	menuView->addAction(m_pViewMenuShowToolbarAction);
@@ -246,8 +246,8 @@ void StashWindow::setupMenu()
 	QAction* pInsertAccount = new QAction(this);
 	QAction* pInsertGraph = new QAction(this);
 	
-	pInsertAccount->setText(QApplication::translate("StashWindow", "New Account", 0, QApplication::UnicodeUTF8));
-	pInsertGraph->setText(QApplication::translate("StashWindow", "New Graph", 0, QApplication::UnicodeUTF8));
+	pInsertAccount->setText(QApplication::translate("StashWindow", "New Account", 0));
+	pInsertGraph->setText(QApplication::translate("StashWindow", "New Graph", 0));
 	
 	connect(pInsertAccount, SIGNAL(triggered()), this, SLOT(insertAccount()));
 	
@@ -265,18 +265,18 @@ void StashWindow::setupMenu()
 	m_pTransactionMoveDown = new QAction(this);
 	m_pTransactionMakeTransfer = new QAction(this);
 	
-	m_pTransactionAddNewTransaction->setText(QApplication::translate("StashWindow", "New Transaction", 0, QApplication::UnicodeUTF8));
-    m_pTransactionAddNewTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+N", 0, QApplication::UnicodeUTF8));
-	m_pTransactionDeleteTransaction->setText(QApplication::translate("StashWindow", "Delete Transaction", 0, QApplication::UnicodeUTF8));
-//	m_pTransactionDeleteTransaction->setShortcut(QApplication::translate("StashWindow", "Del", 0, QApplication::UnicodeUTF8));
-	m_pTransactionSplitTransaction->setText(QApplication::translate("StashWindow", "Split Transaction", 0, QApplication::UnicodeUTF8));
-	m_pTransactionSplitTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+L", 0, QApplication::UnicodeUTF8));
+	m_pTransactionAddNewTransaction->setText(QApplication::translate("StashWindow", "New Transaction", 0));
+    m_pTransactionAddNewTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+N", 0));
+	m_pTransactionDeleteTransaction->setText(QApplication::translate("StashWindow", "Delete Transaction", 0));
+//	m_pTransactionDeleteTransaction->setShortcut(QApplication::translate("StashWindow", "Del", 0));
+	m_pTransactionSplitTransaction->setText(QApplication::translate("StashWindow", "Split Transaction", 0));
+	m_pTransactionSplitTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+L", 0));
 	
-	m_pTransactionMoveUp->setText(QApplication::translate("StashWindow", "Move Up", 0, QApplication::UnicodeUTF8));
-	m_pTransactionMoveDown->setText(QApplication::translate("StashWindow", "Move Down", 0, QApplication::UnicodeUTF8));
+	m_pTransactionMoveUp->setText(QApplication::translate("StashWindow", "Move Up", 0));
+	m_pTransactionMoveDown->setText(QApplication::translate("StashWindow", "Move Down", 0));
 	
-	m_pTransactionMakeTransfer->setText(QApplication::translate("StashWindow", "Make Transfer...", 0, QApplication::UnicodeUTF8));
-	m_pTransactionMakeTransfer->setShortcut(QApplication::translate("StashWindow", "Ctrl+T", 0, QApplication::UnicodeUTF8));
+	m_pTransactionMakeTransfer->setText(QApplication::translate("StashWindow", "Make Transfer...", 0));
+	m_pTransactionMakeTransfer->setShortcut(QApplication::translate("StashWindow", "Ctrl+T", 0));
 	
 	connect(m_pTransactionAddNewTransaction, SIGNAL(triggered()), this, SLOT(transactionAddNewTransaction()));
 	connect(m_pTransactionDeleteTransaction, SIGNAL(triggered()), this, SLOT(transactionDeleteTransaction()));

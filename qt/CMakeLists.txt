@@ -66,8 +66,6 @@ else()
 	QT5_ADD_RESOURCES(stash_RESOURCES_RCC ${stash_qt_RESOURCES})
 endif()
 
-include(${QT_USE_FILE})
-add_definitions(${QT_DEFINITIONS})
 add_executable(stash ${stash_core_SOURCES} ${stash_qt_SOURCES} ${stash_HEADERS_MOC} ${stash_RESOURCES_RCC})
 
 # OS X needs iconv at link time, but Linux doesn't for some reason.

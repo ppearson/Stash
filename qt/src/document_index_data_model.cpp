@@ -22,6 +22,8 @@
 
 #include "document_index_data_model.h"
 
+#include <QColor>
+
 #include "../../core/account.h"
 #include "../../core/document.h"
 
@@ -63,17 +65,17 @@ QVariant DocumentIndexDataModel::data(const QModelIndex& index, int role) const
 	{
 		if (index.column() == 1)
 		{
-			return QVariant(Qt::darkGray);
+			return QColor(Qt::darkGray);
 		}
 		else
 		{
 			if (item->getType() == eDocIndex_Heading)
 			{
-				return QVariant(Qt::darkGray);
+				return QColor(Qt::darkGray);
 			}
 			else
 			{
-				return QVariant(Qt::black);
+				return QColor(Qt::black);
 			}
 		}
 	}

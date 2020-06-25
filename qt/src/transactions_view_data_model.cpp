@@ -23,6 +23,7 @@
 #include "transactions_view_data_model.h"
 
 #include <QLocale>
+#include <QColor>
 
 #include "../../core/account.h"
 
@@ -110,7 +111,7 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 		{
 			if (item->getSplitTransactionIndex() == kRemainderSplitTransactionIndex)
 			{
-				return QVariant(Qt::darkGray);
+				return QColor(Qt::darkGray);
 			}
 		}
 	}
