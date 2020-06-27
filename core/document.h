@@ -123,20 +123,20 @@ public:
 		return m_aAccounts;
 	}
 	
-	inline std::vector<Account>::iterator AccountBegin() { return m_aAccounts.begin(); }
-	inline std::vector<Account>::iterator AccountEnd() { return m_aAccounts.end(); }
+	inline std::vector<Account>::const_iterator AccountBegin() const { return m_aAccounts.begin(); }
+	inline std::vector<Account>::const_iterator AccountEnd() const { return m_aAccounts.end(); }
 	
-	inline std::set<std::string>::iterator PayeeBegin() { return m_aPayees.begin(); }
-	inline std::set<std::string>::iterator PayeeEnd() { return m_aPayees.end(); }
+	inline std::set<std::string>::const_iterator PayeeBegin() const { return m_aPayees.begin(); }
+	inline std::set<std::string>::const_iterator PayeeEnd() const { return m_aPayees.end(); }
 	
-	inline std::set<std::string>::iterator CategoryBegin() { return m_aCategories.begin(); }
-	inline std::set<std::string>::iterator CategoryEnd() { return m_aCategories.end(); }
+	inline std::set<std::string>::const_iterator CategoryBegin() const { return m_aCategories.begin(); }
+	inline std::set<std::string>::const_iterator CategoryEnd() const { return m_aCategories.end(); }
 	
-	inline std::vector<ScheduledTransaction>::iterator SchedTransBegin() { return m_aScheduledTransactions.begin(); }
-	inline std::vector<ScheduledTransaction>::iterator SchedTransEnd() { return m_aScheduledTransactions.end(); }
+	inline std::vector<ScheduledTransaction>::const_iterator SchedTransBegin() const { return m_aScheduledTransactions.begin(); }
+	inline std::vector<ScheduledTransaction>::const_iterator SchedTransEnd() const { return m_aScheduledTransactions.end(); }
 	
-	inline std::vector<Graph>::iterator GraphBegin() { return m_aGraphs.begin(); }
-	inline std::vector<Graph>::iterator GraphEnd() { return m_aGraphs.end(); }
+	inline std::vector<Graph>::const_iterator GraphBegin() const { return m_aGraphs.begin(); }
+	inline std::vector<Graph>::const_iterator GraphEnd() const { return m_aGraphs.end(); }
 	
 	fixed getBalance(bool onlyReconciled) const;
 	

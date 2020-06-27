@@ -128,7 +128,7 @@ static GraphController *gSharedInterface = nil;
 	
 	[graphAccount removeAllItems];
 	
-	std::vector<Account>::iterator itAccount = m_pDocument->AccountBegin();
+	std::vector<Account>::const_iterator itAccount = m_pDocument->AccountBegin();
 	
 	for (; itAccount != m_pDocument->AccountEnd(); ++itAccount)
 	{

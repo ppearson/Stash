@@ -383,7 +383,7 @@ toolbarViewGroupTag;
 	
 	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	std::vector<Account>::const_iterator it = m_Document.AccountBegin();
 	int nAccount = 0;
 	
 	for (; it != m_Document.AccountEnd(); ++it, nAccount++)
@@ -409,7 +409,7 @@ toolbarViewGroupTag;
 	
 	[indexBar addSection:@"graphs" title:NSLocalizedString(@"GRAPHS", "IndexBar -> GRAPHS")];
 	
-	std::vector<Graph>::iterator itGraph = m_Document.GraphBegin();
+	std::vector<Graph>::const_iterator itGraph = m_Document.GraphBegin();
 	int nGraph = 0;
 	
 	for (; itGraph != m_Document.GraphEnd(); ++itGraph, nGraph++)
@@ -501,7 +501,7 @@ toolbarViewGroupTag;
 	
 	[scheduledAccount removeAllItems];
 	
-	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	std::vector<Account>::const_iterator it = m_Document.AccountBegin();
 	
 	for (; it != m_Document.AccountEnd(); ++it)
 	{
@@ -644,7 +644,7 @@ toolbarViewGroupTag;
 	
 	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
-	std::vector<ScheduledTransaction>::iterator it = m_Document.SchedTransBegin();
+	std::vector<ScheduledTransaction>::const_iterator it = m_Document.SchedTransBegin();
 	
 	int schedTransIndex = 0;
 	
@@ -899,7 +899,7 @@ toolbarViewGroupTag;
 	
 	NSMutableArray *aAccounts = [[NSMutableArray alloc] init];
 	
-	std::vector<Account>::iterator it = m_Document.AccountBegin();
+	std::vector<Account>::const_iterator it = m_Document.AccountBegin();
 	
 	for (; it != m_Document.AccountEnd(); ++it)
 	{
@@ -1671,7 +1671,7 @@ toolbarViewGroupTag;
 {
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	
-	std::vector<ScheduledTransaction>::iterator it = m_Document.SchedTransBegin();
+	std::vector<ScheduledTransaction>::const_iterator it = m_Document.SchedTransBegin();
 	
 	int schedTransIndex = 0;
 	
@@ -1941,7 +1941,7 @@ toolbarViewGroupTag;
 		
 		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
 		
-		std::vector<Account>::iterator it = m_Document.AccountBegin();
+		std::vector<Account>::const_iterator it = m_Document.AccountBegin();
 		
 		for (; it != m_Document.AccountEnd(); ++it)
 		{
@@ -2072,7 +2072,7 @@ toolbarViewGroupTag;
 		
 		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
 		
-		std::vector<Account>::iterator it = m_Document.AccountBegin();
+		std::vector<Account>::const_iterator it = m_Document.AccountBegin();
 		
 		int accountCount = 0;
 		
