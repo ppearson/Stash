@@ -40,7 +40,6 @@ AccountDetailsDialog::AccountDetailsDialog(QWidget* parent, bool newAccount) : Q
 	m_pButtonBox->button(QDialogButtonBox::Cancel)->setAutoDefault(false);
 	
 	QFormLayout* pLayout = new QFormLayout(this);
-	
 	setLayout(pLayout);
 	
 	m_pName = new QLineEdit(this);
@@ -81,6 +80,7 @@ AccountDetailsDialog::AccountDetailsDialog(QWidget* parent, bool newAccount) : Q
 	}
 	
 	connect(m_pButtonBox, SIGNAL(accepted()), this, SLOT(OKClicked()));
+	connect(m_pButtonBox, SIGNAL(rejected()), this, SLOT(close()));
 }
 
 void AccountDetailsDialog::setFromAccount(const Account& account)

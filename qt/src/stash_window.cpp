@@ -32,15 +32,21 @@
 #include <QSignalMapper>
 #include <QSplitter>
 
+#include <QLocale>
+
 #include <QFileDialog>
 #include <QMessageBox>
 
 #include <QVBoxLayout>
 
+#include "../../core/scheduled_transaction.h"
+
 #include "document_index_view.h"
 #include "transactions_view_widget.h"
 
 #include "dialogs/account_details_dialog.h"
+#include "dialogs/make_transfer_dialog.h"
+#include "dialogs/scheduled_transactions_due_dialog.h"
 
 StashWindow::StashWindow() : QMainWindow(nullptr)
 {
@@ -61,6 +67,16 @@ void StashWindow::closeEvent(QCloseEvent* event)
 	else
 	{
 		event->ignore();
+	}
+}
+
+void StashWindow::setWindowModifiedAndRebuildIndex(bool rebuildDocIndex)
+{
+	setWindowModified(true);
+	
+	if (rebuildDocIndex)
+	{
+		m_pIndexView->rebuildFromDocument();
 	}
 }
 
@@ -344,12 +360,46 @@ bool StashWindow::loadDocument(const QString& fileName)
 	
 	if (m_documentController.getDocument().getAccountCount() > 0)
 	{
-		Account* pFirstAccount = &m_documentController.getDocument().getAccount(0);
+		// this will automatically display the transactions list for the account as well...
+		m_pIndexView->selectItem(eDocIndex_Account, 0);
 		
-		m_pTransactionsViewWidget->setAccount(pFirstAccount);
-		
-		m_pTransactionsViewWidget->rebuildFromAccount();
+		calculateDueScheduledTransactionAndDisplayDialog();
 	}
+	
+	return true;
+}
+
+bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransactionIndex)
+{
+	Date today;
+	
+	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransaction(schedTransactionIndex);
+	
+	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), today);
+	
+	newTransaction.setType(schedTrans.getType());
+	newTransaction.setCleared(true);
+	
+	Account& account = m_documentController.getDocument().getAccount(schedTrans.getAccount());
+	account.addTransaction(newTransaction);
+	
+	schedTrans.AdvanceNextDate();
+	
+	m_pIndexView->rebuildFromDocument();
+	
+	m_pTransactionsViewWidget->rebuildFromAccount();
+	
+	setWindowModified(true);
+	
+	return true;
+}
+
+bool StashWindow::skipScheduledTransaction(unsigned int schedTransactionIndex)
+{
+	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransaction(schedTransactionIndex);
+	schedTrans.AdvanceNextDate();
+	
+	setWindowModified(true);
 	
 	return true;
 }
@@ -562,14 +612,13 @@ void StashWindow::insertAccount()
 	
 	m_pIndexView->rebuildFromDocument();
 	
-	if (m_documentController.getDocument().getAccountCount() > 0)
+	if (m_documentController.getDocument().getAccountCount() == 1)
 	{
-		Account* pFirstAccount = &m_documentController.getDocument().getAccount(0);
-		
-		m_pTransactionsViewWidget->setAccount(pFirstAccount);
-		
-		m_pTransactionsViewWidget->rebuildFromAccount();
+		// select the first account...
+		m_pIndexView->selectItem(eDocIndex_Account, 0, true);
 	}
+	
+	setWindowModified(true);
 }
 
 void StashWindow::insertGraph()
@@ -580,31 +629,77 @@ void StashWindow::insertGraph()
 void StashWindow::transactionAddNewTransaction()
 {
 	m_pTransactionsViewWidget->addNewTransaction();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionDeleteTransaction()
 {
 	m_pTransactionsViewWidget->deleteSelectedTransaction();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionSplitTransaction()
 {
-	m_pTransactionsViewWidget->splitCurrentTransaction();	
+	m_pTransactionsViewWidget->splitCurrentTransaction();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionMoveUp()
 {
 	m_pTransactionsViewWidget->moveSelectedTransactionUp();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionMoveDown()
 {
 	m_pTransactionsViewWidget->moveSelectedTransactionDown();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionMakeTransfer()
 {
+	if (m_documentController.getDocument().getAccountCount() <= 1)
+		return;
 	
+	MakeTransferDialog makeTransferDlg(m_documentController.getDocument(), this);
+	
+	if (makeTransferDlg.exec() != QDialog::Accepted)
+		return;
+	
+	// create two transactions to represent the transfer between accounts.
+	
+	Account& fromAccount = m_documentController.getDocument().getAccount(makeTransferDlg.getFromAccountIndex());
+	Account& toAccount = m_documentController.getDocument().getAccount(makeTransferDlg.getToAccountIndex());
+	
+	fixed transferAmount = makeTransferDlg.getAmount();
+	fixed transferAmountNegative = transferAmount;
+	transferAmountNegative.setNegative();
+	
+	Transaction fromTransaction(makeTransferDlg.getDescription(), toAccount.getName(), makeTransferDlg.getCategory(),
+								transferAmountNegative, makeTransferDlg.getDate());
+	
+	Transaction toTransaction(makeTransferDlg.getDescription(), fromAccount.getName(), makeTransferDlg.getCategory(),
+								transferAmount, makeTransferDlg.getDate());
+	
+	if (makeTransferDlg.getMarkTransactionsAsCleared())
+	{
+		fromTransaction.setCleared(true);
+		toTransaction.setCleared(true);
+	}
+	
+	fromAccount.addTransaction(fromTransaction);
+	toAccount.addTransaction(toTransaction);
+	
+	setWindowModified(true);
+	
+	m_pIndexView->rebuildFromDocument();
+	
+	m_pTransactionsViewWidget->rebuildFromAccount();
 }
 
 void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
@@ -685,4 +780,46 @@ bool StashWindow::shouldDiscardCurrentDocument()
 	}
 
 	return true;
+}
+
+void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
+{
+	DueSchedTransactions dueTransactions;
+	
+	Date today;
+	
+	QLocale locale;
+	
+	unsigned int schedTransIndex = 0;
+	std::vector<ScheduledTransaction>::const_iterator it = m_documentController.getDocument().SchedTransBegin();
+	for (; it != m_documentController.getDocument().SchedTransEnd(); ++it, schedTransIndex++)
+	{
+		if (it->isEnabled() && it->getNextDate() <= today)
+		{
+			int accountIndex = it->getAccount();
+			
+			// TODO: this isn't really *that* much of a guarentee, ideally we'd have something like a UUID
+			//       connecting the two...
+			if (accountIndex >= 0 && accountIndex < m_documentController.getDocument().getAccountCount())
+			{
+				DueSchedTransactions::DueSchedTrans newTrans(schedTransIndex, it->getPayee(), it->getDescription());
+				
+				// TODO: again, replace this with something better...
+				newTrans.amount = locale.toCurrencyString(it->getAmount().ToDouble()).toStdString();
+				newTrans.date = it->getNextDate().FormattedDate(Date::UK);
+				
+				const Account& account = m_documentController.getDocument().getAccount(accountIndex);
+				newTrans.account = account.getName();
+				dueTransactions.transactions.emplace_back(newTrans);
+			}
+		}
+	}
+	
+	if (!dueTransactions.transactions.empty())
+	{
+		ScheduledTransactionsDueDialog* pScheduledTransactionsDlg = new ScheduledTransactionsDueDialog(this, dueTransactions);
+		
+		// non-modal, and will delete itself when closed.
+		pScheduledTransactionsDlg->show();
+	}
 }

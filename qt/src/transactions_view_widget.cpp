@@ -183,7 +183,7 @@ void TransactionsViewWidget::addNewTransaction()
 	
 	m_pTransactionFormPanel->setFocusPayee();
 	
-	m_pMainWindow->setWindowModified(true);
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(true);
 }
 
 void TransactionsViewWidget::deleteSelectedTransaction()
@@ -214,7 +214,7 @@ void TransactionsViewWidget::deleteSelectedTransaction()
 			m_pTreeView->scrollTo(newSelection);
 		}
 		
-		m_pMainWindow->setWindowModified(true);
+		m_pMainWindow->setWindowModifiedAndRebuildIndex(true);
 	}
 	else if (m_splitTransactionIndex >= 0)
 	{
@@ -242,7 +242,7 @@ void TransactionsViewWidget::deleteSelectedTransaction()
 			m_pTreeView->scrollTo(newSelection);
 		}
 		
-		m_pMainWindow->setWindowModified(true);
+		m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 	}
 	
 	// might technically be superfluous due to te forced selection above, but...
@@ -279,7 +279,7 @@ void TransactionsViewWidget::splitCurrentTransaction()
 	m_pTreeView->selectionModel()->select(newChildIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(newChildIndex);
 	
-	m_pMainWindow->setWindowModified(true);
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 	
 	// might technically be superfluous due to te forced selection above, but...
 	updateItemButtonsAndMainMenuStateFromSelection();
@@ -314,7 +314,7 @@ void TransactionsViewWidget::moveSelectedTransactionUp()
 	m_pTreeView->selectionModel()->select(selectedTransactionModelIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(selectedTransactionModelIndex);
 	
-	m_pMainWindow->setWindowModified(true);
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 }
 
 void TransactionsViewWidget::moveSelectedTransactionDown()
@@ -346,7 +346,7 @@ void TransactionsViewWidget::moveSelectedTransactionDown()
 	m_pTreeView->selectionModel()->select(selectedTransactionModelIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(selectedTransactionModelIndex);
 	
-	m_pMainWindow->setWindowModified(true);
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 }
 
 void TransactionsViewWidget::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -413,6 +413,9 @@ void TransactionsViewWidget::transactionValuesUpdated()
 	QModelIndex mainTransactionItemIndex;
 	QModelIndex splitTransactionItemIndex;
 	
+	// TODO: we could also pull through whether the amount was updated, to isolate even more...
+	bool updateDocIndex = false;
+	
 	if (m_splitTransactionIndex == -1)
 	{
 		// it's not a split transaction, it's a normal one...
@@ -420,6 +423,8 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		m_pTransactionFormPanel->updateTransactionFromParamValues(transaction);
 		
 		mainTransactionItemIndex = getSingleSelectedIndex();
+		
+		updateDocIndex = true;
 	}
 	else if (m_splitTransactionIndex >= 0)
 	{
@@ -482,7 +487,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		m_pTreeView->scrollTo(splitTransactionItemIndex);
 	}
 	
-	m_pMainWindow->setWindowModified(true);
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(updateDocIndex);
 }
 
 void TransactionsViewWidget::addItemClicked()

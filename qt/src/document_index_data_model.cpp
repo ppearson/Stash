@@ -27,7 +27,7 @@
 #include "../../core/account.h"
 #include "../../core/document.h"
 
-DocumentIndexDataModel::DocumentIndexDataModel(Document& document, QObject* parent) : QAbstractItemModel(parent), 
+DocumentIndexDataModel::DocumentIndexDataModel(const Document& document, QObject* parent) : QAbstractItemModel(parent), 
 		m_document(document),
 		m_upToDate(false), m_pRootItem(nullptr)
 {
@@ -160,6 +160,7 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 		fixed balance = account.getBalance(true, -1);
 		double dBalance = balance.ToDouble();
 		
+		// TODO: do this properly...
 		sprintf(szTemp, "$%0.2f", dBalance);
 		
 		pAccN->setSecondaryData(szTemp);

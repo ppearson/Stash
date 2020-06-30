@@ -29,7 +29,8 @@
 
 DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent) : QWidget(parent),
 	m_document(document),
-	m_pTreeView(nullptr), m_pModel(nullptr)
+	m_pTreeView(nullptr), m_pModel(nullptr),
+	m_selectedIndexSubIndex(eDocIndex_None)
 {
 	QHBoxLayout* layout = new QHBoxLayout();
 	layout->setMargin(0);
@@ -79,11 +80,39 @@ void DocumentIndexView::rebuildFromDocument()
 	
 	m_pTreeView->expandAll();
 	
+	if (m_selectIndexType != eDocIndex_None)
+	{
+		selectItem(m_selectIndexType, m_selectedIndexSubIndex, false);
+	}
+	
 	m_pTreeView->selectionModel()->blockSignals(false);
 	m_pTreeView->blockSignals(false);
 	
 	m_pTreeView->resizeColumnToContents(0);
 	m_pTreeView->resizeColumnToContents(1);
+}
+
+void DocumentIndexView::selectItem(DocumentIndexType type, unsigned int index, bool sendSelectionChangedEvent)
+{
+	QModelIndex itemToSelect;
+	if (type == eDocIndex_Account)
+	{
+		itemToSelect = m_pModel->index(0, 0); // first level
+		itemToSelect = itemToSelect.child(index, 0);
+	}
+	
+	if (itemToSelect.isValid())
+	{
+		if (!sendSelectionChangedEvent)
+		{
+			m_pTreeView->selectionModel()->blockSignals(true);
+		}
+		m_pTreeView->selectionModel()->select(itemToSelect, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+		if (!sendSelectionChangedEvent)
+		{
+			m_pTreeView->selectionModel()->blockSignals(false);
+		}
+	}
 }
 
 void DocumentIndexView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -104,6 +133,10 @@ void DocumentIndexView::selectionChanged(const QItemSelection& selected, const Q
 		DocumentIndexType itemType = item->getType();
 		
 		int childIndex = item->childNumber();
+		
+		// keep track of last selected
+		m_selectIndexType = itemType;
+		m_selectedIndexSubIndex = childIndex;
 		
 		emit indexSelectionHasChanged(itemType, childIndex);
 	}

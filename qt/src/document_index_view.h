@@ -43,6 +43,8 @@ public:
 	virtual QSize sizeHint() const;
 
 	void rebuildFromDocument();
+	
+	void selectItem(DocumentIndexType type, unsigned int index, bool sendSelectionChangedEvent = true);
 
 signals:
 	void indexSelectionHasChanged(DocumentIndexType type, int index);
@@ -55,6 +57,11 @@ protected:
 	
 	QTreeView*				m_pTreeView;
 	DocumentIndexDataModel*	m_pModel;
+	
+	
+	// current / last selection state
+	DocumentIndexType		m_selectIndexType;
+	unsigned int			m_selectedIndexSubIndex;
 };
 
 #endif // DOCUMENT_INDEX_VIEW_H

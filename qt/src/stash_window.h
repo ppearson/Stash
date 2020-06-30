@@ -46,8 +46,9 @@ public:
 	StashWindow();
 	virtual ~StashWindow();
 	
-	
 	virtual void closeEvent(QCloseEvent* event);
+	
+	void setWindowModifiedAndRebuildIndex(bool rebuildDocIndex);
 	
 protected:
 	
@@ -58,6 +59,11 @@ protected:
 	
 	bool loadDocument(const QString& fileName);
 	
+	friend class ScheduledTransactionsDueDialog;
+	
+	// I'm not amazingly happy about this, but it's simplest...
+	bool addScheduledTransactionAsTransaction(unsigned int schedTransactionIndex);
+	bool skipScheduledTransaction(unsigned int schedTransactionIndex);
 	
 public slots:
 	
@@ -98,6 +104,8 @@ protected:
 	void updateRecentFileActions();
 	void setCurrentFile(const QString& fileName);
 	bool shouldDiscardCurrentDocument();
+	
+	void calculateDueScheduledTransactionAndDisplayDialog();
 	
 	
 protected:

@@ -34,7 +34,7 @@ class DocumentIndexModelItem;
 class DocumentIndexDataModel : public QAbstractItemModel
 {
 public:
-	DocumentIndexDataModel(Document& document, QObject* parent = 0);
+	DocumentIndexDataModel(const Document& document, QObject* parent = 0);
 	virtual ~DocumentIndexDataModel();
 	
 	virtual QVariant data(const QModelIndex& index, int role) const;
@@ -54,7 +54,7 @@ public:
 	
 	
 protected:
-	Document&				m_document;
+	const Document&			m_document;
 	
 	bool					m_upToDate;
 
