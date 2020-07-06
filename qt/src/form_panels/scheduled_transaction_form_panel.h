@@ -20,39 +20,38 @@
  *
  */
 
-#ifndef TRANSACTION_FORM_PANEL_H
-#define TRANSACTION_FORM_PANEL_H
+#ifndef SCHEDULED_TRANSACTION_FORM_PANEL_H
+#define SCHEDULED_TRANSACTION_FORM_PANEL_H
 
 #include <string>
 
 #include <QWidget>
 
 #include "../../core/datetime.h"
-#include "../../core/transaction.h"
 
 class QLineEdit;
 class QComboBox;
 class QCheckBox;
 class QDateEdit;
 
-class TransactionFormPanel : public QWidget
+class Document;
+class ScheduledTransaction;
+
+class ScheduledTransactionFormPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionFormPanel(QWidget* parent = 0);
+	ScheduledTransactionFormPanel(const Document& document, QWidget* parent = 0);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
 	
-	void clear(bool resetDate);
+	void clear();
 	void setFocusPayee(bool selectText = false);
 	
-	void setParamsFromTransaction(const Transaction& transaction);
-	void setParamsFromSplitTransaction(const SplitTransaction& splitTransaction);
-	void setParamsForEmptySplitTransaction(QString amountString);
+	void setParamsFromScheduledTransaction(const ScheduledTransaction& schedTransaction);
 	
-	void updateTransactionFromParamValues(Transaction& transaction);
-	void updateSplitTransactionFromParamValues(SplitTransaction& splitTransaction);
+	void updateScheduledTransactionFromParamValues(ScheduledTransaction& schedTransaction);
 	
 	
 	// get hold of the currently-entered date for when adding new transactions
@@ -60,22 +59,28 @@ public:
 	
 	virtual void keyPressEvent(QKeyEvent* event);
 	
+protected:
+	void updateAccountsList(bool selectFirst);
 	
 signals:
-	void transactionValuesUpdated();
+	void scheduledTransactionValuesUpdated();
 
 public slots:
 	void updateClicked();
 	
 protected:
+	const Document&		m_document;
+		
 	QLineEdit*			m_pPayee;
-	QLineEdit*			m_pAmount;
-	QLineEdit*			m_pCategory;
-	QCheckBox*			m_pCleared;
 	QComboBox*			m_pType;
-	QDateEdit*			m_pDate;
+	QLineEdit*			m_pCategory;
+	QComboBox*			m_pFrequency;
+	QLineEdit*			m_pAmount;
+	QComboBox*			m_pConstraint;
 	QLineEdit*			m_pDescription;
-	
+	QDateEdit*			m_pDate;
+	QComboBox*			m_pAccount;
+	QCheckBox*			m_pEnabled;
 };
 
-#endif // TRANSACTION_FORM_PANEL_H
+#endif // SCHEDULED_TRANSACTION_FORM_PANEL_H

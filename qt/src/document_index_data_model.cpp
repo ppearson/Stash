@@ -173,9 +173,9 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 	DocumentIndexModelItem* pManage = new DocumentIndexModelItem(QString("Manage"), m_pRootItem, eDocIndex_Heading);
 	m_pRootItem->addChild(pManage);
 	
-	pManage->addChild(new DocumentIndexModelItem(QString("Payees"), pManage, eDocIndex_Manage));
-	pManage->addChild(new DocumentIndexModelItem(QString("Categories"), pManage, eDocIndex_Manage));
-	pManage->addChild(new DocumentIndexModelItem(QString("Scheduled"), pManage, eDocIndex_Manage));
+	pManage->addChild(new DocumentIndexModelItem(QString("Payees"), pManage, eDocIndex_ManagePayees));
+	pManage->addChild(new DocumentIndexModelItem(QString("Categories"), pManage, eDocIndex_ManageCategories));
+	pManage->addChild(new DocumentIndexModelItem(QString("Scheduled"), pManage, eDocIndex_ManageScheduledTransactions));
 	
 	
 	// Graphs

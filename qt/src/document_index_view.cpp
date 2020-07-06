@@ -103,9 +103,17 @@ void DocumentIndexView::selectItem(DocumentIndexType type, unsigned int index, b
 	
 	if (itemToSelect.isValid())
 	{
+		// because calling select() to select an already selected item apparently doesn't trigger the selectionChanged()
+		// event, we need to reset selection first, then re-apply it (playing with the selection flags doesn't seem to help)
+		
 		if (!sendSelectionChangedEvent)
 		{
 			m_pTreeView->selectionModel()->blockSignals(true);
+		}
+		else
+		{
+			// reset selection first
+			m_pTreeView->selectionModel()->clearSelection();
 		}
 		m_pTreeView->selectionModel()->select(itemToSelect, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 		if (!sendSelectionChangedEvent)

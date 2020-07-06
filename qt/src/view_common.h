@@ -28,7 +28,9 @@ enum DocumentIndexType
 	eDocIndex_None,
 	eDocIndex_Heading, //
 	eDocIndex_Account,
-	eDocIndex_Manage,
+	eDocIndex_ManagePayees,
+	eDocIndex_ManageCategories,
+	eDocIndex_ManageScheduledTransactions,
 	eDocIndex_Graph
 };
 

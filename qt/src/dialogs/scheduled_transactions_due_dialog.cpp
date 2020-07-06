@@ -36,8 +36,8 @@
 ScheduledTransactionsDueDialog::ScheduledTransactionsDueDialog(StashWindow* pStashWindow,
 															   const DueSchedTransactions& dueTransactions)
 	: QDialog(pStashWindow),
-	  m_dueTransactions(dueTransactions),
-	  m_pStashWindow(pStashWindow)
+	  m_pStashWindow(pStashWindow),
+	  m_dueTransactions(dueTransactions)
 {
 	resize(927, 302);
 	
@@ -139,39 +139,53 @@ void ScheduledTransactionsDueDialog::handleActionButtonClick(ActionType type)
 		{
 			unsigned int selectedDueSchedTransactionIndex = index.row();
 			
-			bool result = false;
-			
-			if (type == eAddTrans)
+			if (selectedDueSchedTransactionIndex < m_dueTransactions.transactions.size())
 			{
-				result = m_pStashWindow->addScheduledTransactionAsTransaction(selectedDueSchedTransactionIndex);
-			}
-			else
-			{
-				result = m_pStashWindow->skipScheduledTransaction(selectedDueSchedTransactionIndex);
-			}
-			
-			if (result)
-			{
-				auto eraseIt = m_dueTransactions.transactions.begin() + selectedDueSchedTransactionIndex;
-				m_dueTransactions.transactions.erase(eraseIt);
+				// now actually look up the index of the due scheduled transaction item, in order to map it back
+				// to the index of the scheduled transaction in the main Document class...
+				const DueSchedTransactions::DueSchedTrans& dueSchedTrans = m_dueTransactions.transactions[selectedDueSchedTransactionIndex];
+				unsigned int masterScheduledtransactionIndex = dueSchedTrans.originalIndex;
 				
-				m_pTableWidget->removeRow(selectedDueSchedTransactionIndex);
+				bool result = false;
 				
-				if (m_dueTransactions.transactions.empty())
+				// these actions can't really fail currently, so a bit over-complicated, but we might want to do better
+				// validation in the future...
+				if (type == eAddTrans)
 				{
-					// we're done, so close the dialog
-					close();
-				}
-				
-				// select next one
-				if (m_pTableWidget->rowCount() > selectedDueSchedTransactionIndex)
-				{
-					m_pTableWidget->selectRow(selectedDueSchedTransactionIndex);
+					result = m_pStashWindow->addScheduledTransactionAsTransaction(masterScheduledtransactionIndex);
 				}
 				else
 				{
-					m_pTableWidget->selectRow(0);
+					result = m_pStashWindow->skipScheduledTransaction(masterScheduledtransactionIndex);
 				}
+			
+				if (result)
+				{
+					auto eraseIt = m_dueTransactions.transactions.begin() + selectedDueSchedTransactionIndex;
+					m_dueTransactions.transactions.erase(eraseIt);
+					
+					m_pTableWidget->removeRow(selectedDueSchedTransactionIndex);
+					
+					if (m_dueTransactions.transactions.empty())
+					{
+						// we're done, so close the dialog
+						close();
+					}
+					
+					// select next one
+					if (m_pTableWidget->rowCount() > selectedDueSchedTransactionIndex)
+					{
+						m_pTableWidget->selectRow(selectedDueSchedTransactionIndex);
+					}
+					else
+					{
+						m_pTableWidget->selectRow(0);
+					}
+				}
+			}
+			else
+			{
+				// something went wrong and got out of sync...
 			}
 		}
 	}

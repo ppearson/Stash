@@ -20,7 +20,7 @@
  *
  */
 
-#include "transaction_form_panel.h"
+#include "scheduled_transaction_form_panel.h"
 
 #include <QFormLayout>
 #include <QLineEdit>
@@ -36,9 +36,11 @@
 
 #include <QGridLayout>
 
-#include "../../core/split_transaction.h"
+#include "../../core/document.h"
+#include "../../core/scheduled_transaction.h"
 
-TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
+ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const Document& document, QWidget* parent) : QWidget(parent),
+	m_document(document)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
 	pGridLayout->setMargin(4);
@@ -47,19 +49,6 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	pPayeeLabel->setText("Payee:");
 	
 	m_pPayee = new QLineEdit(this);
-			
-	QLabel* pAmountLabel = new QLabel(this);
-	pAmountLabel->setText("Amount:");
-	
-	m_pAmount = new QLineEdit(this);
-		
-	QLabel* pCategoryLabel = new QLabel(this);
-	pCategoryLabel->setText("Category:");
-	
-	m_pCategory = new QLineEdit(this);
-	
-	m_pCleared = new QCheckBox(this);
-	m_pCleared->setText("Cleared");
 	
 	QLabel* pTypeLabel = new QLabel(this);
 	pTypeLabel->setText("Type:");
@@ -71,10 +60,44 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	m_pType->addItems(typeChoices);
 	m_pType->setCurrentIndex(0);
 	
+	QLabel* pCategoryLabel = new QLabel(this);
+	pCategoryLabel->setText("Category:");
+	
+	m_pCategory = new QLineEdit(this);	
+	
+	QLabel* pFrequencyLabel = new QLabel(this);
+	pFrequencyLabel->setText("Frequency:");
+	
+	m_pFrequency = new QComboBox(this);
+	QStringList frequencyChoices;
+	frequencyChoices << "Weekly" << "Two Weeks" << "Four Weeks" << "Monthly" << "Two Months" << "Quarterly" << "Anually";
+	m_pFrequency->addItems(frequencyChoices);
+	m_pFrequency->setCurrentIndex(0);
+		
+	QLabel* pAmountLabel = new QLabel(this);
+	pAmountLabel->setText("Amount:");
+	
+	m_pAmount = new QLineEdit(this);
+	
+	QLabel* pConstraintLabel = new QLabel(this);
+	pConstraintLabel->setText("Constraint:");
+	
+	m_pConstraint = new QComboBox(this);
+	QStringList constraintChoices;
+	constraintChoices << "Exact Day" << "Exact or Next Working Day" << "Last Working Day of Month";
+	m_pConstraint->addItems(constraintChoices);
+	m_pConstraint->setCurrentIndex(0);	
+	
 	QLabel* pDescriptionLabel = new QLabel(this);
 	pDescriptionLabel->setText("Description:");
 	
 	m_pDescription = new QLineEdit(this);
+	
+	QLabel* pAccountLabel = new QLabel(this);
+	pAccountLabel->setText("Account:");
+	
+	m_pAccount = new QComboBox(this);
+	updateAccountsList(true);
 	
 	QLabel* pDateLabel = new QLabel(this);
 	pDateLabel->setText("Date:");
@@ -100,37 +123,46 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	connect(pUpdateButton, SIGNAL(clicked()), this, SLOT(updateClicked()));
 
 	m_pPayee->setMinimumHeight(22);
-	m_pAmount->setMinimumHeight(22);
-	m_pCategory->setMinimumHeight(22);
 	m_pType->setMinimumHeight(22);
-	m_pDate->setMinimumHeight(22);
+	m_pCategory->setMinimumHeight(22);
+	m_pFrequency->setMinimumHeight(22);
+	m_pAmount->setMinimumHeight(22);
+	m_pConstraint->setMinimumHeight(22);
 	m_pDescription->setMinimumHeight(22);
+	m_pDate->setMinimumHeight(22);
+	m_pAccount->setMinimumHeight(22);
 	
 	pGridLayout->addWidget(pPayeeLabel, 0, 0, 1, 1, Qt::AlignLeft);
 	pGridLayout->addWidget(m_pPayee, 0, 1, 1, 1, 0);
 	
-	pGridLayout->addWidget(pAmountLabel, 0, 2, 1, 1, Qt::AlignRight);
-	pGridLayout->addWidget(m_pAmount, 0, 3, 1, 1, 0);
+	pGridLayout->addWidget(pTypeLabel, 0, 2, 1, 1, Qt::AlignRight);
+	pGridLayout->addWidget(m_pType, 0, 3, 1, 1, 0);
 	
 	pGridLayout->addWidget(pCategoryLabel, 1, 0, 1, 1, Qt::AlignLeft);
 	pGridLayout->addWidget(m_pCategory, 1, 1, 1, 1, 0);
 	
-	pGridLayout->addWidget(m_pCleared, 1, 3, 1, 2, Qt::AlignLeft);
+	pGridLayout->addWidget(pFrequencyLabel, 1, 2, 1, 1, Qt::AlignRight);
+	pGridLayout->addWidget(m_pFrequency, 1, 3, 1, 1, 0);
 	
-	pGridLayout->addWidget(pTypeLabel, 2, 0, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pType, 2, 1, 1, 1, 0);
+	pGridLayout->addWidget(pAmountLabel, 2, 0, 1, 1, Qt::AlignLeft);
+	pGridLayout->addWidget(m_pAmount, 2, 1, 1, 1, 0);
 	
-	pGridLayout->addWidget(pDateLabel, 2, 2, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pDate, 2, 3, 1, 1, 0);
+	pGridLayout->addWidget(pConstraintLabel, 2, 2, 1, 1, Qt::AlignRight);
+	pGridLayout->addWidget(m_pConstraint, 2, 3, 1, 1, 0);
 	
 	pGridLayout->addWidget(pDescriptionLabel, 3, 0, 1, 1, Qt::AlignLeft);
 	pGridLayout->addWidget(m_pDescription, 3, 1, 1, 1, 0);
 	
-	pGridLayout->addWidget(pUpdateButton, 4, 0, 1, 1, Qt::AlignLeft);
+	pGridLayout->addWidget(pDateLabel, 3, 2, 1, 1, Qt::AlignRight);
+	pGridLayout->addWidget(m_pDate, 3, 3, 1, 1, 0);
 	
+	pGridLayout->addWidget(pAccountLabel, 4, 0, 1, 1, Qt::AlignLeft);
+	pGridLayout->addWidget(m_pAccount, 4, 1, 1, 1, 0);
+	
+	pGridLayout->addWidget(pUpdateButton, 5, 0, 1, 1, Qt::AlignLeft);
 	
 	pGridLayout->setColumnStretch(0, 0);
-	pGridLayout->setColumnStretch(1, 50);
+	pGridLayout->setColumnStretch(1, 30);
 	pGridLayout->setColumnStretch(2, 0);
 	pGridLayout->setColumnStretch(3, 10);
 	
@@ -138,50 +170,47 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	sizePolicy.setHorizontalStretch(0);
 	sizePolicy.setVerticalStretch(0);
 	setSizePolicy(sizePolicy);
-	
-//	setMinimumHeight(130);
 }
 
-QSize TransactionFormPanel::minimumSizeHint() const
+QSize ScheduledTransactionFormPanel::minimumSizeHint() const
 {
-	return QSize(400, 180);
+	return QSize(400, 210);
 }
 
-QSize TransactionFormPanel::sizeHint() const
+QSize ScheduledTransactionFormPanel::sizeHint() const
 {
-	return QSize(400, 180);
+	return QSize(400, 210);
 }
 
-void TransactionFormPanel::clear(bool resetDate)
+void ScheduledTransactionFormPanel::clear()
 {
 	m_pPayee->setText("");
-	m_pAmount->setText("0.0");
-	m_pCategory->setText(0);
-	// TODO: use setting/option for the value?
-	m_pCleared->setChecked(true);
 	m_pType->setCurrentIndex(0);
+	m_pCategory->setText(0);
+	m_pFrequency->setCurrentIndex(0);
+	m_pAmount->setText("0.0");
+	m_pConstraint->setCurrentIndex(0);
+	
 	m_pDate->setDate(QDate::currentDate());
 	m_pDescription->setText("");
 	
-	m_pType->setEnabled(true);
-	m_pCleared->setEnabled(true);
-	m_pDate->setEnabled(true);
+	m_pAccount->setCurrentIndex(0);
+	
+	updateAccountsList(true);
 }
 
-void TransactionFormPanel::setFocusPayee(bool selectText)
+void ScheduledTransactionFormPanel::setFocusPayee(bool selectText)
 {
 	m_pPayee->setFocus();
 	if (selectText)
 		m_pPayee->selectAll();
 }
 
-// TODO: there's a bit of duplication between the below which could be abstracted...
-
-void TransactionFormPanel::setParamsFromTransaction(const Transaction& transaction)
+void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const ScheduledTransaction& schedTransaction)
 {
-	m_pPayee->setText(transaction.getPayee().c_str());
+	m_pPayee->setText(schedTransaction.getPayee().c_str());
 	
-	double dAmount = transaction.getAmount().ToDouble();
+	double dAmount = schedTransaction.getAmount().ToDouble();
 	
 	char szTemp[16];
 	// TODO: do this properly...
@@ -189,124 +218,54 @@ void TransactionFormPanel::setParamsFromTransaction(const Transaction& transacti
 	
 	m_pAmount->setText(szTemp);
 	
-	m_pCategory->setText(transaction.getCategory().c_str());
-	
-	m_pCleared->setChecked(transaction.isCleared());
-	
-	m_pType->setCurrentIndex((unsigned int)transaction.getType());
+	m_pCategory->setText(schedTransaction.getCategory().c_str());
+		
+	m_pType->setCurrentIndex((unsigned int)schedTransaction.getType());
 	
 	
 	// Date
-	QDate date(transaction.getDate().getYear(), transaction.getDate().getMonth(), transaction.getDate().getDay());
+	QDate date(schedTransaction.getNextDate().getYear(), schedTransaction.getNextDate().getMonth(), schedTransaction.getNextDate().getDay());
 	m_pDate->setDate(date);
 	
-	m_pDescription->setText(transaction.getDescription().c_str());
+	m_pDescription->setText(schedTransaction.getDescription().c_str());
 	
-	m_pType->setEnabled(true);
-	m_pCleared->setEnabled(true);
-	m_pDate->setEnabled(true);
+	updateAccountsList(false);
+	
+	m_pAccount->setCurrentIndex(schedTransaction.getAccount());
 }
 
-void TransactionFormPanel::setParamsFromSplitTransaction(const SplitTransaction& splitTransaction)
-{
-	m_pPayee->setText(splitTransaction.getPayee().c_str());
-	
-	double dAmount = splitTransaction.getAmount().ToDouble();
-	
-	char szTemp[16];
-	// TODO: do this properly...
-	sprintf(szTemp, "%0.2f", dAmount);
-	
-	m_pAmount->setText(szTemp);
-	
-	m_pCategory->setText(splitTransaction.getCategory().c_str());
-	
-	m_pType->setCurrentIndex(0);
-	
-	m_pDescription->setText(splitTransaction.getDescription().c_str());
-	
-	// these don't make sense for split transactions
-	m_pType->setEnabled(false);
-	m_pCleared->setEnabled(false);
-	m_pDate->setEnabled(false);
-}
-
-void TransactionFormPanel::setParamsForEmptySplitTransaction(QString amountString)
-{
-	m_pPayee->setText("Split Value");
-
-	// remove any leading currency symbol.
-	// TODO: do this properly, probably best to have the values as an actual fixed and not as a string?
-	if (amountString.at(0) == '$')
-	{
-		amountString = amountString.mid(1);
-	}
-	m_pAmount->setText(amountString);
-	
-	m_pCategory->setText("");
-	
-	m_pType->setCurrentIndex(0);
-	
-	m_pDescription->setText("Split Value");
-	
-	// these don't make sense for split transactions
-	m_pType->setEnabled(false);
-	m_pCleared->setEnabled(false);
-	m_pDate->setEnabled(false);
-	
-	// set focus and select text
-	m_pPayee->setFocus();
-	m_pPayee->selectAll();
-}
-
-void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transaction)
+void ScheduledTransactionFormPanel::updateScheduledTransactionFromParamValues(ScheduledTransaction& schedTransaction)
 {
 	std::string payee = m_pPayee->text().toStdString();
-	transaction.setPayee(payee);
+	schedTransaction.setPayee(payee);
 	
 	double dAmount = m_pAmount->text().toDouble();
-	transaction.setAmount(dAmount);
+	schedTransaction.setAmount(dAmount);
 	
 	std::string category = m_pCategory->text().toStdString();
-	transaction.setCategory(category);
+	schedTransaction.setCategory(category);
 	
-	bool cleared = m_pCleared->isChecked();
-	transaction.setCleared(cleared);
 	
 	int typeIndex = m_pType->currentIndex();
-	transaction.setType((Transaction::Type)typeIndex);
+	schedTransaction.setType((Transaction::Type)typeIndex);
 	
 	QDate rawDate = m_pDate->date();
 	Date date(rawDate.day(), rawDate.month(), rawDate.year());
-	transaction.setDate(date);
+	schedTransaction.setNextDate(date);
 	
 	std::string description = m_pDescription->text().toStdString();
-	transaction.setDescription(description);
+	schedTransaction.setDescription(description);
 }
 
-void TransactionFormPanel::updateSplitTransactionFromParamValues(SplitTransaction& splitTransaction)
-{
-	std::string payee = m_pPayee->text().toStdString();
-	splitTransaction.setPayee(payee);
-	
-	double dAmount = m_pAmount->text().toDouble();
-	splitTransaction.setAmount(dAmount);
-	
-	std::string category = m_pCategory->text().toStdString();
-	splitTransaction.setCategory(category);
-	
-	std::string description = m_pDescription->text().toStdString();
-	splitTransaction.setDescription(description);
-}
 
-Date TransactionFormPanel::getEnteredDate() const
+Date ScheduledTransactionFormPanel::getEnteredDate() const
 {
 	QDate rawDate = m_pDate->date();
 	Date date(rawDate.day(), rawDate.month(), rawDate.year());
 	return date;
 }
 
-void TransactionFormPanel::keyPressEvent(QKeyEvent* event)
+void ScheduledTransactionFormPanel::keyPressEvent(QKeyEvent* event)
 {
 	// Ideally, we wouldn't have to do this, and setting default/autodefault on the Update button
 	// would do something useful, but...
@@ -325,7 +284,23 @@ void TransactionFormPanel::keyPressEvent(QKeyEvent* event)
 	QWidget::keyPressEvent(event);
 }
 
-void TransactionFormPanel::updateClicked()
+void ScheduledTransactionFormPanel::updateAccountsList(bool selectFirst)
+{
+	m_pAccount->clear();
+	
+	const std::vector<Account>& aAccounts = m_document.getAccounts();
+	for (const Account& account : aAccounts)
+	{
+		m_pAccount->addItem(account.getName().c_str());
+	}
+	
+	if (selectFirst)
+	{
+		m_pAccount->setCurrentIndex(0);
+	}
+}
+
+void ScheduledTransactionFormPanel::updateClicked()
 {
 	bool amountIsValid = false;
 	double dAmount = m_pAmount->text().toDouble(&amountIsValid);
@@ -334,9 +309,9 @@ void TransactionFormPanel::updateClicked()
 	{
 	
 		// signal that Update has been pressed, which will be caught by TransactionsViewWidget,
-		// and it will call either updateTransactionFromParamValues() or updateSplitTransactionFromParamValues()
-		// as appropriate...
+		// and it will call either updateScheduledTransactionFromParamValues()
 		
-		emit transactionValuesUpdated();
+		emit scheduledTransactionValuesUpdated();
 	}
 }
+

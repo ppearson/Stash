@@ -53,6 +53,14 @@ ItemControlButtonsWidget::ItemControlButtonsWidget(Type type, QWidget* pParent) 
 		layout->addWidget(m_pMoveUpItemButton);
 		layout->addWidget(m_pMoveDownItemButton);
 	}
+	else if (m_type == eScheduledTransaction)
+	{
+		m_pAddItemButton = createNewButton(QIcon(":stash/images/add_new.svg"), "Add Scheduled Transaction");
+		m_pDeleteItemButton = createNewButton(QIcon(":stash/images/delete_new.svg"), "Delete Scheduled Transaction");
+	
+		layout->addWidget(m_pAddItemButton);
+		layout->addWidget(m_pDeleteItemButton);
+	}
 	
 	if (m_pAddItemButton)
 	{

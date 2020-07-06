@@ -43,6 +43,7 @@
 
 #include "document_index_view.h"
 #include "transactions_view_widget.h"
+#include "scheduled_transactions_view_widget.h"
 
 #include "dialogs/account_details_dialog.h"
 #include "dialogs/make_transfer_dialog.h"
@@ -124,14 +125,22 @@ void StashWindow::setupWindow()
 	
 	m_pTransactionsViewWidget = new TransactionsViewWidget(this, this); // bit odd, but prevents need to cast to get both...
 	
+	m_pScheduledTransactionsViewWidget = new ScheduledTransactionsViewWidget(m_documentController.getDocument(), this, this);
+	
 	m_pIndexSplitter->addWidget(m_pIndexView);
 	m_pIndexSplitter->addWidget(m_pTransactionsViewWidget);
+	
+	m_pIndexSplitter->addWidget(m_pScheduledTransactionsViewWidget);
+	
+	
 	m_pIndexSplitter->setHandleWidth(2);
 	m_pIndexSplitter->setCollapsible(0, false);
 	m_pIndexSplitter->setCollapsible(1, false);
+	m_pIndexSplitter->setCollapsible(2, false);
 	
 	QList<int> mainSizes;
 	mainSizes.push_back(150);
+	mainSizes.push_back(500);
 	mainSizes.push_back(500);
 	
 	m_pIndexSplitter->setSizes(mainSizes);
@@ -139,7 +148,11 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setStretchFactor(0, 0);
 	m_pIndexSplitter->setStretchFactor(0, 2);
 	
+	m_pScheduledTransactionsViewWidget->hide();
+	
 	m_pIndexView->resize(100, 50);
+	// just to have the items resized correctly initially with a blank document...
+	m_pIndexView->rebuildFromDocument();
 	
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowRecent);
 	
@@ -363,6 +376,8 @@ bool StashWindow::loadDocument(const QString& fileName)
 		// this will automatically display the transactions list for the account as well...
 		m_pIndexView->selectItem(eDocIndex_Account, 0);
 		
+		// un
+		
 		calculateDueScheduledTransactionAndDisplayDialog();
 	}
 	
@@ -389,7 +404,9 @@ bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransac
 	
 	m_pTransactionsViewWidget->rebuildFromAccount();
 	
-	setWindowModified(true);
+	m_pTransactionsViewWidget->scrollToLastTransaction();
+	
+	setWindowModifiedAndRebuildIndex(true);
 	
 	return true;
 }
@@ -711,6 +728,19 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		m_pTransactionsViewWidget->setAccount(pAccount);
 		
 		m_pTransactionsViewWidget->rebuildFromAccount();
+		
+		m_pScheduledTransactionsViewWidget->hide();
+		m_pTransactionsViewWidget->show();		
+		
+		// for the moment hard-code, might want option?
+		m_pTransactionsViewWidget->scrollToLastTransaction();
+	}
+	else if (type == eDocIndex_ManageScheduledTransactions)
+	{
+		m_pTransactionsViewWidget->hide();
+		m_pScheduledTransactionsViewWidget->show();
+		
+		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
 	}
 }
 
@@ -802,6 +832,7 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 			//       connecting the two...
 			if (accountIndex >= 0 && accountIndex < m_documentController.getDocument().getAccountCount())
 			{
+				// Note: schedTransIndex is the index into the overall total list of scheduled transactions
 				DueSchedTransactions::DueSchedTrans newTrans(schedTransIndex, it->getPayee(), it->getDescription());
 				
 				// TODO: again, replace this with something better...

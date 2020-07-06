@@ -38,6 +38,7 @@ class QSplitter;
 class DocumentIndexView;
 
 class TransactionsViewWidget;
+class ScheduledTransactionsViewWidget;
 
 class StashWindow : public QMainWindow
 {
@@ -136,14 +137,15 @@ protected:
 	
 	
 	
-	TransactionsViewWidget*	m_pTransactionsViewWidget;
+	TransactionsViewWidget*				m_pTransactionsViewWidget;
+	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
 	
 	// other state
-	QString					m_currentFile;
+	QString						m_currentFile;
 	
-	QStringList				m_recentFiles;
+	QStringList					m_recentFiles;
 	enum { MaxRecentFiles = 5 };
-	QAction*				m_recentFileActions[MaxRecentFiles];
+	QAction*					m_recentFileActions[MaxRecentFiles];
 };
 
 #endif // STASH_WINDOW_H

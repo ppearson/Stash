@@ -20,93 +20,77 @@
  *
  */
 
-#ifndef TRANSACTIONS_VIEW_WIDGET_H
-#define TRANSACTIONS_VIEW_WIDGET_H
+#ifndef SCHEDULED_TRANSACTIONS_VIEW_WIDGET_H
+#define SCHEDULED_TRANSACTIONS_VIEW_WIDGET_H
 
 #include <QWidget>
 #include <QModelIndex>
 
-#include "view_common.h"
+//#include "view_common.h"
 
 class QTreeView;
 class QItemSelection;
 class QSplitter;
 
-class Account;
-class TransactionsViewDataModel;
-class TransactionFormPanel;
+class Document;
+class ScheduledTransactionsViewDataModel;
+class ScheduledTransactionFormPanel;
 class ItemControlButtonsWidget;
 
 class StashWindow;
 
-class TransactionsViewWidget : public QWidget
+class ScheduledTransactionsViewWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionsViewWidget(QWidget* pParent, StashWindow* mainWindow);
+	ScheduledTransactionsViewWidget(Document& document, QWidget* pParent, StashWindow* mainWindow);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
 	
-	void setAccount(Account* pAccount)
-	{
-		m_pAccount = pAccount;
-		m_transactionIndex = -1;
-	}
+	void rebuildFromDocument();
+	
+	void addNewScheduledTransaction();
+	void deleteSelectedScheduledTransaction();
 
-	void rebuildFromAccount();
-	
-	void setViewDurationType(TransactionsViewDurationType viewType);
-	
-	void addNewTransaction();
-	void deleteSelectedTransaction();
-	void splitCurrentTransaction();
-	
-	void moveSelectedTransactionUp();
-	void moveSelectedTransactionDown();
-	
-	void scrollToLastTransaction();
-	
 signals:
 
 public slots:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 	
-	void transactionValuesUpdated();
+	void scheduledTransactionValuesUpdated();
 	
 	void addItemClicked();
 	void deleteItemClicked();
-	void splitItemClicked();
-	void moveUpItemClicked();
-	void moveDownItemClicked();
 	
 protected:
-	void selectTransaction(unsigned int transactionIndex, int splitIndex = -1);
+	void selectScheduledTransaction(unsigned int scheduledTransactionIndex);
 	
 	// helper to conveniently get single selected item
 	QModelIndex getSingleSelectedIndex() const;
 	
-	void updateItemButtonsAndMainMenuStateFromSelection();
+	void updateItemButtonsFromSelection();
+	
+	
 	
 protected:
-	StashWindow*				m_pMainWindow;
+	StashWindow*						m_pMainWindow;
 	
-	Account*					m_pAccount;
+	Document&							m_document;
 	
-	QSplitter*					m_pSplitter;
+	QSplitter*							m_pSplitter;
 	
-	QTreeView*					m_pTreeView;
-	TransactionsViewDataModel*	m_pModel;
+	QTreeView*							m_pTreeView;
+	ScheduledTransactionsViewDataModel*	m_pModel;
 	
-	TransactionFormPanel*		m_pTransactionFormPanel;
+	ScheduledTransactionFormPanel*		m_pScheduledTransactionFormPanel;
 	
-	ItemControlButtonsWidget*	m_pItemControlButtons;
+	ItemControlButtonsWidget*			m_pItemControlButtons;
 	
 	
-	// Cached indices of transaction selection. These map into the Account/Transaction, *not* the DataModel...
-	unsigned int				m_transactionIndex;
-	int							m_splitTransactionIndex;
-	
+	// Cached indices of scheduled transaction selection. These map into the
+	// Document/ScheduledTransaction, *not* the DataModel...
+	unsigned int						m_scheduledTransactionIndex;
 };
 
-#endif // TRANSACTIONS_VIEW_WIDGET_H
+#endif // SCHEDULED_TRANSACTIONS_VIEW_WIDGET_H

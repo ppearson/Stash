@@ -160,6 +160,8 @@ void TransactionsViewWidget::setViewDurationType(TransactionsViewDurationType vi
 	m_transactionIndex = -1;
 	m_splitTransactionIndex = -1;
 	
+	scrollToLastTransaction();
+	
 	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
@@ -245,7 +247,7 @@ void TransactionsViewWidget::deleteSelectedTransaction()
 		m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 	}
 	
-	// might technically be superfluous due to te forced selection above, but...
+	// might technically be superfluous due to the forced selection above, but...
 	updateItemButtonsAndMainMenuStateFromSelection();
 }
 
@@ -347,6 +349,16 @@ void TransactionsViewWidget::moveSelectedTransactionDown()
 	m_pTreeView->scrollTo(selectedTransactionModelIndex);
 	
 	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
+}
+
+void TransactionsViewWidget::scrollToLastTransaction()
+{
+	int modelRowCount = m_pTreeView->model()->rowCount();
+	if (modelRowCount > 0)
+	{
+		QModelIndex lastTransactionIndex = m_pTreeView->model()->index(modelRowCount - 1, 0);
+		m_pTreeView->scrollTo(lastTransactionIndex);
+	}
 }
 
 void TransactionsViewWidget::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
