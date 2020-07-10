@@ -42,8 +42,8 @@ static const std::string sTableStyle = "QTreeView::item {"
 		"border: 0.5px solid #8c8c8c;"
         "border-top-color: transparent;"
         "border-left-color: transparent;"
-		"}"		
-		"QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};";
+		"}"
+		"QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);}";
 
 TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
 	m_pMainWindow(mainWindow),
@@ -75,16 +75,24 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_pTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
 	m_pTreeView->setAttribute(Qt::WA_MacShowFocusRect, false); // hide the OS X blue focus rect
 
-	m_pModel = new TransactionsViewDataModel(this);
+	m_pModel = new TransactionsViewDataModel(mainWindow->getSettingsState(), this);
 
 	m_pTreeView->setModel(m_pModel);
 	
-	m_pTreeView->setColumnWidth(0, 120);
-	m_pTreeView->setColumnWidth(1, 150);
-	m_pTreeView->setColumnWidth(2, 170);
-	m_pTreeView->setColumnWidth(3, 520);
-	m_pTreeView->setColumnWidth(4, 120);
-	m_pTreeView->setColumnWidth(5, 140);
+	m_pTreeView->setColumnWidth(0, 70);
+	m_pTreeView->setColumnWidth(1, 120);
+	m_pTreeView->setColumnWidth(2, 150);
+	m_pTreeView->setColumnWidth(3, 170);
+	m_pTreeView->setColumnWidth(4, 520);
+	m_pTreeView->setColumnWidth(5, 120);
+	m_pTreeView->setColumnWidth(6, 140);
+	
+	QHeaderView* pHeader = m_pTreeView->header();
+	// this is apparently the best we can do, but it means the "Description" column
+	// isn't actually resizeable on its own, you have to resize the others...
+	pHeader->setResizeMode(QHeaderView::Interactive);
+	pHeader->setResizeMode(4, QHeaderView::Stretch);
+	pHeader->setStretchLastSection(false);
 	
 	m_pTreeView->setAlternatingRowColors(true);
 	
@@ -139,7 +147,14 @@ void TransactionsViewWidget::rebuildFromAccount()
 	
 	// resetting the model doesn't reset the scroll position of the QTreeView, so we need to do that manually...
 	
-	m_pTreeView->scrollToTop();
+	if (m_pMainWindow->getSettingsState().getBool("transactions/scroll_to_latest_auto", true))
+	{
+		m_pTreeView->scrollToBottom();
+	}
+	else
+	{
+		m_pTreeView->scrollToTop();
+	}
 	
 	m_pTransactionFormPanel->clear(true);
 	
@@ -152,8 +167,6 @@ void TransactionsViewWidget::rebuildFromAccount()
 void TransactionsViewWidget::setViewDurationType(TransactionsViewDurationType viewType)
 {
 	m_pModel->setTransactionsViewDurationType(viewType);
-	
-	m_pTreeView->scrollToTop();
 	
 	m_pTransactionFormPanel->clear(true);
 	
@@ -351,13 +364,22 @@ void TransactionsViewWidget::moveSelectedTransactionDown()
 	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
 }
 
-void TransactionsViewWidget::scrollToLastTransaction()
+void TransactionsViewWidget::scrollToLastTransaction(bool ignoreSetting)
 {
-	int modelRowCount = m_pTreeView->model()->rowCount();
-	if (modelRowCount > 0)
+//	int modelRowCount = m_pTreeView->model()->rowCount();
+//	if (modelRowCount > 0)
+//	{
+//		QModelIndex lastTransactionIndex = m_pTreeView->model()->index(modelRowCount - 1, 0);
+//		m_pTreeView->scrollTo(lastTransactionIndex);
+//	}
+	
+	if (ignoreSetting || m_pMainWindow->getSettingsState().getBool("transactions/scroll_to_latest_auto", true))
 	{
-		QModelIndex lastTransactionIndex = m_pTreeView->model()->index(modelRowCount - 1, 0);
-		m_pTreeView->scrollTo(lastTransactionIndex);
+		m_pTreeView->scrollToBottom();
+	}
+	else
+	{
+		m_pTreeView->scrollToTop();
 	}
 }
 

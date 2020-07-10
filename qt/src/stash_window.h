@@ -25,6 +25,7 @@
 
 #include <QMainWindow>
 
+#include "settings_state.h"
 #include "document_controller.h"
 
 #include "view_common.h"
@@ -58,6 +59,8 @@ protected:
 	void setupMenu();
 	void setupToolbar();
 	
+	void positionWindow();
+	
 	bool loadDocument(const QString& fileName);
 	
 	friend class ScheduledTransactionsDueDialog;
@@ -65,6 +68,9 @@ protected:
 	// I'm not amazingly happy about this, but it's simplest...
 	bool addScheduledTransactionAsTransaction(unsigned int schedTransactionIndex);
 	bool skipScheduledTransaction(unsigned int schedTransactionIndex);
+	
+	void loadSettings();
+	void saveSettings();
 	
 public slots:
 	
@@ -98,7 +104,15 @@ public slots:
 	void transactionMoveDown();
 	void transactionMakeTransfer();
 	
+	void toolsSettings();
+	
 	void docIndexSelectionHasChanged(DocumentIndexType type, int index);
+	
+	// this isn't ideal, but it needs to be passed somehow, and I'm less happy with a singleton...
+	const SettingsState& getSettingsState() const
+	{
+		return m_settings;
+	}
 	
 	
 protected:
@@ -117,6 +131,7 @@ protected:
 	QMenuBar*				m_pMenuBar;
 	QToolBar*				m_pToolBar;
 	
+	// Menu actions
 	QAction*				m_pViewMenuShowToolbarAction;
 	QAction*				m_pViewMenuShowRecentTransactions;
 	QAction*				m_pViewMenuShowThisYearTransactions;
@@ -129,6 +144,13 @@ protected:
 	QAction*				m_pTransactionMoveDown;
 	QAction*				m_pTransactionMakeTransfer;
 	
+	// Toolbar actions (separate as they have different text, icons, at least for the Show ones).
+	// TODO: some of them could be shared...
+	QAction*				m_pToolbarShowRecentTransactions;
+	QAction*				m_pToolbarShowThisYearTransactions;
+	QAction*				m_pToolbarShowAllTransactions;
+	QAction*				m_pToolbarMakeTransfer;
+	
 	QVBoxLayout*			m_pMainLayout;
 	QWidget*				m_pMainContainerWidget; // for everything (including index)
 	
@@ -139,6 +161,9 @@ protected:
 	
 	TransactionsViewWidget*				m_pTransactionsViewWidget;
 	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
+	
+	
+	SettingsState				m_settings;
 	
 	// other state
 	QString						m_currentFile;

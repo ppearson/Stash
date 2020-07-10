@@ -94,7 +94,16 @@ QVariant ScheduledTransactionsViewDataModel::data(const QModelIndex& index, int 
 			}
 		}
 	}
-
+	else if (role == Qt::SizeHintRole)
+	{
+		if (index.column() == 0)
+		{
+			// force a smaller icon size than default, so that there's less padding
+			// around the checked icons, and so therefore the row hights are the same as
+			// without any checkbox.
+			return QSize(16, 16);
+		}
+	}
 	else if (role == Qt::TextAlignmentRole)
 	{
 		return (index.column() == 3) ? Qt::AlignRight : Qt::AlignLeft;

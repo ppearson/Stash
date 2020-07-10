@@ -32,12 +32,14 @@ class Account;
 class Transaction;
 class SplitTransaction;
 
+class SettingsState;
+
 class TransactionsModelItem;
 
 class TransactionsViewDataModel : public QAbstractItemModel
 {
 public:
-	TransactionsViewDataModel(QObject* parent);
+	TransactionsViewDataModel(const SettingsState& settingsState, QObject* parent);
 	virtual ~TransactionsViewDataModel();
 	
 	void setAccount(Account* pAccount);
@@ -45,6 +47,8 @@ public:
 	void setTransactionsViewDurationType(TransactionsViewDurationType viewType);
 	
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	
+	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	
 	virtual QVariant headerData(int section, Qt::Orientation orientation,
                                 int role = Qt::DisplayRole) const;
@@ -63,6 +67,8 @@ public:
 	void clear();
 		
 protected:
+	const SettingsState&			m_settingsState;
+	
 	Account*						m_pAccount;
 	
 	TransactionsModelItem*			m_pRootItem;
@@ -97,6 +103,11 @@ public:
 	void addChild(TransactionsModelItem* pChild);
 	
 	// getters for data
+	
+	QVariant getCleared() const
+	{
+		return m_cleared;
+	}
 	
 	QVariant getDate() const
 	{
@@ -146,6 +157,7 @@ protected:
 	// for the moment, copy all the details into separate QVariant variables,
 	// which is wasteful, but at least simple...
 	
+	QVariant						m_cleared;
 	QVariant						m_date;
 	QVariant						m_payee;
 	QVariant						m_category;

@@ -65,7 +65,9 @@ public:
 	void moveSelectedTransactionUp();
 	void moveSelectedTransactionDown();
 	
-	void scrollToLastTransaction();
+	// if ignoreSetting == false, then use the global setting,
+	// otherwise, always scroll to last one.
+	void scrollToLastTransaction(bool ignoreSetting = false);
 	
 signals:
 

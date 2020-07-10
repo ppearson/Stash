@@ -44,25 +44,28 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	pGridLayout->setMargin(4);
 		
 	QLabel* pPayeeLabel = new QLabel(this);
-	pPayeeLabel->setText("Payee:");
+	pPayeeLabel->setText("&Payee:");
 	
 	m_pPayee = new QLineEdit(this);
+	pPayeeLabel->setBuddy(m_pPayee);
 			
 	QLabel* pAmountLabel = new QLabel(this);
-	pAmountLabel->setText("Amount:");
+	pAmountLabel->setText("A&mount:");
 	
 	m_pAmount = new QLineEdit(this);
+	pAmountLabel->setBuddy(m_pAmount);
 		
 	QLabel* pCategoryLabel = new QLabel(this);
-	pCategoryLabel->setText("Category:");
+	pCategoryLabel->setText("&Category:");
 	
 	m_pCategory = new QLineEdit(this);
+	pCategoryLabel->setBuddy(m_pCategory);
 	
 	m_pCleared = new QCheckBox(this);
-	m_pCleared->setText("Cleared");
+	m_pCleared->setText("C&leared");
 	
 	QLabel* pTypeLabel = new QLabel(this);
-	pTypeLabel->setText("Type:");
+	pTypeLabel->setText("T&ype:");
 	
 	m_pType = new QComboBox(this);
 	QStringList typeChoices;
@@ -70,14 +73,16 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 				   "ATM" << "Cheque" << "Credit" << "Debit";
 	m_pType->addItems(typeChoices);
 	m_pType->setCurrentIndex(0);
+	pTypeLabel->setBuddy(m_pType);
 	
 	QLabel* pDescriptionLabel = new QLabel(this);
-	pDescriptionLabel->setText("Description:");
+	pDescriptionLabel->setText("&Description:");
 	
 	m_pDescription = new QLineEdit(this);
+	pDescriptionLabel->setBuddy(m_pDescription);
 	
 	QLabel* pDateLabel = new QLabel(this);
-	pDateLabel->setText("Date:");
+	pDateLabel->setText("D&ate:");
 	
 	// create this one intentionally last, such that it's the last tab order (after Description),
 	// as DateEdit control isn't really that helpful with tab order, and matches what we did in ObjC
@@ -89,6 +94,7 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	m_pDate->setDate(QDate::currentDate());
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
 	m_pDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
+	pDateLabel->setBuddy(m_pDate);
 	
 	QPushButton* pUpdateButton = new QPushButton(this);
 	pUpdateButton->setText("Update");

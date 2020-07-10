@@ -20,32 +20,22 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#include "settings_page.h"
 
-#include "stash_window.h"
-
-int main(int argc, char** argv)
+SettingsPage::SettingsPage(QSettings& settings, QWidget* parent) : QWidget(parent), m_settings(settings)
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+	m_pFormLayout = new QFormLayout();
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
+	m_pFormLayout->setContentsMargins(2, 2, 2, 2);
 
-	StashWindow w;
-	w.show();
+	m_pFormLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+	m_pFormLayout->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
+	m_pFormLayout->setLabelAlignment(Qt::AlignLeft);
 
-	return a.exec();
+	setLayout(m_pFormLayout);
+}
+
+SettingsPage::~SettingsPage()
+{
+
 }

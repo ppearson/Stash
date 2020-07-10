@@ -20,32 +20,41 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#ifndef SETTINGS_WINDOW_H
+#define SETTINGS_WINDOW_H
 
-#include "stash_window.h"
+#include <QDialog>
 
-int main(int argc, char** argv)
+#include <vector>
+
+class QListWidget;
+class QListWidgetItem;
+class QStackedWidget;
+class QSettings;
+
+class SettingsPage;
+
+class SettingsWindow : public QDialog
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+	Q_OBJECT
+public:
+	explicit SettingsWindow(QSettings& settings, QWidget* parent = 0);
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
+	void addPage(const QString& title, SettingsPage* page);
 
-	StashWindow w;
-	w.show();
+signals:
 
-	return a.exec();
-}
+public slots:
+	void changePage(QListWidgetItem* current, QListWidgetItem* previous);
+	void saveChanges();
+
+protected:
+	QSettings&			m_settings;
+
+	QListWidget*		m_categoryWidget;
+	QStackedWidget*		m_pagesWidget;
+
+	std::vector<SettingsPage*>	m_aPages;
+};
+
+#endif // SETTINGS_WINDOW_H

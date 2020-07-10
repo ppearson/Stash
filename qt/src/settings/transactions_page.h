@@ -20,32 +20,27 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#ifndef TRANSACTIONS_PAGE_H
+#define TRANSACTIONS_PAGE_H
 
-#include "stash_window.h"
+#include "settings_page.h"
 
-int main(int argc, char** argv)
+class QCheckBox;
+class QSpinBox;
+
+class TransactionsPage : public SettingsPage
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+	Q_OBJECT
+public:
+	TransactionsPage(QSettings& settings, QWidget* parent = 0);
+	~TransactionsPage();
+	
+	virtual void saveSettings();
+	
+protected:
+	QSpinBox*		m_pRecentDurationDays;
+	QCheckBox*		m_pScrollToLatestTransaction;
+	QCheckBox*		m_pNewTransactionsAreMarkedCleared;
+};
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
-
-	StashWindow w;
-	w.show();
-
-	return a.exec();
-}
+#endif // TRANSACTIONS_PAGE_H

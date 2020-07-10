@@ -24,12 +24,16 @@
 
 #include <QLocale>
 #include <QColor>
+#include <QPixmap>
 
 #include "../../core/account.h"
 
+#include "settings_state.h"
+
 static const int kRemainderSplitTransactionIndex = -2;
 
-TransactionsViewDataModel::TransactionsViewDataModel(QObject* parent) : QAbstractItemModel(parent), 
+TransactionsViewDataModel::TransactionsViewDataModel(const SettingsState& settingsState, QObject* parent) : QAbstractItemModel(parent), 
+	m_settingsState(settingsState),
 	m_pAccount(nullptr),
 	m_pRootItem(nullptr),
 	m_transactionsViewType(eTransViewShowRecent),
@@ -70,27 +74,27 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 		TransactionsModelItem* item = getItem(index);
 		if (item)
 		{
-			if (index.column() == 0)
+			if (index.column() == 1)
 			{
 				return item->getDate();
 			}
-			else if (index.column() == 1)
+			else if (index.column() == 2)
 			{
 				return item->getPayee();
 			}
-			else if (index.column() == 2)
+			else if (index.column() == 3)
 			{
 				return item->getCategory();
 			}
-			else if (index.column() == 3)
+			else if (index.column() == 4)
 			{
 				return item->getDescription();
 			}
-			else if (index.column() == 4)
+			else if (index.column() == 5)
 			{
 				return item->getAmount();
 			}
-			else if (index.column() == 5)
+			else if (index.column() == 6)
 			{
 				return item->getBalance();
 			}
@@ -98,10 +102,13 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 	}
 	else if (role == Qt::DecorationRole)
 	{
-		TransactionsModelItem* item = getItem(index);
-		if (item)
+		if (index.column() == 0)
 		{
-			
+			TransactionsModelItem* item = getItem(index);
+			if (item)
+			{
+//				return QPixmap()
+			}
 		}
 	}
 	else if (role == Qt::TextColorRole)
@@ -121,10 +128,50 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 	}
 	else if (role == Qt::TextAlignmentRole)
 	{
-		return (index.column() == 4 || index.column() == 5) ? Qt::AlignRight : Qt::AlignLeft;
+		return (index.column() == 5 || index.column() == 6) ? Qt::AlignRight : Qt::AlignLeft;
+	}
+	else if (role == Qt::CheckStateRole)
+	{
+		if (index.column() == 0)
+		{
+			TransactionsModelItem* item = getItem(index);
+			if (item && item->getSplitTransactionIndex() == -1)
+			{
+				return (item->getCleared() == true) ? Qt::Checked : Qt::Unchecked;
+			}
+		}
+	}
+	else if (role == Qt::SizeHintRole)
+	{
+		if (index.column() == 0)
+		{
+			// force a smaller icon size than default, so that there's less padding
+			// around the checked icons, and so therefore the row hights are the same as
+			// without any checkbox.
+			return QSize(16, 16);
+		}
 	}
 
 	return QVariant();
+}
+
+Qt::ItemFlags TransactionsViewDataModel::flags(const QModelIndex& index) const
+{
+	if (!index.isValid())
+		return 0;
+	
+	Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	
+	if (index.column() == 0)
+	{
+		TransactionsModelItem* item = getItem(index);
+		if (item && item->getSplitTransactionIndex() == -1)
+		{
+			flags |= Qt::ItemIsUserCheckable;
+		}
+	}
+	
+	return flags;
 }
 
 QVariant TransactionsViewDataModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -135,16 +182,18 @@ QVariant TransactionsViewDataModel::headerData(int section, Qt::Orientation orie
 	if (orientation == Qt::Horizontal)
 	{
 		if (section == 0)
-			return QVariant("Date");
+			return QVariant("Cleared");
 		else if (section == 1)
-			return QVariant("Payee");
+			return QVariant("Date");
 		else if (section == 2)
-			return QVariant("Category");
+			return QVariant("Payee");
 		else if (section == 3)
-			return QVariant("Description");
+			return QVariant("Category");
 		else if (section == 4)
-			return QVariant("Amount");
+			return QVariant("Description");
 		else if (section == 5)
+			return QVariant("Amount");
+		else if (section == 6)
 			return QVariant("Balance");
 	}
 	
@@ -182,7 +231,7 @@ QModelIndex TransactionsViewDataModel::parent(const QModelIndex& index) const
 
 int TransactionsViewDataModel::columnCount(const QModelIndex& parent) const
 {
-	return 6;
+	return 7;
 }
 
 int TransactionsViewDataModel::rowCount(const QModelIndex& parent) const
@@ -246,8 +295,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		
 		if (m_transactionsViewType == eTransViewShowRecent)
 		{
-			// TODO: hook this up to Settings/Options...
-			int nRecentDuration = 30;
+			int nRecentDuration = m_settingsState.getInt("transactions/recent_duration_days", 30);
 			
 			if (nRecentDuration <= 0)
 				nRecentDuration = 30;
@@ -337,6 +385,7 @@ TransactionsModelItem::~TransactionsModelItem()
 
 void TransactionsModelItem::extractDetails(const Transaction& transaction, unsigned int transactionIndex)
 {
+	m_cleared = transaction.isCleared();
 	m_date = transaction.getDate().FormattedDate(Date::UK).c_str();
 	m_payee = transaction.getPayee().c_str();
 	m_category = transaction.getCategory().c_str();

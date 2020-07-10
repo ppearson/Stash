@@ -20,32 +20,26 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#ifndef GENERAL_PAGE_H
+#define GENERAL_PAGE_H
 
-#include "stash_window.h"
+#include "settings_page.h"
 
-int main(int argc, char** argv)
+class QCheckBox;
+
+class GeneralPage : public SettingsPage
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+	Q_OBJECT
+public:
+	GeneralPage(QSettings& settings, QWidget* parent = 0);
+	virtual ~GeneralPage();
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
+	virtual void saveSettings();
 
-	StashWindow w;
-	w.show();
 
-	return a.exec();
-}
+protected:
+	QCheckBox*		m_pOpenMostRecentFileStartup;
+	QCheckBox*		m_pMakeBackupFileWhenSaving;
+};
+
+#endif // GENERAL_PAGE_H

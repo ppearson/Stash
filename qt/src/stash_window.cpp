@@ -23,6 +23,8 @@
 #include "stash_window.h"
 
 #include <QMenuBar>
+#include <QToolBar>
+#include <QToolButton>
 
 #include <QApplication>
 
@@ -49,6 +51,8 @@
 #include "dialogs/make_transfer_dialog.h"
 #include "dialogs/scheduled_transactions_due_dialog.h"
 
+#include "settings/settings_window.h"
+
 StashWindow::StashWindow() : QMainWindow(nullptr)
 {
 	setupWindow();
@@ -63,6 +67,8 @@ void StashWindow::closeEvent(QCloseEvent* event)
 {
 	if (shouldDiscardCurrentDocument())
 	{
+		saveSettings();
+		
 		event->accept();
 	}
 	else
@@ -83,11 +89,11 @@ void StashWindow::setWindowModifiedAndRebuildIndex(bool rebuildDocIndex)
 
 void StashWindow::setupWindow()
 {
-	resize(900, 575);
-	
-    setTabShape(QTabWidget::Rounded);
+	setTabShape(QTabWidget::Rounded);
 	
     setUnifiedTitleAndToolBarOnMac(true);
+	
+	setWindowIcon(QIcon(":/stash/images/main_icon_0.png"));
 		
 	m_pMainContainerWidget = new QWidget(this);
 	m_pMainLayout = new QVBoxLayout(m_pMainContainerWidget);
@@ -102,6 +108,8 @@ void StashWindow::setupWindow()
 	m_pMainContainerWidget->setSizePolicy(sizePolicy);
 	
 	setCentralWidget(m_pMainContainerWidget);
+	
+	loadSettings();
 	
 	setupMenu();
 	setupToolbar();
@@ -154,9 +162,17 @@ void StashWindow::setupWindow()
 	// just to have the items resized correctly initially with a blank document...
 	m_pIndexView->rebuildFromDocument();
 	
+	positionWindow();
+	
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowRecent);
 	
 	setCurrentFile("");
+	
+	bool openLastFileOnStartup = m_settings.getBool("general/open_most_recent_file_startup", false);
+	if (openLastFileOnStartup && !m_recentFiles.empty())
+	{
+		loadDocument(m_recentFiles[0]);
+	}
 }
 
 void StashWindow::setupMenu()
@@ -165,7 +181,7 @@ void StashWindow::setupMenu()
     m_pMenuBar->setObjectName(QString::fromUtf8("menuBar"));
 	
 	
-    QMenu* menuFile = new QMenu("File", m_pMenuBar);
+    QMenu* menuFile = new QMenu("&File", m_pMenuBar);
     menuFile->setObjectName(QString::fromUtf8("menuFile"));	
 	
 	QAction* pFileNewAction = new QAction(this);
@@ -179,19 +195,19 @@ void StashWindow::setupMenu()
 	QAction* pFileExportOFXFileAction = new QAction(this);
 	QAction* pFileExportQIFFileAction = new QAction(this);
 	
-	pFileNewAction->setText(QApplication::translate("StashWindow", "File New", 0));
+	pFileNewAction->setText(QApplication::translate("StashWindow", "File &New", 0));
 	
-	pFileOpenAction->setText(QApplication::translate("StashWindow", "File Open...", 0));
+	pFileOpenAction->setText(QApplication::translate("StashWindow", "File &Open...", 0));
 	pFileOpenAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+O", 0));
 	
-	pFileSaveAction->setText(QApplication::translate("StashWindow", "Save", 0));
+	pFileSaveAction->setText(QApplication::translate("StashWindow", "&Save", 0));
 	pFileSaveAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+S", 0));
 	
-	pFileSaveAsAction->setText(QApplication::translate("StashWindow", "Save As...", 0));
+	pFileSaveAsAction->setText(QApplication::translate("StashWindow", "Save &As...", 0));
 	pFileSaveAsAction->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+S", 0));
 	
-	pFileImportOFXFileAction->setText(QApplication::translate("StashWindow", "Import OFX...", 0));
-	pFileImportQIFFileAction->setText(QApplication::translate("StashWindow", "Import QIF...", 0));
+	pFileImportOFXFileAction->setText(QApplication::translate("StashWindow", "Import &OFX...", 0));
+	pFileImportQIFFileAction->setText(QApplication::translate("StashWindow", "Import &QIF...", 0));
 	
 	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0));
 	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0));
@@ -234,10 +250,18 @@ void StashWindow::setupMenu()
 		connect(m_recentFileActions[i], SIGNAL(triggered()), this, SLOT(fileOpenRecentFile()));
 	}
 	
-    QMenu* menuEdit = new QMenu("Edit", m_pMenuBar);
+	QAction* pFileExit = new QAction(this);
+	pFileExit->setText("Exit");
+	
+	connect(pFileExit, SIGNAL(triggered()), this, SLOT(close()));
+	
+	menuFile->addSeparator();
+	menuFile->addAction(pFileExit);
+	
+    QMenu* menuEdit = new QMenu("&Edit", m_pMenuBar);
     menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
 	
-	QMenu* menuView = new QMenu("View", m_pMenuBar);
+	QMenu* menuView = new QMenu("&View", m_pMenuBar);
     menuView->setObjectName(QString::fromUtf8("menuView"));
 	
 	m_pViewMenuShowToolbarAction = new QAction(this);
@@ -245,14 +269,14 @@ void StashWindow::setupMenu()
 	m_pViewMenuShowThisYearTransactions = new QAction(this);
 	m_pViewMenuShowAllTransactions = new QAction(this);
 	
-	m_pViewMenuShowToolbarAction->setText(QApplication::translate("StashWindow", "Show Toolbar", 0));
+	m_pViewMenuShowToolbarAction->setText(QApplication::translate("StashWindow", "Show &Toolbar", 0));
 	m_pViewMenuShowToolbarAction->setCheckable(true);
 	
-	m_pViewMenuShowRecentTransactions->setText(QApplication::translate("StashWindow", "Recent Transactions", 0));
+	m_pViewMenuShowRecentTransactions->setText(QApplication::translate("StashWindow", "&Recent Transactions", 0));
 	m_pViewMenuShowRecentTransactions->setCheckable(true);
-	m_pViewMenuShowThisYearTransactions->setText(QApplication::translate("StashWindow", "This Year Transactions", 0));
+	m_pViewMenuShowThisYearTransactions->setText(QApplication::translate("StashWindow", "This &Year Transactions", 0));
 	m_pViewMenuShowThisYearTransactions->setCheckable(true);
-	m_pViewMenuShowAllTransactions->setText(QApplication::translate("StashWindow", "All Transactions", 0));
+	m_pViewMenuShowAllTransactions->setText(QApplication::translate("StashWindow", "&All Transactions", 0));
 	m_pViewMenuShowAllTransactions->setCheckable(true);
 	
 	menuView->addAction(m_pViewMenuShowToolbarAction);
@@ -269,21 +293,21 @@ void StashWindow::setupMenu()
 	connect(m_pViewMenuShowThisYearTransactions, SIGNAL(triggered()), this, SLOT(viewShowThisYearTransactions()));
 	connect(m_pViewMenuShowAllTransactions, SIGNAL(triggered()), this, SLOT(viewShowAllTransactions()));
 	
-	QMenu* menuInsert = new QMenu("Insert", m_pMenuBar);
+	QMenu* menuInsert = new QMenu("&Insert", m_pMenuBar);
     menuInsert->setObjectName(QString::fromUtf8("menuInsert"));
 	
 	QAction* pInsertAccount = new QAction(this);
 	QAction* pInsertGraph = new QAction(this);
 	
-	pInsertAccount->setText(QApplication::translate("StashWindow", "New Account", 0));
-	pInsertGraph->setText(QApplication::translate("StashWindow", "New Graph", 0));
+	pInsertAccount->setText(QApplication::translate("StashWindow", "New &Account", 0));
+	pInsertGraph->setText(QApplication::translate("StashWindow", "New &Graph", 0));
 	
 	connect(pInsertAccount, SIGNAL(triggered()), this, SLOT(insertAccount()));
 	
 	menuInsert->addAction(pInsertAccount);
 	menuInsert->addAction(pInsertGraph);
 	
-	QMenu* menuTransaction = new QMenu("Transaction", m_pMenuBar);
+	QMenu* menuTransaction = new QMenu("&Transaction", m_pMenuBar);
 	menuTransaction->setObjectName(QString::fromUtf8("menuTransaction"));
 	
 	m_pTransactionAddNewTransaction = new QAction(this);
@@ -325,11 +349,22 @@ void StashWindow::setupMenu()
 	menuTransaction->addSeparator();
 	menuTransaction->addAction(m_pTransactionMakeTransfer);
 	
+	QMenu* menuTools = new QMenu("T&ools", m_pMenuBar);
+	menuTools->setObjectName(QString::fromUtf8("menuTools"));
+	
+	QAction* pToolsSettings = new QAction(this);
+	pToolsSettings->setText("Settings...");
+	
+	connect(pToolsSettings, SIGNAL(triggered()), this, SLOT(toolsSettings()));
+	
+	menuTools->addAction(pToolsSettings);
+	
 	m_pMenuBar->addMenu(menuFile);
 	m_pMenuBar->addMenu(menuEdit);
 	m_pMenuBar->addMenu(menuView);
 	m_pMenuBar->addMenu(menuInsert);
 	m_pMenuBar->addMenu(menuTransaction);
+	m_pMenuBar->addMenu(menuTools);
 	
 	setMenuBar(m_pMenuBar);
 	
@@ -338,7 +373,68 @@ void StashWindow::setupMenu()
 
 void StashWindow::setupToolbar()
 {
+	// Toolbar has duplicate actions of the Menu, so as to have different text/icons...
 	
+	m_pToolBar = new QToolBar(this);
+	m_pToolBar->setObjectName(QString::fromUtf8("mainToolbar"));
+	m_pToolBar->setMovable(false);
+	m_pToolBar->setIconSize(QSize(24, 24));
+	m_pToolBar->setFloatable(false);
+	m_pToolBar->setFocusPolicy(Qt::NoFocus);
+	
+	QAction* pToolbarNewAccount = new QAction(QIcon(":/stash/images/add_account.png"), "", this);
+	pToolbarNewAccount->setToolTip("Create a new Account");
+	
+	m_pToolbarShowRecentTransactions = new QAction("Recent", this);
+	m_pToolbarShowRecentTransactions->setCheckable(true);
+	m_pToolbarShowRecentTransactions->setToolTip("Show Recent Transactions");
+	m_pToolbarShowThisYearTransactions = new QAction("This Year", this);
+	m_pToolbarShowThisYearTransactions->setCheckable(true);
+	m_pToolbarShowThisYearTransactions->setToolTip("Show Transactions from This Year");
+	m_pToolbarShowAllTransactions = new QAction("All", this);
+	m_pToolbarShowAllTransactions->setCheckable(true);
+	m_pToolbarShowAllTransactions->setToolTip("Show All Transactions");
+	
+	m_pToolbarShowRecentTransactions->setChecked(true);
+	
+	m_pToolbarMakeTransfer = new QAction(QIcon(":/stash/images/make_transfer.png"), "", this);
+	m_pToolbarMakeTransfer->setToolTip("Make Transfer transactions between accounts");
+	
+	
+	connect(pToolbarNewAccount, SIGNAL(triggered()), this, SLOT(insertAccount()));
+	
+	connect(m_pToolbarShowRecentTransactions, SIGNAL(triggered()), this, SLOT(viewShowRecentTransactions()));
+	connect(m_pToolbarShowThisYearTransactions, SIGNAL(triggered()), this, SLOT(viewShowThisYearTransactions()));
+	connect(m_pToolbarShowAllTransactions, SIGNAL(triggered()), this, SLOT(viewShowAllTransactions()));
+
+	connect(m_pToolbarMakeTransfer, SIGNAL(triggered()), this, SLOT(transactionMakeTransfer()));
+	
+	m_pToolBar->addAction(pToolbarNewAccount);
+	m_pToolBar->addSeparator();
+	m_pToolBar->addAction(m_pToolbarShowRecentTransactions);
+	m_pToolBar->addAction(m_pToolbarShowThisYearTransactions);
+	m_pToolBar->addAction(m_pToolbarShowAllTransactions);
+	m_pToolBar->addSeparator();
+	m_pToolBar->addAction(m_pToolbarMakeTransfer);
+
+	m_pMainLayout->addWidget(m_pToolBar);
+}
+
+void StashWindow::positionWindow()
+{
+	QSettings& settings = m_settings.getInternal();
+	if (settings.contains("windows/main_window"))
+	{
+		// On Linux with X11, this doesn't really work that well, and the window walks/drifts
+		// up (and sometimes left) each time, but it's better than nothing for the moment, and at least the size
+		// is roughly maintained...
+		// TODO: store the size and pos ourselves?
+		restoreGeometry(settings.value("windows/main_window").toByteArray());
+	}
+	else
+	{
+		resize(900, 575);
+	}
 }
 
 bool StashWindow::loadDocument(const QString& fileName)
@@ -404,7 +500,7 @@ bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransac
 	
 	m_pTransactionsViewWidget->rebuildFromAccount();
 	
-	m_pTransactionsViewWidget->scrollToLastTransaction();
+	m_pTransactionsViewWidget->scrollToLastTransaction(true); // we want to enforce scrolling to the very latest
 	
 	setWindowModifiedAndRebuildIndex(true);
 	
@@ -419,6 +515,20 @@ bool StashWindow::skipScheduledTransaction(unsigned int schedTransactionIndex)
 	setWindowModified(true);
 	
 	return true;
+}
+
+void StashWindow::loadSettings()
+{
+	QSettings& settings = m_settings.getInternal();
+	m_recentFiles = settings.value("recentFiles").toStringList();
+}
+
+void StashWindow::saveSettings()
+{
+	QSettings& settings = m_settings.getInternal();
+	
+	settings.setValue("windows/main_window", saveGeometry());
+	settings.setValue("recentFiles", m_recentFiles);
 }
 
 // menu actions
@@ -466,12 +576,10 @@ void StashWindow::fileSave()
 		return;
 	}
 	
-	// don't run yet.
+	// don't run yet!
 	return;
 	
-	// TODO: hook up to settings...
-	bool makeBackup = false;
-	
+	bool makeBackup = m_settings.getBool("general/make_backup_file_when_saving", true);	
 	if (makeBackup)
 	{
 		QString strPathBackup = m_currentFile;
@@ -484,6 +592,8 @@ void StashWindow::fileSave()
 	std::fstream fileStream(m_currentFile.toStdString().c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 	if (!fileStream)
 	{
+		// TODO: we need to handle this, and/or we need a return value from this method to validate that the
+		//       file was saved correctly...
 		return;
 	}
 	
@@ -565,34 +675,51 @@ void StashWindow::fileOpenRecentFile()
 
 void StashWindow::viewShowToolbar(bool visible)
 {
-	
+	if (visible)
+	{
+		m_pToolBar->show();
+	}
+	else
+	{
+		m_pToolBar->hide();
+	}
 }
 
+// TODO: these three could be condensed a bit - helper function that all three call with an enum?
 void StashWindow::viewShowRecentTransactions()
 {
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowRecent);
 	m_pViewMenuShowRecentTransactions->setChecked(true);
+	m_pToolbarShowRecentTransactions->setChecked(true);
 	
 	m_pViewMenuShowThisYearTransactions->setChecked(false);
 	m_pViewMenuShowAllTransactions->setChecked(false);
+	m_pToolbarShowThisYearTransactions->setChecked(false);
+	m_pToolbarShowAllTransactions->setChecked(false);
 }
 
 void StashWindow::viewShowThisYearTransactions()
 {
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowThisYear);
 	m_pViewMenuShowThisYearTransactions->setChecked(true);
+	m_pToolbarShowThisYearTransactions->setChecked(true);
 	
 	m_pViewMenuShowRecentTransactions->setChecked(false);
 	m_pViewMenuShowAllTransactions->setChecked(false);
+	m_pToolbarShowRecentTransactions->setChecked(false);
+	m_pToolbarShowAllTransactions->setChecked(false);
 }
 
 void StashWindow::viewShowAllTransactions()
 {
 	m_pTransactionsViewWidget->setViewDurationType(eTransViewShowAll);
 	m_pViewMenuShowAllTransactions->setChecked(true);
+	m_pToolbarShowAllTransactions->setChecked(true);
 	
 	m_pViewMenuShowRecentTransactions->setChecked(false);
 	m_pViewMenuShowThisYearTransactions->setChecked(false);
+	m_pToolbarShowRecentTransactions->setChecked(false);
+	m_pToolbarShowThisYearTransactions->setChecked(false);
 }
 
 void StashWindow::insertAccount()
@@ -719,6 +846,19 @@ void StashWindow::transactionMakeTransfer()
 	m_pTransactionsViewWidget->rebuildFromAccount();
 }
 
+void StashWindow::toolsSettings()
+{
+	QSettings& settings = m_settings.getInternal();
+
+	SettingsWindow window(settings);
+
+	if (window.exec() == QDialog::Accepted)
+	{
+		// refresh stuff that might depend on settings.
+		m_pTransactionsViewWidget->rebuildFromAccount();
+	}
+}
+
 void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 {
 	if (type == eDocIndex_Account && index >= 0 && index < m_documentController.getDocument().getAccountCount())
@@ -749,6 +889,8 @@ void StashWindow::updateRecentFileActions()
 	QMutableStringListIterator it(m_recentFiles);
 	while (it.hasNext())
 	{
+		// TODO: do we actually want to do this in all cases? It might be on a network drive that's been unmounted
+		//       or something...
 		if (!QFile::exists(it.next()))
 			it.remove();
 	}
@@ -801,6 +943,7 @@ bool StashWindow::shouldDiscardCurrentDocument()
 	if (ret == QMessageBox::Yes)
 	{
 		// TODO:  ? ...
+		// TODO: we can't just call this as-is, as it has early-outs without a return value...
 		fileSave();
 		return true;
 	}

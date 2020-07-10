@@ -20,32 +20,33 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#ifndef SETTINGS_PAGE_H
+#define SETTINGS_PAGE_H
 
-#include "stash_window.h"
+#include <QWidget>
 
-int main(int argc, char** argv)
+// use full headers rather than forward declare, so that we don't have to include these
+// in all the derived classes.
+#include <QSettings>
+#include <QFormLayout>
+
+class SettingsPage : public QWidget
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+    Q_OBJECT
+public:
+	explicit SettingsPage(QSettings& settings, QWidget* parent = 0);
+	virtual ~SettingsPage();
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
+	virtual void saveSettings() = 0;
 
-	StashWindow w;
-	w.show();
+signals:
 
-	return a.exec();
-}
+public slots:
+
+protected:
+	QSettings&		m_settings;
+
+	QFormLayout*	m_pFormLayout;
+};
+
+#endif // SETTINGS_PAGE_H

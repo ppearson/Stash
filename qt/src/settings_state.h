@@ -20,32 +20,46 @@
  *
  */
 
-#ifndef STASH_QT_5
-#include <QtGui/QApplication>
-#else
-#include <QtWidgets/QApplication>
-#endif
+#ifndef SETTINGS_STATE_H
+#define SETTINGS_STATE_H
 
-#include "stash_window.h"
+#include <string>
 
-int main(int argc, char** argv)
+#include <QSettings>
+
+class SettingsState
 {
-	// otherwise, launch the GUI
-	QApplication a(argc, argv);
+public:
+	SettingsState()
+	{
+		
+	}
+	
+	void saveBool(const std::string& key, bool value)
+	{
+		m_settings.setValue(key.c_str(), value);
+	}
 
-#if __APPLE__
-#ifdef STASH_QT_5
-	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-	a.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#endif
-#endif
-	QCoreApplication::setOrganizationName("peterpearson");
-	QCoreApplication::setApplicationName("Stash");
+	void saveInt(const std::string& key, int value)
+	{
+		m_settings.setValue(key.c_str(), value);
+	}
 
-	StashWindow w;
-	w.show();
+	bool getBool(const std::string& key, bool defaultValue) const
+	{
+		return m_settings.value(key.c_str(), defaultValue).toBool();
+	}
 
-	return a.exec();
-}
+	int getInt(const std::string& key, int defaultValue) const
+	{
+		return m_settings.value(key.c_str(), defaultValue).toInt();
+	}
+
+	QSettings& getInternal() { return m_settings; }	
+	
+protected:
+	QSettings		m_settings;
+};
+
+#endif // SETTINGS_STATE_H
+
