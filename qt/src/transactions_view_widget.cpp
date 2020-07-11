@@ -90,8 +90,13 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	QHeaderView* pHeader = m_pTreeView->header();
 	// this is apparently the best we can do, but it means the "Description" column
 	// isn't actually resizeable on its own, you have to resize the others...
+#ifdef STASH_QT_5
+	pHeader->setSectionResizeMode(QHeaderView::Interactive);
+	pHeader->setSectionResizeMode(4, QHeaderView::Stretch);
+#else
 	pHeader->setResizeMode(QHeaderView::Interactive);
 	pHeader->setResizeMode(4, QHeaderView::Stretch);
+#endif
 	pHeader->setStretchLastSection(false);
 	
 	m_pTreeView->setAlternatingRowColors(true);
