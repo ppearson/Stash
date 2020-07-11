@@ -168,7 +168,7 @@ void StashWindow::setupWindow()
 	
 	setCurrentFile("");
 	
-	bool openLastFileOnStartup = m_settings.getBool("general/open_most_recent_file_startup", false);
+	bool openLastFileOnStartup = m_settings.getBool("global/open_most_recent_file_startup", false);
 	if (openLastFileOnStartup && !m_recentFiles.empty())
 	{
 		loadDocument(m_recentFiles[0]);
@@ -579,7 +579,7 @@ void StashWindow::fileSave()
 	// don't run yet!
 	return;
 	
-	bool makeBackup = m_settings.getBool("general/make_backup_file_when_saving", true);	
+	bool makeBackup = m_settings.getBool("global/make_backup_file_when_saving", true);
 	if (makeBackup)
 	{
 		QString strPathBackup = m_currentFile;

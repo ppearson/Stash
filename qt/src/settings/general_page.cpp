@@ -24,15 +24,19 @@
 
 #include <QCheckBox>
 
+// Note: QSettings doesn't seem to like a namespace being "general" in Qt 5, according to the docs
+//       it should cope with this and rename it, but it leads to duplicate inconsistent values
+//       being saved, so use a totally different namespace ("global") instead, to avoid the problem.
+
 GeneralPage::GeneralPage(QSettings& settings, QWidget* parent) : SettingsPage(settings, parent)
 {
 	m_pOpenMostRecentFileStartup = new QCheckBox();
 	m_pOpenMostRecentFileStartup->setText("Open most recent file on startup");
-	m_pOpenMostRecentFileStartup->setChecked(m_settings.value("general/open_most_recent_file_startup", false).toBool());
+	m_pOpenMostRecentFileStartup->setChecked(m_settings.value("global/open_most_recent_file_startup", false).toBool());
 	
 	m_pMakeBackupFileWhenSaving = new QCheckBox();
 	m_pMakeBackupFileWhenSaving->setText("Make backup file when saving");
-	m_pMakeBackupFileWhenSaving->setChecked(m_settings.value("general/make_backup_file_when_saving", true).toBool());
+	m_pMakeBackupFileWhenSaving->setChecked(m_settings.value("global/make_backup_file_when_saving", true).toBool());
 
 	//
 
@@ -47,7 +51,7 @@ GeneralPage::~GeneralPage()
 
 void GeneralPage::saveSettings()
 {
-	m_settings.setValue("general/open_most_recent_file_startup", m_pOpenMostRecentFileStartup->isChecked());
-	m_settings.setValue("general/make_backup_file_when_saving", m_pMakeBackupFileWhenSaving->isChecked());
+	m_settings.setValue("global/open_most_recent_file_startup", m_pOpenMostRecentFileStartup->isChecked());
+	m_settings.setValue("global/make_backup_file_when_saving", m_pMakeBackupFileWhenSaving->isChecked());
 }
 
