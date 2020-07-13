@@ -26,6 +26,7 @@
 
 #include "../../core/account.h"
 #include "../../core/document.h"
+#include "../../core/currency_value_formatter.h"
 
 DocumentIndexDataModel::DocumentIndexDataModel(const Document& document, QObject* parent) : QAbstractItemModel(parent), 
 		m_document(document),
@@ -149,8 +150,8 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 
 	DocumentIndexModelItem* pAccounts = new DocumentIndexModelItem(QString("Accounts"), m_pRootItem, eDocIndex_Heading);
 	m_pRootItem->addChild(pAccounts);
-	
-	char szTemp[16];
+		
+	CurrencyValueFormatter formatter(CurrencyValueFormatter::ePresetNZ);
 	
 	const std::vector<Account>& aAccounts = m_document.getAccounts();
 	for (const Account& account : aAccounts)
@@ -160,10 +161,10 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 		fixed balance = account.getBalance(true, -1);
 		double dBalance = balance.ToDouble();
 		
-		// TODO: do this properly...
-		sprintf(szTemp, "$%0.2f", dBalance);
-		
-		pAccN->setSecondaryData(szTemp);
+		// we need to handle this specifically this way, so that symbols like '£' work correctly.
+		// TODO: which means that likely unicode names and things aren't working either, but...
+		QString unicodeBalanceString = QString::fromUtf8(formatter.formatValue(dBalance));
+		pAccN->setSecondaryData(unicodeBalanceString);
 
 		pAccounts->addChild(pAccN);
 	}

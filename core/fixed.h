@@ -19,8 +19,7 @@ class fixed
 {
 public:
 	fixed(const double value = 0.00);
-	fixed(std::string value, CurrencyFormat format = UKFormat);
-	~fixed() { };
+	fixed(const std::string& value, CurrencyFormat format = UKFormat);
 	
 	fixed & operator=(const double & rhs);
 	
@@ -41,6 +40,7 @@ public:
 	bool operator==(const fixed & rhs) const;
 	bool operator!=(const fixed & rhs) const;
 	
+	// by value on purpose...
 	void SetFromString(std::string value, CurrencyFormat format = UKFormat);
 	
 	bool IsZero() const;	
@@ -49,14 +49,18 @@ public:
 	void setPositive() { m_positive = true; }
 	void setNegative() { m_positive = false; }
 	
-	void Load(std::fstream &stream, int version);
-	void Store(std::fstream &stream) const;
+	void Load(std::fstream& stream, int version);
+	void Store(std::fstream& stream) const;
 	
 	friend std::ostream& operator<< (std::ostream & os, const fixed & d);
 	friend std::istream& operator>> (std::istream & stream, fixed & d);
 	
 	double ToDouble() const;
+	double ToDoubleAbs() const;
 	operator std::string() const;
+	
+	// 
+	unsigned int GetNumDigits() const;
 	
 private:
 	bool m_positive;

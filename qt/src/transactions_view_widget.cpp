@@ -152,14 +152,7 @@ void TransactionsViewWidget::rebuildFromAccount()
 	
 	// resetting the model doesn't reset the scroll position of the QTreeView, so we need to do that manually...
 	
-	if (m_pMainWindow->getSettingsState().getBool("transactions/scroll_to_latest_auto", true))
-	{
-		m_pTreeView->scrollToBottom();
-	}
-	else
-	{
-		m_pTreeView->scrollToTop();
-	}
+	scrollToLastTransaction();
 	
 	m_pTransactionFormPanel->clear(true);
 	
@@ -191,7 +184,10 @@ void TransactionsViewWidget::addNewTransaction()
 	Date currentlyEnteredDate = m_pTransactionFormPanel->getEnteredDate();
 	
 	Transaction startingTransaction("", "", "", fixed(0.0), currentlyEnteredDate);
-	startingTransaction.setCleared(true);
+	if (m_pMainWindow->getSettingsState().getBool("transactions/new_transactions_are_marked_cleared", true))
+	{
+		startingTransaction.setCleared(true);
+	}
 	
 	int nextTransactionIndex = m_pModel->rowCount();
 	m_pAccount->addTransaction(startingTransaction);

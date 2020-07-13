@@ -130,6 +130,8 @@ void StashWindow::setupWindow()
 	m_pIndexView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	
 	connect(m_pIndexView, SIGNAL(indexSelectionHasChanged(DocumentIndexType,int)), this, SLOT(docIndexSelectionHasChanged(DocumentIndexType,int)));
+	connect(m_pIndexView, SIGNAL(documentChangedFromIndex()), this, SLOT(documentChangedFromIndex()));
+	connect(m_pIndexView, SIGNAL(deselectAnyAccount()), this, SLOT(deselectAnyAccount()));
 	
 	m_pTransactionsViewWidget = new TransactionsViewWidget(this, this); // bit odd, but prevents need to cast to get both...
 	
@@ -299,7 +301,7 @@ void StashWindow::setupMenu()
 	QAction* pInsertAccount = new QAction(this);
 	QAction* pInsertGraph = new QAction(this);
 	
-	pInsertAccount->setText(QApplication::translate("StashWindow", "New &Account", 0));
+	pInsertAccount->setText(QApplication::translate("StashWindow", "New &Account...", 0));
 	pInsertGraph->setText(QApplication::translate("StashWindow", "New &Graph", 0));
 	
 	connect(pInsertAccount, SIGNAL(triggered()), this, SLOT(insertAccount()));
@@ -882,6 +884,19 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
 	}
+}
+
+void StashWindow::documentChangedFromIndex()
+{
+	setWindowModified(true);
+}
+
+void StashWindow::deselectAnyAccount()
+{
+	// show invalid account
+	m_pTransactionsViewWidget->setAccount(nullptr);
+	
+	m_pTransactionsViewWidget->rebuildFromAccount();
 }
 
 void StashWindow::updateRecentFileActions()

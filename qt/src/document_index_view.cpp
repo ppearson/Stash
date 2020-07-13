@@ -24,13 +24,24 @@
 
 #include <QTreeView>
 #include <QLayout>
+#include <QAction>
+#include <QMouseEvent>
+#include <QMenu>
+#include <QMessageBox>
+
+#include "../../core/document.h"
 
 #include "document_index_data_model.h"
 
+#include "dialogs/account_details_dialog.h"
+
 DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent) : QWidget(parent),
 	m_document(document),
-	m_pTreeView(nullptr), m_pModel(nullptr),
-	m_selectedIndexSubIndex(eDocIndex_None)
+	m_pTreeView(nullptr),
+	m_pModel(nullptr),
+	m_pAccountDetails(nullptr),
+	m_selectedIndexType(eDocIndex_None),
+	m_selectedIndexSubIndex(-1)
 {
 	QHBoxLayout* layout = new QHBoxLayout();
 	layout->setMargin(0);
@@ -54,6 +65,33 @@ DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent) : QWid
 
 	connect(m_pTreeView->selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this,
 			SLOT(selectionChanged(const QItemSelection&, const QItemSelection&)));
+	
+	m_pTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(m_pTreeView, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(customContextMenuRequested(const QPoint&)));
+	
+	m_pAccountDetails = new QAction(this);
+	m_pAccountDetails->setText("Account details...");
+	
+	m_pAccountDelete = new QAction(this);
+	m_pAccountDelete->setText("Delete Account...");
+	
+	connect(m_pAccountDetails, SIGNAL(triggered()), this, SLOT(menuAccountDetails()));
+	connect(m_pAccountDelete, SIGNAL(triggered()), this, SLOT(menuAccountDelete()));
+}
+
+DocumentIndexView::~DocumentIndexView()
+{
+	if (m_pAccountDetails)
+	{
+		delete m_pAccountDetails;
+		m_pAccountDetails = nullptr;
+	}
+	
+	if (m_pAccountDetails)
+	{
+		delete m_pAccountDetails;
+		m_pAccountDetails = nullptr;
+	}
 }
 
 QSize DocumentIndexView::minimumSizeHint() const
@@ -80,9 +118,9 @@ void DocumentIndexView::rebuildFromDocument()
 	
 	m_pTreeView->expandAll();
 	
-	if (m_selectIndexType != eDocIndex_None)
+	if (m_selectedIndexType != eDocIndex_None)
 	{
-		selectItem(m_selectIndexType, m_selectedIndexSubIndex, false);
+		selectItem(m_selectedIndexType, m_selectedIndexSubIndex, false);
 	}
 	
 	m_pTreeView->selectionModel()->blockSignals(false);
@@ -143,9 +181,83 @@ void DocumentIndexView::selectionChanged(const QItemSelection& selected, const Q
 		int childIndex = item->childNumber();
 		
 		// keep track of last selected
-		m_selectIndexType = itemType;
+		m_selectedIndexType = itemType;
 		m_selectedIndexSubIndex = childIndex;
 		
 		emit indexSelectionHasChanged(itemType, childIndex);
 	}
+}
+
+void DocumentIndexView::customContextMenuRequested(const QPoint& pos)
+{
+	if (m_selectedIndexType != eDocIndex_Account)
+		return;
+	
+	QMenu menu(this);
+
+	menu.addAction(m_pAccountDetails);
+	menu.addSeparator();
+	menu.addAction(m_pAccountDelete);
+	menu.exec(mapToGlobal(pos));
+}
+
+void DocumentIndexView::menuAccountDetails()
+{
+	Account& account = m_document.getAccount(m_selectedIndexSubIndex);
+	
+	AccountDetailsDialog accountDetailsDlg(this, false);
+	accountDetailsDlg.setFromAccount(account);
+	
+	if (accountDetailsDlg.exec() == QDialog::Accepted)
+	{
+		account.setName(accountDetailsDlg.getAccountName());
+		account.setInstitution(accountDetailsDlg.getAccountInstitution());
+		account.setNumber(accountDetailsDlg.getAccountNumber());
+		account.setNote(accountDetailsDlg.getAccountNote());
+		account.setType(accountDetailsDlg.getAccountType());
+		
+		// TODO: technically, we only need to do this if the Account Name changed, but...
+		rebuildFromDocument();
+		
+		emit documentChangedFromIndex();
+	}
+}
+
+void DocumentIndexView::menuAccountDelete()
+{
+	// shouldn't need this, but...
+	if (m_selectedIndexSubIndex == -1 || m_selectedIndexSubIndex >= m_document.getAccountCount())
+		return;
+	
+	Account& account = m_document.getAccount(m_selectedIndexSubIndex);
+	
+	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the account called '") + QString(account.getName().c_str()) + "'?.",
+					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);
+
+	if (ret == QMessageBox::No)
+		return;
+	
+	// otherwise, delete the account.
+	
+	m_document.deleteAccount((int)m_selectedIndexSubIndex);
+	
+	rebuildFromDocument();
+	
+	// force a different account to show...
+	
+	if (m_document.getAccountCount() == 0)
+	{
+		// don't really like this, but we need to do *something* in this situation, so for the moment...
+		emit deselectAnyAccount();
+	}
+	else
+	{
+		// select an existing account
+		unsigned int nextAccountIndex = (m_selectedIndexSubIndex >= m_document.getAccountCount()) ?
+										m_document.getAccountCount() - 1 : m_selectedIndexSubIndex;
+		
+		selectItem(eDocIndex_Account, nextAccountIndex, true);
+	}
+	
+	emit documentChangedFromIndex();
 }

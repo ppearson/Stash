@@ -52,6 +52,12 @@ public:
 	
 	void setWindowModifiedAndRebuildIndex(bool rebuildDocIndex);
 	
+	// this isn't ideal, but it needs to be passed somehow, and I'm less happy with a singleton...
+	const SettingsState& getSettingsState() const
+	{
+		return m_settings;
+	}
+	
 protected:
 	
 	void setupWindow();
@@ -107,13 +113,8 @@ public slots:
 	void toolsSettings();
 	
 	void docIndexSelectionHasChanged(DocumentIndexType type, int index);
-	
-	// this isn't ideal, but it needs to be passed somehow, and I'm less happy with a singleton...
-	const SettingsState& getSettingsState() const
-	{
-		return m_settings;
-	}
-	
+	void documentChangedFromIndex(); // trigger document modify from index (for account deletion)
+	void deselectAnyAccount(); // for deselecting/hiding transaction when the last account is deleted.
 	
 protected:
 	void updateRecentFileActions();

@@ -85,7 +85,13 @@ AccountDetailsDialog::AccountDetailsDialog(QWidget* parent, bool newAccount) : Q
 
 void AccountDetailsDialog::setFromAccount(const Account& account)
 {
+	// TODO: fromUtf8()?
+	m_pName->setText(account.getName().c_str());
 	
+	m_pInstitution->setText(account.getInstitution().c_str());
+	m_pNumber->setText(account.getNumber().c_str());
+	m_pNote->setText(account.getNote().c_str());
+	m_pType->setCurrentIndex((int)account.getType());
 }
 
 

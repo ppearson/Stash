@@ -29,6 +29,7 @@
 
 class QTreeView;
 class QItemSelection;
+class QAction;
 
 class Document;
 class DocumentIndexDataModel;
@@ -38,6 +39,7 @@ class DocumentIndexView : public QWidget
 	Q_OBJECT
 public:
 	DocumentIndexView(Document& document, QWidget* parent = 0);
+	virtual ~DocumentIndexView();
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
@@ -45,12 +47,22 @@ public:
 	void rebuildFromDocument();
 	
 	void selectItem(DocumentIndexType type, unsigned int index, bool sendSelectionChangedEvent = true);
-
+	
 signals:
 	void indexSelectionHasChanged(DocumentIndexType type, int index);
 
+	void documentChangedFromIndex();
+	
+	void deselectAnyAccount(); // for selecting a non-existant account after deleting the last account
+
 public slots:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+	
+	void customContextMenuRequested(const QPoint& pos);
+	
+	void menuAccountDetails();
+	void menuAccountDelete();
+	
 
 protected:
 	Document&				m_document;
@@ -58,9 +70,12 @@ protected:
 	QTreeView*				m_pTreeView;
 	DocumentIndexDataModel*	m_pModel;
 	
+	QAction*				m_pAccountDetails;
+	QAction*				m_pAccountDelete;
+	
 	
 	// current / last selection state
-	DocumentIndexType		m_selectIndexType;
+	DocumentIndexType		m_selectedIndexType;
 	unsigned int			m_selectedIndexSubIndex;
 };
 

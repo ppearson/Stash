@@ -27,6 +27,7 @@
 #include <QPixmap>
 
 #include "../../core/account.h"
+#include "../../core/currency_value_formatter.h"
 
 #include "settings_state.h"
 
@@ -323,6 +324,8 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		it = itTemp;
 	}
 	
+	CurrencyValueFormatter formatter(CurrencyValueFormatter::ePresetNZ);
+	
 	for (; it != itEnd; ++it)
 	{
 		const Transaction& transaction = *it;
@@ -332,17 +335,17 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		
 		pNewItem->extractDetails(transaction, transactionIndex);
 		
-		// TODO: QLocale::toCurrencyString() is pretty useless really, it doesn't put the
-		//       currency in the right place for negative values, and doesn't apply grouping
-		//       (thousands seperator).
-		pNewItem->setAmount(locale.toCurrencyString(transactionAmount));
+		// TODO: we should really be doing this for all strings that could be unicode...
+		QString unicodeAmountString = QString::fromUtf8(formatter.formatValue(transactionAmount));
+		pNewItem->setAmount(unicodeAmountString);
 		
 		if (transaction.isCleared())
 		{
 			balance += transactionAmount;
 		}
-		
-		pNewItem->setBalance(locale.toCurrencyString(balance.ToDouble()));
+		// TODO: we should really be doing this for all strings that could be unicode...
+		QString unicodeBalanceString = QString::fromUtf8(formatter.formatValue(balance.ToDouble()));
+		pNewItem->setBalance(unicodeBalanceString);
 		
 		m_pRootItem->addChild(pNewItem);
 		

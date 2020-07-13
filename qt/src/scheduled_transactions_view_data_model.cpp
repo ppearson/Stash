@@ -26,6 +26,7 @@
 
 #include "../../core/document.h"
 #include "../../core/scheduled_transaction.h"
+#include "../../core/currency_value_formatter.h"
 
 #include "stash_window.h"
 
@@ -286,11 +287,16 @@ void ScheduledTransactionsModelItem::extractDetails(const Document& document, co
 	m_payee = schedTransaction.getPayee().c_str();
 	m_category = schedTransaction.getCategory().c_str();
 	
+	CurrencyValueFormatter formatter;
+	
 	QLocale locale;
 	// TODO: QLocale::toCurrencyString() is pretty useless really, it doesn't put the
 	//       currency in the right place for negative values, and doesn't apply grouping
 	//       (thousands seperator).
-	m_amount = locale.toCurrencyString(schedTransaction.getAmount().ToDouble());
+//	m_amount = locale.toCurrencyString(schedTransaction.getAmount().ToDouble());
+	// we need to handle this specifically this way, so that symbols like '£' work correctly.
+	// TODO: which means that likely unicode names and things aren't working either, but...
+	m_amount = QString::fromUtf8(formatter.formatValue(schedTransaction.getAmount().ToDouble()));
 	
 	switch (schedTransaction.getFrequency())
 	{

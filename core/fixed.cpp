@@ -17,12 +17,12 @@ fixed::fixed(const double value)
 	SetFromDouble(value);
 }
 
-fixed::fixed(std::string value, CurrencyFormat format) : m_precision(2)
+fixed::fixed(const std::string& value, CurrencyFormat format) : m_precision(2)
 {
 	SetFromString(value, format);
 }
 
-double fixed::ToDouble( ) const
+double fixed::ToDouble() const
 {
 	if (m_positive)
 		return m_num / pow(10.0, m_precision);
@@ -33,6 +33,14 @@ double fixed::ToDouble( ) const
 		else
 			return 0.0;
 	}
+}
+
+double fixed::ToDoubleAbs() const
+{
+	if (m_num != 0)
+		return m_num / pow(10.0, m_precision);
+	else
+		return 0.0;
 }
 
 fixed fixed::operator +( const fixed & rhs ) const
@@ -144,12 +152,12 @@ std::istream& operator >> (std::istream & stream, fixed & d)
 	return stream;
 }
 
-fixed::operator std::string( ) const
+fixed::operator std::string() const
 {
 	return ToString();
 }
 
-void fixed::Load(std::fstream &stream, int version)
+void fixed::Load(std::fstream& stream, int version)
 {
 	// Strictly speaking, this isn't right, as m_num is an unsigned long,
 	// but as it's very unlikely that an individual transaction is going to
@@ -167,7 +175,7 @@ void fixed::Load(std::fstream &stream, int version)
 		m_positive = false;
 }
 
-void fixed::Store(std::fstream &stream) const
+void fixed::Store(std::fstream& stream) const
 {
 	// Strictly speaking, this isn't right, as m_num is an unsigned long,
 	// but as it's very unlikely that an individual transaction is going to
@@ -427,4 +435,29 @@ bool fixed::operator !=(const fixed & rhs) const
 		return true;
 	
 	return m_num != rhs.m_num;
+}
+
+unsigned int fixed::GetNumDigits() const
+{
+	unsigned int count = 1;
+	unsigned long int temp = m_num;
+	
+	while(temp /= 10)
+	{
+		count ++;
+	}
+	
+	// remove fraction digits
+	if (count > 2)
+	{
+		// it's at least one whole number (i.e. 1.00)
+		count -= 2;
+	}
+	else if (count == 2)
+	{
+		// only subtract one, so we account for leading 0
+		count -= 1;
+	}
+	
+	return count;
 }
