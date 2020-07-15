@@ -37,6 +37,8 @@ public:
 	void listAccounts(bool showBalances) const;
 
 	void listAccountTransactions(unsigned int accountIndex, unsigned int numRecentTransactions) const;
+	
+	void test() const;
 
 protected:
 

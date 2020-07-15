@@ -1,10 +1,12 @@
 Stash
 -----
 
-Stash is a fast, simple personal finance application.
-It is currently only for Mac OS X, with a native Cocoa interface,
-but its core files are written in C++, with the interface wrapped around these,
-allowing it to be ported to other platforms (Qt) fairly easily.
+Stash is a fast and simple personal finance application.
+
+Its core data-storage and serialisation files are written in C++, and
+there is an existing (but somewhat old) native Mac OS interface written in
+Objective-C++ / Cocoa, as well as a much more recent, and still under-development
+Qt interface being written, mainly for Linux support.
 
 Features
 --------

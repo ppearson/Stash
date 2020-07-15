@@ -22,6 +22,8 @@
 
 #include "stash_cli_app.h"
 
+#include "../../core/currency_value_formatter.h"
+
 StashCLIApp::StashCLIApp()
 {
 
@@ -133,5 +135,31 @@ void StashCLIApp::listAccountTransactions(unsigned int accountIndex, unsigned in
 			balance += (*it).getAmount();
 		}
 	}
+}
+
+void StashCLIApp::test() const
+{
+	fixed v1 = 4332.42;
+	fixed v2 = 415.33;
+	fixed v3 = 10.24;
+	
+	CurrencyValueFormatter formatter;
+	
+	fprintf(stderr, "val: %0.2f\t\tlen: %u\n", v1.ToDouble(), v1.GetNumDigits());
+	fprintf(stderr, "val: %0.2f\t\tlen: %u\n", v2.ToDouble(), v2.GetNumDigits());
+	fprintf(stderr, "val: %0.2f\t\tlen: %u\n", v3.ToDouble(), v3.GetNumDigits());
+	
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(v1));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(v2));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(v3));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(31.30));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(311.30));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(3167.30));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(31678.30));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(-3167452.30));
+	
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(0.0));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(0.50));
+	fprintf(stderr, "Formatted: %s\n", formatter.formatValue(0.01));
 }
 

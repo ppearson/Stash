@@ -35,6 +35,7 @@ class QSignalMapper;
 class QWidget;
 class QVBoxLayout;
 class QSplitter;
+class QTimer;
 
 class DocumentIndexView;
 
@@ -68,6 +69,7 @@ protected:
 	void positionWindow();
 	
 	bool loadDocument(const QString& fileName);
+	bool saveCurrentDocument();
 	
 	friend class ScheduledTransactionsDueDialog;
 	
@@ -116,6 +118,8 @@ public slots:
 	void documentChangedFromIndex(); // trigger document modify from index (for account deletion)
 	void deselectAnyAccount(); // for deselecting/hiding transaction when the last account is deleted.
 	
+	void deferredScheduledTransactionsTimeout();
+	
 protected:
 	void updateRecentFileActions();
 	void setCurrentFile(const QString& fileName);
@@ -162,6 +166,8 @@ protected:
 	
 	TransactionsViewWidget*				m_pTransactionsViewWidget;
 	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
+	
+	QTimer*					m_pDeferredScheduledPopupTimer;
 	
 	
 	SettingsState				m_settings;

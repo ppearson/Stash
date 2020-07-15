@@ -42,9 +42,15 @@ int main(int argc, char** argv)
 	}
 
 	std::string filePath = argv[1];
-	std::string command = argv[2];
 
 	StashCLIApp app;
+	if (filePath == "test")
+	{
+		app.test();
+		return 0;
+	}
+	
+	std::string command = argv[2];
 
 	if (!app.loadFile(filePath))
 	{

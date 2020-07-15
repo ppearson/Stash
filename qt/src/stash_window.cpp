@@ -34,6 +34,8 @@
 #include <QSignalMapper>
 #include <QSplitter>
 
+#include <QTimer>
+
 #include <QLocale>
 
 #include <QFileDialog>
@@ -136,6 +138,9 @@ void StashWindow::setupWindow()
 	m_pTransactionsViewWidget = new TransactionsViewWidget(this, this); // bit odd, but prevents need to cast to get both...
 	
 	m_pScheduledTransactionsViewWidget = new ScheduledTransactionsViewWidget(m_documentController.getDocument(), this, this);
+	
+	m_pDeferredScheduledPopupTimer = new QTimer(this);
+	connect(m_pDeferredScheduledPopupTimer, SIGNAL(timeout()), this, SLOT(deferredScheduledTransactionsTimeout()));
 	
 	m_pIndexSplitter->addWidget(m_pIndexView);
 	m_pIndexSplitter->addWidget(m_pTransactionsViewWidget);
@@ -474,10 +479,46 @@ bool StashWindow::loadDocument(const QString& fileName)
 		// this will automatically display the transactions list for the account as well...
 		m_pIndexView->selectItem(eDocIndex_Account, 0);
 		
-		// un
-		
-		calculateDueScheduledTransactionAndDisplayDialog();
+		// use a timer so that the main window can fully finish drawing for the situation where
+		// the previous document is opened automatically on startup and a scheduled transaction
+		// dialog needs to be shown.
+		m_pDeferredScheduledPopupTimer->start(50);
 	}
+	
+	return true;
+}
+
+bool StashWindow::saveCurrentDocument()
+{
+	if (m_currentFile.isEmpty())
+	{
+		fileSaveAs();
+		return (!m_currentFile.isEmpty());
+	}
+		
+	bool makeBackup = m_settings.getBool("global/make_backup_file_when_saving", true);
+	if (makeBackup)
+	{
+		QString strPathBackup = m_currentFile;
+		strPathBackup += ".bak";
+		
+		// TODO: do we want to rename, or copy? copy() would be safer?
+		rename(m_currentFile.toStdString().c_str(), strPathBackup.toStdString().c_str());
+	}
+	
+	std::fstream fileStream(m_currentFile.toStdString().c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
+	if (!fileStream)
+	{
+		QMessageBox::information(this, "Save Error", "There was an error attempting to save the current Stash document...");
+		return false;
+	}
+	
+	m_documentController.getDocument().Store(fileStream);
+	
+	fileStream.close();	
+	
+	// to update the window title and remove the modified flag
+	setCurrentFile(m_currentFile);
 	
 	return true;
 }
@@ -572,39 +613,7 @@ void StashWindow::fileOpen()
 
 void StashWindow::fileSave()
 {
-	if (m_currentFile.isEmpty())
-	{
-		fileSaveAs();
-		return;
-	}
-	
-	// don't run yet!
-	return;
-	
-	bool makeBackup = m_settings.getBool("global/make_backup_file_when_saving", true);
-	if (makeBackup)
-	{
-		QString strPathBackup = m_currentFile;
-		strPathBackup += ".bak";
-		
-		// TODO: do we want to rename, or copy? copy() would be safer?
-		rename(m_currentFile.toStdString().c_str(), strPathBackup.toStdString().c_str());
-	}
-	
-	std::fstream fileStream(m_currentFile.toStdString().c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
-	if (!fileStream)
-	{
-		// TODO: we need to handle this, and/or we need a return value from this method to validate that the
-		//       file was saved correctly...
-		return;
-	}
-	
-	m_documentController.getDocument().Store(fileStream);
-	
-	fileStream.close();	
-	
-	// to update the window title and remove the modified flag
-	setCurrentFile(m_currentFile);
+	saveCurrentDocument();
 }
 
 void StashWindow::fileSaveAs()
@@ -630,6 +639,7 @@ void StashWindow::fileSaveAs()
 	std::fstream fileStream(path, std::ios::out | std::ios::binary | std::ios::trunc);
 	if (!fileStream)
 	{
+		QMessageBox::information(this, "Save Error", "There was an error saving the document.");
 		return;
 	}
 	
@@ -899,6 +909,12 @@ void StashWindow::deselectAnyAccount()
 	m_pTransactionsViewWidget->rebuildFromAccount();
 }
 
+void StashWindow::deferredScheduledTransactionsTimeout()
+{
+	m_pDeferredScheduledPopupTimer->stop();
+	calculateDueScheduledTransactionAndDisplayDialog();
+}
+
 void StashWindow::updateRecentFileActions()
 {
 	QMutableStringListIterator it(m_recentFiles);
@@ -970,6 +986,7 @@ bool StashWindow::shouldDiscardCurrentDocument()
 	return true;
 }
 
+// Note: this is triggered from a timer event
 void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 {
 	DueSchedTransactions dueTransactions;

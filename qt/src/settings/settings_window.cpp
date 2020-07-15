@@ -59,7 +59,7 @@ SettingsWindow::SettingsWindow(QSettings& settings, QWidget* parent) : QDialog(p
 	mainLayout->addLayout(buttonsLayout, 0);
 	setLayout(mainLayout);
 
-	resize(700, 500);
+	resize(800, 500);
 
 	connect(OKButton, SIGNAL(clicked()), this, SLOT(saveChanges()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
