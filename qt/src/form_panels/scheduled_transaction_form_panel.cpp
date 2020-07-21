@@ -25,6 +25,7 @@
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCompleter>
 #include <QCheckBox>
 #include <QDateEdit>
 #include <QCalendarWidget>
@@ -48,7 +49,13 @@ ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const Document& doc
 	QLabel* pPayeeLabel = new QLabel(this);
 	pPayeeLabel->setText("Payee:");
 	
-	m_pPayee = new QLineEdit(this);
+	m_pPayee = new QComboBox(this);
+	m_pPayee->setEditable(true);
+	m_pPayee->setAutoCompletion(true);
+	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
+	m_pPayee->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
+	m_pPayee->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
+//	m_pPayee->completer()->setCompletionMode(QCompleter::PopupCompletion); // okay
 	
 	QLabel* pTypeLabel = new QLabel(this);
 	pTypeLabel->setText("Type:");
@@ -63,7 +70,15 @@ ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const Document& doc
 	QLabel* pCategoryLabel = new QLabel(this);
 	pCategoryLabel->setText("Category:");
 	
-	m_pCategory = new QLineEdit(this);	
+	m_pCategory = new QComboBox(this);
+	m_pCategory->setEditable(true);
+	m_pCategory->setAutoCompletion(true);	
+	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
+	m_pCategory->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
+	m_pCategory->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
+//	m_pCategory->completer()->setCompletionMode(QCompleter::PopupCompletion); // okay
+	
+	updatePayeeAndCategoryChoices();
 	
 	QLabel* pFrequencyLabel = new QLabel(this);
 	pFrequencyLabel->setText("Frequency:");
@@ -122,9 +137,9 @@ ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const Document& doc
 	
 	connect(pUpdateButton, SIGNAL(clicked()), this, SLOT(updateClicked()));
 
-	m_pPayee->setMinimumHeight(22);
+	m_pPayee->setMinimumHeight(29);
 	m_pType->setMinimumHeight(22);
-	m_pCategory->setMinimumHeight(22);
+	m_pCategory->setMinimumHeight(29);
 	m_pFrequency->setMinimumHeight(22);
 	m_pAmount->setMinimumHeight(22);
 	m_pConstraint->setMinimumHeight(22);
@@ -184,9 +199,9 @@ QSize ScheduledTransactionFormPanel::sizeHint() const
 
 void ScheduledTransactionFormPanel::clear()
 {
-	m_pPayee->setText("");
+	m_pPayee->setCurrentIndex(0);
 	m_pType->setCurrentIndex(0);
-	m_pCategory->setText(0);
+	m_pCategory->setCurrentIndex(0);
 	m_pFrequency->setCurrentIndex(0);
 	m_pAmount->setText("0.0");
 	m_pConstraint->setCurrentIndex(0);
@@ -197,18 +212,19 @@ void ScheduledTransactionFormPanel::clear()
 	m_pAccount->setCurrentIndex(0);
 	
 	updateAccountsList(true);
+	updatePayeeAndCategoryChoices();
 }
 
 void ScheduledTransactionFormPanel::setFocusPayee(bool selectText)
 {
 	m_pPayee->setFocus();
 	if (selectText)
-		m_pPayee->selectAll();
+		m_pPayee->lineEdit()->selectAll();
 }
 
 void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const ScheduledTransaction& schedTransaction)
 {
-	m_pPayee->setText(schedTransaction.getPayee().c_str());
+	m_pPayee->setEditText(schedTransaction.getPayee().c_str());
 	
 	double dAmount = schedTransaction.getAmount().ToDouble();
 	
@@ -218,7 +234,7 @@ void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const Sche
 	
 	m_pAmount->setText(szTemp);
 	
-	m_pCategory->setText(schedTransaction.getCategory().c_str());
+	m_pCategory->setEditText(schedTransaction.getCategory().c_str());
 		
 	m_pType->setCurrentIndex((unsigned int)schedTransaction.getType());
 	
@@ -236,13 +252,13 @@ void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const Sche
 
 void ScheduledTransactionFormPanel::updateScheduledTransactionFromParamValues(ScheduledTransaction& schedTransaction)
 {
-	std::string payee = m_pPayee->text().toStdString();
+	std::string payee = m_pPayee->currentText().toStdString();
 	schedTransaction.setPayee(payee);
 	
 	double dAmount = m_pAmount->text().toDouble();
 	schedTransaction.setAmount(dAmount);
 	
-	std::string category = m_pCategory->text().toStdString();
+	std::string category = m_pCategory->currentText().toStdString();
 	schedTransaction.setCategory(category);
 	
 	
@@ -297,6 +313,25 @@ void ScheduledTransactionFormPanel::updateAccountsList(bool selectFirst)
 	if (selectFirst)
 	{
 		m_pAccount->setCurrentIndex(0);
+	}
+}
+
+void ScheduledTransactionFormPanel::updatePayeeAndCategoryChoices()
+{
+	m_pPayee->clear();
+	m_pPayee->addItem("");
+	std::set<std::string>::const_iterator itPayee = m_document.PayeeBegin();
+	for (; itPayee != m_document.PayeeEnd(); ++itPayee)
+	{
+		m_pPayee->addItem(itPayee->c_str());
+	}
+	
+	m_pCategory->clear();
+	m_pCategory->addItem("");
+	std::set<std::string>::const_iterator itCat = m_document.CategoryBegin();
+	for (; itCat != m_document.CategoryEnd(); ++itCat)
+	{
+		m_pCategory->addItem(itCat->c_str());
 	}
 }
 

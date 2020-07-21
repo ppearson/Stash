@@ -47,6 +47,8 @@
 
 #include "document_index_view.h"
 #include "transactions_view_widget.h"
+#include "payees_view_widget.h"
+#include "categories_view_widget.h"
 #include "scheduled_transactions_view_widget.h"
 
 #include "dialogs/account_details_dialog.h"
@@ -96,11 +98,14 @@ void StashWindow::setupWindow()
     setUnifiedTitleAndToolBarOnMac(true);
 	
 	setWindowIcon(QIcon(":/stash/images/main_icon_0.png"));
+	
+	loadSettings();
 		
 	m_pMainContainerWidget = new QWidget(this);
 	m_pMainLayout = new QVBoxLayout(m_pMainContainerWidget);
 	m_pMainLayout->setMargin(0);
 	m_pMainLayout->setContentsMargins(0, 0, 0, 0);
+	m_pMainLayout->setSpacing(0);
 
 	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	sizePolicy.setHorizontalStretch(1);
@@ -110,8 +115,6 @@ void StashWindow::setupWindow()
 	m_pMainContainerWidget->setSizePolicy(sizePolicy);
 	
 	setCentralWidget(m_pMainContainerWidget);
-	
-	loadSettings();
 	
 	setupMenu();
 	setupToolbar();
@@ -137,6 +140,10 @@ void StashWindow::setupWindow()
 	
 	m_pTransactionsViewWidget = new TransactionsViewWidget(this, this); // bit odd, but prevents need to cast to get both...
 	
+	m_pPayeesViewWidget = new PayeesViewWidget(this, this);
+	
+	m_pCategoriesViewWidget = new CategoriesViewWidget(this, this);
+	
 	m_pScheduledTransactionsViewWidget = new ScheduledTransactionsViewWidget(m_documentController.getDocument(), this, this);
 	
 	m_pDeferredScheduledPopupTimer = new QTimer(this);
@@ -144,7 +151,8 @@ void StashWindow::setupWindow()
 	
 	m_pIndexSplitter->addWidget(m_pIndexView);
 	m_pIndexSplitter->addWidget(m_pTransactionsViewWidget);
-	
+	m_pIndexSplitter->addWidget(m_pPayeesViewWidget);
+	m_pIndexSplitter->addWidget(m_pCategoriesViewWidget);
 	m_pIndexSplitter->addWidget(m_pScheduledTransactionsViewWidget);
 	
 	
@@ -152,9 +160,13 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setCollapsible(0, false);
 	m_pIndexSplitter->setCollapsible(1, false);
 	m_pIndexSplitter->setCollapsible(2, false);
+	m_pIndexSplitter->setCollapsible(3, false);
+	m_pIndexSplitter->setCollapsible(4, false);
 	
 	QList<int> mainSizes;
 	mainSizes.push_back(150);
+	mainSizes.push_back(500);
+	mainSizes.push_back(500);
 	mainSizes.push_back(500);
 	mainSizes.push_back(500);
 	
@@ -163,6 +175,8 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setStretchFactor(0, 0);
 	m_pIndexSplitter->setStretchFactor(0, 2);
 	
+	m_pPayeesViewWidget->hide();
+	m_pCategoriesViewWidget->hide();
 	m_pScheduledTransactionsViewWidget->hide();
 	
 	m_pIndexView->resize(100, 50);
@@ -186,8 +200,7 @@ void StashWindow::setupMenu()
 {
 	m_pMenuBar = new QMenuBar(this);
     m_pMenuBar->setObjectName(QString::fromUtf8("menuBar"));
-	
-	
+		
     QMenu* menuFile = new QMenu("&File", m_pMenuBar);
     menuFile->setObjectName(QString::fromUtf8("menuFile"));	
 	
@@ -607,7 +620,7 @@ void StashWindow::fileOpen()
 	if (!dialog.exec())
 		 return;
 
-	QString fileName = dialog.selectedFiles()[0];
+	const QString& fileName = dialog.selectedFiles()[0];
 	loadDocument(fileName);
 }
 
@@ -629,7 +642,7 @@ void StashWindow::fileSaveAs()
 	if (!dialog.exec())
 		 return;
 
-	QString fileName = dialog.selectedFiles()[0];
+	const QString& fileName = dialog.selectedFiles()[0];
 
 	std::string path = fileName.toStdString();
 
@@ -881,15 +894,37 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		
 		m_pTransactionsViewWidget->rebuildFromAccount();
 		
+		m_pPayeesViewWidget->hide();
+		m_pCategoriesViewWidget->hide();
 		m_pScheduledTransactionsViewWidget->hide();
 		m_pTransactionsViewWidget->show();		
 		
 		// for the moment hard-code, might want option?
 		m_pTransactionsViewWidget->scrollToLastTransaction();
 	}
+	else if (type == eDocIndex_ManagePayees)
+	{
+		m_pTransactionsViewWidget->hide();
+		m_pScheduledTransactionsViewWidget->hide();
+		
+		m_pPayeesViewWidget->show();
+		m_pCategoriesViewWidget->hide();
+		m_pPayeesViewWidget->updatePayeesFromDocument();
+	}
+	else if (type == eDocIndex_ManageCategories)
+	{
+		m_pTransactionsViewWidget->hide();
+		m_pScheduledTransactionsViewWidget->hide();
+		
+		m_pPayeesViewWidget->hide();
+		m_pCategoriesViewWidget->show();
+		m_pCategoriesViewWidget->updateCategoriesFromDocument();
+	}
 	else if (type == eDocIndex_ManageScheduledTransactions)
 	{
 		m_pTransactionsViewWidget->hide();
+		m_pPayeesViewWidget->hide();
+		m_pCategoriesViewWidget->hide();
 		m_pScheduledTransactionsViewWidget->show();
 		
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();

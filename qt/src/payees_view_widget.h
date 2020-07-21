@@ -20,28 +20,45 @@
  *
  */
 
-#ifndef TRANSACTIONS_PAGE_H
-#define TRANSACTIONS_PAGE_H
+#ifndef PAYEES_VIEW_WIDGET_H
+#define PAYEES_VIEW_WIDGET_H
 
-#include "settings_page.h"
+#include <QWidget>
 
-class QCheckBox;
-class QSpinBox;
+class QListWidget;
+class QListWidgetItem;
 
-class TransactionsPage : public SettingsPage
+class Document;
+
+class ItemControlButtonsWidget;
+
+class StashWindow;
+
+// Note: PayeesViewWidget and CategoriesViewWidget are very similar and there's a lot of
+//       duplication, however given there are only two types, it didn't seem worth abstracting...
+
+class PayeesViewWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionsPage(QSettings& settings, QWidget* parent = 0);
+	PayeesViewWidget(QWidget* pParent, StashWindow* mainWindow);
+	virtual ~PayeesViewWidget();
 	
-	virtual void saveSettings() override;
+	void updatePayeesFromDocument();
+	
+public slots:
+	void addItemClicked();
+	void deleteItemClicked();
+	
+	void itemChanged(QListWidgetItem* item);
+	void currentRowChanged(int currentRow);
 	
 protected:
-	QSpinBox*		m_pRecentDurationDays;
-	QCheckBox*		m_pScrollToLatestTransaction;
-	QCheckBox*		m_pNewTransactionsAreMarkedCleared;
-	QCheckBox*		m_pColourNegativeAmountValuesRed;
-	QCheckBox*		m_pColourNegativeBalanceValuesRed;
+	StashWindow*				m_pMainWindow;
+	
+	QListWidget*				m_pListWidget;
+	
+	ItemControlButtonsWidget*	m_pItemControlButtons;
 };
 
-#endif // TRANSACTIONS_PAGE_H
+#endif // PAYEES_VIEW_WIDGET_H

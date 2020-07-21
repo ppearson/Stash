@@ -229,7 +229,7 @@ void DocumentIndexView::menuAccountDelete()
 	if (m_selectedIndexSubIndex == -1 || m_selectedIndexSubIndex >= m_document.getAccountCount())
 		return;
 	
-	Account& account = m_document.getAccount(m_selectedIndexSubIndex);
+	const Account& account = m_document.getAccount(m_selectedIndexSubIndex);
 	
 	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the account called '") + QString(account.getName().c_str()) + "'?.",
 					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);

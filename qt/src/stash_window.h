@@ -40,6 +40,8 @@ class QTimer;
 class DocumentIndexView;
 
 class TransactionsViewWidget;
+class PayeesViewWidget;
+class CategoriesViewWidget;
 class ScheduledTransactionsViewWidget;
 
 class StashWindow : public QMainWindow
@@ -57,6 +59,15 @@ public:
 	const SettingsState& getSettingsState() const
 	{
 		return m_settings;
+	}
+	
+	DocumentController& getDocumentController()
+	{
+		return m_documentController;
+	}
+	const DocumentController& getDocumentController() const
+	{
+		return m_documentController;
 	}
 	
 protected:
@@ -165,9 +176,11 @@ protected:
 	
 	
 	TransactionsViewWidget*				m_pTransactionsViewWidget;
+	PayeesViewWidget*					m_pPayeesViewWidget;
+	CategoriesViewWidget*				m_pCategoriesViewWidget;
 	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
 	
-	QTimer*					m_pDeferredScheduledPopupTimer;
+	QTimer*						m_pDeferredScheduledPopupTimer;
 	
 	
 	SettingsState				m_settings;

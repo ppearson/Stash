@@ -30,6 +30,8 @@
 #include "../../core/datetime.h"
 #include "../../core/transaction.h"
 
+class Document;
+
 class QLineEdit;
 class QComboBox;
 class QCheckBox;
@@ -39,7 +41,7 @@ class TransactionFormPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionFormPanel(QWidget* parent = 0);
+	TransactionFormPanel(Document& document, QWidget* parent = 0);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
@@ -67,10 +69,16 @@ signals:
 public slots:
 	void updateClicked();
 	
+	
 protected:
-	QLineEdit*			m_pPayee;
+	void updatePayeeAndCategoryComboBoxChoicesFromDocument();
+	
+protected:
+	Document&			m_document;
+	
+	QComboBox*			m_pPayee;
 	QLineEdit*			m_pAmount;
-	QLineEdit*			m_pCategory;
+	QComboBox*			m_pCategory;
 	QCheckBox*			m_pCleared;
 	QComboBox*			m_pType;
 	QDateEdit*			m_pDate;

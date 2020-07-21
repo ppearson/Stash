@@ -25,11 +25,11 @@ fixed::fixed(const std::string& value, CurrencyFormat format) : m_precision(2)
 double fixed::ToDouble() const
 {
 	if (m_positive)
-		return m_num / pow(10.0, m_precision);
+		return (double)m_num / pow(10.0, m_precision);
 	else
 	{
 		if (m_num != 0)
-			return (m_num / pow(10.0, m_precision)) * -1;
+			return ((double)m_num / pow(10.0, m_precision)) * -1.0;
 		else
 			return 0.0;
 	}

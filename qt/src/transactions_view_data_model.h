@@ -92,6 +92,16 @@ public:
 	// externally (at least for the balance)
 	void setAmount(const QString& value);
 	void setBalance(const QString& value);
+	
+	void setAmountValueRed(bool amountValueRed)
+	{
+		m_amountValueRed = amountValueRed;
+	}
+	
+	void setBalanceValueRed(bool balanceValueRed)
+	{
+		m_balanceValueRed = balanceValueRed;
+	}
 
 	TransactionsModelItem* child(int number) const;
 	int childCount() const;
@@ -148,7 +158,16 @@ public:
 	{
 		return m_splitTransactionIndex;
 	}
-
+	
+	bool isAmountValueRed() const
+	{
+		return m_amountValueRed;
+	}
+	
+	bool isBalanceValueRed() const
+	{
+		return m_balanceValueRed;
+	}
 
 protected:
 	QVector<TransactionsModelItem*>		m_childItems;
@@ -178,6 +197,9 @@ protected:
 	// a normal transaction), and -2 means it's a "remainder" split transaction.
 	
 	int						m_splitTransactionIndex;
+	
+	bool					m_amountValueRed;
+	bool					m_balanceValueRed;
 };
 
 #endif // TRANSACTIONS_VIEW_DATA_MODEL_H

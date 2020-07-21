@@ -30,7 +30,8 @@
 
 #include "../../core/document.h"
 
-MakeTransferDialog::MakeTransferDialog(const Document& document, QWidget* parent) : m_document(document)
+MakeTransferDialog::MakeTransferDialog(const Document& document, QWidget* parent) : QDialog(parent),
+	m_document(document)
 {
 	resize(527, 302);
 

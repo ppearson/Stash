@@ -61,7 +61,7 @@ Date::Date(const std::string& date, char cSep, DateStringFormat dateFormat) : m_
 	setDate(date, cSep, dateFormat);
 }
 
-const Date& Date::operator=(const Date& rhs)
+Date& Date::operator=(const Date& rhs)
 {
 	m_Time = rhs.m_Time;
 	
@@ -73,7 +73,7 @@ const Date& Date::operator=(const Date& rhs)
 	return *this;
 }
 
-const Date& Date::operator=(time_t Time)
+Date& Date::operator=(time_t Time)
 {
 	m_Time = Time;
 	SetVarsFromTime();

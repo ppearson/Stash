@@ -25,6 +25,7 @@
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCompleter>
 #include <QCheckBox>
 #include <QDateEdit>
 #include <QCalendarWidget>
@@ -36,9 +37,11 @@
 
 #include <QGridLayout>
 
+#include "../../core/document.h"
 #include "../../core/split_transaction.h"
 
-TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
+TransactionFormPanel::TransactionFormPanel(Document& document, QWidget* parent) : QWidget(parent),
+	m_document(document)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
 	pGridLayout->setMargin(4);
@@ -46,7 +49,14 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	QLabel* pPayeeLabel = new QLabel(this);
 	pPayeeLabel->setText("&Payee:");
 	
-	m_pPayee = new QLineEdit(this);
+	m_pPayee = new QComboBox(this);
+	m_pPayee->setEditable(true);
+	m_pPayee->setAutoCompletion(true);
+	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
+	m_pPayee->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
+	m_pPayee->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
+//	m_pPayee->completer()->setCompletionMode(QCompleter::PopupCompletion); // okay
+	m_pPayee->setMaximumHeight(29);
 	pPayeeLabel->setBuddy(m_pPayee);
 			
 	QLabel* pAmountLabel = new QLabel(this);
@@ -58,7 +68,14 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	QLabel* pCategoryLabel = new QLabel(this);
 	pCategoryLabel->setText("&Category:");
 	
-	m_pCategory = new QLineEdit(this);
+	m_pCategory = new QComboBox(this);
+	m_pCategory->setEditable(true);
+	m_pCategory->setAutoCompletion(true);	
+	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
+	m_pCategory->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
+	m_pCategory->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
+//	m_pCategory->completer()->setCompletionMode(QCompleter::PopupCompletion); // okay
+	m_pCategory->setMaximumHeight(29);
 	pCategoryLabel->setBuddy(m_pCategory);
 	
 	m_pCleared = new QCheckBox(this);
@@ -134,11 +151,10 @@ TransactionFormPanel::TransactionFormPanel(QWidget* parent) : QWidget(parent)
 	
 	pGridLayout->addWidget(pUpdateButton, 4, 0, 1, 1, Qt::AlignLeft);
 	
-	
 	pGridLayout->setColumnStretch(0, 0);
-	pGridLayout->setColumnStretch(1, 50);
+	pGridLayout->setColumnStretch(1, 40);
 	pGridLayout->setColumnStretch(2, 0);
-	pGridLayout->setColumnStretch(3, 10);
+	pGridLayout->setColumnStretch(3, 15);
 	
 	QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	sizePolicy.setHorizontalStretch(0);
@@ -160,9 +176,9 @@ QSize TransactionFormPanel::sizeHint() const
 
 void TransactionFormPanel::clear(bool resetDate)
 {
-	m_pPayee->setText("");
+	m_pPayee->setCurrentIndex(0);
 	m_pAmount->setText("0.0");
-	m_pCategory->setText(0);
+	m_pCategory->setCurrentIndex(0);
 	// TODO: use setting/option for the value?
 	m_pCleared->setChecked(true);
 	m_pType->setCurrentIndex(0);
@@ -178,14 +194,16 @@ void TransactionFormPanel::setFocusPayee(bool selectText)
 {
 	m_pPayee->setFocus();
 	if (selectText)
-		m_pPayee->selectAll();
+		m_pPayee->lineEdit()->selectAll();
 }
 
 // TODO: there's a bit of duplication between the below which could be abstracted...
 
 void TransactionFormPanel::setParamsFromTransaction(const Transaction& transaction)
 {
-	m_pPayee->setText(transaction.getPayee().c_str());
+	updatePayeeAndCategoryComboBoxChoicesFromDocument();
+	
+	m_pPayee->setEditText(transaction.getPayee().c_str());
 	
 	double dAmount = transaction.getAmount().ToDouble();
 	
@@ -195,7 +213,7 @@ void TransactionFormPanel::setParamsFromTransaction(const Transaction& transacti
 	
 	m_pAmount->setText(szTemp);
 	
-	m_pCategory->setText(transaction.getCategory().c_str());
+	m_pCategory->setEditText(transaction.getCategory().c_str());
 	
 	m_pCleared->setChecked(transaction.isCleared());
 	
@@ -215,7 +233,9 @@ void TransactionFormPanel::setParamsFromTransaction(const Transaction& transacti
 
 void TransactionFormPanel::setParamsFromSplitTransaction(const SplitTransaction& splitTransaction)
 {
-	m_pPayee->setText(splitTransaction.getPayee().c_str());
+	updatePayeeAndCategoryComboBoxChoicesFromDocument();
+	
+	m_pPayee->setEditText(splitTransaction.getPayee().c_str());
 	
 	double dAmount = splitTransaction.getAmount().ToDouble();
 	
@@ -225,7 +245,7 @@ void TransactionFormPanel::setParamsFromSplitTransaction(const SplitTransaction&
 	
 	m_pAmount->setText(szTemp);
 	
-	m_pCategory->setText(splitTransaction.getCategory().c_str());
+	m_pCategory->setEditText(splitTransaction.getCategory().c_str());
 	
 	m_pType->setCurrentIndex(0);
 	
@@ -239,7 +259,9 @@ void TransactionFormPanel::setParamsFromSplitTransaction(const SplitTransaction&
 
 void TransactionFormPanel::setParamsForEmptySplitTransaction(QString amountString)
 {
-	m_pPayee->setText("Split Value");
+	updatePayeeAndCategoryComboBoxChoicesFromDocument();
+	
+	m_pPayee->setEditText("Split Value");
 
 	// remove any leading currency symbol.
 	// TODO: do this properly, probably best to have the values as an actual fixed and not as a string?
@@ -249,7 +271,7 @@ void TransactionFormPanel::setParamsForEmptySplitTransaction(QString amountStrin
 	}
 	m_pAmount->setText(amountString);
 	
-	m_pCategory->setText("");
+	m_pCategory->setEditText("");
 	
 	m_pType->setCurrentIndex(0);
 	
@@ -262,19 +284,23 @@ void TransactionFormPanel::setParamsForEmptySplitTransaction(QString amountStrin
 	
 	// set focus and select text
 	m_pPayee->setFocus();
-	m_pPayee->selectAll();
+	m_pPayee->lineEdit()->selectAll();
 }
 
 void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transaction)
 {
-	std::string payee = m_pPayee->text().toStdString();
+	std::string payee = m_pPayee->currentText().toStdString();
 	transaction.setPayee(payee);
+	
+	m_document.addPayee(payee);
 	
 	double dAmount = m_pAmount->text().toDouble();
 	transaction.setAmount(dAmount);
 	
-	std::string category = m_pCategory->text().toStdString();
+	std::string category = m_pCategory->currentText().toStdString();
 	transaction.setCategory(category);
+	
+	m_document.addCategory(category);
 	
 	bool cleared = m_pCleared->isChecked();
 	transaction.setCleared(cleared);
@@ -292,14 +318,18 @@ void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transac
 
 void TransactionFormPanel::updateSplitTransactionFromParamValues(SplitTransaction& splitTransaction)
 {
-	std::string payee = m_pPayee->text().toStdString();
+	std::string payee = m_pPayee->currentText().toStdString();
 	splitTransaction.setPayee(payee);
+	
+	m_document.addPayee(payee);
 	
 	double dAmount = m_pAmount->text().toDouble();
 	splitTransaction.setAmount(dAmount);
 	
-	std::string category = m_pCategory->text().toStdString();
+	std::string category = m_pCategory->currentText().toStdString();
 	splitTransaction.setCategory(category);
+	
+	m_document.addCategory(category);
 	
 	std::string description = m_pDescription->text().toStdString();
 	splitTransaction.setDescription(description);
@@ -344,5 +374,24 @@ void TransactionFormPanel::updateClicked()
 		// as appropriate...
 		
 		emit transactionValuesUpdated();
+	}
+}
+
+void TransactionFormPanel::updatePayeeAndCategoryComboBoxChoicesFromDocument()
+{
+	m_pPayee->clear();
+	m_pPayee->addItem("");
+	std::set<std::string>::const_iterator itPayee = m_document.PayeeBegin();
+	for (; itPayee != m_document.PayeeEnd(); ++itPayee)
+	{
+		m_pPayee->addItem(itPayee->c_str());
+	}
+	
+	m_pCategory->clear();
+	m_pCategory->addItem("");
+	std::set<std::string>::const_iterator itCat = m_document.CategoryBegin();
+	for (; itCat != m_document.CategoryEnd(); ++itCat)
+	{
+		m_pCategory->addItem(itCat->c_str());
 	}
 }

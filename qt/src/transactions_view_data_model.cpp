@@ -121,6 +121,16 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 			{
 				return QColor(Qt::darkGray);
 			}
+			
+			if (index.column() == 5 && item->isAmountValueRed())
+			{
+				return QColor(Qt::red);
+			}
+			
+			if (index.column() == 6 && item->isBalanceValueRed())
+			{
+				return QColor(Qt::red);
+			}
 		}
 	}
 	else if (role == Qt::BackgroundColorRole)
@@ -326,6 +336,9 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 	
 	CurrencyValueFormatter formatter(CurrencyValueFormatter::ePresetNZ);
 	
+	bool negativeAmountValuesRed = m_settingsState.getBool("transactions/colour_negative_amount_values_red", false);
+	bool negativeBalanceValuesRed = m_settingsState.getBool("transactions/colour_negative_balance_values_red", true);
+	
 	for (; it != itEnd; ++it)
 	{
 		const Transaction& transaction = *it;
@@ -339,6 +352,11 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		QString unicodeAmountString = QString::fromUtf8(formatter.formatValue(transactionAmount));
 		pNewItem->setAmount(unicodeAmountString);
 		
+		if (negativeAmountValuesRed && !transaction.getAmount().IsPositive())
+		{
+			pNewItem->setAmountValueRed(true);
+		}
+		
 		if (transaction.isCleared())
 		{
 			balance += transactionAmount;
@@ -346,6 +364,11 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		// TODO: we should really be doing this for all strings that could be unicode...
 		QString unicodeBalanceString = QString::fromUtf8(formatter.formatValue(balance.ToDouble()));
 		pNewItem->setBalance(unicodeBalanceString);
+		
+		if (negativeBalanceValuesRed && !balance.IsPositive())
+		{
+			pNewItem->setBalanceValueRed(true);
+		}
 		
 		m_pRootItem->addChild(pNewItem);
 		
@@ -376,7 +399,9 @@ void TransactionsViewDataModel::clear()
 TransactionsModelItem::TransactionsModelItem(TransactionsModelItem* parent) : 
 	m_parentItem(parent),
 	m_transactionIndex(-1),
-	m_splitTransactionIndex(-1)
+	m_splitTransactionIndex(-1),
+	m_amountValueRed(false),
+	m_balanceValueRed(false)
 {
 	
 }

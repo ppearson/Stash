@@ -46,8 +46,8 @@ public:
 	Date(int Day, int Month, int Year = -1);
 	Date(const std::string& date, char cSep, DateStringFormat dateFormat = UK);
 
-	const Date& operator=(const Date& rhs);
-	const Date& operator=(time_t Time);
+	Date& operator=(const Date& rhs);
+	Date& operator=(time_t Time);
 	
 	void IncrementDays(int days);
 	void IncrementMonths(int months);

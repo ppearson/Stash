@@ -2,11 +2,11 @@ README
 ------
 
 This is the Qt port of Stash, which is still under development, but is somewhat useable,
-although it's missing some features.
+although it's missing some features compared to the native Mac version (the original
+UI from 10 years ago).
 
 It builds with Qt 4.8 and 5.12 on Linux, and might build/run on other platforms as well,
 but my focus here is predominantly Linux, at least initially for my purposes.
-
 
 
 Building
@@ -30,7 +30,5 @@ TODO (to match Mac version):
 * Import functionality
 * Export functionality
 * Graph functionality
-* List/Delete Categories
-* List/Delete Payees
 * Check UTF-8 strings work everywhere
 

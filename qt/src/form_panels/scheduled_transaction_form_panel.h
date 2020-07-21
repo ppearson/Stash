@@ -61,6 +61,7 @@ public:
 	
 protected:
 	void updateAccountsList(bool selectFirst);
+	void updatePayeeAndCategoryChoices();
 	
 signals:
 	void scheduledTransactionValuesUpdated();
@@ -71,9 +72,9 @@ public slots:
 protected:
 	const Document&		m_document;
 		
-	QLineEdit*			m_pPayee;
+	QComboBox*			m_pPayee;
 	QComboBox*			m_pType;
-	QLineEdit*			m_pCategory;
+	QComboBox*			m_pCategory;
 	QComboBox*			m_pFrequency;
 	QLineEdit*			m_pAmount;
 	QComboBox*			m_pConstraint;
