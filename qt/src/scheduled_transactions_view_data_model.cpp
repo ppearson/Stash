@@ -26,7 +26,8 @@
 
 #include "../../core/document.h"
 #include "../../core/scheduled_transaction.h"
-#include "../../core/currency_value_formatter.h"
+
+#include "ui_currency_formatter.h"
 
 #include "stash_window.h"
 
@@ -246,8 +247,54 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		const ScheduledTransaction& schedTrans = *schedTransIt;
 		
 		ScheduledTransactionsModelItem* newModelItem = new ScheduledTransactionsModelItem(m_pRootItem);
-		newModelItem->extractDetails(m_document, schedTrans, schedTransIndex);
+			
+		newModelItem->m_enabled = schedTrans.isEnabled();
+		newModelItem->m_payee = schedTrans.getPayee().c_str();
+		newModelItem->m_category = schedTrans.getCategory().c_str();
 		
+		UICurrencyFormatter* pCurrencyFormatter = m_pMainWindow->getCurrencyFormatter();
+		
+		newModelItem->m_amount = pCurrencyFormatter->formatCurrencyAmount(schedTrans.getAmount());
+		
+		switch (schedTrans.getFrequency())
+		{
+		case 0:
+			newModelItem->m_frequency = "Weekly";
+			break;
+		case 1:
+			newModelItem->m_frequency = "Two Weeks";
+			break;
+		case 2:
+			newModelItem->m_frequency = "Four Weeks";
+			break;
+		case 3:
+			newModelItem->m_frequency = "Monthly";
+			break;
+		case 4:
+			newModelItem->m_frequency = "Two Months";
+			break;
+		case 5:
+			newModelItem->m_frequency = "Quarterly";
+			break;
+		case 6:
+			newModelItem->m_frequency = "Annually";
+			break;
+		}
+		
+		newModelItem->m_nextDate = schedTrans.getNextDate().FormattedDate(Date::UK).c_str();
+		
+		// it's not great having to do this...
+		const Document& document = m_pMainWindow->getDocumentController().getDocument();
+		unsigned int accountIndex = schedTrans.getAccount();
+		if (accountIndex != -1 && accountIndex < document.getAccountCount())
+		{
+			const Account& acc = document.getAccount(accountIndex);
+			newModelItem->m_account = acc.getName().c_str();
+		}
+		
+		newModelItem->m_scheduledTransactionIndex = schedTransIndex;
+		
+	
 		m_pRootItem->addChild(newModelItem);
 	}
 	
@@ -278,61 +325,6 @@ ScheduledTransactionsModelItem::ScheduledTransactionsModelItem(ScheduledTransact
 ScheduledTransactionsModelItem::~ScheduledTransactionsModelItem()
 {
 	qDeleteAll(m_childItems);
-}
-
-void ScheduledTransactionsModelItem::extractDetails(const Document& document, const ScheduledTransaction& schedTransaction,
-													unsigned int scheduledTransactionIndex)
-{
-	m_enabled = schedTransaction.isEnabled();
-	m_payee = schedTransaction.getPayee().c_str();
-	m_category = schedTransaction.getCategory().c_str();
-	
-	CurrencyValueFormatter formatter;
-	
-	QLocale locale;
-	// TODO: QLocale::toCurrencyString() is pretty useless really, it doesn't put the
-	//       currency in the right place for negative values, and doesn't apply grouping
-	//       (thousands seperator).
-//	m_amount = locale.toCurrencyString(schedTransaction.getAmount().ToDouble());
-	// we need to handle this specifically this way, so that symbols like '£' work correctly.
-	// TODO: which means that likely unicode names and things aren't working either, but...
-	m_amount = QString::fromUtf8(formatter.formatValue(schedTransaction.getAmount().ToDouble()));
-	
-	switch (schedTransaction.getFrequency())
-	{
-	case 0:
-		m_frequency = "Weekly";
-		break;
-	case 1:
-		m_frequency = "Two Weeks";
-		break;
-	case 2:
-		m_frequency = "Four Weeks";
-		break;
-	case 3:
-		m_frequency = "Monthly";
-		break;
-	case 4:
-		m_frequency = "Two Months";
-		break;
-	case 5:
-		m_frequency = "Quarterly";
-		break;
-	case 6:
-		m_frequency = "Annually";
-		break;
-	}
-	
-	m_nextDate = schedTransaction.getNextDate().FormattedDate(Date::UK).c_str();
-	
-	unsigned int accountIndex = schedTransaction.getAccount();
-	if (accountIndex != -1 && accountIndex < document.getAccountCount())
-	{
-		const Account& acc = document.getAccount(accountIndex);
-		m_account = acc.getName().c_str();
-	}
-	
-	m_scheduledTransactionIndex = scheduledTransactionIndex;
 }
 
 ScheduledTransactionsModelItem* ScheduledTransactionsModelItem::child(int number) const

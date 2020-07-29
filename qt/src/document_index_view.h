@@ -31,6 +31,8 @@ class QTreeView;
 class QItemSelection;
 class QAction;
 
+class StashWindow;
+
 class Document;
 class DocumentIndexDataModel;
 
@@ -38,7 +40,7 @@ class DocumentIndexView : public QWidget
 {
 	Q_OBJECT
 public:
-	DocumentIndexView(Document& document, QWidget* parent = 0);
+	DocumentIndexView(Document& document, QWidget* parent, StashWindow* stashWindow);
 	virtual ~DocumentIndexView();
 	
 	virtual QSize minimumSizeHint() const;

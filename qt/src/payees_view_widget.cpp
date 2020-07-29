@@ -31,11 +31,9 @@
 PayeesViewWidget::PayeesViewWidget(QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
     m_pMainWindow(mainWindow)
 {
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout* layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-
-	setLayout(layout);
 	
 	m_pListWidget = new QListWidget(this);
 	

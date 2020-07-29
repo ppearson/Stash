@@ -32,6 +32,8 @@ class Account;
 class Transaction;
 class SplitTransaction;
 
+class StashWindow;
+
 class SettingsState;
 
 class TransactionsModelItem;
@@ -39,7 +41,7 @@ class TransactionsModelItem;
 class TransactionsViewDataModel : public QAbstractItemModel
 {
 public:
-	TransactionsViewDataModel(const SettingsState& settingsState, QObject* parent);
+	TransactionsViewDataModel(const SettingsState& settingsState, QWidget* parent, StashWindow* stashWindow);
 	virtual ~TransactionsViewDataModel();
 	
 	void setAccount(Account* pAccount);
@@ -68,6 +70,7 @@ public:
 		
 protected:
 	const SettingsState&			m_settingsState;
+	StashWindow*					m_pStashWindow;
 	
 	Account*						m_pAccount;
 	

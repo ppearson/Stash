@@ -26,20 +26,25 @@
 #include "settings_page.h"
 
 class QCheckBox;
+class QComboBox;
 
 class GeneralPage : public SettingsPage
 {
 	Q_OBJECT
 public:
 	GeneralPage(QSettings& settings, QWidget* parent = 0);
-	virtual ~GeneralPage();
 
-	virtual void saveSettings();
+	virtual void saveSettings() override;
 
+public slots:
+	void displayCurrencySourceTypeChanged(int currentIndex);
 
 protected:
 	QCheckBox*		m_pOpenMostRecentFileStartup;
 	QCheckBox*		m_pMakeBackupFileWhenSaving;
+	
+	QComboBox*		m_pDisplayCurrencySourceType;
+	QComboBox*		m_pDisplayCurrencyManualOverride;
 };
 
 #endif // GENERAL_PAGE_H

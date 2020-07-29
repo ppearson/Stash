@@ -33,11 +33,9 @@ ItemControlButtonsWidget::ItemControlButtonsWidget(Type type, QWidget* pParent) 
 	m_pMoveUpItemButton(nullptr),
 	m_pMoveDownItemButton(nullptr)
 {
-	QHBoxLayout* layout = new QHBoxLayout();
+	QHBoxLayout* layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-
-	setLayout(layout);
 	
 	if (m_type == eTransaction)
 	{

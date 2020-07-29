@@ -35,7 +35,7 @@
 
 #include "dialogs/account_details_dialog.h"
 
-DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent) : QWidget(parent),
+DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent, StashWindow* stashWindow) : QWidget(parent),
 	m_document(document),
 	m_pTreeView(nullptr),
 	m_pModel(nullptr),
@@ -55,7 +55,7 @@ DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent) : QWid
 	m_pTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
 	m_pTreeView->setAttribute(Qt::WA_MacShowFocusRect, false); // hide the OS X blue focus rect
 
-	m_pModel = new DocumentIndexDataModel(m_document, this);
+	m_pModel = new DocumentIndexDataModel(m_document, this, stashWindow);
 
 	m_pTreeView->setModel(m_pModel);
 
@@ -154,6 +154,9 @@ void DocumentIndexView::selectItem(DocumentIndexType type, unsigned int index, b
 			m_pTreeView->selectionModel()->clearSelection();
 		}
 		m_pTreeView->selectionModel()->select(itemToSelect, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+		// this isn't strictly-speaking needed, however, QTreeView has differing selected/current state, and the current state
+		// can in some situations show highlight boxes on the first item, which is confusing, so...
+		m_pTreeView->setCurrentIndex(itemToSelect);
 		if (!sendSelectionChangedEvent)
 		{
 			m_pTreeView->selectionModel()->blockSignals(false);

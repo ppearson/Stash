@@ -101,10 +101,12 @@ ScheduledTransactionsDueDialog::ScheduledTransactionsDueDialog(StashWindow* pSta
 		QTableWidgetItem* pDescriptionCell = new QTableWidgetItem(trans.description.c_str());
 		m_pTableWidget->setItem(rowIndex, 1, pDescriptionCell);
 
-		QTableWidgetItem* pAmountCell = new QTableWidgetItem(trans.amount.c_str());
+		QTableWidgetItem* pAmountCell = new QTableWidgetItem(trans.amount);
+		pAmountCell->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
 		m_pTableWidget->setItem(rowIndex, 2, pAmountCell);
 
 		QTableWidgetItem* pDateCell = new QTableWidgetItem(trans.date.c_str());
+		pDateCell->setTextAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 		m_pTableWidget->setItem(rowIndex, 3, pDateCell);
 
 		QTableWidgetItem* pAccountCell = new QTableWidgetItem(trans.account.c_str());

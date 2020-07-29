@@ -44,6 +44,8 @@ class PayeesViewWidget;
 class CategoriesViewWidget;
 class ScheduledTransactionsViewWidget;
 
+class UICurrencyFormatter;
+
 class StashWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -70,6 +72,11 @@ public:
 		return m_documentController;
 	}
 	
+	UICurrencyFormatter* getCurrencyFormatter() const
+	{
+		return m_pCurrencyFormatter;
+	}
+	
 protected:
 	
 	void setupWindow();
@@ -90,6 +97,8 @@ protected:
 	
 	void loadSettings();
 	void saveSettings();
+	
+	void configureFormatters();
 	
 public slots:
 	
@@ -181,6 +190,9 @@ protected:
 	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
 	
 	QTimer*						m_pDeferredScheduledPopupTimer;
+	
+	// formatters used globally. We have ownership of them.
+	UICurrencyFormatter*		m_pCurrencyFormatter;
 	
 	
 	SettingsState				m_settings;

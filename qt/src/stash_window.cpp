@@ -57,14 +57,22 @@
 
 #include "settings/settings_window.h"
 
-StashWindow::StashWindow() : QMainWindow(nullptr)
+#include "ui_currency_formatter.h"
+
+StashWindow::StashWindow() : QMainWindow(nullptr),
+	m_pDeferredScheduledPopupTimer(nullptr),
+	m_pCurrencyFormatter(nullptr)
 {
 	setupWindow();
 }
 
 StashWindow::~StashWindow()
 {
-	
+	if (m_pCurrencyFormatter)
+	{
+		delete m_pCurrencyFormatter;
+		m_pCurrencyFormatter = nullptr;
+	}
 }
 
 void StashWindow::closeEvent(QCloseEvent* event)
@@ -95,7 +103,7 @@ void StashWindow::setupWindow()
 {
 	setTabShape(QTabWidget::Rounded);
 	
-    setUnifiedTitleAndToolBarOnMac(true);
+	setUnifiedTitleAndToolBarOnMac(true);
 	
 	setWindowIcon(QIcon(":/stash/images/main_icon_0.png"));
 	
@@ -119,11 +127,13 @@ void StashWindow::setupWindow()
 	setupMenu();
 	setupToolbar();
 	
+	configureFormatters();
+	
 	m_pIndexSplitter = new QSplitter(Qt::Horizontal, m_pMainContainerWidget);
 	
 	m_pMainLayout->addWidget(m_pIndexSplitter);
 	
-	m_pIndexView = new DocumentIndexView(m_documentController.getDocument(), m_pIndexSplitter);
+	m_pIndexView = new DocumentIndexView(m_documentController.getDocument(), m_pIndexSplitter, this);
 	m_pIndexView->setMinimumWidth(80);
 	m_pIndexView->setMaximumWidth(250);
 	m_pIndexView->setMinimumHeight(200);
@@ -199,10 +209,10 @@ void StashWindow::setupWindow()
 void StashWindow::setupMenu()
 {
 	m_pMenuBar = new QMenuBar(this);
-    m_pMenuBar->setObjectName(QString::fromUtf8("menuBar"));
+	m_pMenuBar->setObjectName(QString::fromUtf8("menuBar"));
 		
-    QMenu* menuFile = new QMenu("&File", m_pMenuBar);
-    menuFile->setObjectName(QString::fromUtf8("menuFile"));	
+	QMenu* menuFile = new QMenu("&File", m_pMenuBar);
+	menuFile->setObjectName(QString::fromUtf8("menuFile"));	
 	
 	QAction* pFileNewAction = new QAction(this);
 	QAction* pFileOpenAction = new QAction(this);
@@ -278,11 +288,11 @@ void StashWindow::setupMenu()
 	menuFile->addSeparator();
 	menuFile->addAction(pFileExit);
 	
-    QMenu* menuEdit = new QMenu("&Edit", m_pMenuBar);
-    menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
+	QMenu* menuEdit = new QMenu("&Edit", m_pMenuBar);
+	menuEdit->setObjectName(QString::fromUtf8("menuEdit"));
 	
 	QMenu* menuView = new QMenu("&View", m_pMenuBar);
-    menuView->setObjectName(QString::fromUtf8("menuView"));
+	menuView->setObjectName(QString::fromUtf8("menuView"));
 	
 	m_pViewMenuShowToolbarAction = new QAction(this);
 	m_pViewMenuShowRecentTransactions = new QAction(this);
@@ -314,7 +324,7 @@ void StashWindow::setupMenu()
 	connect(m_pViewMenuShowAllTransactions, SIGNAL(triggered()), this, SLOT(viewShowAllTransactions()));
 	
 	QMenu* menuInsert = new QMenu("&Insert", m_pMenuBar);
-    menuInsert->setObjectName(QString::fromUtf8("menuInsert"));
+	menuInsert->setObjectName(QString::fromUtf8("menuInsert"));
 	
 	QAction* pInsertAccount = new QAction(this);
 	QAction* pInsertGraph = new QAction(this);
@@ -339,14 +349,16 @@ void StashWindow::setupMenu()
 	m_pTransactionMakeTransfer = new QAction(this);
 	
 	m_pTransactionAddNewTransaction->setText(QApplication::translate("StashWindow", "New Transaction", 0));
-    m_pTransactionAddNewTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+N", 0));
+	m_pTransactionAddNewTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+N", 0));
 	m_pTransactionDeleteTransaction->setText(QApplication::translate("StashWindow", "Delete Transaction", 0));
 //	m_pTransactionDeleteTransaction->setShortcut(QApplication::translate("StashWindow", "Del", 0));
 	m_pTransactionSplitTransaction->setText(QApplication::translate("StashWindow", "Split Transaction", 0));
 	m_pTransactionSplitTransaction->setShortcut(QApplication::translate("StashWindow", "Ctrl+L", 0));
 	
 	m_pTransactionMoveUp->setText(QApplication::translate("StashWindow", "Move Up", 0));
+	m_pTransactionMoveUp->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+Up", 0));
 	m_pTransactionMoveDown->setText(QApplication::translate("StashWindow", "Move Down", 0));
+	m_pTransactionMoveDown->setShortcut(QApplication::translate("StashWindow", "Ctrl+Shift+Down", 0));
 	
 	m_pTransactionMakeTransfer->setText(QApplication::translate("StashWindow", "Make Transfer...", 0));
 	m_pTransactionMakeTransfer->setShortcut(QApplication::translate("StashWindow", "Ctrl+T", 0));
@@ -448,6 +460,7 @@ void StashWindow::positionWindow()
 		// On Linux with X11, this doesn't really work that well, and the window walks/drifts
 		// up (and sometimes left) each time, but it's better than nothing for the moment, and at least the size
 		// is roughly maintained...
+		// Note: on Linux the above is the case in Qt 4.8, but seems fixed in later 5.x versions...
 		// TODO: store the size and pos ourselves?
 		restoreGeometry(settings.value("windows/main_window").toByteArray());
 	}
@@ -495,7 +508,7 @@ bool StashWindow::loadDocument(const QString& fileName)
 		// use a timer so that the main window can fully finish drawing for the situation where
 		// the previous document is opened automatically on startup and a scheduled transaction
 		// dialog needs to be shown.
-		m_pDeferredScheduledPopupTimer->start(50);
+		m_pDeferredScheduledPopupTimer->start(80);
 	}
 	
 	return true;
@@ -585,6 +598,66 @@ void StashWindow::saveSettings()
 	
 	settings.setValue("windows/main_window", saveGeometry());
 	settings.setValue("recentFiles", m_recentFiles);
+}
+
+void StashWindow::configureFormatters()
+{
+	if (m_pCurrencyFormatter)
+	{
+		delete m_pCurrencyFormatter;
+		m_pCurrencyFormatter = nullptr;
+	}
+	
+	int displayCurrencySourceTypeValue = m_settings.getInt("global/display_currency_source_type", 0);
+	
+	if (displayCurrencySourceTypeValue == 0)
+	{
+		// based of locale, but use our own formatters for certain things if we have them
+		QLocale locale;
+		QLocale::Country country = locale.country();
+		if (country == QLocale::NewZealand || country == QLocale::Australia)
+		{
+			m_pCurrencyFormatter = new UICurrForm_DollarNegSymbolPrefix();
+		}
+		else if (country == QLocale::UnitedKingdom)
+		{
+			m_pCurrencyFormatter = new UICurrForm_PoundSterling();
+		}
+		else if (country == QLocale::UnitedStates)
+		{
+			m_pCurrencyFormatter = new UICurrForm_DollarNegParenthesis();
+		}
+		else
+		{
+			m_pCurrencyFormatter = new UICurrForm_QLocale();
+		}
+	}
+/*	else if (displayCurrencySourceTypeValue == 1)
+	{
+		// from document, not implemented yet
+	}
+*/	else
+	{
+		// use manual override type
+		int manualOverrideType = m_settings.getInt("global/display_currency_manual_override", 0);
+		if (manualOverrideType == 0)
+		{
+			m_pCurrencyFormatter = new UICurrForm_DollarNegSymbolPrefix();
+		}
+		else if (manualOverrideType == 1)
+		{
+			m_pCurrencyFormatter = new UICurrForm_PoundSterling();
+		}
+		else if (manualOverrideType == 2)
+		{
+			m_pCurrencyFormatter = new UICurrForm_DollarNegParenthesis();
+		}
+		else
+		{
+			m_pCurrencyFormatter = new UICurrForm_QLocale();
+		}
+	}
+
 }
 
 // menu actions
@@ -880,7 +953,12 @@ void StashWindow::toolsSettings()
 	if (window.exec() == QDialog::Accepted)
 	{
 		// refresh stuff that might depend on settings.
+		configureFormatters();
+		
+		m_pIndexView->rebuildFromDocument();
+		
 		m_pTransactionsViewWidget->rebuildFromAccount();
+		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
 	}
 }
 
@@ -1028,8 +1106,6 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 	
 	Date today;
 	
-	QLocale locale;
-	
 	unsigned int schedTransIndex = 0;
 	std::vector<ScheduledTransaction>::const_iterator it = m_documentController.getDocument().SchedTransBegin();
 	for (; it != m_documentController.getDocument().SchedTransEnd(); ++it, schedTransIndex++)
@@ -1046,7 +1122,7 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 				DueSchedTransactions::DueSchedTrans newTrans(schedTransIndex, it->getPayee(), it->getDescription());
 				
 				// TODO: again, replace this with something better...
-				newTrans.amount = locale.toCurrencyString(it->getAmount().ToDouble()).toStdString();
+				newTrans.amount = m_pCurrencyFormatter->formatCurrencyAmount(it->getAmount());
 				newTrans.date = it->getNextDate().FormattedDate(Date::UK);
 				
 				const Account& account = m_documentController.getDocument().getAccount(accountIndex);

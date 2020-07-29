@@ -27,14 +27,17 @@
 #include <QPixmap>
 
 #include "../../core/account.h"
-#include "../../core/currency_value_formatter.h"
+
+#include "stash_window.h"
+#include "ui_currency_formatter.h"
 
 #include "settings_state.h"
 
 static const int kRemainderSplitTransactionIndex = -2;
 
-TransactionsViewDataModel::TransactionsViewDataModel(const SettingsState& settingsState, QObject* parent) : QAbstractItemModel(parent), 
+TransactionsViewDataModel::TransactionsViewDataModel(const SettingsState& settingsState, QWidget* parent, StashWindow* stashWindow) : QAbstractItemModel(parent), 
 	m_settingsState(settingsState),
+	m_pStashWindow(stashWindow),
 	m_pAccount(nullptr),
 	m_pRootItem(nullptr),
 	m_transactionsViewType(eTransViewShowRecent),
@@ -283,8 +286,6 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		return;
 	}
 	
-	QLocale locale;
-	
 	beginResetModel();
 	if (m_pRootItem)
 		delete m_pRootItem;
@@ -334,7 +335,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		it = itTemp;
 	}
 	
-	CurrencyValueFormatter formatter(CurrencyValueFormatter::ePresetNZ);
+	UICurrencyFormatter* pCurrencyFormatter = m_pStashWindow->getCurrencyFormatter();
 	
 	bool negativeAmountValuesRed = m_settingsState.getBool("transactions/colour_negative_amount_values_red", false);
 	bool negativeBalanceValuesRed = m_settingsState.getBool("transactions/colour_negative_balance_values_red", true);
@@ -342,14 +343,13 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 	for (; it != itEnd; ++it)
 	{
 		const Transaction& transaction = *it;
-		const double transactionAmount = transaction.getAmount().ToDouble();
+		const fixed& transactionAmount = transaction.getAmount();
 		
 		TransactionsModelItem* pNewItem = new TransactionsModelItem(m_pRootItem);
 		
 		pNewItem->extractDetails(transaction, transactionIndex);
 		
-		// TODO: we should really be doing this for all strings that could be unicode...
-		QString unicodeAmountString = QString::fromUtf8(formatter.formatValue(transactionAmount));
+		QString unicodeAmountString = pCurrencyFormatter->formatCurrencyAmount(transactionAmount);
 		pNewItem->setAmount(unicodeAmountString);
 		
 		if (negativeAmountValuesRed && !transaction.getAmount().IsPositive())
@@ -361,8 +361,8 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		{
 			balance += transactionAmount;
 		}
-		// TODO: we should really be doing this for all strings that could be unicode...
-		QString unicodeBalanceString = QString::fromUtf8(formatter.formatValue(balance.ToDouble()));
+
+		QString unicodeBalanceString = pCurrencyFormatter->formatCurrencyAmount(balance);
 		pNewItem->setBalance(unicodeBalanceString);
 		
 		if (negativeBalanceValuesRed && !balance.IsPositive())

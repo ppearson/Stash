@@ -28,13 +28,15 @@
 
 #include "view_common.h"
 
+class StashWindow;
+
 class Document;
 class DocumentIndexModelItem;
 
 class DocumentIndexDataModel : public QAbstractItemModel
 {
 public:
-	DocumentIndexDataModel(const Document& document, QObject* parent = 0);
+	DocumentIndexDataModel(const Document& document, QObject* parent, StashWindow* stashWindow);
 	virtual ~DocumentIndexDataModel();
 	
 	virtual QVariant data(const QModelIndex& index, int role) const;
@@ -55,6 +57,7 @@ public:
 	
 protected:
 	const Document&			m_document;
+	StashWindow*			m_pStashWindow;
 	
 	bool					m_upToDate;
 

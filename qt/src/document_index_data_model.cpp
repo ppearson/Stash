@@ -26,10 +26,14 @@
 
 #include "../../core/account.h"
 #include "../../core/document.h"
-#include "../../core/currency_value_formatter.h"
 
-DocumentIndexDataModel::DocumentIndexDataModel(const Document& document, QObject* parent) : QAbstractItemModel(parent), 
+#include "stash_window.h"
+
+#include "ui_currency_formatter.h"
+
+DocumentIndexDataModel::DocumentIndexDataModel(const Document& document, QObject* parent, StashWindow* stashWindow) : QAbstractItemModel(parent), 
 		m_document(document),
+		m_pStashWindow(stashWindow),
 		m_upToDate(false), m_pRootItem(nullptr)
 {
 	
@@ -150,20 +154,16 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 
 	DocumentIndexModelItem* pAccounts = new DocumentIndexModelItem(QString("Accounts"), m_pRootItem, eDocIndex_Heading);
 	m_pRootItem->addChild(pAccounts);
-		
-	CurrencyValueFormatter formatter(CurrencyValueFormatter::ePresetNZ);
-	
+			
 	const std::vector<Account>& aAccounts = m_document.getAccounts();
 	for (const Account& account : aAccounts)
 	{
 		DocumentIndexModelItem* pAccN = new DocumentIndexModelItem(QString(account.getName().c_str()), pAccounts, eDocIndex_Account);
 		
 		fixed balance = account.getBalance(true, -1);
-		double dBalance = balance.ToDouble();
 		
-		// we need to handle this specifically this way, so that symbols like '£' work correctly.
-		// TODO: which means that likely unicode names and things aren't working either, but...
-		QString unicodeBalanceString = QString::fromUtf8(formatter.formatValue(dBalance));
+		UICurrencyFormatter* pCurrencyFormatter = m_pStashWindow->getCurrencyFormatter();
+		QString unicodeBalanceString = pCurrencyFormatter->formatCurrencyAmount(balance);
 		pAccN->setSecondaryData(unicodeBalanceString);
 
 		pAccounts->addChild(pAccN);

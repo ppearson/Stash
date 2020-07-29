@@ -49,7 +49,7 @@ struct DueSchedTransactions
 		unsigned int		originalIndex = 0;
 		std::string			payee;
 		std::string			description;
-		std::string			amount;
+		QString				amount;
 		std::string			date;
 		std::string			account;
 	};

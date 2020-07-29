@@ -56,11 +56,9 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_transactionIndex(-1),
 	m_splitTransactionIndex(-1)
 {
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout* layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-
-	setLayout(layout);
 	
 	//
 	
@@ -75,7 +73,7 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_pTreeView->setSelectionMode(QAbstractItemView::SingleSelection);
 	m_pTreeView->setAttribute(Qt::WA_MacShowFocusRect, false); // hide the OS X blue focus rect
 
-	m_pModel = new TransactionsViewDataModel(mainWindow->getSettingsState(), this);
+	m_pModel = new TransactionsViewDataModel(mainWindow->getSettingsState(), this, mainWindow);
 
 	m_pTreeView->setModel(m_pModel);
 	

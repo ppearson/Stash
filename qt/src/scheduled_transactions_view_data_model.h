@@ -74,7 +74,7 @@ public:
 	ScheduledTransactionsModelItem(ScheduledTransactionsModelItem* parent = nullptr);
 	~ScheduledTransactionsModelItem();
 	
-	void extractDetails(const Document& document, const ScheduledTransaction& schedTransaction, unsigned int scheduledTransactionIndex);
+	friend class ScheduledTransactionsViewDataModel;
 	
 	ScheduledTransactionsModelItem* child(int number) const;
 	int childCount() const;

@@ -30,7 +30,8 @@ class fixed;
 // Would have preferred not to have to bother with this type of stuff, but Qt's QLocale
 // currency formatting is apparently pretty poor, so we have to do it ourselves in order
 // to get negative symbols in the right place (*before* the currency symbol for NZ/UK,
-// Qt puts it *after*), and to get thousands grouping which QLocale does not seem to do...
+// Qt puts it *after*), and to get thousands grouping which QLocale does not seem to do
+// (at least in Qt 4.8 and early 5.x versions: in 5.11 it actually does seem to do grouping)...
 
 class CurrencyValueFormatter
 {
