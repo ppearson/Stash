@@ -69,7 +69,7 @@
 
 - (void)showGraph:(Graph*)graph;
 
-- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers;
+- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(Graph::Type)type ignoreTransfers:(bool)ignoreTransfers;
 
 - (IBAction)redrawGraph:(id)sender;
 - (IBAction)dateBarClicked:(id)sender;

@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -27,60 +27,64 @@
 
 #include "datetime.h"
 
-enum GraphType
-{
-	ExpenseCategories,
-	ExpensePayees,
-	DepositCategories,
-	DepositPayees
-};
-
-enum GraphDateType
-{
-	DateWeek,
-	DateMonth,
-	DateYear,
-	DateCustom
-};
-
-enum GraphItemsType
-{
-	AllItems,
-	AllItemsExceptSpecified,
-	OnlySpecified
-};
-
-enum GraphViewType
-{
-	Total,
-	OverTime,
-	Overview
-};
+// Note: A better name for this class would maybe have been "Chart", but it's not
+//       really worth changing it now...
 
 class Graph
 {
 public:
 	Graph();
 	
-	void setName(std::string name) { m_name = name; }
+	enum Type
+	{
+		ExpenseCategories,
+		ExpensePayees,
+		DepositCategories,
+		DepositPayees
+	};
+	
+	enum DateType
+	{
+		DateWeek,
+		DateMonth,
+		DateYear,
+		DateCustom
+	};
+	
+	enum ItemsType
+	{
+		AllItems,
+		AllItemsExceptSpecified,
+		OnlySpecified
+	};
+	
+	// This is basically the chart type that's currently being displayed
+	enum ViewType
+	{
+		Total,
+		OverTime,
+		Overview
+	};
+	
+	void setName(const std::string& name) { m_name = name; }
 	void setAccount(int account) { m_account = account; }
-	void setViewType(GraphViewType type) { m_viewType = type; }
+	void setViewType(ViewType type) { m_viewType = type; }
 	void setStartDate(Date startDate) { m_startDate = startDate; }
 	void setEndDate(Date endDate) { m_endDate = endDate; }
-	void setType(GraphType type) { m_type = type; }
+	void setType(Type type) { m_type = type; }
 	void setIgnoreTransfers(bool igTransfers) { m_ignoreTransfers = igTransfers; }
-	void setDateType(GraphDateType type) { m_dateType = type; }
-	void setItemsType(GraphItemsType type) { m_itemsType = type; }
+	void setDateType(DateType type) { m_dateType = type; }
+	void setItemsType(ItemsType type) { m_itemsType = type; }
 	
 	const std::string&		getName() const { return m_name; }
 	int					getAccount() const { return m_account; }
-	GraphViewType		getViewType() const { return m_viewType; }
+	ViewType		getViewType() const { return m_viewType; }
 	const Date&			getStartDate() const { return m_startDate; }
 	const Date&			getEndDate() const { return m_endDate; }
-	GraphType		getType() const { return m_type; }
+	Type		getType() const { return m_type; }
 	bool			getIgnoreTransfers() const { return m_ignoreTransfers; }
-	GraphDateType	getDateType() const { return m_dateType; }
-	GraphItemsType	getItemsType() const { return m_itemsType; }
+	DateType	getDateType() const { return m_dateType; }
+	ItemsType	getItemsType() const { return m_itemsType; }
 	
 	std::set<std::string> &getItems() { return m_items; }
 	
@@ -90,13 +94,13 @@ public:
 protected:
 	std::string		m_name;
 	int				m_account;
-	GraphViewType	m_viewType;
+	ViewType		m_viewType;
 	Date			m_startDate;
 	Date			m_endDate;
-	GraphType		m_type;
+	Type			m_type;
 	bool			m_ignoreTransfers;
-	GraphDateType	m_dateType;
-	GraphItemsType	m_itemsType;
+	DateType		m_dateType;
+	ItemsType		m_itemsType;
 	std::set<std::string> m_items;
 };
 

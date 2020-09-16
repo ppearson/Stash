@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -24,7 +24,9 @@
 #include <set>
 #include <algorithm>
 #include <iostream>
+
 #include "analysis.h"
+
 #include "transaction.h"
 
 PieChartItem::PieChartItem(std::string title, double angle, fixed amount) : m_title(title), m_angle(angle), m_amount(amount)
@@ -381,7 +383,7 @@ void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &
 	
 	// sort the values
 	
-	if (criteria.m_eSort == PieChartSortTitle)
+	if (criteria.m_eSort == PieChartCriteria::PieChartSortTitle)
 	{
 		std::sort(criteria.m_aValues.begin(), criteria.m_aValues.end(), PieChartItem::PieChartSortTitle);
 	}
@@ -549,21 +551,21 @@ void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > 
 	}
 }
 
-bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, std::string &item)
+bool shouldItemBeIncluded(Graph::ItemsType eType, std::set<std::string> &aItems, std::string &item)
 {
-	if (eType == AllItems)
+	if (eType == Graph::AllItems)
 		return true;
 	
 	std::set<std::string>::iterator it = aItems.find(item);
 	
-	if (eType == AllItemsExceptSpecified)
+	if (eType == Graph::AllItemsExceptSpecified)
 	{
 		if (it == aItems.end())
 		{
 			return true;
 		}
 	}
-	else if (eType == OnlySpecified)
+	else if (eType == Graph::OnlySpecified)
 	{
 		if (it != aItems.end())
 		{

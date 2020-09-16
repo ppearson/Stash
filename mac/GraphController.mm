@@ -149,7 +149,7 @@ static GraphController *gSharedInterface = nil;
 	NSDate *nsEndDate = convertToNSDate(const_cast<Date&>(m_pGraph->getEndDate()));
 	[graphEndDateCntrl setDateValue:nsEndDate];
 	
-	GraphType eType = m_pGraph->getType();
+	Graph::Type eType = m_pGraph->getType();
 	
 	[graphType selectItemAtIndex:eType];
 	
@@ -162,7 +162,7 @@ static GraphController *gSharedInterface = nil;
 		[graphIgnoreTransfers setState:NSOffState];
 	}
 	
-	GraphItemsType eItemsType = m_pGraph->getItemsType();
+	Graph::ItemsType eItemsType = m_pGraph->getItemsType();
 	[graphItemTypes selectItemAtIndex:eItemsType];
 	
 	[m_aGraphItems removeAllObjects];
@@ -180,19 +180,19 @@ static GraphController *gSharedInterface = nil;
 	
 	[graphItemsTableView reloadData];
 	
-	GraphDateType eDateType = m_pGraph->getDateType();
+	Graph::DateType eDateType = m_pGraph->getDateType();
 	
 	int nDatePeriodSegment = 0;
 	
 	switch (eDateType)
 	{
-		case DateWeek:
+		case Graph::DateWeek:
 			nDatePeriodSegment = 1;
 			break;
-		case DateMonth:
+		case Graph::DateMonth:
 			nDatePeriodSegment = 2;
 			break;
-		case DateYear:
+		case Graph::DateYear:
 			nDatePeriodSegment = 3;
 			break;
 		default:
@@ -214,7 +214,7 @@ static GraphController *gSharedInterface = nil;
 		[viewingPeriodSegmentControl setEnabled:YES forSegment:5];
 	}
 	
-	GraphViewType eViewType = m_pGraph->getViewType();
+	Graph::ViewType eViewType = m_pGraph->getViewType();
 	
 	[graphViewType selectTabViewItemAtIndex:eViewType];
 	
@@ -226,7 +226,7 @@ static GraphController *gSharedInterface = nil;
 	[self buildGraph:nAccount startDate:nsStartDate endDate:nsEndDate type:eType ignoreTransfers:m_pGraph->getIgnoreTransfers()];
 }
 
-- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(GraphType)type ignoreTransfers:(bool)ignoreTransfers
+- (void)buildGraph:(int)account startDate:(NSDate*)startDate endDate:(NSDate*)endDate type:(Graph::Type)type ignoreTransfers:(bool)ignoreTransfers
 {
 	if (!m_pGraph)
 		return;
@@ -269,14 +269,14 @@ static GraphController *gSharedInterface = nil;
 		pieGroupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
 	}
 	
-	PieChartSort ePieChartSort = static_cast<PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
+	PieChartCriteria::PieChartSort ePieChartSort = static_cast<PieChartCriteria::PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
 	
 	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
 	
 	//
 	
 	int nItemsType = [graphItemTypes indexOfSelectedItem];
-	GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
+	Graph::ItemsType eItemsType = static_cast<Graph::ItemsType>(nItemsType);
 	
 	pieCriteria.m_itemsType = eItemsType;
 	
@@ -289,13 +289,13 @@ static GraphController *gSharedInterface = nil;
 		aItems.insert(strItem);
 	}
 	
-	if (type == ExpenseCategories)
+	if (type == Graph::ExpenseCategories)
 		buildPieChartItems(m_pGraph, pieCriteria, true, true);
-	else if (type == ExpensePayees)
+	else if (type == Graph::ExpensePayees)
 		buildPieChartItems(m_pGraph, pieCriteria, true, false);
-	else if (type == DepositCategories)
+	else if (type == Graph::DepositCategories)
 		buildPieChartItems(m_pGraph, pieCriteria, false, true);
-	else if (type == DepositPayees)
+	else if (type == Graph::DepositPayees)
 		buildPieChartItems(m_pGraph, pieCriteria, false, false);
 	
 	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
@@ -365,13 +365,13 @@ static GraphController *gSharedInterface = nil;
 	
 	areaCriteria.m_aItems = pieCriteria.m_aItems;
 	
-	if (type == ExpenseCategories)
+	if (type == Graph::ExpenseCategories)
 		buildAreaChartItems(m_pGraph, areaCriteria, true, true);
-	else if (type == ExpensePayees)
+	else if (type == Graph::ExpensePayees)
 		buildAreaChartItems(m_pGraph, areaCriteria, true, false);
-	else if (type == DepositCategories)
+	else if (type == Graph::DepositCategories)
 		buildAreaChartItems(m_pGraph, areaCriteria, false, true);
-	else if (type == DepositPayees)
+	else if (type == Graph::DepositPayees)
 		buildAreaChartItems(m_pGraph, areaCriteria, false, false);
 	
 	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
@@ -498,7 +498,7 @@ static GraphController *gSharedInterface = nil;
 	NSDate *nsEndDate = [graphEndDateCntrl dateValue];
 	
 	int nType = [graphType indexOfSelectedItem];
-	GraphType eType = static_cast<GraphType>(nType);
+	Graph::Type eType = static_cast<Graph::Type>(nType);
 	
 	[self buildGraph:nAccount startDate:nsStartDate endDate:nsEndDate type:eType ignoreTransfers:bIgnoreTransfers];
 }
@@ -532,10 +532,10 @@ static GraphController *gSharedInterface = nil;
 	if ([m_aGraphItems count] == 0)
 	{
 		int nItemsType = [graphItemTypes indexOfSelectedItem];
-		GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
+		Graph::ItemsType eItemsType = static_cast<Graph::ItemsType>(nItemsType);
 		
-		if (eItemsType == AllItems)
-			eItemsType = AllItemsExceptSpecified;
+		if (eItemsType == Graph::AllItems)
+			eItemsType = Graph::AllItemsExceptSpecified;
 		
 		[graphItemTypes selectItemAtIndex:eItemsType];
 	}
@@ -678,7 +678,7 @@ static GraphController *gSharedInterface = nil;
 	Date endDate(nEndDay, nEndMonth, nEndYear);
 	
 	int nType = [graphType indexOfSelectedItem];
-	GraphType eType = static_cast<GraphType>(nType);
+	Graph::Type eType = static_cast<Graph::Type>(nType);
 	
 	bool bIgnoreTransfers = false;
 	
@@ -687,29 +687,29 @@ static GraphController *gSharedInterface = nil;
 	
 	int nDatePeriodSegment = [viewingPeriodSegmentControl selectedSegment];
 	
-	GraphDateType eDateType;
+	Graph::DateType eDateType;
 	
 	switch (nDatePeriodSegment)
 	{
 		case 1:
-			eDateType = DateWeek;
+			eDateType = Graph::DateWeek;
 			break;
 		case 2:
-			eDateType = DateMonth;
+			eDateType = Graph::DateMonth;
 			break;
 		case 3:
-			eDateType = DateYear;
+			eDateType = Graph::DateYear;
 			break;
 		default:
-			eDateType = DateCustom;
+			eDateType = Graph::DateCustom;
 			break;
 	}
 	
 	int nGraphViewType = [graphViewType indexOfTabViewItem:[graphViewType selectedTabViewItem]];
-	GraphViewType eViewType = static_cast<GraphViewType>(nGraphViewType);
+	Graph::ViewType eViewType = static_cast<Graph::ViewType>(nGraphViewType);
 	
 	int nItemsType = [graphItemTypes indexOfSelectedItem];
-	GraphItemsType eItemsType = static_cast<GraphItemsType>(nItemsType);
+	Graph::ItemsType eItemsType = static_cast<Graph::ItemsType>(nItemsType);
 	
 	m_pGraph->setAccount(nAccount);
 	m_pGraph->setViewType(eViewType);

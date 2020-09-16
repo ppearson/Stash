@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -27,12 +27,6 @@
 #include "graph.h"
 #include "fixed.h"
 #include "account.h"
-
-enum PieChartSort
-{
-	PieChartSortAngle,
-	PieChartSortTitle
-};
 
 class PieChartItem
 {
@@ -109,6 +103,12 @@ struct OverviewChartItem
 
 struct PieChartCriteria
 {
+	enum PieChartSort
+	{
+		PieChartSortAngle,
+		PieChartSortTitle
+	};
+	
 	PieChartCriteria(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
 					 bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort) :
 		m_pAccount(pAccount), m_aValues(aValues), m_startDate(startDate), m_endDate(endDate), m_overallTotal(overallTotal), m_ignoreTransfers(ignoreTransfers),
@@ -125,7 +125,7 @@ struct PieChartCriteria
 	int m_groupSmaller;
 	std::string &m_groupSmallerName;
 	PieChartSort m_eSort;
-	GraphItemsType m_itemsType;
+	Graph::ItemsType m_itemsType;
 	std::set<std::string> m_aItems;
 };
 
@@ -151,7 +151,7 @@ struct AreaChartCriteria
 	bool m_ignoreTransfers;
 	int m_groupSmaller;
 	std::string &m_groupSmallerName;
-	GraphItemsType m_itemsType;
+	Graph::ItemsType m_itemsType;
 	std::set<std::string> m_aItems;
 };
 
@@ -174,6 +174,6 @@ bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expens
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
 
-bool shouldItemBeIncluded(GraphItemsType eType, std::set<std::string> &aItems, std::string &item);
+bool shouldItemBeIncluded(Graph::ItemsType eType, std::set<std::string> &aItems, std::string &item);
 
 bool buildOverviewChartItems(OverviewChartCriteria &criteria, std::vector<OverviewChartItem> &aItems);
