@@ -109,68 +109,68 @@ struct PieChartCriteria
 		PieChartSortTitle
 	};
 	
-	PieChartCriteria(Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
+	PieChartCriteria(const Account *pAccount, std::vector<PieChartItem> &aValues, Date &startDate, Date &endDate, fixed &overallTotal,
 					 bool ignoreTransfers, int groupSmaller, std::string &groupSmallerName, PieChartSort eSort) :
 		m_pAccount(pAccount), m_aValues(aValues), m_startDate(startDate), m_endDate(endDate), m_overallTotal(overallTotal), m_ignoreTransfers(ignoreTransfers),
 		m_groupSmaller(groupSmaller), m_groupSmallerName(groupSmallerName), m_eSort(eSort)
 	{
 	}
 	
-	Account *m_pAccount;
-	std::vector<PieChartItem> &m_aValues;
-	Date &m_startDate;
-	Date &m_endDate;
-	fixed &m_overallTotal;
-	bool m_ignoreTransfers;
-	int m_groupSmaller;
-	std::string &m_groupSmallerName;
-	PieChartSort m_eSort;
-	Graph::ItemsType m_itemsType;
-	std::set<std::string> m_aItems;
+	const Account*				m_pAccount;
+	std::vector<PieChartItem>&	m_aValues;
+	Date&						m_startDate;
+	Date&						m_endDate;
+	fixed&						m_overallTotal;
+	bool 						m_ignoreTransfers;
+	int 						m_groupSmaller;
+	std::string&				m_groupSmallerName;
+	PieChartSort 				m_eSort;
+	Graph::ItemsType 			m_itemsType;
+	std::set<std::string> 		m_aItems;
 };
 
-bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense, bool categories);
+bool buildPieChartItems(PieChartCriteria& criteria, bool expense, bool categories);
 
 void copyPieItemsToVector(std::map<std::string, fixed> &aMap, PieChartCriteria &criteria);
 
 struct AreaChartCriteria
 {
-	AreaChartCriteria(Account *pAccount, std::vector<AreaChartItem> &aValues, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers,
+	AreaChartCriteria(const Account* pAccount, std::vector<AreaChartItem> &aValues, std::vector<MonthYear> &aDates, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers,
 					int groupSmaller, std::string &groupSmallerName) :
 		m_pAccount(pAccount), m_aValues(aValues), m_aDates(aDates), m_startDate(startDate), m_endDate(endDate), m_overallMax(overallMax), m_ignoreTransfers(ignoreTransfers),
 		m_groupSmaller(groupSmaller), m_groupSmallerName(groupSmallerName)
 	{
 	}
 	
-	Account *m_pAccount;
-	std::vector<AreaChartItem> &m_aValues;
-	std::vector<MonthYear> &m_aDates;
-	Date &m_startDate;
-	Date &m_endDate;
-	fixed &m_overallMax;
-	bool m_ignoreTransfers;
-	int m_groupSmaller;
-	std::string &m_groupSmallerName;
-	Graph::ItemsType m_itemsType;
-	std::set<std::string> m_aItems;
+	const Account*				m_pAccount;
+	std::vector<AreaChartItem>&	m_aValues;
+	std::vector<MonthYear>&		m_aDates;
+	Date&						m_startDate;
+	Date&						m_endDate;
+	fixed&						m_overallMax;
+	bool 						m_ignoreTransfers;
+	int 						m_groupSmaller;
+	std::string&				m_groupSmallerName;
+	Graph::ItemsType 			m_itemsType;
+	std::set<std::string> 		m_aItems;
 };
 
 struct OverviewChartCriteria
 {
-	OverviewChartCriteria(Account *pAccount, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
+	OverviewChartCriteria(const Account* pAccount, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
 		m_pAccount(pAccount), m_startDate(startDate), m_endDate(endDate), m_ignoreTransfers(ignoreTransfers), m_overallMax(overallMax)
 	{
 	}
 	
-	Account *m_pAccount;
-	Date &m_startDate;
-	Date &m_endDate;
-	bool m_ignoreTransfers;
-	fixed &m_overallMax;
+	const Account*			m_pAccount;
+	Date&					m_startDate;
+	Date&					m_endDate;
+	bool 					m_ignoreTransfers;
+	fixed&					m_overallMax;
 };
 	
 
-bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories);
+bool buildAreaChartItems(AreaChartCriteria& criteria, bool expense, bool categories);
 
 void copyAreaItemsToVector(std::map<std::string, std::map< MonthYear, fixed > > &aMap, std::map<MonthYear, fixed> &aDateTotals, AreaChartCriteria &criteria);
 

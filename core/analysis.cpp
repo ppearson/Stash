@@ -90,7 +90,7 @@ void AreaChartItem::combineItem(AreaChartItem &item)
 	}
 }
 
-bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense, bool categories)
+bool buildPieChartItems(PieChartCriteria &criteria, bool expense, bool categories)
 {
 	if (!criteria.m_pAccount)
 		return false;
@@ -189,7 +189,7 @@ bool buildPieChartItems(Graph *pGraph, PieChartCriteria &criteria, bool expense,
 	return true;
 }
 
-bool buildAreaChartItems(Graph *pGraph, AreaChartCriteria &criteria, bool expense, bool categories)
+bool buildAreaChartItems(AreaChartCriteria &criteria, bool expense, bool categories)
 {
 	// make temporary cache of all items on a month/day basis
 	std::map<MonthYear, fixed> aDateMap;

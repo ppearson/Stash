@@ -290,13 +290,13 @@ static GraphController *gSharedInterface = nil;
 	}
 	
 	if (type == Graph::ExpenseCategories)
-		buildPieChartItems(m_pGraph, pieCriteria, true, true);
+		buildPieChartItems(pieCriteria, true, true);
 	else if (type == Graph::ExpensePayees)
-		buildPieChartItems(m_pGraph, pieCriteria, true, false);
+		buildPieChartItems(pieCriteria, true, false);
 	else if (type == Graph::DepositCategories)
-		buildPieChartItems(m_pGraph, pieCriteria, false, true);
+		buildPieChartItems(pieCriteria, false, true);
 	else if (type == Graph::DepositPayees)
-		buildPieChartItems(m_pGraph, pieCriteria, false, false);
+		buildPieChartItems(pieCriteria, false, false);
 	
 	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
@@ -366,13 +366,13 @@ static GraphController *gSharedInterface = nil;
 	areaCriteria.m_aItems = pieCriteria.m_aItems;
 	
 	if (type == Graph::ExpenseCategories)
-		buildAreaChartItems(m_pGraph, areaCriteria, true, true);
+		buildAreaChartItems(areaCriteria, true, true);
 	else if (type == Graph::ExpensePayees)
-		buildAreaChartItems(m_pGraph, areaCriteria, true, false);
+		buildAreaChartItems(areaCriteria, true, false);
 	else if (type == Graph::DepositCategories)
-		buildAreaChartItems(m_pGraph, areaCriteria, false, true);
+		buildAreaChartItems(areaCriteria, false, true);
 	else if (type == Graph::DepositPayees)
-		buildAreaChartItems(m_pGraph, areaCriteria, false, false);
+		buildAreaChartItems(areaCriteria, false, false);
 	
 	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
 	
