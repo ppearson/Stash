@@ -38,7 +38,8 @@ public:
 		eTransaction,
 		ePayee,
 		eCategory,
-		eScheduledTransaction
+		eScheduledTransaction,
+		eGraph
 	};
 	
 	enum EnabledButtonFlags

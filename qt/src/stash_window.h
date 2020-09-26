@@ -43,6 +43,7 @@ class TransactionsViewWidget;
 class PayeesViewWidget;
 class CategoriesViewWidget;
 class ScheduledTransactionsViewWidget;
+class GraphsViewWidget;
 
 class UICurrencyFormatter;
 
@@ -188,6 +189,7 @@ protected:
 	PayeesViewWidget*					m_pPayeesViewWidget;
 	CategoriesViewWidget*				m_pCategoriesViewWidget;
 	ScheduledTransactionsViewWidget*	m_pScheduledTransactionsViewWidget;
+	GraphsViewWidget*					m_pGraphsViewWidget;
 	
 	QTimer*						m_pDeferredScheduledPopupTimer;
 	

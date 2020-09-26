@@ -183,6 +183,14 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 	
 	DocumentIndexModelItem* pGraphs = new DocumentIndexModelItem(QString("Graphs"), m_pRootItem, eDocIndex_Heading);
 	m_pRootItem->addChild(pGraphs);
+	
+	const std::vector<Graph>& aGraphs = m_document.getGraphs();
+	for (const Graph& graph : aGraphs)
+	{
+		DocumentIndexModelItem* pGraphItem = new DocumentIndexModelItem(QString(graph.getName().c_str()), pGraphs, eDocIndex_Graph);
+	
+		pGraphs->addChild(pGraphItem);
+	}
 
 	m_upToDate = true;
 	endResetModel();

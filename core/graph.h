@@ -86,7 +86,8 @@ public:
 	DateType	getDateType() const { return m_dateType; }
 	ItemsType	getItemsType() const { return m_itemsType; }
 	
-	std::set<std::string> &getItems() { return m_items; }
+	std::set<std::string>& getItems() { return m_items; }
+	const std::set<std::string>& getItems() const { return m_items; }
 	
 	void Load(std::fstream &stream, int version);
 	void Store(std::fstream &stream) const;

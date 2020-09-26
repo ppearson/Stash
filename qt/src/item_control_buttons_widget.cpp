@@ -75,6 +75,13 @@ ItemControlButtonsWidget::ItemControlButtonsWidget(Type type, QWidget* pParent) 
 		layout->addWidget(m_pAddItemButton);
 		layout->addWidget(m_pDeleteItemButton);
 	}
+	else if (m_type == eGraph)
+	{
+		// TODO: we could add the add button, but we'd then have to cope with re-naming items to make it worthwhile...
+		m_pDeleteItemButton = createNewButton(QIcon(":stash/images/delete_new.svg"), "Delete Item");
+	
+		layout->addWidget(m_pDeleteItemButton);
+	}
 	
 	if (m_pAddItemButton)
 	{

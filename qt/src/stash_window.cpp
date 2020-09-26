@@ -50,6 +50,7 @@
 #include "payees_view_widget.h"
 #include "categories_view_widget.h"
 #include "scheduled_transactions_view_widget.h"
+#include "graphs_view_widget.h"
 
 #include "dialogs/account_details_dialog.h"
 #include "dialogs/make_transfer_dialog.h"
@@ -156,6 +157,8 @@ void StashWindow::setupWindow()
 	
 	m_pScheduledTransactionsViewWidget = new ScheduledTransactionsViewWidget(m_documentController.getDocument(), this, this);
 	
+	m_pGraphsViewWidget = new GraphsViewWidget(m_documentController.getDocument(), this, this);
+	
 	m_pDeferredScheduledPopupTimer = new QTimer(this);
 	connect(m_pDeferredScheduledPopupTimer, SIGNAL(timeout()), this, SLOT(deferredScheduledTransactionsTimeout()));
 	
@@ -164,7 +167,7 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->addWidget(m_pPayeesViewWidget);
 	m_pIndexSplitter->addWidget(m_pCategoriesViewWidget);
 	m_pIndexSplitter->addWidget(m_pScheduledTransactionsViewWidget);
-	
+	m_pIndexSplitter->addWidget(m_pGraphsViewWidget);
 	
 	m_pIndexSplitter->setHandleWidth(2);
 	m_pIndexSplitter->setCollapsible(0, false);
@@ -172,9 +175,11 @@ void StashWindow::setupWindow()
 	m_pIndexSplitter->setCollapsible(2, false);
 	m_pIndexSplitter->setCollapsible(3, false);
 	m_pIndexSplitter->setCollapsible(4, false);
+	m_pIndexSplitter->setCollapsible(5, false);
 	
 	QList<int> mainSizes;
 	mainSizes.push_back(150);
+	mainSizes.push_back(500);
 	mainSizes.push_back(500);
 	mainSizes.push_back(500);
 	mainSizes.push_back(500);
@@ -975,6 +980,8 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		m_pPayeesViewWidget->hide();
 		m_pCategoriesViewWidget->hide();
 		m_pScheduledTransactionsViewWidget->hide();
+		m_pGraphsViewWidget->hide();
+		
 		m_pTransactionsViewWidget->show();		
 		
 		// for the moment hard-code, might want option?
@@ -987,6 +994,7 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		
 		m_pPayeesViewWidget->show();
 		m_pCategoriesViewWidget->hide();
+		m_pGraphsViewWidget->hide();
 		m_pPayeesViewWidget->updatePayeesFromDocument();
 	}
 	else if (type == eDocIndex_ManageCategories)
@@ -995,6 +1003,8 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		m_pScheduledTransactionsViewWidget->hide();
 		
 		m_pPayeesViewWidget->hide();
+		m_pGraphsViewWidget->hide();
+		
 		m_pCategoriesViewWidget->show();
 		m_pCategoriesViewWidget->updateCategoriesFromDocument();
 	}
@@ -1003,9 +1013,27 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		m_pTransactionsViewWidget->hide();
 		m_pPayeesViewWidget->hide();
 		m_pCategoriesViewWidget->hide();
+		m_pGraphsViewWidget->hide();
 		m_pScheduledTransactionsViewWidget->show();
 		
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
+	}
+	else if (type == eDocIndex_Graph && index >= 0 && index < m_documentController.getDocument().getGraphCount())
+	{
+		Graph* pGraph = &m_documentController.getDocument().getGraph(index);
+		
+		m_pTransactionsViewWidget->hide();
+		m_pPayeesViewWidget->hide();
+		m_pCategoriesViewWidget->hide();
+		m_pScheduledTransactionsViewWidget->hide();
+		
+		m_pGraphsViewWidget->show();
+		
+		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
+		
+		m_pGraphsViewWidget->setGraph(pGraph);
+		
+		m_pGraphsViewWidget->rebuildFromGraph();
 	}
 }
 
@@ -1093,6 +1121,7 @@ bool StashWindow::shouldDiscardCurrentDocument()
 	}
 	else if (ret == QMessageBox::Cancel)
 	{
+		// TODO: This is clearly wrong, and returning a bool isn't sufficient from here...
 		return false;
 	}
 

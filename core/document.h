@@ -123,6 +123,11 @@ public:
 		return m_aAccounts;
 	}
 	
+	const std::vector<Graph>& getGraphs() const
+	{
+		return m_aGraphs;
+	}
+	
 	inline std::vector<Account>::const_iterator AccountBegin() const { return m_aAccounts.begin(); }
 	inline std::vector<Account>::const_iterator AccountEnd() const { return m_aAccounts.end(); }
 	
