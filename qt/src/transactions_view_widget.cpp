@@ -78,8 +78,8 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_pTreeView->setModel(m_pModel);
 	
 	m_pTreeView->setColumnWidth(0, 70);
-	m_pTreeView->setColumnWidth(1, 120);
-	m_pTreeView->setColumnWidth(2, 150);
+	m_pTreeView->setColumnWidth(1, 100);
+	m_pTreeView->setColumnWidth(2, 200);
 	m_pTreeView->setColumnWidth(3, 170);
 	m_pTreeView->setColumnWidth(4, 520);
 	m_pTreeView->setColumnWidth(5, 120);
@@ -138,7 +138,6 @@ QSize TransactionsViewWidget::sizeHint() const
 {
 	return QSize(600, 300);
 }
-
 
 void TransactionsViewWidget::rebuildFromAccount()
 {

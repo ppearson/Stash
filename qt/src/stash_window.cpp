@@ -933,6 +933,9 @@ void StashWindow::transactionMakeTransfer()
 	Transaction toTransaction(makeTransferDlg.getDescription(), fromAccount.getName(), makeTransferDlg.getCategory(),
 								transferAmount, makeTransferDlg.getDate());
 	
+	fromTransaction.setType(Transaction::Transfer);
+	toTransaction.setType(Transaction::Transfer);
+	
 	if (makeTransferDlg.getMarkTransactionsAsCleared())
 	{
 		fromTransaction.setCleared(true);
