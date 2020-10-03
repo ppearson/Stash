@@ -29,6 +29,11 @@
 #include <QWidget>
 #include <QColor>
 
+#include "../../core/datetime.h"
+#include "../../core/fixed.h"
+
+class StashWindow;
+
 class GraphDrawWidget : public QWidget
 {
 	Q_OBJECT
@@ -41,7 +46,7 @@ public:
 		eGraphOverviewChart
 	};
 	
-	GraphDrawWidget(QWidget* pParent);
+	GraphDrawWidget(StashWindow* pStashWindow, QWidget* pParent);
 	
 	virtual void paintEvent(QPaintEvent* event);
 	
@@ -52,24 +57,45 @@ public:
 		std::string		title;
 		QString			amount;
 	};
+
+	struct AreaChartItemValues
+	{
+		std::string		title;
+		std::vector<double> values;
+	};
 	
 	
 	void setPieChartItems(const std::vector<PieChartItem>& items);
+
+	void setAreaChartItems(const std::vector<AreaChartItemValues>& dataItems, const std::vector<MonthYear>& dates, fixed maxValue);
 	
+
+	virtual void mouseReleaseEvent(QMouseEvent* event);
 	
 	
 protected:
 	void drawPieChart(QPainter& painter, QPaintEvent* event);
+	void drawAreaChart(QPainter& painter, QPaintEvent* event);
 	
 protected:
-	GraphType		m_graphType;
+	StashWindow*				m_pStashWindow;
+
+	GraphType					m_graphType;
 	
 	// pre-generated stuff
 	std::vector<QColor>			m_aPieColours;
-	
+	std::vector<QColor>			m_aAreaColours;
+
+	// data for different chart types.
+	// TODO: might make more sense to have these enclosed in structs that we can then just pass in + copy/store...
 	std::vector<PieChartItem>	m_aPieChartItems;
+
+	std::vector<AreaChartItemValues>	m_aAreaChartDataItems;
+	std::vector<QString>		m_aAreaChartDates;
+	fixed						m_maxValue;
+	std::string					m_longestDate;
 	
-	int				m_selectedItemIndex;
+	int							m_selectedItemIndex;
 };
 
 #endif // GRAPH_DRAW_WIDGET_H

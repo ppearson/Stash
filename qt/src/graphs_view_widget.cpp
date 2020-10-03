@@ -49,9 +49,9 @@ GraphsViewWidget::GraphsViewWidget(Document& document, QWidget* pParent, StashWi
 	
 	connect(m_pGraphFormPanel, SIGNAL(graphParamValuesUpdated()), this, SLOT(graphParamValuesChanged()));
 	
-	m_pGraphTotal = new GraphDrawWidget(this);
-	m_pGraphOverTime = new GraphDrawWidget(this);
-	m_pGraphOverview = new GraphDrawWidget(this);
+	m_pGraphTotal = new GraphDrawWidget(mainWindow, this);
+	m_pGraphOverTime = new GraphDrawWidget(mainWindow, this);
+	m_pGraphOverview = new GraphDrawWidget(mainWindow, this);
 	
 	m_pTabBarContainer = new QTabWidget(this);
 	m_pTabBarContainer->addTab(m_pGraphTotal, "Total");
@@ -81,12 +81,15 @@ void GraphsViewWidget::rebuildFromGraph()
 	m_pGraphFormPanel->setParamsFromGraph(*m_pGraph);
 	
 	buildGraph();
+
+	int viewTypeIndex = m_pGraph->getViewType();
+	m_pTabBarContainer->setCurrentIndex(viewTypeIndex);
 }
 
 void GraphsViewWidget::buildGraph()
 {
 	buildPieChartGraph();
-	
+	buildAreaChartGraph();
 
 	
 }
@@ -107,8 +110,9 @@ void GraphsViewWidget::buildPieChartGraph()
 	fixed overallPieTotal = 0.0;
 	std::vector<PieChartItem> aPieChartValues;
 	
+	// TODO: from Settings...
 	int pieSmallerThanValue = 4;
-	std::string pieGroupSmallerName = "Misc";
+	std::string pieGroupSmallerName = "Other";
 	
 	PieChartCriteria pieCriteria(pAccount, aPieChartValues, tempParamState.startDate, tempParamState.endDate, overallPieTotal,
 								 tempParamState.ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
@@ -138,9 +142,65 @@ void GraphsViewWidget::buildPieChartGraph()
 		pieItems.emplace_back(newItem);
 	}
 	
-	m_pGraphTotal->setPieChartItems(pieItems);
-	
-	
+	m_pGraphTotal->setPieChartItems(pieItems);	
+}
+
+void GraphsViewWidget::buildAreaChartGraph()
+{
+	const Document& document = m_pMainWindow->getDocumentController().getDocument();
+
+	TempGraphParamState tempParamState = m_pGraphFormPanel->getTempGraphParamValues();
+
+	if (tempParamState.accountIndex < 0)
+		return;
+
+	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
+
+	fixed maxOverallValue = 0.0;
+
+	// TODO: from Settings...
+	int areaSmallerThanValue = 2;
+	std::string areaGroupSmallerName = "Other";
+
+	std::vector<AreaChartItem> aValueItems;
+	std::vector<MonthYear> aDates;
+
+	AreaChartCriteria areaCriteria(pAccount, aValueItems, aDates, tempParamState.startDate, tempParamState.endDate, maxOverallValue,
+								 tempParamState.ignoreTransfers, areaSmallerThanValue, areaGroupSmallerName);
+
+	areaCriteria.m_itemsType = (Graph::ItemsType)tempParamState.itemType;
+	areaCriteria.m_aItems = tempParamState.aItems;
+
+	bool expenses = (tempParamState.dataType == TempGraphParamState::eExpenseCategories ||
+					 tempParamState.dataType == TempGraphParamState::eExpensePayees);
+	bool categories = (tempParamState.dataType == TempGraphParamState::eDepositCategories ||
+					   tempParamState.dataType == TempGraphParamState::eExpenseCategories);
+
+	if (!buildAreaChartItems(areaCriteria, expenses, categories))
+		return;
+
+	// TODO: Check both sizes are equal?
+	unsigned int numItems = aValueItems.size();
+
+	std::vector<GraphDrawWidget::AreaChartItemValues> areaItems;
+
+	for (unsigned int i = 0; i < numItems; i++)
+	{
+		 AreaChartItem& sourceAreaItem = aValueItems[i];
+
+		GraphDrawWidget::AreaChartItemValues newItem;
+
+		unsigned int numValues = sourceAreaItem.getNumItems();
+		for (unsigned int j = 0; j < numValues; j++)
+		{
+			fixed thisValue = sourceAreaItem.getItemAmount(j);
+			newItem.values.emplace_back(thisValue.ToDouble());
+		}
+
+		areaItems.emplace_back(newItem);
+	}
+
+	m_pGraphOverTime->setAreaChartItems(areaItems, aDates, maxOverallValue);
 }
 
 void GraphsViewWidget::graphParamValuesChanged()

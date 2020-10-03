@@ -26,6 +26,7 @@
 #include <QWidget>
 
 #include "../../core/graph.h"
+
 class Document;
 
 class QTabWidget;
@@ -58,6 +59,7 @@ public:
 protected:
 	void buildGraph();
 	void buildPieChartGraph();
+	void buildAreaChartGraph();
 	
 	
 protected slots:
