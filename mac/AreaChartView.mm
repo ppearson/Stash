@@ -84,8 +84,8 @@
 		
 		nNumXValues = [itemValues count];
 		
-		if (nNumXValues > 36)
-			nNumXValues = 36;
+		if (nNumXValues > 72)
+			nNumXValues = 72;
 		
 		if (nNumXValues < 2)
 		{
@@ -131,9 +131,9 @@
 	double dXIncrement = plotArea.size.width / (nNumXValues - 1);
 	double dYScale = plotArea.size.height / dCeilMaxValue;
 	
-	double aBaseItems[36];
+	double aBaseItems[72];
 	
-	for (int i = 0; i < 36; i++)
+	for (int i = 0; i < 72; i++)
 		aBaseItems[i] = 0.0;
 	
 	int dateLabelAlternating = 1;

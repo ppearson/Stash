@@ -85,22 +85,27 @@ ItemControlButtonsWidget::ItemControlButtonsWidget(Type type, QWidget* pParent) 
 	
 	if (m_pAddItemButton)
 	{
+		m_pAddItemButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 		connect(m_pAddItemButton, SIGNAL(clicked()), this, SLOT(addClicked()));
 	}
 	if (m_pDeleteItemButton)
 	{
+		m_pDeleteItemButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 		connect(m_pDeleteItemButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
 	}
 	if (m_pSplitItemButton)
 	{
+		m_pSplitItemButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 		connect(m_pSplitItemButton, SIGNAL(clicked()), this, SLOT(splitClicked()));
 	}
 	if (m_pMoveUpItemButton)
 	{
+		m_pMoveUpItemButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 		connect(m_pMoveUpItemButton, SIGNAL(clicked()), this, SLOT(moveUpClicked()));
 	}
 	if (m_pMoveDownItemButton)
 	{
+		m_pMoveDownItemButton->setAttribute(Qt::WA_LayoutUsesWidgetRect);
 		connect(m_pMoveDownItemButton, SIGNAL(clicked()), this, SLOT(moveDownClicked()));
 	}
 	

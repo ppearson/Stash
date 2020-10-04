@@ -42,11 +42,11 @@
 	NSString *sInstitution;
 	NSString *sNumber;
 	NSString *sNote;
-	AccountType eAccountType;
+	Account::Type eAccountType;
 }
 
 - (id)initWnd:(StashAppDelegate *)controller withAccount:(int)account name:(NSString*)name institution:(NSString*)institution
-						number:(NSString*)number note:(NSString*)note type:(AccountType)type;
+	   number:(NSString*)number note:(NSString*)note type:(Account::Type)type;
 
 - (void)save:(id)sender;
 

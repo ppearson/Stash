@@ -25,7 +25,7 @@
 @implementation AccountInfoController
 
 - (id)initWnd:(StashAppDelegate *)controller withAccount:(int)account name:(NSString*)name institution:(NSString*)institution
-	   number:(NSString*)number note:(NSString*)note type:(AccountType)type
+	   number:(NSString*)number note:(NSString*)note type:(Account::Type)type
 {
 	if ((self = [super initWithWindowNibName:@"AccountInfo"]))
 	{
@@ -87,7 +87,7 @@
 	
 	int nSelectedType = [fAccountType indexOfSelectedItem];
 	
-	eAccountType = static_cast<AccountType>(nSelectedType);
+	eAccountType = static_cast<Account::Type>(nSelectedType);
 	
 	[fMainController updateAccountInfo:nAccount name:sAccountName institution:sInstitution number:sNumber
 									note:sNote type:eAccountType];

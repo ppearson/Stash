@@ -28,7 +28,7 @@
 
 Account::Account()
 {
-	m_type = Cash;
+	m_type = eTypeCash;
 }
 
 void Account::Load(std::fstream& stream, int version)

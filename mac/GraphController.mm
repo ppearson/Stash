@@ -254,10 +254,6 @@ static GraphController *gSharedInterface = nil;
 	
 	// Pie Chart Items
 	
-	std::vector<PieChartItem> aPieChartItems;
-	
-	fixed overallTotal = 0.0;
-	
 	int pieSmallerThanValue = -1;
 	std::string pieGroupSmallerName = "";
 	
@@ -271,7 +267,9 @@ static GraphController *gSharedInterface = nil;
 	
 	PieChartCriteria::PieChartSort ePieChartSort = static_cast<PieChartCriteria::PieChartSort>([[NSUserDefaults standardUserDefaults] integerForKey:@"PieChartSortType"]);
 	
-	PieChartCriteria pieCriteria(pAccount, aPieChartItems, mainStartDate, mainEndDate, overallTotal, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
+	PieChartCriteria pieCriteria(pAccount, mainStartDate, mainEndDate, ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
+	
+	PieChartResults pieResults;
 	
 	//
 	
@@ -290,27 +288,27 @@ static GraphController *gSharedInterface = nil;
 	}
 	
 	if (type == Graph::ExpenseCategories)
-		buildPieChartItems(pieCriteria, true, true);
+		buildPieChartItems(pieCriteria, pieResults, true, true);
 	else if (type == Graph::ExpensePayees)
-		buildPieChartItems(pieCriteria, true, false);
+		buildPieChartItems(pieCriteria, pieResults, true, false);
 	else if (type == Graph::DepositCategories)
-		buildPieChartItems(pieCriteria, false, true);
+		buildPieChartItems(pieCriteria, pieResults, false, true);
 	else if (type == Graph::DepositPayees)
-		buildPieChartItems(pieCriteria, false, false);
+		buildPieChartItems(pieCriteria, pieResults, false, false);
 	
 	ValueFormatter* valueFormatter = [ValueFormatter sharedInterface];
 	
 	NSMutableArray *aPieItems = [[NSMutableArray alloc] init];
 	
-	std::vector<PieChartItem>::iterator itPie = aPieChartItems.begin();
+	std::vector<PieChartItem>::const_iterator itPie = pieResults.m_aValues.begin();
 	
 	double startAngle = 0.0;
 	
-	for (; itPie != aPieChartItems.end(); ++itPie)
+	for (; itPie != pieResults.m_aValues.end(); ++itPie)
 	{
 		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 		
-		std::string strTitle = (*itPie).getTitle();
+		const std::string& strTitle = (*itPie).getTitle();
 		fixed amount = (*itPie).getAmount();
 		double angle = (*itPie).getAngle();
 		
@@ -335,18 +333,12 @@ static GraphController *gSharedInterface = nil;
 		[aPieItems addObject:dict];		
 	}
 	
-	NSString *sTotal = [[valueFormatter currencyStringFromFixed:overallTotal] retain];
+	NSString *sTotal = [[valueFormatter currencyStringFromFixed:pieResults.m_overallTotal] retain];
 	
 	[pieChartView setTotal:sTotal];
 	[pieChartView setData:aPieItems];
 	
 	// Area Chart Items
-	
-	std::vector<AreaChartItem> aAreaChartItems;
-	std::vector<MonthYear> aDateItems;
-	
-	fixed overallMax = 0.0;
-	
 	int areaSmallerThanValue = -1;
 	std::string areaGroupSmallerName = "";
 	
@@ -358,27 +350,28 @@ static GraphController *gSharedInterface = nil;
 		areaGroupSmallerName = [sGroupOtherName cStringUsingEncoding:NSUTF8StringEncoding]; 
 	}
 	
-	AreaChartCriteria areaCriteria(pAccount, aAreaChartItems, aDateItems, mainStartDate, mainEndDate, overallMax, ignoreTransfers,
+	AreaChartCriteria areaCriteria(pAccount, mainStartDate, mainEndDate, ignoreTransfers,
 								   areaSmallerThanValue, areaGroupSmallerName);
 	
 	areaCriteria.m_itemsType = eItemsType;
-	
 	areaCriteria.m_aItems = pieCriteria.m_aItems;
 	
+	AreaChartResults areaResults;
+	
 	if (type == Graph::ExpenseCategories)
-		buildAreaChartItems(areaCriteria, true, true);
+		buildAreaChartItems(areaCriteria, areaResults, true, true);
 	else if (type == Graph::ExpensePayees)
-		buildAreaChartItems(areaCriteria, true, false);
+		buildAreaChartItems(areaCriteria, areaResults, true, false);
 	else if (type == Graph::DepositCategories)
-		buildAreaChartItems(areaCriteria, false, true);
+		buildAreaChartItems(areaCriteria, areaResults, false, true);
 	else if (type == Graph::DepositPayees)
-		buildAreaChartItems(areaCriteria, false, false);
+		buildAreaChartItems(areaCriteria, areaResults, false, false);
 	
 	NSMutableArray *aAreaItems = [[NSMutableArray alloc] init];
 	
-	std::vector<AreaChartItem>::iterator itArea = aAreaChartItems.begin();
+	std::vector<AreaChartItem>::iterator itArea = areaResults.m_aValues.begin();
 	
-	for (; itArea != aAreaChartItems.end(); ++itArea)
+	for (; itArea != areaResults.m_aValues.end(); ++itArea)
 	{
 		NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 		
@@ -406,7 +399,7 @@ static GraphController *gSharedInterface = nil;
 	
 	NSMutableArray *aDates = [[NSMutableArray alloc] init];
 	
-	std::vector<MonthYear>::iterator itDate = aDateItems.begin();
+	std::vector<MonthYear>::iterator itDate = areaResults.m_aDates.begin();
 	
 	unsigned int nLongestDateLength = 0;
 	unsigned int nLongestDateIndex = -1;
@@ -417,7 +410,7 @@ static GraphController *gSharedInterface = nil;
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"MMM\nyyyy"];
 	
-	for (; itDate != aDateItems.end(); ++itDate, nIndex++)
+	for (; itDate != areaResults.m_aDates.end(); ++itDate, nIndex++)
 	{
 		NSDate *thisDate = convertToNSDate(*itDate);
 		
@@ -436,19 +429,19 @@ static GraphController *gSharedInterface = nil;
 	{
 		[areaChartView setLongestDate:[aDates objectAtIndex:nLongestDateIndex]];
 		[areaChartView setDates:aDates];
-		[areaChartView setMaxValue:overallMax.ToDouble()];
+		[areaChartView setMaxValue:areaResults.m_overallMax.ToDouble()];
 		[areaChartView setData:aAreaItems];
 	}
 	else // redraw anyway, so view displays lack of data message
 	{
 		[areaChartView setDates:aDates];
-		[areaChartView setMaxValue:overallMax.ToDouble()];
+		[areaChartView setMaxValue:areaResults.m_overallMax.ToDouble()];
 		[areaChartView setData:aAreaItems];
 	}
 	
 	// Overview chart
 	
-	overallMax = 0.0;
+	fixed overallMax = 0.0;
 	
 	OverviewChartCriteria overviewCriteria(pAccount, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
 	std::vector<OverviewChartItem> aOverviewChartItems;

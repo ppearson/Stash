@@ -37,6 +37,6 @@ bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFor
 void clearTransaction(Transaction &trans);
 void clearSplitTransaction(SplitTransaction &split);
 
-std::string accountTypeToString(AccountType type);
+std::string accountTypeToString(Account::Type type);
 
 #endif

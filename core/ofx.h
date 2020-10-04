@@ -49,24 +49,24 @@ public:
 	void setBankID(std::string id) { m_bankID = id; }
 	void setAccountID(std::string id) { m_accountID = id; }
 	void setType(std::string type);
-	void setType(AccountType type) { m_type = type; }
+	void setType(Account::Type type) { m_type = type; }
 	
 	std::string		getBankID() const { return m_bankID; }
 	std::string		getAccountID() const { return m_accountID; }
-	AccountType		getType() const { return m_type; }
+	Account::Type	getType() const { return m_type; }
 	
 private:
 	std::string		m_bankID;
 	std::string		m_accountID;
-	AccountType		m_type;
+	Account::Type	m_type;
 };
 
-static AccountType StringToAccountType(const std::string &string)
+static Account::Type StringToAccountType(const std::string &string)
 {
 	if (string == "SAVINGS")
-		return Savings;
+		return Account::eTypeSavings;
 	
-	return Checking;	
+	return Account::eTypeChecking;
 }
 
 class OFXStatementTransaction
@@ -83,12 +83,12 @@ public:
 	void setMemo(std::string &memo) { m_memo = memo; }
 	void setFITID(std::string &FITID) { m_fitid = FITID; }
 	
-	Transaction::Type	getType() { return m_type; }
+	Transaction::Type	getType() const { return m_type; }
 	const Date&			getDate() const { return m_date; }
-	fixed				getAmount() { return m_amount; }
-	std::string			getName() { return m_name; }
-	std::string			getMemo() { return m_memo; }
-	std::string			getFITID() { return m_fitid; }
+	fixed				getAmount() const { return m_amount; }
+	std::string			getName() const { return m_name; }
+	std::string			getMemo() const { return m_memo; }
+	std::string			getFITID() const { return m_fitid; }
 	
 	void writeToSGMLStream(std::fstream &stream);
 	void writeToXMLStream(std::fstream &stream);

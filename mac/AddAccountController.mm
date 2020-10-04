@@ -83,7 +83,7 @@
 	
 	int nSelectedType = [fAccountType indexOfSelectedItem];
 	
-	eAccountType = static_cast<AccountType>(nSelectedType);
+	eAccountType = static_cast<Account::Type>(nSelectedType);
 	
 	[self confirmAdd];
 }
@@ -118,7 +118,7 @@
 	return sNote;
 }
 
-- (AccountType)accountType
+- (Account::Type)accountType
 {
 	return eAccountType;
 }

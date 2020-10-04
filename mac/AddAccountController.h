@@ -43,7 +43,7 @@
 	NSString *sInstitution;
 	NSString *sNumber;
 	NSString *sNote;
-	AccountType eAccountType;
+	Account::Type eAccountType;
 }
 
 - (id)initWnd:(StashAppDelegate *)controller;
@@ -56,6 +56,6 @@
 - (NSString *)institution;
 - (NSString *)number;
 - (NSString *)note;
-- (AccountType)accountType;
+- (Account::Type)accountType;
 
 @end

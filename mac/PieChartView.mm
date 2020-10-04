@@ -104,8 +104,6 @@
 		
 		BOOL bSelected = [[item valueForKey:@"selected"] boolValue];
 		
-		double dMidPointAngle = ((dEndAngle - dStartAngle) / 2.0) + dStartAngle;
-		
 		double dRadius = m_dMainRadius;
 		
 		if (bPushoutSelected && bSelected)

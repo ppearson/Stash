@@ -107,14 +107,11 @@ void GraphsViewWidget::buildPieChartGraph()
 	
 	PieChartCriteria::PieChartSort ePieChartSort = PieChartCriteria::PieChartSortAngle;
 	
-	fixed overallPieTotal = 0.0;
-	std::vector<PieChartItem> aPieChartValues;
-	
 	// TODO: from Settings...
 	int pieSmallerThanValue = 4;
 	std::string pieGroupSmallerName = "Other";
 	
-	PieChartCriteria pieCriteria(pAccount, aPieChartValues, tempParamState.startDate, tempParamState.endDate, overallPieTotal,
+	PieChartCriteria pieCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
 	
 	pieCriteria.m_itemsType = (Graph::ItemsType)tempParamState.itemType;
@@ -124,14 +121,16 @@ void GraphsViewWidget::buildPieChartGraph()
 					 tempParamState.dataType == TempGraphParamState::eExpensePayees);
 	bool categories = (tempParamState.dataType == TempGraphParamState::eDepositCategories ||
 					   tempParamState.dataType == TempGraphParamState::eExpenseCategories);
+
+	PieChartResults pieResults;
 	
-	if (!buildPieChartItems(pieCriteria, expenses, categories))
+	if (!buildPieChartItems(pieCriteria, pieResults, expenses, categories))
 		return;
 	
 	UICurrencyFormatter* pCurrencyFormatter = m_pMainWindow->getCurrencyFormatter();
 	
 	std::vector<GraphDrawWidget::PieChartItem> pieItems;
-	for (PieChartItem& itemValues : aPieChartValues)
+	for (const PieChartItem& itemValues : pieResults.m_aValues)
 	{
 		GraphDrawWidget::PieChartItem newItem;
 		newItem.angle = itemValues.getAngle();
@@ -156,16 +155,11 @@ void GraphsViewWidget::buildAreaChartGraph()
 
 	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
 
-	fixed maxOverallValue = 0.0;
-
 	// TODO: from Settings...
 	int areaSmallerThanValue = 2;
 	std::string areaGroupSmallerName = "Other";
 
-	std::vector<AreaChartItem> aValueItems;
-	std::vector<MonthYear> aDates;
-
-	AreaChartCriteria areaCriteria(pAccount, aValueItems, aDates, tempParamState.startDate, tempParamState.endDate, maxOverallValue,
+	AreaChartCriteria areaCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, areaSmallerThanValue, areaGroupSmallerName);
 
 	areaCriteria.m_itemsType = (Graph::ItemsType)tempParamState.itemType;
@@ -176,17 +170,19 @@ void GraphsViewWidget::buildAreaChartGraph()
 	bool categories = (tempParamState.dataType == TempGraphParamState::eDepositCategories ||
 					   tempParamState.dataType == TempGraphParamState::eExpenseCategories);
 
-	if (!buildAreaChartItems(areaCriteria, expenses, categories))
+	AreaChartResults areaResults;
+
+	if (!buildAreaChartItems(areaCriteria, areaResults, expenses, categories))
 		return;
 
 	// TODO: Check both sizes are equal?
-	unsigned int numItems = aValueItems.size();
+	unsigned int numItems = areaResults.m_aValues.size();
 
 	std::vector<GraphDrawWidget::AreaChartItemValues> areaItems;
 
 	for (unsigned int i = 0; i < numItems; i++)
 	{
-		 AreaChartItem& sourceAreaItem = aValueItems[i];
+		const AreaChartItem& sourceAreaItem = areaResults.m_aValues[i];
 
 		GraphDrawWidget::AreaChartItemValues newItem;
 
@@ -200,7 +196,7 @@ void GraphsViewWidget::buildAreaChartGraph()
 		areaItems.emplace_back(newItem);
 	}
 
-	m_pGraphOverTime->setAreaChartItems(areaItems, aDates, maxOverallValue);
+	m_pGraphOverTime->setAreaChartItems(areaItems, areaResults.m_aDates, areaResults.m_overallMax);
 }
 
 void GraphsViewWidget::graphParamValuesChanged()

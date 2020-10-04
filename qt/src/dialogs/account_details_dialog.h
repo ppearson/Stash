@@ -66,7 +66,7 @@ public:
 		return m_accountNote;
 	}
 	
-	AccountType getAccountType() const
+	Account::Type getAccountType() const
 	{
 		return m_accountType;
 	}
@@ -82,7 +82,7 @@ protected:
 	std::string			m_accountInstitution;
 	std::string			m_accountNumber;
 	std::string			m_accountNote;
-	AccountType			m_accountType;
+	Account::Type		m_accountType;
 
 	QDialogButtonBox*	m_pButtonBox;
 	

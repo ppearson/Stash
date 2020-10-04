@@ -746,7 +746,7 @@ toolbarViewGroupTag;
 	NSString *sNumber = [addAccountController number];
 	NSString *sNote = [addAccountController note];
 	
-	AccountType eType = [addAccountController accountType];
+	Account::Type eType = [addAccountController accountType];
 	
 	std::string strName = [sAccountName cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strInstitution = [sInstitution cStringUsingEncoding:NSUTF8StringEncoding];
@@ -826,7 +826,7 @@ toolbarViewGroupTag;
 		NSString *sInstitution = [[NSString alloc] initWithUTF8String:oAccount.getInstitution().c_str()];
 		NSString *sNumber = [[NSString alloc] initWithUTF8String:oAccount.getNumber().c_str()];
 		NSString *sNote = [[NSString alloc] initWithUTF8String:oAccount.getNote().c_str()];
-		AccountType eType = oAccount.getType();		
+		Account::Type eType = oAccount.getType();
 		
 		AccountInfoController *accountInfoController = [[AccountInfoController alloc] initWnd:self withAccount:nAccount name:sName institution:sInstitution number:sNumber
 																					 note:sNote type:eType];
@@ -840,7 +840,7 @@ toolbarViewGroupTag;
 }
 
 - (void)updateAccountInfo:(int)account name:(NSString*)name institution:(NSString*)institution
-				   number:(NSString*)number note:(NSString*)note type:(AccountType)type
+				   number:(NSString*)number note:(NSString*)note type:(Account::Type)type
 {
 	Account &oAccount = m_Document.getAccount(account);
 	
@@ -2024,7 +2024,7 @@ toolbarViewGroupTag;
 			
 			int accountType = [[accountSettings objectForKey:@"newAccType"] intValue];
 			
-			AccountType eType = static_cast<AccountType>(accountType);
+			Account::Type eType = static_cast<Account::Type>(accountType);
 			
 			Account newAccount;
 			newAccount.setName(strAccountName);

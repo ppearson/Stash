@@ -124,7 +124,7 @@
 - (IBAction)AccountInfo:(id)sender;
 
 - (void)updateAccountInfo:(int)account name:(NSString*)name institution:(NSString*)institution
-				   number:(NSString*)number note:(NSString*)note type:(AccountType)type;
+				   number:(NSString*)number note:(NSString*)note type:(Account::Type)type;
 
 - (IBAction)DeleteAccount:(id)sender;
 

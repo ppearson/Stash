@@ -107,7 +107,7 @@ void AccountDetailsDialog::OKClicked()
 	m_accountInstitution = m_pInstitution->text().toStdString();
 	m_accountNumber = m_pNumber->text().toStdString();
 	m_accountNote = m_pNote->text().toStdString();
-	m_accountType = (AccountType)m_pType->currentIndex();
+	m_accountType = (Account::Type)m_pType->currentIndex();
 	
 	accept();
 }

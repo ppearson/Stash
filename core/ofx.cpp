@@ -31,7 +31,7 @@
 OFXBankAccount::OFXBankAccount(std::string bankID, std::string accountID, std::string type) :
 						m_bankID(bankID), m_accountID(accountID)
 {
-	m_type = Checking;
+	m_type = Account::eTypeChecking;
 }
 
 OFXStatementResponse::OFXStatementResponse(const OFXBankAccount &account) : m_account(account)
@@ -580,7 +580,7 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 			{
 				pBankAccount.reset(new OFXBankAccount());
 				
-				pBankAccount->setType(CreditCard);
+				pBankAccount->setType(Account::eTypeCreditCard);
 			}
 			else if (tag == "BANKID")
 			{

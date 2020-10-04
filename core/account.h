@@ -28,22 +28,22 @@
 
 #include "transaction.h"
 
-enum AccountType
-{
-	Cash,
-	Checking,
-	Savings,
-	CreditCard,
-	Investment,
-	Asset,
-	Liability,
-	Other
-};
-
 class Account
 {
 public:
 	Account();
+	
+	enum Type
+	{
+		eTypeCash,
+		eTypeChecking,
+		eTypeSavings,
+		eTypeCreditCard,
+		eTypeInvestment,
+		eTypeAsset,
+		eTypeLiability,
+		eTypeOther
+	};
 	
 	void setName(const std::string& name)
 	{
@@ -65,7 +65,7 @@ public:
 		m_note = note;
 	}
 
-	void setType(AccountType type)
+	void setType(Type type)
 	{
 		m_type = type;
 	}
@@ -74,7 +74,7 @@ public:
 	const std::string& getInstitution() const { return m_institution; }
 	const std::string& getNumber() const { return m_number; }
 	const std::string& getNote() const { return m_note; }
-	AccountType getType() const { return m_type; }
+	Type getType() const { return m_type; }
 	
 	int addTransaction(const Transaction& trans, bool bFITID = false);
 	Transaction& getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
@@ -103,7 +103,7 @@ protected:
 	std::string m_institution;
 	std::string m_number;
 	std::string m_note;
-	AccountType m_type;
+	Type 		m_type;
 	
 	std::vector<Transaction> m_aTransactions;
 	std::set<std::string> m_aFITIDs;

@@ -261,28 +261,28 @@ bool getDateFormatSampleFromQIFFile(std::string path, std::string &sample)
 	return true;	
 }
 
-std::string accountTypeToString(AccountType type)
+std::string accountTypeToString(Account::Type type)
 {
 	std::string QIFType;
 
 	switch (type)
 	{
-		case Cash:
+		case Account::eTypeCash:
 			QIFType = "Cash";
 			break;
-		case CreditCard:
+		case Account::eTypeCreditCard:
 			QIFType = "CCard";
 			break;
-		case Investment:
+		case Account::eTypeInvestment:
 			QIFType = "Invst";
 			break;
-		case Asset:
+		case Account::eTypeAsset:
 			QIFType = "Oth A";
 			break;
-		case Liability:
+		case Account::eTypeLiability:
 			QIFType = "Oth L";
 			break;
-		case Checking:
+		case Account::eTypeChecking:
 		default:
 			QIFType = "Bank";
 			break;
