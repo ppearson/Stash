@@ -27,6 +27,7 @@
 #include <fstream>
 #include <cstring>
 #include <bitset>
+
 #include "transaction.h"
 #include "string.h"
 

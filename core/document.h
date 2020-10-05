@@ -85,7 +85,10 @@ public:
 		return m_aScheduledTransactions[schedTrans];
 	}
 
-	void deleteScheduledTransaction(unsigned int schedTrans) { m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans); }
+	void deleteScheduledTransaction(unsigned int schedTrans)
+	{
+		m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans);
+	}
 	
 	void disabledScheduledTransactionsForAccount(unsigned int nAccount);
 	
