@@ -37,19 +37,23 @@ GraphDrawWidget::GraphDrawWidget(StashWindow* pStashWindow, QWidget* pParent) : 
 	
 	m_aPieColours.emplace_back(Qt::green);
 	m_aPieColours.emplace_back(Qt::red);
+	m_aPieColours.emplace_back(QColor(153, 102, 51));
 	m_aPieColours.emplace_back(Qt::blue);
-	m_aPieColours.emplace_back(QColor(125, 125, 0));
+	m_aPieColours.emplace_back(QColor(255, 127, 0));
 	m_aPieColours.emplace_back(Qt::darkGray);
 	m_aPieColours.emplace_back(Qt::yellow);
 	
 	for (QColor& col : m_aPieColours)
 	{
-		col = col.lighter(150);
-
+		// Area chart colours need to be slightly transparent so we can see the gridlines underneath
 		QColor areaColour = col;
-		areaColour.setAlpha(128);
+		areaColour.setAlpha(127);
 
 		m_aAreaColours.emplace_back(areaColour);
+
+		// Pie chart colours don't have alpha (don't need it, as nothing underneath), so we make the original colours
+		// slightly lighter instead, i.e. more pastel shades
+		col = col.lighter(145);
 	}
 	
 	m_selectedItemIndex = -1;
@@ -216,7 +220,6 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 	QRect mainRadiusRect(QPoint(centrePoint.rx() - mainRadius, centrePoint.ry() - mainRadius),
 						 QPoint(centrePoint.rx() + mainRadius, centrePoint.ry() + mainRadius));
 	
-	
 	// if we don't use float, we get a gap at the end, as we end up missing 9/10 16ths of the circle...
 	// TODO: it's still not a perfect fit with this, so something else must also be going on...
 	float lastAngleSixteenthsF = 0.0f;
@@ -235,7 +238,10 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 		painter.setBrush(QBrush(m_aPieColours[colourIndex++]));
 		if (colourIndex >= m_aPieColours.size())
 		{
-			colourIndex = 0;
+			// don't repeat back to the beginning for the moment, so that we never have matching
+			// first/last colours.
+			// TODO: there's probably a better way of doing this so that we can use the first colour more than once...
+			colourIndex = 1;
 		}
 		
 		painter.drawPie(mainRadiusRect, lastAngleI, thisAngleI);
