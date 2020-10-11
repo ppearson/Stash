@@ -75,22 +75,34 @@ DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent, StashW
 	m_pAccountDelete = new QAction(this);
 	m_pAccountDelete->setText("Delete Account...");
 	
+	m_pGraphDelete = new QAction(this);
+	m_pGraphDelete->setText("Delete Graph...");
+	
 	connect(m_pAccountDetails, SIGNAL(triggered()), this, SLOT(menuAccountDetails()));
 	connect(m_pAccountDelete, SIGNAL(triggered()), this, SLOT(menuAccountDelete()));
+	
+	connect(m_pGraphDelete, SIGNAL(triggered()), this, SLOT(menuGraphDelete()));
 }
 
 DocumentIndexView::~DocumentIndexView()
 {
+	// TODO: are these even needed if we're parenting the QActions?
 	if (m_pAccountDetails)
 	{
 		delete m_pAccountDetails;
 		m_pAccountDetails = nullptr;
 	}
 	
-	if (m_pAccountDetails)
+	if (m_pAccountDelete)
 	{
-		delete m_pAccountDetails;
-		m_pAccountDetails = nullptr;
+		delete m_pAccountDelete;
+		m_pAccountDelete = nullptr;
+	}
+	
+	if (m_pGraphDelete)
+	{
+		delete m_pGraphDelete;
+		m_pGraphDelete = nullptr;
 	}
 }
 
@@ -193,15 +205,22 @@ void DocumentIndexView::selectionChanged(const QItemSelection& selected, const Q
 
 void DocumentIndexView::customContextMenuRequested(const QPoint& pos)
 {
-	if (m_selectedIndexType != eDocIndex_Account)
-		return;
+	if (m_selectedIndexType == eDocIndex_Account)
+	{
+		QMenu menu(this);
 	
-	QMenu menu(this);
-
-	menu.addAction(m_pAccountDetails);
-	menu.addSeparator();
-	menu.addAction(m_pAccountDelete);
-	menu.exec(mapToGlobal(pos));
+		menu.addAction(m_pAccountDetails);
+		menu.addSeparator();
+		menu.addAction(m_pAccountDelete);
+		menu.exec(mapToGlobal(pos));
+	}
+	else if (m_selectedIndexType == eDocIndex_Graph)
+	{
+		QMenu menu(this);
+	
+		menu.addAction(m_pGraphDelete);
+		menu.exec(mapToGlobal(pos));
+	}
 }
 
 void DocumentIndexView::menuAccountDetails()
@@ -234,7 +253,7 @@ void DocumentIndexView::menuAccountDelete()
 	
 	const Account& account = m_document.getAccount(m_selectedIndexSubIndex);
 	
-	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the account called '") + QString(account.getName().c_str()) + "'?.",
+	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the account called '") + QString(account.getName().c_str()) + "'?",
 					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);
 
 	if (ret == QMessageBox::No)
@@ -263,4 +282,25 @@ void DocumentIndexView::menuAccountDelete()
 	}
 	
 	emit documentChangedFromIndex();
+}
+
+void DocumentIndexView::menuGraphDelete()
+{
+	// shouldn't need this, but...
+	if (m_selectedIndexSubIndex == -1 || m_selectedIndexSubIndex >= m_document.getGraphCount())
+		return;
+	
+	const Graph& graph = m_document.getGraph(m_selectedIndexSubIndex);
+	
+	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the graph called '") + QString(graph.getName().c_str()) + "'?",
+					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);
+
+	if (ret == QMessageBox::No)
+		return;
+	
+	// otherwise, delete the account.
+	
+	m_document.deleteGraph((int)m_selectedIndexSubIndex);
+	
+	rebuildFromDocument();
 }

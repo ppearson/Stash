@@ -54,8 +54,6 @@ public:
 	void rebuildFromGraph();
 	
 	
-	
-	
 protected:
 	void buildGraph();
 	void buildPieChartGraph();
@@ -63,8 +61,18 @@ protected:
 	
 	
 protected slots:
+	// param values were changed live, without updating
 	void graphParamValuesChanged();
 	
+	// the update button to commit them to the document was clicked
+	// from the GraphFormPanel...
+	void graphParamValuesUpdated();
+	
+	// which tab view is active - not really happy about this way of doing it, but...
+	void viewIndexChanged();
+	
+	// when a selected chart item is added from the GraphDrawWidget by the right-click menu
+	void selectedItemAdded(QString itemTitle);
 	
 protected:
 	StashWindow*		m_pMainWindow;	

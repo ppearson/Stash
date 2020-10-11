@@ -47,16 +47,22 @@ GraphsViewWidget::GraphsViewWidget(Document& document, QWidget* pParent, StashWi
 	m_pGraphFormPanel = new GraphFormPanel(document, this, this);
 	m_pGraphFormPanel->setMaximumWidth(200);
 	
-	connect(m_pGraphFormPanel, SIGNAL(graphParamValuesUpdated()), this, SLOT(graphParamValuesChanged()));
+	connect(m_pGraphFormPanel, SIGNAL(graphParamValuesChanged()), this, SLOT(graphParamValuesChanged()));
+	connect(m_pGraphFormPanel, SIGNAL(graphParamValuesUpdateApplied()), this, SLOT(graphParamValuesUpdated()));
 	
 	m_pGraphTotal = new GraphDrawWidget(mainWindow, this);
 	m_pGraphOverTime = new GraphDrawWidget(mainWindow, this);
 	m_pGraphOverview = new GraphDrawWidget(mainWindow, this);
 	
+	connect(m_pGraphTotal, SIGNAL(selectedItemAdded(QString)), this, SLOT(selectedItemAdded(QString)));
+	connect(m_pGraphOverTime, SIGNAL(selectedItemAdded(QString)), this, SLOT(selectedItemAdded(QString)));
+	
 	m_pTabBarContainer = new QTabWidget(this);
 	m_pTabBarContainer->addTab(m_pGraphTotal, "Total");
 	m_pTabBarContainer->addTab(m_pGraphOverTime, "Over Time");
 	m_pTabBarContainer->addTab(m_pGraphOverview, "Overview");
+	
+	connect(m_pTabBarContainer, SIGNAL(currentChanged(int)), this, SLOT(viewIndexChanged()));
 	
 	pHBoxLayout->addWidget(m_pGraphFormPanel);
 	
@@ -80,10 +86,12 @@ void GraphsViewWidget::rebuildFromGraph()
 	
 	m_pGraphFormPanel->setParamsFromGraph(*m_pGraph);
 	
-	buildGraph();
-
 	int viewTypeIndex = m_pGraph->getViewType();
 	m_pTabBarContainer->setCurrentIndex(viewTypeIndex);
+	// need to force the update here so internal member variable is correct...
+	viewIndexChanged();
+	
+	buildGraph();
 }
 
 void GraphsViewWidget::buildGraph()
@@ -129,6 +137,8 @@ void GraphsViewWidget::buildPieChartGraph()
 	
 	UICurrencyFormatter* pCurrencyFormatter = m_pMainWindow->getCurrencyFormatter();
 	
+	fixed totalAmount;
+	
 	std::vector<GraphDrawWidget::PieChartItem> pieItems;
 	for (const PieChartItem& itemValues : pieResults.m_aValues)
 	{
@@ -138,10 +148,14 @@ void GraphsViewWidget::buildPieChartGraph()
 		
 		newItem.amount = pCurrencyFormatter->formatCurrencyAmount(itemValues.getAmount());
 		
+		totalAmount += itemValues.getAmount();
+		
 		pieItems.emplace_back(newItem);
 	}
 	
-	m_pGraphTotal->setPieChartItems(pieItems);	
+	QString totalAmountString = pCurrencyFormatter->formatCurrencyAmount(totalAmount);
+
+	m_pGraphTotal->setPieChartItems(pieItems, totalAmountString);
 }
 
 void GraphsViewWidget::buildAreaChartGraph()
@@ -192,6 +206,8 @@ void GraphsViewWidget::buildAreaChartGraph()
 			fixed thisValue = sourceAreaItem.getItemAmount(j);
 			newItem.values.emplace_back(thisValue.ToDouble());
 		}
+		
+		newItem.title = sourceAreaItem.getTitle();
 
 		areaItems.emplace_back(newItem);
 	}
@@ -201,5 +217,24 @@ void GraphsViewWidget::buildAreaChartGraph()
 
 void GraphsViewWidget::graphParamValuesChanged()
 {
+	// update the graph view
 	buildGraph();
+}
+
+void GraphsViewWidget::graphParamValuesUpdated()
+{
+	// the graph params have been updated (via clicking Update), so mark document as modified
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(false);
+}
+
+// Not happy about this way of doing things, but...
+void GraphsViewWidget::viewIndexChanged()
+{
+	int selectedIndex = m_pTabBarContainer->currentIndex();
+	m_pGraphFormPanel->setViewTypeIndex(selectedIndex);
+}
+
+void GraphsViewWidget::selectedItemAdded(QString itemTitle)
+{
+	m_pGraphFormPanel->addItemString(itemTitle);
 }

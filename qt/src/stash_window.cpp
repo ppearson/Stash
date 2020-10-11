@@ -44,6 +44,7 @@
 #include <QVBoxLayout>
 
 #include "../../core/scheduled_transaction.h"
+#include "../../core/graph.h"
 
 #include "document_index_view.h"
 #include "transactions_view_widget.h"
@@ -55,6 +56,7 @@
 #include "dialogs/account_details_dialog.h"
 #include "dialogs/make_transfer_dialog.h"
 #include "dialogs/scheduled_transactions_due_dialog.h"
+#include "dialogs/new_graph_dialog.h"
 
 #include "settings/settings_window.h"
 
@@ -247,6 +249,12 @@ void StashWindow::setupMenu()
 	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0));
 	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0));
 	
+	// disable them for the moment until they're implemented...
+	pFileImportOFXFileAction->setEnabled(false);
+	pFileImportQIFFileAction->setEnabled(false);
+	pFileExportOFXFileAction->setEnabled(false);
+	pFileExportQIFFileAction->setEnabled(false);
+	
 	menuFile->addAction(pFileNewAction);
 	menuFile->addSeparator();
 	menuFile->addAction(pFileOpenAction);
@@ -338,6 +346,7 @@ void StashWindow::setupMenu()
 	pInsertGraph->setText(QApplication::translate("StashWindow", "New &Graph", 0));
 	
 	connect(pInsertAccount, SIGNAL(triggered()), this, SLOT(insertAccount()));
+	connect(pInsertGraph, SIGNAL(triggered()), this, SLOT(insertGraph()));
 	
 	menuInsert->addAction(pInsertAccount);
 	menuInsert->addAction(pInsertGraph);
@@ -870,7 +879,30 @@ void StashWindow::insertAccount()
 
 void StashWindow::insertGraph()
 {
+	if (m_documentController.getDocument().getAccountCount() < 1)
+	{
+		QMessageBox::information(this, "Error", "At least one Account must exist before Graphs can be created.");
+		return;
+	}
 	
+	NewGraphDialog newGraphDialog(m_documentController.getDocument(), this);
+	if (newGraphDialog.exec() != QDialog::Accepted)
+		return;
+	
+	Graph newGraph;
+	newGraph.setName(newGraphDialog.getName());
+	newGraph.setAccount(newGraphDialog.getAccountIndex());
+	
+	newGraph.setIgnoreTransfers(newGraphDialog.getIgnoreTransfers());
+	
+	newGraph.setStartDate(newGraphDialog.getStartDate());
+	newGraph.setEndDate(newGraphDialog.getEndDate());
+	
+	m_documentController.getDocument().addGraph(newGraph);
+	
+	m_pIndexView->rebuildFromDocument();
+	
+	setWindowModified(true);
 }
 
 void StashWindow::transactionAddNewTransaction()

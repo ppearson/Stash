@@ -27,6 +27,8 @@
 #include <QDate>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QAction>
+#include <QMenu>
 
 #include "stash_window.h"
 #include "ui_currency_formatter.h"
@@ -57,14 +59,18 @@ GraphDrawWidget::GraphDrawWidget(StashWindow* pStashWindow, QWidget* pParent) : 
 	}
 	
 	m_selectedItemIndex = -1;
+	
+	m_pMenuAddSelectedItem = new QAction(this);
+	m_pMenuAddSelectedItem->setText("Add Selected Item");
+	
+	connect(m_pMenuAddSelectedItem, SIGNAL(triggered()), this, SLOT(menuAddSelectedItem()));
 }
-
 
 void GraphDrawWidget::paintEvent(QPaintEvent* event)
 {
 	// TODO: draw to QPixmap backbuffer instead of doing full draw each time?
 	QPainter painter(this);
-	
+	painter.setBrush(QBrush(Qt::white));
 	painter.setPen(Qt::black);
 	painter.drawRect(geometry());
 	
@@ -78,13 +84,18 @@ void GraphDrawWidget::paintEvent(QPaintEvent* event)
 	}
 }
 
-void GraphDrawWidget::setPieChartItems(const std::vector<PieChartItem>& items)
+void GraphDrawWidget::setPieChartItems(const std::vector<PieChartItem>& items, const QString& totalAmount)
 {
 	m_graphType = eGraphPieChart;
 	
 	m_aPieChartItems = items;
+	m_pieChartTotalAmount = totalAmount;
 	
 	m_selectedItemIndex = -1;
+	
+	fixed zero;
+	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
+	m_pieChartEmptyAmount = currencyFormatter->formatCurrencyAmount(zero);
 	
 	update();
 	repaint();
@@ -107,6 +118,7 @@ void GraphDrawWidget::setAreaChartItems(const std::vector<AreaChartItemValues>& 
 
 	// work out the longest date
 	// for the moment, just hard-code September
+	// TODO: do we even need this now?
 	m_longestDate = "September";
 
 	m_maxValue = maxValue;
@@ -119,6 +131,12 @@ void GraphDrawWidget::setAreaChartItems(const std::vector<AreaChartItemValues>& 
 
 void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 {
+	if (event->button() == Qt::RightButton)
+	{
+		displayPopupMenu(event->pos());
+		return;
+	}
+	
 	if (event->button() != Qt::LeftButton)
 		return;
 
@@ -193,10 +211,44 @@ void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 			repaint();
 			return;
 		}
+		
+		m_selectedItemIndex = -1;
+		
+		for (unsigned int i = 0; i < m_areaItemPolygons.size(); i++)
+		{
+			const QPolygonF& polygon = m_areaItemPolygons[i];
+			
+			if (polygon.containsPoint(event->posF(), Qt::OddEvenFill))
+			{
+				m_selectedItemIndex = i;
+				break;
+			}
+		}
 	}
 
 	update();
 	repaint();
+}
+
+void GraphDrawWidget::menuAddSelectedItem()
+{
+	if (m_selectedItemIndex == -1)
+		return;
+	
+	if (m_graphType == eGraphPieChart)
+	{
+		const PieChartItem& item = m_aPieChartItems[m_selectedItemIndex];
+		QString itemTitle(item.title.c_str());
+		
+		emit selectedItemAdded(itemTitle);
+	}
+	else if (m_graphType == eGraphAreaChart)
+	{
+		const AreaChartItemValues& item = m_aAreaChartDataItems[m_selectedItemIndex];
+		QString itemTitle(item.title.c_str());
+		
+		emit selectedItemAdded(itemTitle);
+	}
 }
 
 void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
@@ -273,7 +325,7 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 		if (m_selectedItemIndex != -1 && m_selectedItemIndex == itemIndex++)
 		{
 			// configure thick selection line for outline, and no brush for no fill colour
-			QPen selectionPen(Qt::white, 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+			QPen selectionPen(QColor(192, 192, 255), 4, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
 			painter.setPen(selectionPen);
 			painter.setBrush(Qt::NoBrush);
 			painter.drawPie(mainRadiusRect, lastAngleI, thisAngleI);
@@ -282,7 +334,6 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 		}
 
 		float midPointAngle = (((lastAngle + item.angle) - lastAngle) / 2.0) + lastAngle;
-				
 		float midPointRads = midPointAngle * 0.017453f;
 		
 		float wedgeEdgeCentrePosX = std::cos(midPointRads);
@@ -317,6 +368,22 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 		lastAngle += item.angle;
 		lastAngleSixteenthsF += thisAngleF;
 	}
+	
+	// draw amount text
+	
+	QRect amountsRect(QPoint(geometry().left() + 10, geometry().bottom() - 45), QPoint(geometry().left() + 200, geometry().bottom() - 10));
+	if (m_selectedItemIndex == -1)
+	{
+		painter.drawText(amountsRect, "Selected amount: " + m_pieChartEmptyAmount);
+	}
+	else
+	{
+		const PieChartItem& item = m_aPieChartItems[m_selectedItemIndex];
+		painter.drawText(amountsRect, "Selected amount: " + item.amount);
+	}
+	
+	amountsRect.setTop(amountsRect.top() + textExtentHeight + 5);
+	painter.drawText(amountsRect, "Total amount: " + m_pieChartTotalAmount);
 }
 
 void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
@@ -331,13 +398,14 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 
 	float leftMargin = 30.0f + metrics.width(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
+	int topMargin = 40;
 
 	painter.setRenderHint(QPainter::Antialiasing);
 
 	unsigned int numXValues = m_aAreaChartDataItems[0].values.size();
 
 	QRect plotArea = geometry();
-	plotArea.adjust(leftMargin, 20, -20, -bottomMargin);
+	plotArea.adjust(leftMargin, topMargin, -20, -bottomMargin);
 
 	painter.drawRect(plotArea);
 
@@ -432,10 +500,14 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	unsigned int colourIndex = 0;
 
 	painter.setPen(Qt::black);
+	
+	m_areaItemPolygons.clear();
+	m_areaItemPolygons.resize(m_aAreaChartDataItems.size());
 
+	unsigned int shapeIndex = 0;
 	for (const AreaChartItemValues& item : m_aAreaChartDataItems)
 	{
-		QPolygonF itemShape;
+		QPolygonF& itemShape = m_areaItemPolygons[shapeIndex++];
 
 		// draw baseline values anti-clockwise (from left hand side)
 		for (unsigned int i = 0; i < numXValues; i++)
@@ -470,12 +542,53 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 			itemShape.append(QPointF(xPos, yVal));
 		}
 
-		painter.setBrush(QBrush(m_aAreaColours[colourIndex++]));
+		QColor fillColour = m_aAreaColours[colourIndex++];
+		if (m_selectedItemIndex == (shapeIndex - 1))
+		{
+			fillColour.setAlpha(64);
+		}
+		painter.setBrush(QBrush(fillColour));
 		if (colourIndex >= m_aAreaColours.size())
 		{
 			colourIndex = 0;
 		}
-
+		
 		painter.drawPolygon(itemShape, Qt::WindingFill);
 	}
+	
+	painter.setPen(Qt::black);
+	
+	QRect textRect(QPoint(10, 10), QPoint(600, 25));
+	
+	if (m_selectedItemIndex != -1)
+	{
+		const AreaChartItemValues& item = m_aAreaChartDataItems[m_selectedItemIndex];
+		
+		QString selectedItemText = "Selected item: " + QString(item.title.c_str());
+		painter.drawText(textRect, selectedItemText);
+		
+		// configure thick selection line for outline, and no brush for no fill colour
+		QPen selectionPen(QColor(192, 192, 192), 2, Qt::DashDotDotLine, Qt::RoundCap, Qt::RoundJoin);
+		painter.setPen(selectionPen);
+		painter.setBrush(Qt::NoBrush);
+		
+		const QPolygonF& itemShape = m_areaItemPolygons[m_selectedItemIndex];
+		painter.drawPolygon(itemShape, Qt::WindingFill);
+	}
+	else
+	{
+		painter.drawText(textRect, QString("Selected item: "));
+	}
+}
+
+void GraphDrawWidget::displayPopupMenu(const QPoint& pos)
+{
+	if (m_selectedItemIndex == -1)
+		return;
+	
+	QMenu menu(this);
+	
+	menu.addAction(m_pMenuAddSelectedItem);
+	
+	menu.exec(mapToGlobal(pos));
 }

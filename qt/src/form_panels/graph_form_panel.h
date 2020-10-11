@@ -53,9 +53,13 @@ public:
 	
 	void setParamsFromGraph(const Graph& graph);
 	
-	void updateGraphFromParamValues(Graph& graph);
+	void updateGraphFromParamValues();
+	
+	void setViewTypeIndex(int index);
 	
 	TempGraphParamState getTempGraphParamValues() const;
+	
+	void addItemString(QString itemTitle);
 	
 protected:
 	void updateAccountsList(bool selectFirst);
@@ -63,11 +67,23 @@ protected:
 protected slots:
 	void paramChanged();
 	
+	void deleteItemClicked();
+	
+	void updateClicked();
+	
 signals:
-	void graphParamValuesUpdated();
+	// trigged live when widgets change
+	void graphParamValuesChanged();
+	
+	// when the Update button is clicked to actually modify the document
+	void graphParamValuesUpdateApplied();
 	
 protected:
 	Document&			m_document;
+	Graph*				m_pGraph;
+	
+	// this is pretty crap, but the alternative's not that much better, so...
+	int					m_viewTypeIndex;
 	
 	// parent
 	GraphsViewWidget*	m_pGraphsViewWidget;

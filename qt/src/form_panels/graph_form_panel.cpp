@@ -41,6 +41,7 @@
 
 GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsViewWidget, QWidget* parent) : QWidget(parent),
 	m_document(document),
+	m_pGraph(nullptr),
 	m_pGraphsViewWidget(pGraphsViewWidget)
 {
 	QVBoxLayout* pVBoxLayout = new QVBoxLayout(this);
@@ -82,6 +83,10 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	itemTypeChoices << "All Items" << "All Items excluding:" << "Only Specified:";
 	m_pItemType->addItems(itemTypeChoices);
 	
+	// bundle these two together in another VBox, so there's no gap
+	QVBoxLayout* pListSubLayout = new QVBoxLayout(this);
+	pListSubLayout->setMargin(0);
+	pListSubLayout->setSpacing(0);
 	m_pItemsList = new QListWidget(this);
 	m_pItemsList->setMinimumHeight(130);
 	m_pItemsList->setMaximumHeight(130);
@@ -98,6 +103,10 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	connect(m_pEndDate, SIGNAL(dateChanged(QDate)), this, SLOT(paramChanged()));
 	connect(m_pItemType, SIGNAL(currentIndexChanged(int)), this, SLOT(paramChanged()));
 	
+	connect(m_pItemControlButtons, SIGNAL(deleteItemButtonClicked()), this, SLOT(deleteItemClicked()));
+	
+	connect(m_pUpdate, SIGNAL(clicked()), this, SLOT(updateClicked()));
+	
 	pVBoxLayout->addWidget(pAccountLabel);
 	pVBoxLayout->addWidget(m_pAccount);
 	
@@ -111,8 +120,11 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	pVBoxLayout->addWidget(m_pEndDate);
 	
 	pVBoxLayout->addWidget(m_pItemType);
-	pVBoxLayout->addWidget(m_pItemsList);
-	pVBoxLayout->addWidget(m_pItemControlButtons);
+	
+	pListSubLayout->addWidget(m_pItemsList);
+	pListSubLayout->addWidget(m_pItemControlButtons);
+	
+	pVBoxLayout->addLayout(pListSubLayout);
 	
 	pVBoxLayout->addWidget(m_pUpdate);
 	
@@ -132,6 +144,9 @@ QSize GraphFormPanel::sizeHint() const
 void GraphFormPanel::setParamsFromGraph(const Graph& graph)
 {
 	updateAccountsList(false);
+	
+	// really not great, but...
+	m_pGraph = const_cast<Graph*>(&graph);
 	
 	int accountIndex = graph.getAccount();
 	if (accountIndex == -1 || accountIndex >= m_document.getAccountCount())
@@ -160,9 +175,44 @@ void GraphFormPanel::setParamsFromGraph(const Graph& graph)
 	}
 }
 
-void GraphFormPanel::updateGraphFromParamValues(Graph& graph)
+void GraphFormPanel::updateGraphFromParamValues()
 {
+	if (!m_pGraph)
+		return;
 	
+	Graph& graph = *m_pGraph;
+	
+	TempGraphParamState tempState = getTempGraphParamValues();
+	
+	graph.setAccount(tempState.accountIndex);
+	
+	graph.setType((Graph::Type)tempState.dataType);
+	
+	graph.setIgnoreTransfers(tempState.ignoreTransfers);
+	
+	graph.setStartDate(tempState.startDate);
+	graph.setEndDate(tempState.endDate);
+	
+	Graph::ItemsType itemsType = (Graph::ItemsType)tempState.itemType;
+	graph.setItemsType(itemsType);
+	
+	Graph::ViewType viewType = (Graph::ViewType)m_viewTypeIndex;
+	graph.setViewType(viewType);
+		
+	emit graphParamValuesUpdateApplied();
+}
+
+// Not really happy about this, but...
+void GraphFormPanel::setViewTypeIndex(int index)
+{
+	m_viewTypeIndex = index;
+}
+
+void GraphFormPanel::addItemString(QString itemTitle)
+{
+	m_pItemsList->addItem(itemTitle);
+	
+	emit graphParamValuesChanged();
 }
 
 TempGraphParamState GraphFormPanel::getTempGraphParamValues() const
@@ -210,5 +260,25 @@ void GraphFormPanel::updateAccountsList(bool selectFirst)
 
 void GraphFormPanel::paramChanged()
 {
-	emit graphParamValuesUpdated();
+	emit graphParamValuesChanged();
+}
+
+void GraphFormPanel::deleteItemClicked()
+{
+	QListWidgetItem* pItem = m_pItemsList->currentItem();
+	if (pItem)
+	{
+		int row = m_pItemsList->row(pItem);
+		m_pItemsList->takeItem(row);
+		
+		// TODO: delete pItem?
+		
+		emit graphParamValuesChanged();
+	}
+}
+
+void GraphFormPanel::updateClicked()
+{
+	// actually commit the param changes to the core Graph item, and mark the document as modified
+	updateGraphFromParamValues();
 }

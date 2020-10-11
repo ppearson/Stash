@@ -28,6 +28,7 @@
 
 #include <QWidget>
 #include <QColor>
+#include <QPolygonF>
 
 #include "../../core/datetime.h"
 #include "../../core/fixed.h"
@@ -65,17 +66,24 @@ public:
 	};
 	
 	
-	void setPieChartItems(const std::vector<PieChartItem>& items);
+	void setPieChartItems(const std::vector<PieChartItem>& items, const QString& totalAmount);
 
 	void setAreaChartItems(const std::vector<AreaChartItemValues>& dataItems, const std::vector<MonthYear>& dates, fixed maxValue);
 	
 
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 	
+protected slots:
+	void menuAddSelectedItem();
 	
 protected:
 	void drawPieChart(QPainter& painter, QPaintEvent* event);
 	void drawAreaChart(QPainter& painter, QPaintEvent* event);
+	
+	void displayPopupMenu(const QPoint& pos);
+	
+signals:
+	void selectedItemAdded(QString stringValue);
 	
 protected:
 	StashWindow*				m_pStashWindow;
@@ -85,15 +93,22 @@ protected:
 	// pre-generated stuff
 	std::vector<QColor>			m_aPieColours;
 	std::vector<QColor>			m_aAreaColours;
+	
+	QAction*					m_pMenuAddSelectedItem;
 
 	// data for different chart types.
 	// TODO: might make more sense to have these enclosed in structs that we can then just pass in + copy/store...
 	std::vector<PieChartItem>	m_aPieChartItems;
+	QString						m_pieChartTotalAmount;
+	QString						m_pieChartEmptyAmount;
 
 	std::vector<AreaChartItemValues>	m_aAreaChartDataItems;
 	std::vector<QString>		m_aAreaChartDates;
 	fixed						m_maxValue;
 	std::string					m_longestDate;
+	// don't really like having this here or being defined at draw time,
+	// but it simplifies hit-detection for selection considerably...
+	std::vector<QPolygonF>		m_areaItemPolygons;
 	
 	int							m_selectedItemIndex;
 };

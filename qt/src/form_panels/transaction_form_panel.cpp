@@ -33,8 +33,6 @@
 #include <QLabel>
 #include <QKeyEvent>
 
-#include <QHBoxLayout>
-
 #include <QGridLayout>
 
 #include "../../core/document.h"

@@ -65,6 +65,8 @@ public slots:
 	void menuAccountDetails();
 	void menuAccountDelete();
 	
+	
+	void menuGraphDelete();	
 
 protected:
 	Document&				m_document;
@@ -74,6 +76,8 @@ protected:
 	
 	QAction*				m_pAccountDetails;
 	QAction*				m_pAccountDelete;
+	
+	QAction*				m_pGraphDelete;
 	
 	
 	// current / last selection state
