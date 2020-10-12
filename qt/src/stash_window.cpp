@@ -1154,9 +1154,8 @@ bool StashWindow::shouldDiscardCurrentDocument()
 		fileSave();
 		return true;
 	}
-	else if (ret == QMessageBox::Cancel)
+	else if (ret == 2) // cancel button
 	{
-		// TODO: This is clearly wrong, and returning a bool isn't sufficient from here...
 		return false;
 	}
 
