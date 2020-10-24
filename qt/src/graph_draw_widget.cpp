@@ -218,11 +218,13 @@ void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 		
 		m_selectedItemIndex = -1;
 		
+		QPointF fPos(event->pos());
+		
 		for (unsigned int i = 0; i < m_areaItemPolygons.size(); i++)
 		{
 			const QPolygonF& polygon = m_areaItemPolygons[i];
 			
-			if (polygon.containsPoint(event->posF(), Qt::OddEvenFill))
+			if (polygon.containsPoint(fPos, Qt::OddEvenFill))
 			{
 				m_selectedItemIndex = i;
 				break;
