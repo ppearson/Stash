@@ -33,6 +33,7 @@
 
 #include "general_page.h"
 #include "transactions_page.h"
+#include "pie_chart_page.h"
 
 SettingsWindow::SettingsWindow(QSettings& settings, QWidget* parent) : QDialog(parent), m_settings(settings)
 {
@@ -71,6 +72,7 @@ SettingsWindow::SettingsWindow(QSettings& settings, QWidget* parent) : QDialog(p
 
 	addPage("General", new GeneralPage(m_settings));
 	addPage("Transactions", new TransactionsPage(m_settings));
+	addPage("Pie Chart", new PieChartPage(m_settings));
 
 	m_categoryWidget->setCurrentRow(0);
 }

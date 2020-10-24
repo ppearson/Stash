@@ -38,9 +38,13 @@ public:
 	
 	virtual void saveSettings() override;
 	
+	
+protected slots:
+	void groupSmallerThanCheckToggle();
+	
 protected:
 	
-	QComboBox*		m_pSortSegmentType;
+	QComboBox*		m_pSegmentSortType;
 	
 	QCheckBox*		m_pGroupItemsSmaller;
 	QSpinBox*		m_pGroupItemsSmallerSize;

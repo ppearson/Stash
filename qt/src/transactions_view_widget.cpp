@@ -36,7 +36,7 @@
 #include "form_panels/transaction_form_panel.h"
 #include "transactions_view_data_model.h"
 
-#include "item_control_buttons_widget.h"
+#include "widgets/item_control_buttons_widget.h"
 
 static const std::string sTableStyle = "QTreeView::item {"
 		"border: 0.5px solid #8c8c8c;"

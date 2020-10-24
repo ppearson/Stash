@@ -23,6 +23,7 @@
 #include "graphs_view_widget.h"
 
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QTabWidget>
 
 #include "../../core/document.h"
@@ -31,6 +32,7 @@
 
 #include "stash_window.h"
 #include "ui_currency_formatter.h"
+#include "settings_state.h"
 
 #include "form_panels/graph_form_panel.h"
 
@@ -113,11 +115,18 @@ void GraphsViewWidget::buildPieChartGraph()
 	
 	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
 	
-	PieChartCriteria::PieChartSort ePieChartSort = PieChartCriteria::PieChartSortAngle;
+	const SettingsState& settingsState = m_pMainWindow->getSettingsState();
+	
+	int sortType = settingsState.getInt("pie_chart/segment_sort_type", 0);
+	PieChartCriteria::PieChartSort ePieChartSort = (PieChartCriteria::PieChartSort)sortType;
 	
 	// TODO: from Settings...
-	int pieSmallerThanValue = 4;
-	std::string pieGroupSmallerName = "Other";
+	int pieSmallerThanValue = -1;
+	if (settingsState.getBool("pie_chart/group_items_smaller_than", true))
+	{
+		pieSmallerThanValue = settingsState.getInt("pie_chart/group_items_smaller_than_size", 4);
+	}
+	std::string pieGroupSmallerName = settingsState.getInternal().value("pie_chart/group_items_smaller_than_name", "Other").toString().toStdString();
 	
 	PieChartCriteria pieCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);

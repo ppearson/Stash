@@ -64,6 +64,8 @@ GraphDrawWidget::GraphDrawWidget(StashWindow* pStashWindow, QWidget* pParent) : 
 	m_pMenuAddSelectedItem->setText("Add Selected Item");
 	
 	connect(m_pMenuAddSelectedItem, SIGNAL(triggered()), this, SLOT(menuAddSelectedItem()));
+	
+	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 }
 
 void GraphDrawWidget::paintEvent(QPaintEvent* event)
@@ -73,6 +75,8 @@ void GraphDrawWidget::paintEvent(QPaintEvent* event)
 	painter.setBrush(QBrush(Qt::white));
 	painter.setPen(Qt::black);
 	painter.drawRect(geometry());
+	
+//	fprintf(stderr, "G: (%u, %u, %u, %u)\n", geometry().top(), geometry().left(), geometry().bottom(), geometry().right());
 	
 	if (m_graphType == eGraphPieChart)
 	{
@@ -230,6 +234,17 @@ void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 	repaint();
 }
 
+// not needed... just for testing...
+QSize GraphDrawWidget::sizeHint() const
+{
+	return QSize(400, 400);
+}
+
+QSize GraphDrawWidget::minimumSizeHint() const
+{
+	return QSize(200, 200);
+}
+
 void GraphDrawWidget::menuAddSelectedItem()
 {
 	if (m_selectedItemIndex == -1)
@@ -279,6 +294,8 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 	unsigned int colourIndex = 0;
 	
 	painter.setPen(Qt::darkGray);
+	
+	// TODO: use "pie_chart/selected_segments_type" setting to control selection style...
 	
 	// draw the basic wedges
 	for (const PieChartItem& item : m_aPieChartItems)

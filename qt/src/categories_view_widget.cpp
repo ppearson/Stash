@@ -26,7 +26,7 @@
 #include <QLayout>
 
 #include "stash_window.h"
-#include "item_control_buttons_widget.h"
+#include "widgets/item_control_buttons_widget.h"
 
 CategoriesViewWidget::CategoriesViewWidget(QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
     m_pMainWindow(mainWindow)

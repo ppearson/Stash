@@ -112,11 +112,6 @@ ItemControlButtonsWidget::ItemControlButtonsWidget(Type type, QWidget* pParent) 
 	layout->addStretch(5);
 }
 
-ItemControlButtonsWidget::~ItemControlButtonsWidget()
-{
-	
-}
-
 void ItemControlButtonsWidget::setButtonsEnabled(unsigned int buttonsEnabled)
 {
 	if (m_pAddItemButton)

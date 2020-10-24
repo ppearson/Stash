@@ -37,7 +37,8 @@
 #include "../../core/graph.h"
 #include "../../core/analysis.h"
 
-#include "item_control_buttons_widget.h"
+#include "widgets/date_period_control_buttons_widget.h"
+#include "widgets/item_control_buttons_widget.h"
 
 GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsViewWidget, QWidget* parent) : QWidget(parent),
 	m_document(document),
@@ -78,13 +79,18 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
 	m_pEndDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
 	
+	QLabel* pDatesControlLabel = new QLabel(this);
+	pDatesControlLabel->setText("Dates control:");
+	
+	m_pDatesControl = new DatePeriodControlButtonsWidget(this);
+	
 	m_pItemType = new QComboBox(this);
 	QStringList itemTypeChoices;
 	itemTypeChoices << "All Items" << "All Items excluding:" << "Only Specified:";
 	m_pItemType->addItems(itemTypeChoices);
 	
 	// bundle these two together in another VBox, so there's no gap
-	QVBoxLayout* pListSubLayout = new QVBoxLayout(this);
+	QVBoxLayout* pListSubLayout = new QVBoxLayout();
 	pListSubLayout->setMargin(0);
 	pListSubLayout->setSpacing(0);
 	m_pItemsList = new QListWidget(this);
@@ -103,6 +109,10 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	connect(m_pEndDate, SIGNAL(dateChanged(QDate)), this, SLOT(paramChanged()));
 	connect(m_pItemType, SIGNAL(currentIndexChanged(int)), this, SLOT(paramChanged()));
 	
+	connect(m_pDatesControl, SIGNAL(previousButtonClicked()), this, SLOT(datesModifiedPrevious()));
+	connect(m_pDatesControl, SIGNAL(nextButtonClicked()), this, SLOT(datesModifiedNext()));
+	connect(m_pDatesControl, SIGNAL(typeIndexChanged()), this, SLOT(datesModifiedTypeChanged()));
+	
 	connect(m_pItemControlButtons, SIGNAL(deleteItemButtonClicked()), this, SLOT(deleteItemClicked()));
 	
 	connect(m_pUpdate, SIGNAL(clicked()), this, SLOT(updateClicked()));
@@ -118,6 +128,9 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	
 	pVBoxLayout->addWidget(pEndDateLabel);
 	pVBoxLayout->addWidget(m_pEndDate);
+	
+	pVBoxLayout->addWidget(pDatesControlLabel);
+	pVBoxLayout->addWidget(m_pDatesControl);
 	
 	pVBoxLayout->addWidget(m_pItemType);
 	
@@ -164,6 +177,9 @@ void GraphFormPanel::setParamsFromGraph(const Graph& graph)
 	
 	m_pStartDate->setDate(QDate(startDate.getYear(), startDate.getMonth(), startDate.getDay()));
 	m_pEndDate->setDate(QDate(endDate.getYear(), endDate.getMonth(), endDate.getDay()));
+	
+	// TODO: do this properly...
+	m_pDatesControl->setType((DatePeriodControlButtonsWidget::DurationType)(int)graph.getDateType());
 	
 	m_pItemType->setCurrentIndex((int)graph.getItemsType());
 	
@@ -281,4 +297,92 @@ void GraphFormPanel::updateClicked()
 {
 	// actually commit the param changes to the core Graph item, and mark the document as modified
 	updateGraphFromParamValues();
+}
+
+void GraphFormPanel::datesModifiedPrevious()
+{
+	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
+	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+		return;
+	
+	QDate startDate = m_pStartDate->date();
+	QDate endDate = m_pEndDate->date();
+	
+	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	{
+		startDate = startDate.addDays(-7);
+		endDate = endDate.addDays(-7);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	{
+		startDate = startDate.addMonths(-1);
+		startDate = startDate.addDays(- (startDate.day() - 1));
+		endDate = startDate.addDays(startDate.daysInMonth() - 1);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	{
+		startDate = QDate(startDate.year() - 1, 1, 1);
+		endDate = QDate(startDate.year(), 12, 31);
+	}
+	
+	m_pStartDate->setDate(startDate);
+	m_pEndDate->setDate(endDate);
+}
+
+void GraphFormPanel::datesModifiedNext()
+{
+	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
+	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+		return;
+	
+	QDate startDate = m_pStartDate->date();
+	QDate endDate = m_pEndDate->date();
+	
+	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	{
+		startDate = startDate.addDays(7);
+		endDate = endDate.addDays(7);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	{
+		startDate = startDate.addMonths(1);
+		startDate = startDate.addDays(- (startDate.day() - 1));
+		endDate = startDate.addDays(startDate.daysInMonth() - 1);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	{
+		startDate = QDate(startDate.year() + 1, 1, 1);
+		endDate = QDate(startDate.year(), 12, 31);
+	}
+	
+	m_pStartDate->setDate(startDate);
+	m_pEndDate->setDate(endDate);
+}
+
+void GraphFormPanel::datesModifiedTypeChanged()
+{
+	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
+	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+		return;
+	
+	QDate startDate = m_pStartDate->date();
+	QDate endDate = m_pEndDate->date();
+	
+	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	{
+		endDate = startDate.addDays(7);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	{
+		startDate = startDate.addDays(- (startDate.day() - 1));
+		endDate = startDate.addDays(startDate.daysInMonth() - 1);
+	}
+	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	{
+		startDate = QDate(startDate.year(), 1, 1);
+		endDate = QDate(startDate.year(), 12, 31);
+	}
+	
+	m_pStartDate->setDate(startDate);
+	m_pEndDate->setDate(endDate);
 }

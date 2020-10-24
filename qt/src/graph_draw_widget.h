@@ -73,6 +73,9 @@ public:
 
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 	
+	virtual QSize sizeHint() const;
+    virtual QSize minimumSizeHint() const;
+	
 protected slots:
 	void menuAddSelectedItem();
 	

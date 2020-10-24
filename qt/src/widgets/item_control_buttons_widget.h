@@ -52,7 +52,6 @@ public:
 	};
 	
 	ItemControlButtonsWidget(Type type, QWidget* pParent);
-	virtual ~ItemControlButtonsWidget();
 	
 	void setButtonsEnabled(unsigned int buttonsEnabled);
 	

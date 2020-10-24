@@ -999,6 +999,7 @@ void StashWindow::toolsSettings()
 		
 		m_pTransactionsViewWidget->rebuildFromAccount();
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
+		m_pGraphsViewWidget->rebuildFromGraph();
 	}
 }
 

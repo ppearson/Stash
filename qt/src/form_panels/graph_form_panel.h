@@ -40,6 +40,7 @@ class Document;
 class Graph;
 
 class ItemControlButtonsWidget;
+class DatePeriodControlButtonsWidget;
 class GraphsViewWidget;
 
 class GraphFormPanel : public QWidget
@@ -71,6 +72,11 @@ protected slots:
 	
 	void updateClicked();
 	
+	// triggered by DatePeriodControlButtons
+	void datesModifiedPrevious();
+	void datesModifiedNext();
+	void datesModifiedTypeChanged();
+	
 signals:
 	// trigged live when widgets change
 	void graphParamValuesChanged();
@@ -95,6 +101,8 @@ protected:
 	
 	QDateEdit*			m_pStartDate;
 	QDateEdit*			m_pEndDate;
+	
+	DatePeriodControlButtonsWidget*	m_pDatesControl;
 	
 	QComboBox*			m_pItemType;
 	QListWidget*		m_pItemsList;

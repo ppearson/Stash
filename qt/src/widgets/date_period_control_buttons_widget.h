@@ -20,47 +20,54 @@
  *
  */
 
-#ifndef SETTINGS_STATE_H
-#define SETTINGS_STATE_H
+#ifndef DATE_PERIOD_CONTROL_BUTTONS_WIDGET_H
+#define DATE_PERIOD_CONTROL_BUTTONS_WIDGET_H
 
-#include <string>
+#include <QWidget>
 
-#include <QSettings>
+class QPushButton;
+class QComboBox;
 
-class SettingsState
+class DatePeriodControlButtonsWidget : public QWidget
 {
+	Q_OBJECT
 public:
-	SettingsState()
-	{
-		
-	}
+	DatePeriodControlButtonsWidget(QWidget* pParent);
 	
-	void saveBool(const std::string& key, bool value)
+	enum DurationType
 	{
-		m_settings.setValue(key.c_str(), value);
-	}
-
-	void saveInt(const std::string& key, int value)
-	{
-		m_settings.setValue(key.c_str(), value);
-	}
-
-	bool getBool(const std::string& key, bool defaultValue) const
-	{
-		return m_settings.value(key.c_str(), defaultValue).toBool();
-	}
-
-	int getInt(const std::string& key, int defaultValue) const
-	{
-		return m_settings.value(key.c_str(), defaultValue).toInt();
-	}
-
-	QSettings& getInternal() { return m_settings; }
-	const QSettings& getInternal() const { return m_settings; }
+		eTypeWeek,
+		eTypeMonth,
+		eTypeYear,
+		eTypeCustom
+	};
+	
+	void setType(DurationType type);
+	
+	DurationType getType() const;
+	
+	
+signals:
+	void previousButtonClicked();
+	void nextButtonClicked();
+	
+	void typeIndexChanged();
+	
+public slots:
+	void previousClicked();
+	void nextClicked();
+	
+	void typeChanged();
 	
 protected:
-	QSettings		m_settings;
+	
+	QPushButton* createNewButton(const QIcon& icon, const QString& tooltip);
+
+protected:	
+	QPushButton*		m_pPreviousButton;
+	QPushButton*		m_pNextButton;
+	
+	QComboBox*			m_pType;
 };
 
-#endif // SETTINGS_STATE_H
-
+#endif // DATE_PERIOD_CONTROL_BUTTONS_WIDGET_H

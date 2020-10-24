@@ -34,7 +34,6 @@ class QTabWidget;
 class StashWindow;
 
 class GraphFormPanel;
-
 class GraphDrawWidget;
 
 class GraphsViewWidget : public QWidget
@@ -73,7 +72,7 @@ protected slots:
 	
 	// when a selected chart item is added from the GraphDrawWidget by the right-click menu
 	void selectedItemAdded(QString itemTitle);
-	
+		
 protected:
 	StashWindow*		m_pMainWindow;	
 	
