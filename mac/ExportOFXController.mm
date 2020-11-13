@@ -50,7 +50,7 @@
 {
 	if (!exportOFXWindow)
 	{
-		[NSBundle loadNibNamed:@"ExportOFX" owner:self];
+		[[NSBundle mainBundle] loadNibNamed:@"ExportOFX" owner:self topLevelObjects:nil];
 	}
 	
 	[fOFXVersion removeAllItems];

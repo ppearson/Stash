@@ -57,7 +57,7 @@
 {
 	if (!importOFXWindow)
 	{
-		[NSBundle loadNibNamed:@"ImportOFX" owner:self];
+		[[NSBundle mainBundle] loadNibNamed:@"ImportOFX" owner:self topLevelObjects:nil];
 	}
 	
 	[fExistingAccounts removeAllItems];
