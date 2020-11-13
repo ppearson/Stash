@@ -1,5 +1,5 @@
 /* 
- * Stash:  A Personal Finance app for OS X.
+ * Stash:  A Personal Finance app (core).
  * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.

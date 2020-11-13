@@ -1,6 +1,6 @@
 /* 
- * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2009 Peter Pearson
+ * Stash:  A Personal Finance app (core).
+ * Copyright (C) 2009-2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -20,8 +20,9 @@
  *
  */
 
-#include "string.h"
 #include <bitset>
+
+#include "string.h"
 #include "scheduled_transaction.h"
 
 ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(Transaction::None), m_constraint(ExactDate)
