@@ -79,6 +79,11 @@ void DatePeriodControlButtonsWidget::nextClicked()
 
 void DatePeriodControlButtonsWidget::typeChanged()
 {
+	bool nextPrevEnabled = getType() != eTypeCustom;
+	
+	m_pPreviousButton->setEnabled(nextPrevEnabled);
+	m_pNextButton->setEnabled(nextPrevEnabled);
+	
 	emit typeIndexChanged();
 }
 

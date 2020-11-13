@@ -35,10 +35,13 @@
 
 #include <QGridLayout>
 
+#include "stash_window.h"
+
 #include "../../core/document.h"
 #include "../../core/split_transaction.h"
 
-TransactionFormPanel::TransactionFormPanel(Document& document, QWidget* parent) : QWidget(parent),
+TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Document& document, QWidget* parent) : QWidget(parent),
+	m_pStashWindow(pStashWindow),
 	m_document(document)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
@@ -107,6 +110,7 @@ TransactionFormPanel::TransactionFormPanel(Document& document, QWidget* parent) 
 	m_pDate->setDisplayFormat("dd/MM/yyyy");
 	m_pDate->setCalendarPopup(true);
 	m_pDate->setDate(QDate::currentDate());
+	m_pDate->setWrapping(true);
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
 	m_pDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
 	pDateLabel->setBuddy(m_pDate);
@@ -180,7 +184,14 @@ void TransactionFormPanel::clear(bool resetDate)
 	// TODO: use setting/option for the value?
 	m_pCleared->setChecked(true);
 	m_pType->setCurrentIndex(0);
-	m_pDate->setDate(QDate::currentDate());
+	
+	const SettingsState& settingsState = m_pStashWindow->getSettingsState();
+	bool resetEditTransactionDate = settingsState.getBool("transactions/reset_edit_transaction_date_on_refresh", false);
+	if (resetEditTransactionDate)
+	{
+		m_pDate->setDate(QDate::currentDate());
+	}
+	
 	m_pDescription->setText("");
 	
 	m_pType->setEnabled(true);

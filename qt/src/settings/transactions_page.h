@@ -40,6 +40,7 @@ protected:
 	QSpinBox*		m_pRecentDurationDays;
 	QCheckBox*		m_pScrollToLatestTransaction;
 	QCheckBox*		m_pNewTransactionsAreMarkedCleared;
+	QCheckBox*		m_pResetEditTransactionDateOnRefresh; // not a great description, but...
 	QCheckBox*		m_pColourNegativeAmountValuesRed;
 	QCheckBox*		m_pColourNegativeBalanceValuesRed;
 };

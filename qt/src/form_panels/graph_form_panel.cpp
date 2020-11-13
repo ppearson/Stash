@@ -66,6 +66,7 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	
 	m_pStartDate = new QDateEdit(this);
 	m_pStartDate->setDisplayFormat("dd/MM/yyyy");
+	m_pStartDate->setWrapping(true);
 	m_pStartDate->setCalendarPopup(true);
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
 	m_pStartDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
@@ -75,6 +76,7 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	
 	m_pEndDate = new QDateEdit(this);
 	m_pEndDate->setDisplayFormat("dd/MM/yyyy");
+	m_pEndDate->setWrapping(true);
 	m_pEndDate->setCalendarPopup(true);
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
 	m_pEndDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
@@ -363,7 +365,9 @@ void GraphFormPanel::datesModifiedTypeChanged()
 {
 	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
 	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+	{
 		return;
+	}
 	
 	QDate startDate = m_pStartDate->date();
 	QDate endDate = m_pEndDate->date();

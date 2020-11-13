@@ -207,6 +207,10 @@ void ScheduledTransactionFormPanel::clear()
 	m_pConstraint->setCurrentIndex(0);
 	
 	m_pDate->setDate(QDate::currentDate());
+	m_pDate->setDisplayFormat("dd/MM/yyyy");
+	m_pDate->setCalendarPopup(true);
+	m_pDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
+	m_pDate->setWrapping(true);
 	m_pDescription->setText("");
 	
 	m_pAccount->setCurrentIndex(0);

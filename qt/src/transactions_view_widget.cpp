@@ -101,7 +101,7 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	
 	m_pTreeView->setStyleSheet(sTableStyle.c_str());
 	
-	m_pTransactionFormPanel = new TransactionFormPanel(m_pMainWindow->getDocumentController().getDocument(), m_pSplitter);
+	m_pTransactionFormPanel = new TransactionFormPanel(mainWindow, m_pMainWindow->getDocumentController().getDocument(), m_pSplitter);
 	
 	m_pSplitter->addWidget(m_pTreeView);
 	m_pSplitter->addWidget(m_pTransactionFormPanel);

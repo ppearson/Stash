@@ -31,6 +31,7 @@
 #include "../../core/transaction.h"
 
 class Document;
+class StashWindow;
 
 class QLineEdit;
 class QComboBox;
@@ -41,7 +42,7 @@ class TransactionFormPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	TransactionFormPanel(Document& document, QWidget* parent = 0);
+	TransactionFormPanel(const StashWindow* pStashWindow, Document& document, QWidget* parent = 0);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
@@ -74,6 +75,7 @@ protected:
 	void updatePayeeAndCategoryComboBoxChoicesFromDocument();
 	
 protected:
+	const StashWindow*	m_pStashWindow;
 	Document&			m_document;
 	
 	QComboBox*			m_pPayee;
