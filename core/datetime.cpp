@@ -27,6 +27,7 @@
 #include "datetime.h"
 
 static int aDaysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};
+static unsigned int kSecondsInDay = 60 * 60 * 24; // 86400
 
 Date::Date() : m_Separator('/')
 {
@@ -82,7 +83,7 @@ Date& Date::operator=(time_t Time)
 
 void Date::IncrementDays(int days)
 {
-	m_Time += (SECONDS_IN_DAY * days);
+	m_Time += (kSecondsInDay * days);
 	
 	SetVarsFromTime();
 }
@@ -104,7 +105,7 @@ void Date::IncrementMonths(int months)
 
 void Date::DecrementDays(int days)
 {
-	m_Time -= (SECONDS_IN_DAY * days);
+	m_Time -= (kSecondsInDay * days);
 	
 	SetVarsFromTime();
 }

@@ -28,8 +28,6 @@
 #include <ctime>
 #include <fstream>
 
-#define SECONDS_IN_DAY 86400
-
 class Date
 {
 public:
