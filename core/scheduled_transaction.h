@@ -25,7 +25,7 @@
 
 #include "fixed.h"
 #include "transaction.h"
-#include "datetime.h"
+#include "date.h"
 #include <string>
 
 class ScheduledTransaction

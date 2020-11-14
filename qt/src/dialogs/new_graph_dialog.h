@@ -28,7 +28,7 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 
-#include "../../core/datetime.h"
+#include "../../core/date.h"
 
 class QLineEdit;
 class QComboBox;

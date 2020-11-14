@@ -30,7 +30,7 @@
 #include <QColor>
 #include <QPolygonF>
 
-#include "../../core/datetime.h"
+#include "../../core/date.h"
 #include "../../core/fixed.h"
 
 class StashWindow;

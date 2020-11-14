@@ -33,7 +33,7 @@
 #include <QDateEdit>
 #include <QCheckBox>
 
-#include "../../core/datetime.h"
+#include "../../core/date.h"
 #include "../../core/fixed.h"
 
 class Document;

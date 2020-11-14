@@ -27,7 +27,7 @@
 
 #include <QWidget>
 
-#include "../../core/datetime.h"
+#include "../../core/date.h"
 #include "../../core/transaction.h"
 
 class Document;

@@ -24,7 +24,7 @@
 #define TRANSACTION_H
 
 #include "fixed.h"
-#include "datetime.h"
+#include "date.h"
 #include <string>
 #include <vector>
 

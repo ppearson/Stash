@@ -29,7 +29,7 @@
 #include <algorithm>
 
 #include "fixed.h"
-#include "datetime.h"
+#include "date.h"
 #include "document.h"
 
 enum OFX_TYPE

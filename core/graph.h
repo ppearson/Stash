@@ -25,7 +25,7 @@
 
 #include <set>
 
-#include "datetime.h"
+#include "date.h"
 
 // Note: A better name for this class would maybe have been "Chart", but it's not
 //       really worth changing it now...

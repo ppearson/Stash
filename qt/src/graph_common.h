@@ -26,7 +26,7 @@
 #include <string>
 #include <set>
 
-#include "../../core/datetime.h"
+#include "../../core/date.h"
 
 // struct to hold temporary graph params state before applied to actual graph
 struct TempGraphParamState
