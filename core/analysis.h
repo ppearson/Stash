@@ -177,15 +177,16 @@ void copyAreaItemsToVector(std::map<std::string, std::map<MonthYear, fixed> >& a
 
 struct OverviewChartCriteria
 {
-	OverviewChartCriteria(const Account* pAccount, Date &startDate, Date &endDate, fixed &overallMax, bool ignoreTransfers) :
+	OverviewChartCriteria(const Account* pAccount, const Date &startDate, const Date &endDate, bool ignoreTransfers, fixed &overallMax) :
 	m_pAccount(pAccount), m_startDate(startDate), m_endDate(endDate), m_ignoreTransfers(ignoreTransfers), m_overallMax(overallMax)
 	{
 	}
 	
 	const Account*			m_pAccount;
-	Date&					m_startDate;
-	Date&					m_endDate;
+	Date					m_startDate;
+	Date					m_endDate;
 	bool 					m_ignoreTransfers;
+	
 	fixed&					m_overallMax;
 };
 

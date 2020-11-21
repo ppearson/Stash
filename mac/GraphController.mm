@@ -443,7 +443,7 @@ static GraphController *gSharedInterface = nil;
 	
 	fixed overallMax = 0.0;
 	
-	OverviewChartCriteria overviewCriteria(pAccount, mainStartDate, mainEndDate, overallMax, ignoreTransfers);
+	OverviewChartCriteria overviewCriteria(pAccount, mainStartDate, mainEndDate, ignoreTransfers, overallMax);
 	std::vector<OverviewChartItem> aOverviewChartItems;
 	
 	buildOverviewChartItems(overviewCriteria, aOverviewChartItems);
