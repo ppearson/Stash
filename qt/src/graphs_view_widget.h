@@ -57,6 +57,7 @@ protected:
 	void buildGraph();
 	void buildPieChartGraph();
 	void buildAreaChartGraph();
+	void buildOverviewChartGraph();
 	
 	
 protected slots:

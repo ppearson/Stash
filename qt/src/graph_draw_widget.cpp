@@ -86,6 +86,10 @@ void GraphDrawWidget::paintEvent(QPaintEvent* event)
 	{
 		drawAreaChart(painter, event);
 	}
+	else if (m_graphType == eGraphOverviewChart)
+	{
+		drawOverviewChart(painter, event);
+	}
 }
 
 void GraphDrawWidget::setPieChartItems(const std::vector<PieChartItem>& items, const QString& totalAmount)
@@ -125,10 +129,35 @@ void GraphDrawWidget::setAreaChartItems(const std::vector<AreaChartItemValues>& 
 	// TODO: do we even need this now?
 	m_longestDate = "September";
 
-	m_maxValue = maxValue;
+	m_maxAreaValue = maxValue;
 
 	m_selectedItemIndex = -1;
 
+	update();
+	repaint();
+}
+
+void GraphDrawWidget::setOverviewChartItems(const std::vector<OverviewChartItem>& items, fixed maxValue)
+{
+	m_graphType = eGraphOverviewChart;
+	
+	m_aOverviewChartDates.clear();
+	// format the dates
+	for (const OverviewChartItem& item : items)
+	{
+		QDate date(item.m_date.getYear(), item.m_date.getMonth(), 1);
+
+		QString formattedDate = date.toString("MMM\nyyyy");
+		m_aOverviewChartDates.emplace_back(formattedDate);
+	}
+	
+	m_aOverviewChartItems = items;
+	m_maxOverviewValue = maxValue;
+	
+	m_overviewMonthsToShow = 0;
+	m_overviewCurrentPage = 0;
+	m_overviewMultiplePages = false;
+	
 	update();
 	repaint();
 }
@@ -229,6 +258,17 @@ void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 				m_selectedItemIndex = i;
 				break;
 			}
+		}
+	}
+	else if (m_graphType == eGraphOverviewChart)
+	{
+		if (m_overviewPageControlRegions[0].contains(event->pos()) && m_overviewCurrentPage > 0)
+		{
+			m_overviewCurrentPage -= 1;
+		}
+		else if (m_overviewPageControlRegions[1].contains(event->pos()))
+		{
+			m_overviewCurrentPage += 1;
 		}
 	}
 
@@ -413,7 +453,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	QFontMetrics metrics(font());
 
 	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
-	QString maxValueString = currencyFormatter->formatCurrencyAmount(m_maxValue);
+	QString maxValueString = currencyFormatter->formatCurrencyAmount(m_maxAreaValue);
 
 	float leftMargin = 30.0f + metrics.width(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
@@ -429,7 +469,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	painter.drawRect(plotArea);
 
 	// try and generate a "nice" number which divides easily
-	double ceilMaxValue = std::ceil(std::ceil(m_maxValue.ToDouble() / 10.0) * 10.0);
+	double ceilMaxValue = std::ceil(std::ceil(m_maxAreaValue.ToDouble() / 10.0) * 10.0);
 
 	float xIncrement = (float)plotArea.width() / (float)(numXValues - 1);
 	float YScale = (float)plotArea.height() / (float)ceilMaxValue;
@@ -600,9 +640,229 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	}
 }
 
+void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
+{
+	if (m_aOverviewChartItems.empty())
+		return;
+
+	QFontMetrics metrics(font());
+	
+	int textHeight = metrics.height();
+
+	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
+	QString maxValueString = currencyFormatter->formatCurrencyAmount(m_maxOverviewValue);
+
+	float leftMargin = 30.0f + metrics.width(maxValueString);
+	int bottomMargin = (metrics.height() * 2) + 20;
+	int topMargin = 40;
+
+	painter.setRenderHint(QPainter::Antialiasing);
+
+	unsigned int totalMonthValues = m_aOverviewChartItems.size();
+
+	QRect plotArea = geometry();
+	plotArea.adjust(leftMargin, topMargin, -20, -bottomMargin);
+
+	painter.drawRect(plotArea);
+	
+	// work out how many months we can fit in a screen
+	
+	int kBarWidth = 28;
+	int kGapBetweenMonths = 8;
+	int kGapBetweenBars = 2;
+	int kItemWidth = (kBarWidth * 2) + kGapBetweenMonths + kGapBetweenBars;
+	
+	int monthsToShow = plotArea.width() / kItemWidth;
+	if (monthsToShow != m_overviewMonthsToShow) // if the window's been resized, reset the page to the first one
+	{
+		m_overviewCurrentPage = 0;
+		m_overviewMonthsToShow = monthsToShow;
+	}
+	
+	if (totalMonthValues > monthsToShow)
+	{
+		int numPages = totalMonthValues / monthsToShow;
+		
+		if (totalMonthValues % monthsToShow > 0)
+			numPages ++;
+		
+		m_overviewMultiplePages = true;
+		
+		// draw scroll arrows at top
+		
+		int centreX = geometry().width() / 2.0;
+		
+		painter.setBrush(QBrush(Qt::black));
+		
+		static const int kArrowSize = 20;
+		
+		if (m_overviewCurrentPage > 0)
+		{
+			m_overviewPageControlRegions[0] = QRect(centreX - 120, 10, kArrowSize, kArrowSize);
+			QPolygon arrowPoly = createArrowPolylineFromRect(m_overviewPageControlRegions[0], true);
+			painter.drawPolygon(arrowPoly);
+		}
+		else
+		{
+			// set to empty, so that hit detection for mouse down doesn't work
+			m_overviewPageControlRegions[0] = QRect();
+		}
+		
+		if (m_overviewCurrentPage < numPages - 1)
+		{
+			m_overviewPageControlRegions[1] = QRect(centreX + 120 - kArrowSize, 10, kArrowSize, kArrowSize);
+			QPolygon arrowPoly = createArrowPolylineFromRect(m_overviewPageControlRegions[1], false);
+			painter.drawPolygon(arrowPoly);
+		}
+		else
+		{
+			// set to empty, so that hit detection for mouse down doesn't work
+			m_overviewPageControlRegions[1] = QRect();
+		}
+		
+		// draw page circles
+		
+		int kCircleWidth = 8;
+		int kGap = 3;
+		
+		int circlesFullWidth = numPages * (kCircleWidth + kGap) - kGap;
+		
+		QRect widgetArea = geometry();
+		
+		int paginatorYHeight = 16;
+		
+		int paginatorXStart = widgetArea.width() - (widgetArea.width() / 2.0) - (circlesFullWidth / 2.0);
+		
+		painter.setPen(Qt::black);
+		
+		for (int i = 0; i < numPages; i++)
+		{
+			if (i == m_overviewCurrentPage)
+			{
+				painter.setBrush(QBrush(Qt::black));
+			}
+			else
+			{
+				painter.setBrush(Qt::NoBrush);
+			}
+			
+			painter.drawEllipse(paginatorXStart, paginatorYHeight, kCircleWidth, kCircleWidth);
+			
+			paginatorXStart += kCircleWidth + kGap;
+		}
+	}
+	
+	// work out the max Y value for the items we're showing on screen
+	
+	if (monthsToShow > totalMonthValues)
+		monthsToShow = totalMonthValues;
+	
+	int startItemIndex = (m_overviewCurrentPage * monthsToShow);
+	int endItemIndex = startItemIndex + monthsToShow;
+	
+	if (endItemIndex > totalMonthValues)
+		endItemIndex = totalMonthValues;
+	
+	fixed maxValue = 0.0;
+	
+	for (int index = startItemIndex; index < endItemIndex; index++)
+	{
+		const OverviewChartItem& chartItem = m_aOverviewChartItems[index];
+				
+		if (chartItem.m_income > maxValue)
+			maxValue = chartItem.m_income;
+		
+		if (chartItem.m_outgoings > maxValue)
+			maxValue = chartItem.m_outgoings;
+	}
+	
+	// try and generate a "nice" number which divides easily
+	double ceilMaxValue = std::ceil(std::ceil(maxValue.ToDouble() / 10.0) * 10.0);
+	
+	double YScale = plotArea.height() / ceilMaxValue;
+	
+	// draw Y gridlines and labels
+	
+	// work out number of y gridlines
+	int numYGrids = 0.4 * std::sqrt((double)plotArea.height());
+	int nRem = numYGrids % 2;
+	// enforce even numbers so that the scale will look nicer
+	numYGrids += nRem;
+	
+	double YInc = ceilMaxValue / numYGrids;
+	numYGrids++;
+	
+	for (int i = 0; i < numYGrids; i++)
+	{		
+		float thisYValue = plotArea.top() + ((YInc * i) * YScale);
+
+		fixed lineValue = (double)ceilMaxValue - (double)(YInc * i);
+		QString lineValueString = currencyFormatter->formatCurrencyAmount(lineValue);
+
+		painter.setPen(Qt::darkGray);
+
+		painter.drawLine(QPointF(plotArea.left(), thisYValue), QPointF(plotArea.right(), thisYValue));
+
+		painter.setPen(Qt::black);
+
+		painter.drawText(QPoint(20, thisYValue + (textHeight / 2)), lineValueString);
+	}
+	
+	// draw the bars
+	
+	QRect yAxisLabelRect(0, plotArea.bottom() + 10, 40, 30);
+	
+	int plotIndex = 0;
+	for (int index = startItemIndex; index < endItemIndex; index++, plotIndex++)
+	{
+		const OverviewChartItem& chartItem = m_aOverviewChartItems[index];
+		
+		double overallXStart = plotArea.left() + (plotIndex * kItemWidth);
+		double dXStart = overallXStart + (kGapBetweenMonths / 2);
+		
+		painter.setBrush(QBrush(Qt::blue));
+		
+		double incomeBarHeight = chartItem.m_income.ToDouble() * YScale;
+		// flip y origin
+		double incomeBarYTop = plotArea.height() + plotArea.top() - incomeBarHeight;
+		
+		// don't want anti-aliasing for the bars...
+		painter.setRenderHint(QPainter::Antialiasing, false);
+		
+		painter.drawRect(dXStart, incomeBarYTop, kBarWidth, incomeBarHeight);
+		
+		painter.setBrush(QBrush(Qt::red));
+		
+		double outgoingsBarHeight = chartItem.m_outgoings.ToDouble() * YScale;
+		// flip y origin
+		double outgoingsBarYTop = plotArea.height() + plotArea.top() - outgoingsBarHeight;
+		
+		painter.drawRect(dXStart + kBarWidth + kGapBetweenBars, outgoingsBarYTop, kBarWidth, outgoingsBarHeight);
+		
+		// draw date text at the bottom
+		
+		const QString& dateStr = m_aOverviewChartDates[index];
+//		float textExtent = metrics.width(dateStr);
+
+//		yAxisLabelRect.setLeft(xPos - (textExtent / 2.0f));
+		yAxisLabelRect.setLeft(overallXStart);
+
+//		yAxisLabelRect.setRight(xPos + (textExtent / 2.0f));
+		yAxisLabelRect.setRight(overallXStart + kItemWidth);
+		
+		painter.setRenderHint(QPainter::Antialiasing, true);
+		painter.drawText(yAxisLabelRect, Qt::AlignCenter, dateStr);
+	}
+	
+	painter.setRenderHint(QPainter::Antialiasing);
+}
+
 void GraphDrawWidget::displayPopupMenu(const QPoint& pos)
 {
 	if (m_selectedItemIndex == -1)
+		return;
+	
+	if (m_graphType == eGraphOverviewChart)
 		return;
 	
 	QMenu menu(this);
@@ -610,4 +870,24 @@ void GraphDrawWidget::displayPopupMenu(const QPoint& pos)
 	menu.addAction(m_pMenuAddSelectedItem);
 	
 	menu.exec(mapToGlobal(pos));
+}
+
+QPolygon GraphDrawWidget::createArrowPolylineFromRect(const QRect& rectBounds, bool pointLeft)
+{
+	QPolygon finalPolygon;
+	
+	if (pointLeft)
+	{
+		finalPolygon.append(QPoint(rectBounds.left(), rectBounds.top() + (rectBounds.height() / 2)));
+		finalPolygon.append(QPoint(rectBounds.right(), rectBounds.top()));
+		finalPolygon.append(QPoint(rectBounds.right(), rectBounds.bottom()));
+	}
+	else
+	{
+		finalPolygon.append(QPoint(rectBounds.right(), rectBounds.top() + (rectBounds.height() / 2)));
+		finalPolygon.append(QPoint(rectBounds.left(), rectBounds.bottom()));
+		finalPolygon.append(QPoint(rectBounds.left(), rectBounds.top()));
+	}
+	
+	return finalPolygon;
 }

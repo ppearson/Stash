@@ -29,6 +29,5 @@ TODO (to match Mac version):
 
 * Import functionality
 * Export functionality
-* Graph functionality
 * Check UTF-8 strings work everywhere
 

@@ -35,6 +35,11 @@
 
 class StashWindow;
 
+// TODO: I'm on the fence as to whether it was a good idea or not to have this one widget
+//       draw all three chart styles, as opposed to having separate widgets for each style.
+//       I don't think it *really* matters, but having the member variable state for all
+//       three seems non-ideal, but....
+
 class GraphDrawWidget : public QWidget
 {
 	Q_OBJECT
@@ -65,10 +70,20 @@ public:
 		std::vector<double> values;
 	};
 	
+	// could really just use the struct in core/analysis.h, as it's identical, but...
+	struct OverviewChartItem
+	{
+		MonthYear		m_date;
+		fixed			m_income;
+		fixed			m_outgoings;
+	};
+	
 	
 	void setPieChartItems(const std::vector<PieChartItem>& items, const QString& totalAmount);
 
 	void setAreaChartItems(const std::vector<AreaChartItemValues>& dataItems, const std::vector<MonthYear>& dates, fixed maxValue);
+	
+	void setOverviewChartItems(const std::vector<OverviewChartItem>& items, fixed maxValue);
 	
 
 	virtual void mouseReleaseEvent(QMouseEvent* event);
@@ -82,8 +97,11 @@ protected slots:
 protected:
 	void drawPieChart(QPainter& painter, QPaintEvent* event);
 	void drawAreaChart(QPainter& painter, QPaintEvent* event);
+	void drawOverviewChart(QPainter& painter, QPaintEvent* event);
 	
 	void displayPopupMenu(const QPoint& pos);
+	
+	static QPolygon createArrowPolylineFromRect(const QRect& rectBounds, bool pointLeft);
 	
 signals:
 	void selectedItemAdded(QString stringValue);
@@ -107,13 +125,21 @@ protected:
 
 	std::vector<AreaChartItemValues>	m_aAreaChartDataItems;
 	std::vector<QString>		m_aAreaChartDates;
-	fixed						m_maxValue;
+	fixed						m_maxAreaValue;
 	std::string					m_longestDate;
 	// don't really like having this here or being defined at draw time,
 	// but it simplifies hit-detection for selection considerably...
 	std::vector<QPolygonF>		m_areaItemPolygons;
 	
-	int							m_selectedItemIndex;
+	std::vector<OverviewChartItem>		m_aOverviewChartItems;
+	std::vector<QString>		m_aOverviewChartDates; // TODO: we could re-use the AreaChart one
+	fixed						m_maxOverviewValue;
+	int							m_overviewMonthsToShow;
+	int							m_overviewCurrentPage;
+	bool						m_overviewMultiplePages;
+	QRect						m_overviewPageControlRegions[2];
+	
+	int							m_selectedItemIndex; // used for Pie and Area types
 };
 
 #endif // GRAPH_DRAW_WIDGET_H

@@ -100,8 +100,7 @@ void GraphsViewWidget::buildGraph()
 {
 	buildPieChartGraph();
 	buildAreaChartGraph();
-
-	
+	buildOverviewChartGraph();
 }
 
 void GraphsViewWidget::buildPieChartGraph()
@@ -155,6 +154,8 @@ void GraphsViewWidget::buildPieChartGraph()
 		newItem.angle = itemValues.getAngle();
 		newItem.title = itemValues.getTitle();
 		
+		// TODO: now that the GraphDrawWidget is actually doing currency formatting (due to AreaChart requirements)
+		//       we could do that in there instead of here
 		newItem.amount = pCurrencyFormatter->formatCurrencyAmount(itemValues.getAmount());
 		
 		totalAmount += itemValues.getAmount();
@@ -222,6 +223,44 @@ void GraphsViewWidget::buildAreaChartGraph()
 	}
 
 	m_pGraphOverTime->setAreaChartItems(areaItems, areaResults.m_aDates, areaResults.m_overallMax);
+}
+
+void GraphsViewWidget::buildOverviewChartGraph()
+{
+	const Document& document = m_pMainWindow->getDocumentController().getDocument();
+	
+	TempGraphParamState tempParamState = m_pGraphFormPanel->getTempGraphParamValues();
+	
+	if (tempParamState.accountIndex < 0)
+		return;
+	
+	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
+	
+	fixed overallMax;
+	
+	OverviewChartCriteria overviewCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
+										   tempParamState.ignoreTransfers, overallMax);
+	
+	std::vector<OverviewChartItem> overviewItems;
+	
+	if (!buildOverviewChartItems(overviewCriteria, overviewItems))
+		return;
+	
+	// TODO: doing this "conversion" is pretty silly given both items are identical...
+	
+	std::vector<GraphDrawWidget::OverviewChartItem> overviewGraphItems;
+	
+	for (const OverviewChartItem& item : overviewItems)
+	{
+		GraphDrawWidget::OverviewChartItem newItem;
+		newItem.m_date = item.m_date;
+		newItem.m_income = item.m_income;
+		newItem.m_outgoings = item.m_outgoings;
+		
+		overviewGraphItems.emplace_back(newItem);
+	}
+	
+	m_pGraphOverview->setOverviewChartItems(overviewGraphItems, overallMax);
 }
 
 void GraphsViewWidget::graphParamValuesChanged()
