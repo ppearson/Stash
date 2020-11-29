@@ -195,6 +195,7 @@ void StashWindow::setupWindow()
 	m_pPayeesViewWidget->hide();
 	m_pCategoriesViewWidget->hide();
 	m_pScheduledTransactionsViewWidget->hide();
+	m_pGraphsViewWidget->hide();
 	
 	m_pIndexView->resize(100, 50);
 	// just to have the items resized correctly initially with a blank document...
