@@ -32,10 +32,10 @@
 #include "stash_window.h"
 
 ScheduledTransactionsViewDataModel::ScheduledTransactionsViewDataModel(StashWindow* pMainWindow, Document& document, QObject* parent) :
-     QAbstractItemModel(parent),
-	 m_pMainWindow(pMainWindow),
-     m_document(document),
-	 m_pRootItem(nullptr)
+	QAbstractItemModel(parent),
+	m_pMainWindow(pMainWindow),
+	m_document(document),
+	m_pRootItem(nullptr)
 {
 	rebuildModelFromDocument();
 }
@@ -316,7 +316,7 @@ void ScheduledTransactionsViewDataModel::clear()
 //
 
 ScheduledTransactionsModelItem::ScheduledTransactionsModelItem(ScheduledTransactionsModelItem* parent) :
-    m_parentItem(parent),
+	m_parentItem(parent),
 	m_scheduledTransactionIndex(-1)
 {
 	

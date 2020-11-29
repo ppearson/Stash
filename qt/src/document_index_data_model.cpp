@@ -216,7 +216,7 @@ void DocumentIndexDataModel::clear()
 //
 
 DocumentIndexModelItem::DocumentIndexModelItem(const QVariant& data, DocumentIndexModelItem* parent, DocumentIndexType type) : 
-    m_parentItem(parent), m_itemMainData(data), m_type(type)
+	m_parentItem(parent), m_itemMainData(data), m_type(type)
 {
 	
 }

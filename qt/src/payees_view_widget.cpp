@@ -29,7 +29,7 @@
 #include "widgets/item_control_buttons_widget.h"
 
 PayeesViewWidget::PayeesViewWidget(QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
-    m_pMainWindow(mainWindow)
+	m_pMainWindow(mainWindow)
 {
 	QVBoxLayout* layout = new QVBoxLayout(this);
 	layout->setMargin(0);

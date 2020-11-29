@@ -39,8 +39,8 @@
 #include "graph_draw_widget.h"
 
 GraphsViewWidget::GraphsViewWidget(Document& document, QWidget* pParent, StashWindow* mainWindow) : QWidget(pParent),
-    m_pMainWindow(mainWindow),
-    m_pGraph(nullptr),
+	m_pMainWindow(mainWindow),
+	m_pGraph(nullptr),
 	m_pGraphFormPanel(nullptr)
 {
 	QHBoxLayout* pHBoxLayout = new QHBoxLayout(this);

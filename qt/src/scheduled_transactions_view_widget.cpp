@@ -39,18 +39,18 @@
 
 static const std::string sTableStyle2 = "QTreeView::item {"
 		"border: 0.5px solid #8c8c8c;"
-        "border-top-color: transparent;"
-        "border-left-color: transparent;"
+		"border-top-color: transparent;"
+		"border-left-color: transparent;"
 		"}"		
 		"QTreeView::item:selected{background-color: palette(highlight); color: palette(highlightedText);};";
 
 ScheduledTransactionsViewWidget::ScheduledTransactionsViewWidget(Document& document, QWidget* pParent, StashWindow* mainWindow) :
-    QWidget(pParent),
+	QWidget(pParent),
 	m_pMainWindow(mainWindow),
 	m_document(document),
 	m_pSplitter(nullptr),
-    m_pTreeView(nullptr),
-    m_pModel(nullptr),
+	m_pTreeView(nullptr),
+	m_pModel(nullptr),
 	m_pScheduledTransactionFormPanel(nullptr),
 	m_pItemControlButtons(nullptr),
 	m_scheduledTransactionIndex(-1)

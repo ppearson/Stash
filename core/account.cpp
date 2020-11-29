@@ -43,7 +43,7 @@ void Account::Load(std::fstream& stream, int version)
 	unsigned int numTransactions = 0;	
 	stream.read((char *) &numTransactions, sizeof(unsigned int));
     
-    m_aTransactions.reserve(numTransactions);
+	m_aTransactions.reserve(numTransactions);
 	
 	for (unsigned int i = 0; i < numTransactions; i++)
 	{
