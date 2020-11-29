@@ -85,8 +85,8 @@ MakeTransferDialog::MakeTransferDialog(const Document& document, QWidget* parent
 		m_pCategory->addItem(itCat->c_str());
 	}
 	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
-	m_pCategory->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
-//	m_pCategory->completer()->setCompletionMode(QCompleter::InlineCompletion); // this is close to useless in practice, it misses things!
+//	m_pCategory->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
+	m_pCategory->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
 //	m_pCategory->completer()->setCompletionMode(QCompleter::PopupCompletion); // okay
 	pLayout->addRow("Category:", m_pCategory);
 	
