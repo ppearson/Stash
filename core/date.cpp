@@ -52,7 +52,8 @@ Date::Date(time_t Time)
 }
 
 Date::Date(int Day, int Month, int Year) :
-	m_Day(Day), m_Month(Month), m_Year(Year), m_Separator('/')
+	m_Year(Year), m_Month(Month), m_Day(Day),
+	m_Separator('/')
 {
 	SetTimeFromVars();
 }

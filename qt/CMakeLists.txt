@@ -6,10 +6,21 @@ enable_language(CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
+# so that QtCreator uses modern C++..
 set(QMAKE_CXXFLAGS "-std=c++11")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -std=c++11")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -std=c++11")
+#set(DEBUG_WARNINGS "-Wall -Wextra")
+#set(DEBUG_WARNINGS_SUPPRESS "-Wno-unused-function -Wno-unused-parameter -Wno-unused-variable")
+#set(MAIN_DEBUG_CPP_FLAGS "-g -D_GLIBCXX_DEBUG ${DEBUG_WARNINGS} ${DEBUG_WARNINGS_SUPPRESS}")
+set(MAIN_DEBUG_CPP_FLAGS "-g ${DEBUG_WARNINGS} ${DEBUG_WARNINGS_SUPPRESS}")
+
+#set(MAIN_RELEASE_CPP_FLAGS "-O2 -g -fPIC -ffast-math")
+set(MAIN_RELEASE_CPP_FLAGS "-O2 -fPIC -ffast-math")
+
+set(EXTRA_FLAGS "-std=c++11")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${EXTRA_FLAGS} ${MAIN_DEBUG_CPP_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "${EXTRA_FLAGS} ${MAIN_RELEASE_CPP_FLAGS}")
 
 set(QT5 0)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

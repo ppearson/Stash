@@ -708,7 +708,7 @@ void StashWindow::fileOpen()
 	if (!dialog.exec())
 		 return;
 
-	const QString& fileName = dialog.selectedFiles()[0];
+	const QString fileName = dialog.selectedFiles()[0];
 	loadDocument(fileName);
 }
 
@@ -730,7 +730,7 @@ void StashWindow::fileSaveAs()
 	if (!dialog.exec())
 		 return;
 
-	const QString& fileName = dialog.selectedFiles()[0];
+	const QString fileName = dialog.selectedFiles()[0];
 
 	std::string path = fileName.toStdString();
 

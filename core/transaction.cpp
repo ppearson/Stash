@@ -31,14 +31,22 @@
 #include "transaction.h"
 #include "string.h"
 
-Transaction::Transaction() : m_Split(false), m_Type(None), m_Cleared(false), m_Flagged(false), m_Reconciled(false), m_HasFITID(false)
+Transaction::Transaction() : m_Cleared(false), m_Flagged(false), m_Reconciled(false),
+	m_Type(None),
+	m_HasFITID(false),
+	m_Split(false)
 {
 	
 }
 
 Transaction::Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date) :
-	m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount), m_Date(date), m_Split(false), m_Type(None),
-	m_Cleared(false), m_Reconciled(false), m_Flagged(false), m_HasFITID(false)
+	m_Cleared(false), m_Flagged(false), m_Reconciled(false),
+	m_Date(date),
+	m_Category(Category), m_Description(Description), m_Payee(Payee),
+	m_Amount(Amount), 
+	m_Type(None),
+	m_HasFITID(false),
+	m_Split(false)
 {
 	
 }
@@ -143,7 +151,6 @@ fixed Transaction::getSplitTotal() const
 	fixed total = 0.0;
 	
 	std::vector<SplitTransaction>::const_iterator it = m_aSplits.begin();
-	std::vector<SplitTransaction>::const_iterator itEnd = m_aSplits.end();
 	
 	for (; it != m_aSplits.end(); ++it)
 	{
