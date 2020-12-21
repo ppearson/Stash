@@ -37,6 +37,8 @@
 
 #include "stash_window.h"
 
+#include "widgets/expression_line_edit.h"
+
 #include "../../core/document.h"
 #include "../../core/split_transaction.h"
 
@@ -63,7 +65,7 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	QLabel* pAmountLabel = new QLabel(this);
 	pAmountLabel->setText("A&mount:");
 	
-	m_pAmount = new QLineEdit(this);
+	m_pAmount = new ExpressionLineEdit(this);
 	pAmountLabel->setBuddy(m_pAmount);
 		
 	QLabel* pCategoryLabel = new QLabel(this);

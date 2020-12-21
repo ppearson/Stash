@@ -38,6 +38,8 @@ class QComboBox;
 class QCheckBox;
 class QDateEdit;
 
+class ExpressionLineEdit;
+
 class TransactionFormPanel : public QWidget
 {
 	Q_OBJECT
@@ -79,7 +81,7 @@ protected:
 	Document&			m_document;
 	
 	QComboBox*			m_pPayee;
-	QLineEdit*			m_pAmount;
+	ExpressionLineEdit*	m_pAmount;
 	QComboBox*			m_pCategory;
 	QCheckBox*			m_pCleared;
 	QComboBox*			m_pType;
