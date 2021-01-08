@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app (core).
- * Copyright (C) 2010 Peter Pearson
+ * Copyright (C) 2010-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -42,9 +42,10 @@ enum OFX_TYPE
 class OFXBankAccount
 {
 public:
-	OFXBankAccount() { }
-	OFXBankAccount(std::string bankID, std::string accountID, std::string type);
-	virtual ~OFXBankAccount() { }
+	OFXBankAccount()
+	{
+	}
+	OFXBankAccount(const std::string& bankID, const std::string& accountID, const std::string& type);
 	
 	void setBankID(std::string id) { m_bankID = id; }
 	void setAccountID(std::string id) { m_accountID = id; }
@@ -90,8 +91,8 @@ public:
 	std::string			getMemo() const { return m_memo; }
 	std::string			getFITID() const { return m_fitid; }
 	
-	void writeToSGMLStream(std::fstream &stream);
-	void writeToXMLStream(std::fstream &stream);
+	void writeToSGMLStream(std::fstream &stream) const;
+	void writeToXMLStream(std::fstream &stream) const;
 	
 private:
 	Transaction::Type	m_type;
@@ -178,35 +179,35 @@ class OFXStatementResponse
 public:
 	OFXStatementResponse() { }
 	OFXStatementResponse(const OFXBankAccount &account);
-	virtual ~OFXStatementResponse() { }
 	
-	void addTransaction(std::auto_ptr<OFXStatementTransaction> transaction) { m_aTransactions.push_back(*transaction); }
+	void addTransaction(const OFXStatementTransaction& transaction) { m_aTransactions.push_back(transaction); }
 	
-	void setAccount(std::auto_ptr<OFXBankAccount> account) { m_account = *account; }
-	void calculateBalance();
-	void setBalance(std::string &balance) { m_balance.SetFromString(balance); }
+	void setAccount(const OFXBankAccount& account) { m_account = account; }
+	fixed calculateBalance() const;
+	void setBalance(const std::string &balance) { m_balance.SetFromString(balance); }
 	void setCurrencyCode(std::string &currency) { m_currency = currency; }
-	
+
+	// *really* don't like this, but...
 	void reverseTransactionOrder() { std::reverse(m_aTransactions.begin(), m_aTransactions.end()); }
 	
 	const OFXBankAccount &getAccount() const { return m_account; }
 	
-	int getTransactionCount() { return m_aTransactions.size(); }
+	int getTransactionCount() const { return m_aTransactions.size(); }
 	const OFXStatementTransaction &getTransaction(int trans) const { return m_aTransactions[trans]; }
 	
-	const fixed &getBalance() const { return m_balance; }
+	const fixed& getBalance() const { return m_balance; }
 	
 	void addOFXTransactionsForAccount(const Account& account);
 	
-	void writeToSGMLStream(std::fstream &stream);
-	void writeToXMLStream(std::fstream &stream);
+	void writeToSGMLStream(std::fstream &stream) const;
+	void writeToXMLStream(std::fstream &stream) const;
 	
-	inline OFXStTrIt begin() const { return m_aTransactions.begin(); }
-	inline OFXStTrIt end() const { return m_aTransactions.end(); }
+	inline OFXStTrIt begin() const { return m_aTransactions.cbegin(); }
+	inline OFXStTrIt end() const { return m_aTransactions.cend(); }
 	
 private:
-	OFXBankAccount		m_account;
 	std::vector<OFXStatementTransaction> m_aTransactions;
+	OFXBankAccount		m_account;
 	fixed				m_balance;
 	std::string			m_currency;
 };
@@ -215,20 +216,27 @@ class OFXStatementTransactionResponse
 {
 public:
 	OFXStatementTransactionResponse() { }
-	OFXStatementTransactionResponse(int number) { m_number = number; }
-	void setStatementResponse(std::auto_ptr<OFXStatementResponse> statementResponse) { m_statementResponse = *statementResponse; }
+	void setStatementResponse(const OFXStatementResponse& statementResponse) { m_statementResponse = statementResponse; }
 	
-	OFXStatementResponse &getStatementResponse()  { return m_statementResponse; }
+	OFXStatementResponse& getStatementResponse()
+	{
+		return m_statementResponse;
+	}
+	const OFXStatementResponse& getStatementResponse() const
+	{
+		return m_statementResponse;
+	}
 	
-	void addOFXTransactionsForAccount(Account &account) {m_statementResponse.addOFXTransactionsForAccount(account); }
+	void addOFXTransactionsForAccount(Account &account)
+	{
+		m_statementResponse.addOFXTransactionsForAccount(account);
+	}
 	
-	void writeToSGMLStream(std::fstream &stream);
-	void writeToXMLStream(std::fstream &stream);
+	void writeToSGMLStream(std::fstream &stream) const;
+	void writeToXMLStream(std::fstream &stream) const;
 	
 private:
 	OFXStatementResponse m_statementResponse;
-	int m_number;
-	
 };
 
 class OFXBankMessageResponse
@@ -237,27 +245,29 @@ class OFXBankMessageResponse
 	
 };
 
-typedef std::vector<OFXStatementTransactionResponse>::iterator OFXStTrResIt;
+typedef std::vector<OFXStatementTransactionResponse>::const_iterator OFXStTrResIt;
 
 class OFXData
 {
 public:
 	OFXData() { }
-	void addStatementTransactionResponse(std::auto_ptr<OFXStatementTransactionResponse> pResponse) { m_aStatements.push_back(*pResponse.get()); }
 	void addStatementTransactionResponse(OFXStatementTransactionResponse &response) { m_aStatements.push_back(response); }
 
-	inline OFXStTrResIt begin() { return m_aStatements.begin(); }
-	inline OFXStTrResIt end() { return m_aStatements.end(); }
+	inline OFXStTrResIt begin() const { return m_aStatements.cbegin(); }
+	inline OFXStTrResIt end() const { return m_aStatements.cend(); }
 	
-	OFXStatementTransactionResponse &getResponse(int response) { return m_aStatements[response]; }
+	const OFXStatementTransactionResponse& getResponse(int response) const
+	{
+		return m_aStatements[response];
+	}
 	
-	int getResponseCount() { return m_aStatements.size(); }
+	int getResponseCount() const { return m_aStatements.size(); }
 	
-	bool exportDataToFile(std::string path, bool xml);
-	void writeSGMLStartToStream(std::fstream &stream);
-	void writeXMLStartToStream(std::fstream &stream);
+	bool exportDataToFile(const std::string& path, bool xml) const;
+	static void writeSGMLStartToStream(std::fstream &stream);
+	static void writeXMLStartToStream(std::fstream &stream);
 	
-	void writeEndToStream(std::fstream &stream);
+	static void writeEndToStream(std::fstream &stream);
 	
 private:
 	std::vector<OFXStatementTransactionResponse> m_aStatements;
@@ -270,7 +280,7 @@ bool importOFXFile(std::string path, OFXData &dataItem);
 
 bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encoding, std::string &charset);
 
-bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool cleared,
+bool importOFXStatementIntoAccount(Account &account, const OFXStatementResponse &statement, bool reverseTransactions, bool cleared,
 								   bool ignoreDuplicates);
 
 

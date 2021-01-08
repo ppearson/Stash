@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app (core).
- * Copyright (C) 2010 Peter Pearson
+ * Copyright (C) 2010-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -28,7 +28,7 @@
 #include "account.h"
 #include "string.h"
 
-OFXBankAccount::OFXBankAccount(std::string bankID, std::string accountID, std::string type) :
+OFXBankAccount::OFXBankAccount(const std::string& bankID, const std::string& accountID, const std::string& type) :
 						m_bankID(bankID), m_accountID(accountID)
 {
 	m_type = Account::eTypeChecking;
@@ -39,7 +39,7 @@ OFXStatementResponse::OFXStatementResponse(const OFXBankAccount &account) : m_ac
 	
 }
 
-void OFXStatementResponse::calculateBalance()
+fixed OFXStatementResponse::calculateBalance() const
 {
 	fixed balance = 0.0;
 	
@@ -47,15 +47,15 @@ void OFXStatementResponse::calculateBalance()
 	
 	for (; transactionsIt != end(); ++transactionsIt)
 	{
-		OFXStatementTransaction itemTrans = (*transactionsIt);
+		const OFXStatementTransaction& itemTrans = (*transactionsIt);
 		
 		balance += itemTrans.getAmount();			
 	}
 	
-	m_balance = balance;
+	return balance;
 }
 
-void OFXStatementResponse::writeToSGMLStream(std::fstream &stream)
+void OFXStatementResponse::writeToSGMLStream(std::fstream &stream) const
 {
 	stream << "      <STMTRS>\n";
 	stream << "      <CURDEF>" << m_currency << "\n";
@@ -83,21 +83,21 @@ void OFXStatementResponse::writeToSGMLStream(std::fstream &stream)
 	stream << "      <DTSTART>" << dtStart.FormattedDate(Date::OFX) << "\n";
 	stream << "      <DTEND>" << dtEnd.FormattedDate(Date::OFX) << "\n\n";
 	
-	std::vector<OFXStatementTransaction>::iterator it = m_aTransactions.begin();
+	std::vector<OFXStatementTransaction>::const_iterator it = m_aTransactions.begin();
 		 
 	for (; it != m_aTransactions.end(); ++it)
 	{
-		OFXStatementTransaction &trs = (*it);
+		const OFXStatementTransaction& trs = (*it);
 		
 		trs.writeToSGMLStream(stream);		
 	}
 	
 	stream << "      </BANKTRANLIST>\n";
 	
-	calculateBalance();
+	fixed balance = calculateBalance();
 	
 	stream << "      <LEDGERBAL>\n";
-	stream << "       <BALAMT>" << m_balance << "\n";
+	stream << "       <BALAMT>" << balance << "\n";
 	
 	Date dt;
 	dt.Now();
@@ -107,7 +107,7 @@ void OFXStatementResponse::writeToSGMLStream(std::fstream &stream)
 	stream << "     </STMTRS>\n";
 }
 
-void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
+void OFXStatementResponse::writeToXMLStream(std::fstream &stream) const
 {
 	stream << "      <STMTRS>\n";
 	stream << "      <CURDEF>" << m_currency << "</CURDEF>\n";
@@ -135,22 +135,22 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream)
 	stream << "      <DTSTART>" << dtStart.FormattedDate(Date::OFX) << "</DTSTART>\n";
 	stream << "      <DTEND>" << dtEnd.FormattedDate(Date::OFX) << "</DTEND>\n\n";
 	
-	std::vector<OFXStatementTransaction>::iterator it = m_aTransactions.begin();
-	std::vector<OFXStatementTransaction>::iterator itEnd = m_aTransactions.end();
+	std::vector<OFXStatementTransaction>::const_iterator it = m_aTransactions.begin();
+	std::vector<OFXStatementTransaction>::const_iterator itEnd = m_aTransactions.end();
 	
 	for (; it != itEnd; ++it)
 	{
-		OFXStatementTransaction &trs = (*it);
+		const OFXStatementTransaction& trs = (*it);
 		
 		trs.writeToXMLStream(stream);		
 	}
 	
 	stream << "      </BANKTRANLIST>\n";
 	
-	calculateBalance();
+	fixed balance = calculateBalance();
 	
 	stream << "      <LEDGERBAL>\n";
-	stream << "       <BALAMT>" << m_balance << "</BALAMT>\n";
+	stream << "       <BALAMT>" << balance << "</BALAMT>\n";
 	
 	Date dt;
 	dt.Now();
@@ -196,7 +196,7 @@ void OFXStatementTransaction::setDate(std::string &date)
 	m_date.setDate(date, 0, Date::OFX);
 }
 
-void OFXStatementTransaction::writeToSGMLStream(std::fstream &stream)
+void OFXStatementTransaction::writeToSGMLStream(std::fstream &stream) const
 {
 	stream << "        <STMTTRN>\n";
 	stream << "          <TRNTYPE>" << TransactionTypeToString(m_type) << "\n";
@@ -213,7 +213,7 @@ void OFXStatementTransaction::writeToSGMLStream(std::fstream &stream)
 	stream << "        </STMTTRN>\n\n";
 }
 
-void OFXStatementTransaction::writeToXMLStream(std::fstream &stream)
+void OFXStatementTransaction::writeToXMLStream(std::fstream &stream) const
 {
 	stream << "        <STMTTRN>\n";
 	stream << "          <TRNTYPE>" << TransactionTypeToString(m_type) << "</TRNTYPE>\n";
@@ -240,7 +240,7 @@ void OFXStatementTransaction::setType(std::string &type)
 	m_type = StringToTransactionType(type);
 }
 
-void OFXStatementTransactionResponse::writeToSGMLStream(std::fstream &stream)
+void OFXStatementTransactionResponse::writeToSGMLStream(std::fstream &stream) const
 {
 	stream << "   <STMTTRNRS>\n";
 	stream << "     <TRNUID>1\n";
@@ -254,7 +254,7 @@ void OFXStatementTransactionResponse::writeToSGMLStream(std::fstream &stream)
 	stream << "   </STMTTRNRS>\n";
 }
 
-void OFXStatementTransactionResponse::writeToXMLStream(std::fstream &stream)
+void OFXStatementTransactionResponse::writeToXMLStream(std::fstream &stream) const
 {
 	stream << "   <STMTTRNRS>\n";
 	stream << "     <TRNUID>1</TRNUID>\n";
@@ -268,7 +268,7 @@ void OFXStatementTransactionResponse::writeToXMLStream(std::fstream &stream)
 	stream << "   </STMTTRNRS>\n";
 }
 
-bool OFXData::exportDataToFile(std::string path, bool xml)
+bool OFXData::exportDataToFile(const std::string& path, bool xml) const
 {
 	std::fstream fileStream(path.c_str(), std::ios::out | std::ios::trunc);
 	
@@ -287,7 +287,7 @@ bool OFXData::exportDataToFile(std::string path, bool xml)
 	
 	for (; responseIt != responseItEnd; ++responseIt)
 	{
-		OFXStatementTransactionResponse &response = (*responseIt);
+		const OFXStatementTransactionResponse &response = (*responseIt);
 		
 		if (!xml)
 		{
@@ -500,10 +500,10 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 	
 	std::string line;
 	
-	std::auto_ptr<OFXStatementTransactionResponse> pStatementTransactionResponse(new OFXStatementTransactionResponse());
-	std::auto_ptr<OFXStatementResponse> pStatementResponse(new OFXStatementResponse());
-	std::auto_ptr<OFXBankAccount> pBankAccount(new OFXBankAccount());
-	std::auto_ptr<OFXStatementTransaction> pTransaction(new OFXStatementTransaction());
+	OFXStatementTransactionResponse statementTransactionResponse;
+	OFXStatementResponse statementResponse;
+	OFXBankAccount bankAccount;
+	OFXStatementTransaction transaction;
 	
 	size_t decodedLength = 2048;
 	
@@ -558,81 +558,81 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 			
 			if (tag == "STMTTRNRS" || tag == "CCSTMTTRNRS")
 			{
-				pStatementTransactionResponse.reset(new OFXStatementTransactionResponse());				
+				statementTransactionResponse = OFXStatementTransactionResponse();
 			}
 			else if (tag == "/STMTTRNRS" || tag == "/CCSTMTTRNRS")
 			{
-				dataItem.addStatementTransactionResponse(pStatementTransactionResponse);
+				dataItem.addStatementTransactionResponse(statementTransactionResponse);
 			}
 			else if (tag == "STMTRS" || tag == "CCSTMTRS")
 			{
-				pStatementResponse.reset(new OFXStatementResponse());
+				statementResponse = OFXStatementResponse();
 			}
 			else if (tag == "/STMTRS" || tag  == "/CCSTMTRS")
 			{
-				pStatementTransactionResponse->setStatementResponse(pStatementResponse);
+				statementTransactionResponse.setStatementResponse(statementResponse);
 			}
 			else if (tag == "BANKACCTFROM")
 			{
-				pBankAccount.reset(new OFXBankAccount());
+				bankAccount = OFXBankAccount();
 			}
 			else if (tag == "CCACCTFROM")
 			{
-				pBankAccount.reset(new OFXBankAccount());
+				bankAccount = OFXBankAccount();
 				
-				pBankAccount->setType(Account::eTypeCreditCard);
+				bankAccount.setType(Account::eTypeCreditCard);
 			}
 			else if (tag == "BANKID")
 			{
-				pBankAccount->setBankID(data);
+				bankAccount.setBankID(data);
 			}
 			else if (tag == "ACCTID")
 			{
-				pBankAccount->setAccountID(data);
+				bankAccount.setAccountID(data);
 			}
 			else if (tag == "ACCTTYPE")
 			{
-				pBankAccount->setType(data);
+				bankAccount.setType(data);
 			}
 			else if (tag == "/BANKACCTFROM" || tag == "/CCACCTFROM")
 			{
-				pStatementResponse->setAccount(pBankAccount);
+				statementResponse.setAccount(bankAccount);
 			}
 			else if (tag == "STMTTRN")
 			{
-				pTransaction.reset(new OFXStatementTransaction());
+				transaction = OFXStatementTransaction();
 			}
 			else if (tag == "TRNTYPE")
 			{
-				pTransaction->setType(data);
+				transaction.setType(data);
 			}
 			else if (tag == "DTPOSTED")
 			{
-				pTransaction->setDate(data);
+				transaction.setDate(data);
 			}
 			else if (tag == "TRNAMT")
 			{
-				pTransaction->setAmount(data);
+				transaction.setAmount(data);
 			}
 			else if (tag == "NAME")
 			{
-				pTransaction->setName(data);
+				transaction.setName(data);
 			}
 			else if (tag == "MEMO")
 			{
-				pTransaction->setMemo(data);
+				transaction.setMemo(data);
 			}
 			else if (tag == "FITID")
 			{
-				pTransaction->setFITID(data);
+				transaction.setFITID(data);
 			}
 			else if (tag == "/STMTTRN")
 			{
-				pStatementResponse->addTransaction(pTransaction);
+				statementResponse.addTransaction(transaction);
 			}
 			else if (tag == "BALAMT")
 			{
-				pStatementResponse->setBalance(data);
+				statementResponse.setBalance(data);
 			}
 		}		
 	}
@@ -642,11 +642,14 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 	return true;
 }
 
-bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &statement, bool reverseTransactions, bool cleared, bool ignoreDuplicates)
+bool importOFXStatementIntoAccount(Account &account, const OFXStatementResponse &statement, bool reverseTransactions, bool cleared, bool ignoreDuplicates)
 {
 	if (reverseTransactions)
 	{
-		statement.reverseTransactionOrder();
+		// insanely disgusting, and this whole infrastructure needs a re-factor, but optionally using reverse_iterators
+		// below is not completely trivial due to differing types, so this is easiest for the moment...
+		OFXStatementResponse& nonConstStatement = const_cast<OFXStatementResponse&>(statement);
+		nonConstStatement.reverseTransactionOrder();
 	}
 	
 	OFXStTrIt transactionsIt = statement.begin();
@@ -656,7 +659,7 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 	
 	for (; transactionsIt != transactionsItEnd; ++transactionsIt)
 	{
-		OFXStatementTransaction itemTrans = (*transactionsIt);
+		const OFXStatementTransaction& itemTrans = *transactionsIt;
 		
 		Transaction newTransaction(itemTrans.getMemo(), itemTrans.getName(), "", itemTrans.getAmount(), itemTrans.getDate());
 		newTransaction.setType(itemTrans.getType());
@@ -670,7 +673,7 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 		
 		if (!itemTrans.getFITID().empty()) // if there's a FITID, apply it to the Transaction so it will get saved
 		{
-			const std::string strFITID = itemTrans.getFITID();
+			const std::string& strFITID = itemTrans.getFITID();
 			newTransaction.setFITID(strFITID);
 			newTransaction.setHasFITID(true);
 			
@@ -681,7 +684,7 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 					ignoreThisOne = true;
 				}
 			}
-		}		
+		}
 		
 		if (!ignoreThisOne)
 		{
@@ -690,4 +693,4 @@ bool importOFXStatementIntoAccount(Account &account, OFXStatementResponse &state
 	}
 	
 	return true;
-}								   
+}

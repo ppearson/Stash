@@ -1898,7 +1898,7 @@ toolbarViewGroupTag;
 		
 		for (; sTRIt != dataItem.end(); ++sTRIt)
 		{
-			OFXStatementResponse &stResp = (*sTRIt).getStatementResponse();
+			const OFXStatementResponse &stResp = (*sTRIt).getStatementResponse();
 			
 			NSMutableDictionary *importItem = [[NSMutableDictionary alloc] init];
 			
@@ -2005,8 +2005,8 @@ toolbarViewGroupTag;
 		if ([[accountSettings objectForKey:@"import"] boolValue] == NO)
 			 continue;
 							  
-		OFXStatementTransactionResponse &response = dataItem.getResponse(i);		
-		OFXStatementResponse &stResp = response.getStatementResponse();
+		const OFXStatementTransactionResponse& response = dataItem.getResponse(i);
+		const OFXStatementResponse& stResp = response.getStatementResponse();
 		
 		int importType = [[accountSettings objectForKey:@"importType"] intValue];
 		
