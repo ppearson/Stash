@@ -20,7 +20,7 @@
  *
  */
 
-#include "storage.h"
+#include "io_qif.h"
 
 #include <string.h> // for memset()
 

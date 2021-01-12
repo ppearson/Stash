@@ -23,8 +23,8 @@
 #include <locale.h>
 #include <iconv.h>
 
-#include "ofx.h"
-#include "storage.h"
+#include "io_ofx.h"
+#include "io_qif.h"
 #include "account.h"
 #include "string.h"
 

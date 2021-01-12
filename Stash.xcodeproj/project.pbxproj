@@ -38,10 +38,10 @@
 		D082ACDF124E2B2C00C525E1 /* expression_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACCA124E2B2C00C525E1 /* expression_parser.cpp */; };
 		D082ACE0124E2B2C00C525E1 /* fixed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACCC124E2B2C00C525E1 /* fixed.cpp */; };
 		D082ACE1124E2B2C00C525E1 /* graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACCE124E2B2C00C525E1 /* graph.cpp */; };
-		D082ACE2124E2B2C00C525E1 /* ofx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD0124E2B2C00C525E1 /* ofx.cpp */; };
+		D082ACE2124E2B2C00C525E1 /* io_ofx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD0124E2B2C00C525E1 /* io_ofx.cpp */; };
 		D082ACE3124E2B2C00C525E1 /* scheduled_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD2124E2B2C00C525E1 /* scheduled_transaction.cpp */; };
 		D082ACE4124E2B2C00C525E1 /* split_transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD4124E2B2C00C525E1 /* split_transaction.cpp */; };
-		D082ACE5124E2B2C00C525E1 /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD6124E2B2C00C525E1 /* storage.cpp */; };
+		D082ACE5124E2B2C00C525E1 /* io_qif.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD6124E2B2C00C525E1 /* io_qif.cpp */; };
 		D082ACE6124E2B2C00C525E1 /* transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D082ACD9124E2B2C00C525E1 /* transaction.cpp */; };
 		D082AD1F124E2B8600C525E1 /* StashAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082ACE9124E2B8600C525E1 /* StashAppDelegate.mm */; };
 		D082AD20124E2B8600C525E1 /* TransactionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D082ACEB124E2B8600C525E1 /* TransactionsController.mm */; };
@@ -130,14 +130,14 @@
 		D082ACCD124E2B2C00C525E1 /* fixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fixed.h; sourceTree = "<group>"; };
 		D082ACCE124E2B2C00C525E1 /* graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = graph.cpp; sourceTree = "<group>"; };
 		D082ACCF124E2B2C00C525E1 /* graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graph.h; sourceTree = "<group>"; };
-		D082ACD0124E2B2C00C525E1 /* ofx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofx.cpp; sourceTree = "<group>"; };
-		D082ACD1124E2B2C00C525E1 /* ofx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofx.h; sourceTree = "<group>"; };
+		D082ACD0124E2B2C00C525E1 /* io_ofx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = io_ofx.cpp; sourceTree = "<group>"; };
+		D082ACD1124E2B2C00C525E1 /* io_ofx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io_ofx.h; sourceTree = "<group>"; };
 		D082ACD2124E2B2C00C525E1 /* scheduled_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduled_transaction.cpp; sourceTree = "<group>"; };
 		D082ACD3124E2B2C00C525E1 /* scheduled_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduled_transaction.h; sourceTree = "<group>"; };
 		D082ACD4124E2B2C00C525E1 /* split_transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = split_transaction.cpp; sourceTree = "<group>"; };
 		D082ACD5124E2B2C00C525E1 /* split_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = split_transaction.h; sourceTree = "<group>"; };
-		D082ACD6124E2B2C00C525E1 /* storage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = storage.cpp; sourceTree = "<group>"; };
-		D082ACD7124E2B2C00C525E1 /* storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = storage.h; sourceTree = "<group>"; };
+		D082ACD6124E2B2C00C525E1 /* io_qif.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = io_qif.cpp; sourceTree = "<group>"; };
+		D082ACD7124E2B2C00C525E1 /* io_qif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io_qif.h; sourceTree = "<group>"; };
 		D082ACD8124E2B2C00C525E1 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		D082ACD9124E2B2C00C525E1 /* transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transaction.cpp; sourceTree = "<group>"; };
 		D082ACDA124E2B2C00C525E1 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
@@ -392,14 +392,14 @@
 				D082ACCD124E2B2C00C525E1 /* fixed.h */,
 				D082ACCE124E2B2C00C525E1 /* graph.cpp */,
 				D082ACCF124E2B2C00C525E1 /* graph.h */,
-				D082ACD0124E2B2C00C525E1 /* ofx.cpp */,
-				D082ACD1124E2B2C00C525E1 /* ofx.h */,
+				D082ACD0124E2B2C00C525E1 /* io_ofx.cpp */,
+				D082ACD1124E2B2C00C525E1 /* io_ofx.h */,
+				D082ACD6124E2B2C00C525E1 /* io_qif.cpp */,
+				D082ACD7124E2B2C00C525E1 /* io_qif.h */,
 				D082ACD2124E2B2C00C525E1 /* scheduled_transaction.cpp */,
 				D082ACD3124E2B2C00C525E1 /* scheduled_transaction.h */,
 				D082ACD4124E2B2C00C525E1 /* split_transaction.cpp */,
 				D082ACD5124E2B2C00C525E1 /* split_transaction.h */,
-				D082ACD6124E2B2C00C525E1 /* storage.cpp */,
-				D082ACD7124E2B2C00C525E1 /* storage.h */,
 				D082ACD8124E2B2C00C525E1 /* string.h */,
 				D082ACD9124E2B2C00C525E1 /* transaction.cpp */,
 				D082ACDA124E2B2C00C525E1 /* transaction.h */,
@@ -535,10 +535,10 @@
 				D082ACE0124E2B2C00C525E1 /* fixed.cpp in Sources */,
 				D0084E6422C4506700661851 /* PreferencesController.mm in Sources */,
 				D082ACE1124E2B2C00C525E1 /* graph.cpp in Sources */,
-				D082ACE2124E2B2C00C525E1 /* ofx.cpp in Sources */,
+				D082ACE2124E2B2C00C525E1 /* io_ofx.cpp in Sources */,
 				D082ACE3124E2B2C00C525E1 /* scheduled_transaction.cpp in Sources */,
 				D082ACE4124E2B2C00C525E1 /* split_transaction.cpp in Sources */,
-				D082ACE5124E2B2C00C525E1 /* storage.cpp in Sources */,
+				D082ACE5124E2B2C00C525E1 /* io_qif.cpp in Sources */,
 				D082ACE6124E2B2C00C525E1 /* transaction.cpp in Sources */,
 				D082AD1F124E2B8600C525E1 /* StashAppDelegate.mm in Sources */,
 				D082AD20124E2B8600C525E1 /* TransactionsController.mm in Sources */,

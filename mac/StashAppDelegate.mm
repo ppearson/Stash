@@ -20,8 +20,8 @@
  *
  */
 
-#include "storage.h"
-#include "ofx.h"
+#include "io_ofx.h"
+#include "io_qif.h"
 #include "analysis.h"
 
 #import "StashAppDelegate.h"
