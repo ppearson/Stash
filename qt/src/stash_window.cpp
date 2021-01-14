@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -45,6 +45,8 @@
 
 #include "../../core/scheduled_transaction.h"
 #include "../../core/graph.h"
+#include "../../core/io_qif.h"
+#include "../../core/io_ofx.h"
 
 #include "document_index_view.h"
 #include "transactions_view_widget.h"
@@ -57,6 +59,9 @@
 #include "dialogs/make_transfer_dialog.h"
 #include "dialogs/scheduled_transactions_due_dialog.h"
 #include "dialogs/new_graph_dialog.h"
+#include "dialogs/qif_import_settings_dialog.h"
+#include "dialogs/ofx_import_settings_dialog.h"
+#include "dialogs/ofx_export_settings_dialog.h"
 
 #include "settings/settings_window.h"
 
@@ -249,13 +254,7 @@ void StashWindow::setupMenu()
 	
 	pFileExportOFXFileAction->setText(QApplication::translate("StashWindow", "Export OFX...", 0));
 	pFileExportQIFFileAction->setText(QApplication::translate("StashWindow", "Export QIF...", 0));
-	
-	// disable them for the moment until they're implemented...
-	pFileImportOFXFileAction->setEnabled(false);
-	pFileImportQIFFileAction->setEnabled(false);
-	pFileExportOFXFileAction->setEnabled(false);
-	pFileExportQIFFileAction->setEnabled(false);
-	
+		
 	menuFile->addAction(pFileNewAction);
 	menuFile->addSeparator();
 	menuFile->addAction(pFileOpenAction);
@@ -580,8 +579,6 @@ bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransac
 	
 	schedTrans.AdvanceNextDate();
 	
-	m_pIndexView->rebuildFromDocument();
-	
 	m_pTransactionsViewWidget->rebuildFromAccount();
 	
 	m_pTransactionsViewWidget->scrollToLastTransaction(true); // we want to enforce scrolling to the very latest
@@ -758,22 +755,243 @@ void StashWindow::fileSaveAs()
 
 void StashWindow::fileImportOFXFile()
 {
+	QFileDialog dialog(this);
+
+	dialog.setWindowTitle("Import OFX file");
+	dialog.setNameFilter(tr("OFX file (*.ofx)"));
+	dialog.setFileMode(QFileDialog::ExistingFiles);
+	dialog.setViewMode(QFileDialog::Detail);
+
+	if (!dialog.exec())
+		 return;
+
+	const QString fileName = dialog.selectedFiles()[0];
+	if (fileName.isEmpty())
+		return;
 	
+	OFXData dataItem;
+	if (!importOFXFile(fileName.toStdString(), dataItem))
+	{
+		QMessageBox::information(this, "OFX Import Error",
+								 "Error importing OFX file...");
+		return;
+	}
+	
+	OFXImportSettingsDialog settingsDlg(this, this, dataItem);
+	
+	if (!settingsDlg.exec())
+		return;
+	
+	const std::vector<OFXImportSettingsDialog::AccountSettings> importAccountSettings = settingsDlg.getAccountSettings();
+	
+	bool reverseTransactions = settingsDlg.getReverseTransactionOrder();
+	bool markTransactionsCleared = settingsDlg.getMarkTransactionsCleared();
+	bool ignoreExistingTransactions = settingsDlg.getIgnoreExistingTransactions();
+	
+	bool docModified = false;
+	
+	// make a note of whether we currently have any accounts in the document (before we create new ones)...
+	bool docHasNoAccountsYet = m_documentController.getDocument().getAccountCount() == 0;
+	
+	for (unsigned int i = 0; i < importAccountSettings.size(); i++)
+	{
+		const OFXImportSettingsDialog::AccountSettings& accSettings = importAccountSettings[i];
+		
+		if (!accSettings.import)
+			continue;
+		
+		docModified = true; // TODO: might be too early if we end up doing future validation in the importOfxStatementIntoAccount() function in the future?
+		
+		const OFXStatementTransactionResponse& response = dataItem.getResponse(i);
+		const OFXStatementResponse& stResp = response.getStatementResponse();
+		
+		if (accSettings.existingAccountIndex == -1)
+		{
+			// we need to create a new account for these items, then import to that...
+			
+			Account newAccount;
+			newAccount.setName(accSettings.newAccountName);
+			newAccount.setType((Account::Type)accSettings.newAccountType);
+		
+			importOFXStatementIntoAccount(newAccount, stResp, reverseTransactions, markTransactionsCleared, ignoreExistingTransactions);
+			
+			m_documentController.getDocument().addAccount(newAccount);
+		}
+		else
+		{
+			// we're importing into an existing account...
+			// TODO: validate account index? Don't really see how it could be wrong, but...
+			Account& existingAccount = m_documentController.getDocument().getAccount(accSettings.existingAccountIndex);
+			importOFXStatementIntoAccount(existingAccount, stResp, reverseTransactions, markTransactionsCleared, ignoreExistingTransactions);
+		}
+	}
+	
+	if (docModified)
+	{
+		m_pIndexView->rebuildFromDocument();
+		
+		int selectedAccountIndex = m_pIndexView->getSelectedAccountIndex();
+//		if (selectedAccountIndex == -1)
+		// TODO: this should be the above really, but in the context of a File -> New situation,
+		//       it's not doing the correct thing, so for the moment the below check does the right
+		//       thing...
+		if (docHasNoAccountsYet)
+		{
+			m_pIndexView->selectItem(eDocIndex_Account, 0, true);
+		}
+		else
+		{
+		
+			// ?
+			m_pTransactionsViewWidget->rebuildFromAccount();
+			m_pTransactionsViewWidget->scrollToLastTransaction(true); // we want to enforce scrolling to the very latest
+		}
+		
+		setWindowModified(true);
+	}
 }
 
 void StashWindow::fileImportQIFFile()
 {
+	// first check there's an account and one is selected.
+	if (m_documentController.getDocument().getAccountCount() < 1)
+	{
+		QMessageBox::information(this, "QIF Import Error",
+								 "Importing a QIF file requires an existing account to exist in the current document.\n\nPlease create one first.");
+		return;
+	}
+
+	int selectedAccountIndex = m_pIndexView->getSelectedAccountIndex();
+	if (selectedAccountIndex == -1)
+	{
+		QMessageBox::information(this, "QIF Import Error",
+								 "Please select an Account in the Index bar in order to import a QIF file into that account.");
+		return;
+	}
 	
+	QFileDialog dialog(this);
+
+	dialog.setWindowTitle("Import QIF file");
+	dialog.setNameFilter(tr("QIF file (*.qif)"));
+	dialog.setFileMode(QFileDialog::ExistingFiles);
+	dialog.setViewMode(QFileDialog::Detail);
+
+	if (!dialog.exec())
+		 return;
+
+	const QString fileName = dialog.selectedFiles()[0];
+	if (fileName.isEmpty())
+		return;
+	
+	std::string dateSampleString;
+	getDateFormatSampleFromQIFFile(fileName.toStdString(), dateSampleString);
+	
+	QIFImportSettingsDialog qifImportSettingsDlg(this, fileName.toStdString(), dateSampleString);
+	
+	if (!qifImportSettingsDlg.exec())
+		return;
+	
+	Account* pAccount = &m_documentController.getDocument().getAccount(selectedAccountIndex);
+	
+	Date::DateStringFormat dateFormat = qifImportSettingsDlg.getDateFormat();
+	char separatorChar = qifImportSettingsDlg.getSeparator();
+	bool markTransactionsAsCleared = qifImportSettingsDlg.getMarkImportedTransactionsAsCleared();
+	
+	if (!importQIFFileToAccount(pAccount, fileName.toStdString(), dateFormat, separatorChar, markTransactionsAsCleared))
+	{
+		QMessageBox::information(this, "QIF Import Error",
+								 "An error occurred whilst trying to import the QIF file.");
+		return;
+	}
+	
+	m_pIndexView->rebuildFromDocument();
+	
+	m_pTransactionsViewWidget->rebuildFromAccount();
+	
+	m_pTransactionsViewWidget->scrollToLastTransaction(true); // we want to enforce scrolling to the very latest
+	
+	setWindowModifiedAndRebuildIndex(true);
 }
 
 void StashWindow::fileExportOFXFile()
 {
+	OFXExportSettingsDialog exportSettingsDlg(this, this);
+
+	if (!exportSettingsDlg.exec())
+		return;
 	
+	QFileDialog fileDialog(this, tr("Export OFX File"));
+	fileDialog.setNameFilter(tr("OFX file (*.ofx)"));
+	fileDialog.setFileMode(QFileDialog::AnyFile);
+	fileDialog.setViewMode(QFileDialog::Detail);
+	fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+	fileDialog.setDefaultSuffix(tr("ofx"));
+	fileDialog.setConfirmOverwrite(true);
+	
+	if (!fileDialog.exec())
+		 return;
+	
+	const QString fileName = fileDialog.selectedFiles()[0];
+	if (fileName.isEmpty())
+		return;
+	
+	std::vector<unsigned int> aAccountsToExport = exportSettingsDlg.getAccountsToExport();
+	
+	// build up the OFXData version of the accounts / transactions...
+	OFXData ofxData;
+	for (const unsigned int accIndex : aAccountsToExport)
+	{
+		const Account& srcAccount = m_documentController.getDocument().getAccount(accIndex);
+		
+		OFXStatementTransactionResponse statementTransactionResponse;
+		statementTransactionResponse.getStatementResponse().addOFXTransactionsForAccount(srcAccount);
+		ofxData.addStatementTransactionResponse(statementTransactionResponse);
+	}
+	
+	bool isXMLFormat = exportSettingsDlg.getOFXVersion() == 2;
+	
+	if (!ofxData.exportDataToFile(fileName.toStdString(), isXMLFormat))
+	{
+		QMessageBox::information(this, "OFX Export Error",
+								 "An error occurred whilst trying to export the OFX file.");
+		return;
+	}
 }
 
 void StashWindow::fileExportQIFFile()
 {
+	int selectedAccountIndex = m_pIndexView->getSelectedAccountIndex();
+	if (selectedAccountIndex == -1)
+	{
+		QMessageBox::information(this, "QIF Import Error",
+								 "Please select an Account in the Index bar in order to Export the transactions from that account to a QIF file.");
+		return;
+	}
 	
+	QFileDialog dialog(this, tr("Export QIF File"));
+	dialog.setNameFilter(tr("QIF file (*.qif)"));
+	dialog.setFileMode(QFileDialog::AnyFile);
+	dialog.setViewMode(QFileDialog::Detail);
+	dialog.setAcceptMode(QFileDialog::AcceptSave);
+	dialog.setDefaultSuffix(tr("qif"));
+	dialog.setConfirmOverwrite(true);
+
+	if (!dialog.exec())
+		 return;
+
+	const QString fileName = dialog.selectedFiles()[0];
+	if (fileName.isEmpty())
+		return;
+	
+	Account* pAccount = &m_documentController.getDocument().getAccount(selectedAccountIndex);
+	
+	Date::DateStringFormat dateFormat = Date::UK; // TODO: make this selectable...
+	if (!exportAccountToQIFFile(pAccount, fileName.toStdString(), dateFormat))
+	{
+		QMessageBox::information(this, "QIF Export Error",
+								 "An error occurred whilst trying to export the QIF file.");
+		return;
+	}
 }
 
 void StashWindow::fileOpenRecentFile()

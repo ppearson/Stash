@@ -1,9 +1,9 @@
 README
 ------
 
-This is the Qt port of Stash, which is still under development, but is somewhat useable,
-although it's missing some features compared to the native Mac version (the original
-UI from 10 years ago).
+This is the Qt port of Stash, which is a more recent / modern port of Stash, written
+10+ years after the original OS X/MacOS version. Current functionality is identical
+to the Mac version.
 
 It builds with Qt 4.8 and 5.12 on Linux, and might build/run on other platforms as well,
 but my focus here is predominantly Linux, at least initially for my purposes.
@@ -27,7 +27,5 @@ make -j
 TODO (to match Mac version):
 ----------------------------
 
-* Import functionality
-* Export functionality
 * Check UTF-8 strings work everywhere
 

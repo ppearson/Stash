@@ -176,6 +176,14 @@ void DocumentIndexView::selectItem(DocumentIndexType type, unsigned int index, b
 	}
 }
 
+int DocumentIndexView::getSelectedAccountIndex() const
+{
+	if (m_selectedIndexType != eDocIndex_Account)
+		return -1;
+	
+	return (int)m_selectedIndexSubIndex;
+}
+
 void DocumentIndexView::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
 	QList<QModelIndex> indexes = selected.indexes();

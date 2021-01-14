@@ -50,6 +50,8 @@ public:
 	
 	void selectItem(DocumentIndexType type, unsigned int index, bool sendSelectionChangedEvent = true);
 	
+	int getSelectedAccountIndex() const;
+	
 signals:
 	void indexSelectionHasChanged(DocumentIndexType type, int index);
 
