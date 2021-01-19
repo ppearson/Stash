@@ -24,11 +24,9 @@
 // only copes with + and -
 
 #include <stdlib.h>
-
 #include <string>
 #include <queue>
 #include <algorithm>
-#include <stdlib.h>
 
 #include "expression_parser.h"
 

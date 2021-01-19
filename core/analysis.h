@@ -31,10 +31,9 @@
 class PieChartItem
 {
 public:
-	PieChartItem(std::string title, double angle, fixed amount);
-	~PieChartItem() { }
+	PieChartItem(const std::string& title, double angle, fixed amount);
 	
-	void setTitle(std::string title) { m_title = title; }
+	void setTitle(const std::string& title) { m_title = title; }
 	void setAngle(double angle) { m_angle = angle; }
 	void setAmount(fixed amount) { m_amount = amount; }
 	
@@ -48,9 +47,9 @@ public:
 		return v1.m_title < v2.m_title;
 	}
 	
-	std::string		getTitle() const { return m_title; }
-	double			getAngle() const { return m_angle; }
-	fixed			getAmount() const { return m_amount; }
+	const std::string&	getTitle() const { return m_title; }
+	double				getAngle() const { return m_angle; }
+	fixed				getAmount() const { return m_amount; }
 	
 protected:
 	std::string	m_title;
@@ -61,10 +60,9 @@ protected:
 class AreaChartItem
 {
 public:
-	AreaChartItem(std::string title);
-	~AreaChartItem() { }
+	AreaChartItem(const std::string& title);
 	
-	void setTitle(std::string title) { m_title = title; }
+	void setTitle(const std::string& title) { m_title = title; }
 	void addAmountToValue(fixed amount);
 	
 	bool operator<(const AreaChartItem &rhs) const
@@ -72,12 +70,12 @@ public:
 		return rhs.m_activeEntries < this->m_activeEntries;
 	}
 	
-	std::string		getTitle() const { return m_title; }
-	int				getNumItems() const { return m_amounts.size(); }
-	fixed			getItemAmount(int item) const { return m_amounts.at(item); }
-	fixed			getMaxValue() const { return m_maxValue; }
+	const std::string&	getTitle() const { return m_title; }
+	int					getNumItems() const { return m_amounts.size(); }
+	fixed				getItemAmount(int item) const { return m_amounts.at(item); }
+	fixed				getMaxValue() const { return m_maxValue; }
 	
-	void			combineItem(AreaChartItem &item);
+	void				combineItem(AreaChartItem &item);
 	
 protected:
 	std::string 		m_title;
@@ -91,7 +89,6 @@ struct OverviewChartItem
 {
 	OverviewChartItem() { } // only needed for std::map[] if the values isn't found
 	OverviewChartItem(MonthYear &date) : m_date(date) { }
-	~OverviewChartItem() { }
 	
 	void addIncome(fixed &income)
 	{

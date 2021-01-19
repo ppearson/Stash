@@ -30,7 +30,7 @@
 
 int main(int argc, char** argv)
 {
-	// otherwise, launch the GUI
+	// launch the GUI
 	QApplication a(argc, argv);
 
 #if __APPLE__

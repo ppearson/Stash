@@ -21,6 +21,7 @@
  */
 
 #include "document.h"
+
 #include "string.h"
 
 static const int kDocumentVersion = 6;

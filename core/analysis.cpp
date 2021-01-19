@@ -29,12 +29,12 @@
 
 #include "transaction.h"
 
-PieChartItem::PieChartItem(std::string title, double angle, fixed amount) : m_title(title), m_angle(angle), m_amount(amount)
+PieChartItem::PieChartItem(const std::string& title, double angle, fixed amount) : m_title(title), m_angle(angle), m_amount(amount)
 {
 
 }
 
-AreaChartItem::AreaChartItem(std::string title) : m_title(title), m_maxValue(0.0), m_blank(true), m_activeEntries(0)
+AreaChartItem::AreaChartItem(const std::string& title) : m_title(title), m_maxValue(0.0), m_blank(true), m_activeEntries(0)
 {
 
 }
