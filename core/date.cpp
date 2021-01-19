@@ -205,7 +205,7 @@ void Date::setDate(std::string date, char cSep, DateStringFormat dateFormat)
 			date = date.substr(0, 8);
 			
 			date.insert(6, " ");
-			date.insert(4, " ");			
+			date.insert(4, " ");
 		}
 		else
 		{
