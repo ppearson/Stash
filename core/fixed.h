@@ -15,6 +15,9 @@ enum CurrencyFormat
 	EuropeFormat
 };
 
+// Not sure this is worth it or a good idea, but...
+#define FIXED_SUPPORT_MULT_DIVIDE 0
+
 class fixed
 {
 public:
@@ -29,11 +32,13 @@ public:
 	fixed operator-(const fixed & rhs) const;
 	fixed & operator-=(const fixed & rhs);
 	
+#if FIXED_SUPPORT_MULT_DIVIDE
 	fixed operator*(const fixed & rhs) const;
 	fixed & operator*=(const fixed & rhs);
 	
 	fixed operator/(const fixed & rhs) const;
 	fixed & operator/=(const fixed & rhs);
+#endif
 	
 	bool operator>(const fixed & rhs) const;	
 	bool operator<(const fixed & rhs) const;	
@@ -63,10 +68,12 @@ public:
 	unsigned int GetNumDigits() const;
 	
 private:
-	bool m_positive;
+	uint64_t		m_num;
+#if FIXED_SUPPORT_MULT_DIVIDE
+	uint16_t		m_precision;
+#endif	
+	bool			m_positive;
 	
-	unsigned short int m_precision;
-	unsigned long int m_num;
 	
 	std::string ToString() const;
 	
@@ -74,8 +81,10 @@ private:
 	
 	static void add(fixed & dec, const fixed & value);
 	static void subtract(fixed & dec, const fixed & value);
+#if FIXED_SUPPORT_MULT_DIVIDE
 	static void multiply(fixed & dec, const fixed & value);
 	static void divide(fixed & dec, const fixed & value);
+#endif
 };
 
 #endif

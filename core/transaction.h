@@ -34,7 +34,7 @@ class Transaction
 {
 public:
 	Transaction();
-	Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date);
+	Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, const Date& date);
 
 	enum Type
 	{
@@ -81,7 +81,7 @@ public:
 	bool isSplit() const { return m_Split; }
 	
 	void addSplit(SplitTransaction &split) { m_aSplits.push_back(split); }
-	void addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount);
+	void addSplit(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount);
 	SplitTransaction & getSplit(unsigned int item) { return m_aSplits[item]; }
 	const SplitTransaction & getSplit(unsigned int item) const { return m_aSplits[item]; }
 	unsigned int getSplitCount() const { return m_aSplits.size(); }
@@ -92,24 +92,28 @@ public:
 	void Store(std::fstream &stream) const;
 
 private:
-	// TODO: memory packing / ordering
+	// Note: these are arranged in this way (largest at the top) for
+	//       memory alignment / packing reasons
+	std::vector<SplitTransaction> m_aSplits;
+	
+	std::string		m_Category;
+	std::string		m_Description;
+	std::string		m_Payee;
+	
+	std::string		m_FITID;
+	
+	fixed			m_Amount;
+	Date			m_Date;
+	
+	Type			m_Type;	
+	
 	bool			m_Cleared;
 	bool			m_Flagged;
 	bool			m_Reconciled;
 		
-	Date			m_Date;
-	std::string		m_Category;
-	std::string		m_Description;
-	std::string		m_Payee;
-	fixed			m_Amount;
-	Type			m_Type;
-	
 	bool			m_HasFITID;
-	std::string		m_FITID;
 	
 	bool			m_Split;
-	
-	std::vector<SplitTransaction> m_aSplits;
 };
 
 #endif

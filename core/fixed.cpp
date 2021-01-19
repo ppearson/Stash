@@ -11,25 +11,48 @@
 #include <cstring>
 #include <algorithm>
 
+#if FIXED_SUPPORT_MULT_DIVIDE
+
+#else
+// if we don't want mult/divide support, we don't need this
+static const uint16_t kPrecisionDigits = 2;
+#endif
+
 fixed::fixed(const double value)
 {
+#if FIXED_SUPPORT_MULT_DIVIDE
 	m_precision = 2;
+#endif
 	SetFromDouble(value);
 }
 
+#if FIXED_SUPPORT_MULT_DIVIDE
 fixed::fixed(const std::string& value, CurrencyFormat format) : m_precision(2)
+#else
+fixed::fixed(const std::string& value, CurrencyFormat format)
+#endif
 {
 	SetFromString(value, format);
 }
 
 double fixed::ToDouble() const
 {
+#if FIXED_SUPPORT_MULT_DIVIDE
+	uint16_t precision = m_precision;
+#else
+	uint16_t precision = kPrecisionDigits;
+#endif
+	
 	if (m_positive)
-		return (double)m_num / pow(10.0, m_precision);
+	{
+		return (double)m_num / pow(10.0, precision);
+	}
 	else
 	{
 		if (m_num != 0)
-			return ((double)m_num / pow(10.0, m_precision)) * -1.0;
+		{
+			return ((double)m_num / pow(10.0, precision)) * -1.0;
+		}
 		else
 			return 0.0;
 	}
@@ -38,7 +61,13 @@ double fixed::ToDouble() const
 double fixed::ToDoubleAbs() const
 {
 	if (m_num != 0)
+	{
+#if FIXED_SUPPORT_MULT_DIVIDE
 		return m_num / pow(10.0, m_precision);
+#else
+		return m_num / pow(10.0, kPrecisionDigits);
+#endif
+	}
 	else
 		return 0.0;
 }
@@ -70,6 +99,7 @@ fixed & fixed::operator -=( const fixed & rhs )
 	return *this;
 }
 
+#if FIXED_SUPPORT_MULT_DIVIDE
 fixed fixed::operator *( const fixed & rhs ) const
 {
 	fixed this_copy(*this);
@@ -97,6 +127,7 @@ fixed & fixed::operator /=( const fixed & rhs )
 	divide(*this, rhs);
 	return *this;
 }
+#endif
 
 bool fixed::IsPositive() const
 {
@@ -114,22 +145,28 @@ std::string fixed::ToString() const
 	stream << m_num;
 	
 	std::string str = stream.str();
+
+#if FIXED_SUPPORT_MULT_DIVIDE
+	uint16_t precision = m_precision;
+#else
+	uint16_t precision = kPrecisionDigits;
+#endif
 	
-	if ((str.length() != m_precision) && ((m_num / (unsigned long int)powl(10.0, m_precision)) == 0))
+	if ((str.length() != precision) && ((m_num / (unsigned long int)powl(10.0, precision)) == 0))
 	{
 		// this handles the case where a fixed has no integer part (like 0.00003)
 		// In this case, m_num is stored as 3, and is converted the same way
 		// add the leading zeros:
 		
-		str.insert(0, std::string(m_precision, '0'));
+		str.insert(0, std::string(precision, '0'));
 	}
 	
-	if (str.length() - m_precision == 0)
+	if (str.length() - precision == 0)
 		str.insert(0, "0."); // we want a leading 0 if there is no integer part to this fixed
-	else if (m_precision != 0)
-		str.insert(str.length() - m_precision, ".");
+	else if (precision != 0)
+		str.insert(str.length() - precision, ".");
 	
-	if (!m_positive && (str.length() - m_precision != 0)) // don't add a "-" if we're a 0 number!
+	if (!m_positive && (str.length() - precision != 0)) // don't add a "-" if we're a 0 number!
 		str.insert(0, "-");
 	
 	return str;
@@ -169,6 +206,9 @@ void fixed::Load(std::fstream& stream, int version)
 	
 	m_num = abs(temp);
 	
+	// TODO: we don't currenly need this, but if we were going to support multiply/divide,
+	//       and/or varying precision numbers, we'd need to also load/store m_precision...
+	
 	if (temp > 0)
 		m_positive = true;
 	else
@@ -185,6 +225,9 @@ void fixed::Store(std::fstream& stream) const
 	int temp = m_num;
 	if (!m_positive)
 		temp = -temp;
+	
+	// TODO: we don't currenly need this, but if we were going to support multiply/divide,
+	//       and/or varying precision numbers, we'd need to also load/store m_precision...
 	
 	stream.write((char *) &temp, sizeof(int));
 }
@@ -223,16 +266,22 @@ bool fixed::operator <( const fixed & rhs ) const
 	}
 }
 
-void fixed::SetFromDouble(const double value )
+void fixed::SetFromDouble(const double value)
 {
 	double fractpart, intpart;
 	
+#if FIXED_SUPPORT_MULT_DIVIDE
+	uint16_t precision = m_precision;
+#else
+	uint16_t precision = kPrecisionDigits;
+#endif
+	
 	fractpart = modf(fabs(value), &intpart);
-	m_num = (long int)intpart * ( long int)pow(10.0, m_precision);
+	m_num = (uint64_t)intpart * (uint64_t)pow(10.0, precision);
 	
 	// move fixed point over so now fractpart's `precision` digits
 	// are on the int side
-	fractpart *= pow(10.0, m_precision);
+	fractpart *= pow(10.0, precision);
 	
 	// combine fracpart into (already shifted) m_intpart
 	double roundCheck = modf(fractpart, &fractpart);
@@ -348,7 +397,8 @@ void fixed::subtract( fixed & dec, const fixed & value )
 		}
 	}
 	else
-	{ // both are positive
+	{
+		// both are positive
 		if (dec.m_num > value.m_num)
 		{
 			dec.m_num -= value.m_num;
@@ -365,6 +415,7 @@ void fixed::subtract( fixed & dec, const fixed & value )
 	}
 }
 
+#if FIXED_SUPPORT_MULT_DIVIDE
 void fixed::multiply( fixed & dec, const fixed & value )
 {
 	dec.m_num *= value.m_num;
@@ -413,12 +464,14 @@ void fixed::divide( fixed & dec, const fixed & value )
 	else
 		dec.m_positive = false;
 }
+#endif
 
 bool fixed::operator ==( const fixed & rhs ) const
 {
 	if (m_positive != rhs.m_positive)
 		return false;
-	
+
+#if FIXED_SUPPORT_MULT_DIVIDE
 	if (m_precision != rhs.m_precision)
 	{
 		fixed this_copy(*this), rhs_copy(rhs);
@@ -426,6 +479,7 @@ bool fixed::operator ==( const fixed & rhs ) const
 		return this_copy.m_num == rhs_copy.m_num;
 	}
 	else
+#endif
 		return m_num == rhs.m_num;
 }
 
@@ -440,7 +494,7 @@ bool fixed::operator !=(const fixed & rhs) const
 unsigned int fixed::GetNumDigits() const
 {
 	unsigned int count = 1;
-	unsigned long int temp = m_num;
+	uint64_t temp = m_num;
 	
 	while(temp /= 10)
 	{

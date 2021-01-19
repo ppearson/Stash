@@ -51,8 +51,8 @@ Date::Date(time_t Time)
 	SetVarsFromTime();
 }
 
-Date::Date(int Day, int Month, int Year) :
-	m_Year(Year), m_Month(Month), m_Day(Day),
+Date::Date(unsigned int Day, unsigned int Month, unsigned int Year) :
+	m_Year((uint16_t)Year), m_Month((uint8_t)Month), m_Day((uint8_t)Day),
 	m_Separator('/')
 {
 	SetTimeFromVars();
@@ -173,10 +173,10 @@ void Date::SetVarsFromTime()
 
 	if (time)
 	{
-		m_Month = time->tm_mon + 1;
-		m_Day = time->tm_mday;
-		m_Year = time->tm_year + 1900;
-		m_DayOfWeek = time->tm_wday;
+		m_Month = (uint8_t)time->tm_mon + 1;
+		m_Day = (uint8_t)time->tm_mday;
+		m_Year = (uint16_t)time->tm_year + 1900;
+		m_DayOfWeek = (uint8_t)time->tm_wday;
 	}
 }
 
@@ -208,7 +208,9 @@ void Date::setDate(std::string date, char cSep, DateStringFormat dateFormat)
 			date.insert(4, " ");			
 		}
 		else
+		{
 			return;
+		}
 	}
 	else
 	{
@@ -262,29 +264,29 @@ void Date::setDate(std::string date, char cSep, DateStringFormat dateFormat)
 	setDate(nDay, nMonth, nYear);
 }
 
-void Date::setYear(int Year)
+void Date::setYear(unsigned int Year)
 {
-	m_Year = Year;
+	m_Year = (uint16_t)Year;
 	SetTimeFromVars();
 }
 
-void Date::setMonth(int Month)
+void Date::setMonth(unsigned int Month)
 {
-	m_Month = Month;
+	m_Month = (uint8_t)Month;
 	SetTimeFromVars();
 }
 
-void Date::setDay(int Day)
+void Date::setDay(unsigned int Day)
 {
-	m_Day = Day;
+	m_Day = (uint8_t)Day;
 	SetTimeFromVars();
 }
 
-void Date::setDate(int Day, int Month, int Year)
+void Date::setDate(unsigned int Day, unsigned int Month, unsigned int Year)
 {
-	m_Day = Day;
-	m_Month = Month;
-	m_Year = Year;
+	m_Day = (uint8_t)Day;
+	m_Month = (uint8_t)Month;
+	m_Year = (uint16_t)Year;
 
 	SetTimeFromVars();
 }
@@ -311,9 +313,9 @@ void Date::Load(std::fstream &stream, int version)
 		uint32_t month = (packedDate & 0x7800000) >> 23;
 		uint32_t year = (packedDate & 0xFFFF);
 		
-		m_Year = year;
-		m_Month = month;
-		m_Day = day;
+		m_Year = (uint16_t)year;
+		m_Month = (uint8_t)month;
+		m_Day = (uint8_t)day;
 		
 		SetTimeFromVars();
 	}
@@ -378,23 +380,23 @@ std::string Date::FormattedDate(DateStringFormat format) const
 
 	if (format == UK)
 	{
-		sDate << std::setw(2) << std::setfill('0') << m_Day;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Day;
 		sDate << m_Separator;
-		sDate << std::setw(2) << std::setfill('0') << m_Month;
-		sDate << m_Separator << m_Year;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Month;
+		sDate << m_Separator << (unsigned int)m_Year;
 	}
 	else if (format == US)
 	{
-		sDate << std::setw(2) << std::setfill('0') << m_Month;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Month;
 		sDate << m_Separator;
-		sDate << std::setw(2) << std::setfill('0') << m_Day;
-		sDate << m_Separator << m_Year;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Day;
+		sDate << m_Separator << (unsigned int)m_Year;
 	}
 	else
 	{
-		sDate << m_Year;
-		sDate << std::setw(2) << std::setfill('0') << m_Month;
-		sDate << std::setw(2) << std::setfill('0') << m_Day;
+		sDate << (unsigned int)m_Year;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Month;
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Day;
 		sDate << "000000";
 	}
 

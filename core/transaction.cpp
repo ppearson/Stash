@@ -31,20 +31,20 @@
 #include "transaction.h"
 #include "string.h"
 
-Transaction::Transaction() : m_Cleared(false), m_Flagged(false), m_Reconciled(false),
-	m_Type(None),
+Transaction::Transaction() : m_Type(None),
+	m_Cleared(false), m_Flagged(false), m_Reconciled(false),
 	m_HasFITID(false),
 	m_Split(false)
 {
 	
 }
 
-Transaction::Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, Date date) :
-	m_Cleared(false), m_Flagged(false), m_Reconciled(false),
-	m_Date(date),
+Transaction::Transaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount, const Date& date) :
 	m_Category(Category), m_Description(Description), m_Payee(Payee),
 	m_Amount(Amount), 
+	m_Date(date),
 	m_Type(None),
+	m_Cleared(false), m_Flagged(false), m_Reconciled(false),
 	m_HasFITID(false),
 	m_Split(false)
 {
@@ -138,7 +138,8 @@ void Transaction::Store(std::fstream &stream) const
 	}
 }
 
-void Transaction::addSplit(std::string Description, std::string Payee, std::string Category, fixed Amount)
+void Transaction::addSplit(const std::string& Description, const std::string& Payee,
+						   const std::string& Category, fixed Amount)
 {
 	SplitTransaction split(Description, Payee, Category, Amount);
 	

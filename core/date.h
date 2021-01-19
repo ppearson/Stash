@@ -27,6 +27,7 @@
 #include <sstream>
 #include <ctime>
 #include <fstream>
+#include <stdint.h>
 
 class Date
 {
@@ -41,7 +42,7 @@ public:
 	Date();
 	Date(const Date &rhs);
 	Date(time_t Time);
-	Date(int Day, int Month, int Year = -1);
+	Date(unsigned int Day, unsigned int Month, unsigned int Year);
 	Date(const std::string& date, char cSep, DateStringFormat dateFormat = UK);
 
 	Date& operator=(const Date& rhs);
@@ -58,17 +59,17 @@ public:
 	
 	void Now();
 	
-	void setDate(int Day, int Month, int Year = -1);
+	void setDate(unsigned int Day, unsigned int Month, unsigned int Year);
 	void setDate(std::string date, char cSep, DateStringFormat dateFormat = UK);
-	void setYear(int Year);
-	void setMonth(int Month);
-	void setDay(int Day);
+	void setYear(unsigned int Year);
+	void setMonth(unsigned int Month);
+	void setDay(unsigned int Day);
 
 	void setSeparator(char cSep) { m_Separator = cSep; }
 	
-	int getYear() const { return m_Year; }
-	int getMonth() const { return m_Month; }
-	int getDay() const { return m_Day; }
+	unsigned int getYear() const { return (unsigned int)m_Year; }
+	unsigned int getMonth() const { return (unsigned int)m_Month; }
+	unsigned int getDay() const { return (unsigned int)m_Day; }
 	
 	bool isLeapYear() const;
 
@@ -96,14 +97,14 @@ public:
 	time_t GetDate() const;
 	
 private:
-	time_t m_Time;
+	time_t		m_Time;
 
-	int m_Year;
-	int m_Month;
-	int m_Day;
-	int m_DayOfWeek;
+	uint16_t	m_Year;
+	uint8_t		m_Month;
+	uint8_t		m_Day;
+	uint8_t		m_DayOfWeek;
 
-	char m_Separator;
+	char		m_Separator;
 };
 
 class MonthYear
