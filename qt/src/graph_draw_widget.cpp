@@ -537,7 +537,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 
 	int textHeight = metrics.height();
 
-	for (int i = 0; i < numYGrids; i++)
+	for (unsigned int i = 0; i < numYGrids; i++)
 	{
 		float thisYValue = plotArea.top() + ((YInc * i) * YScale);
 
@@ -563,7 +563,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	m_areaItemPolygons.clear();
 	m_areaItemPolygons.resize(m_aAreaChartDataItems.size());
 
-	unsigned int shapeIndex = 0;
+	int shapeIndex = 0;
 	for (const AreaChartItemValues& item : m_aAreaChartDataItems)
 	{
 		QPolygonF& itemShape = m_areaItemPolygons[shapeIndex++];
@@ -658,7 +658,7 @@ void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
 
 	painter.setRenderHint(QPainter::Antialiasing);
 
-	unsigned int totalMonthValues = m_aOverviewChartItems.size();
+	int totalMonthValues = m_aOverviewChartItems.size();
 
 	QRect plotArea = geometry();
 	plotArea.adjust(leftMargin, topMargin, -20, -bottomMargin);

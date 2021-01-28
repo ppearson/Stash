@@ -385,7 +385,6 @@ bool detectOFXType(std::string path, OFX_TYPE &eType, std::string &encoding, std
 	
 	int lineCount = 0;
 	
-	bool bOFX1 = false;
 	bool bXML = false;
 	bool bOFX2 = false;
 	bool bASCII = false;
@@ -405,7 +404,7 @@ bool detectOFXType(std::string path, OFX_TYPE &eType, std::string &encoding, std
 		
 		if (line.find("DATA:OFXSGML") != std::string::npos)
 		{
-			bOFX1 = true;
+			
 		}
 		else if (line.find("<?") != std::string::npos)
 		{

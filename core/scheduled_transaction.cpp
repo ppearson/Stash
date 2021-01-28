@@ -25,7 +25,8 @@
 #include "scheduled_transaction.h"
 #include "storage.h"
 
-ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(Transaction::None), m_constraint(ExactDate)
+ScheduledTransaction::ScheduledTransaction() : m_account(0), m_enabled(true), m_frequency(Weekly),
+				m_type(Transaction::None), m_constraint(ExactDate)
 {
 	m_nextDate.Now();
 }
