@@ -29,7 +29,7 @@
 #include <bitset>
 
 #include "transaction.h"
-#include "string.h"
+#include "storage.h"
 
 Transaction::Transaction() : m_Type(None),
 	m_Cleared(false), m_Flagged(false), m_Reconciled(false),
@@ -54,15 +54,15 @@ Transaction::Transaction(const std::string& Description, const std::string& Paye
 void Transaction::Load(std::fstream &stream, int version)
 {
 	m_Date.Load(stream, version);
-	LoadString(m_Description, stream);
-	LoadString(m_Payee, stream);
-	LoadString(m_Category, stream);
+	Storage::LoadString(m_Description, stream);
+	Storage::LoadString(m_Payee, stream);
+	Storage::LoadString(m_Category, stream);
 	m_Amount.Load(stream, version);
 	
-	stream.read((char *) &m_Type, sizeof(unsigned char));
+	m_Type = (Type)Storage::loadValueFromUChar(stream);
 	
 	unsigned char cBitset = 0;
-	stream.read((char *) &cBitset, sizeof(unsigned char));
+	Storage::loadUChar(cBitset, stream);
 	
 	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
 		
@@ -77,7 +77,7 @@ void Transaction::Load(std::fstream &stream, int version)
 		
 		if (m_HasFITID)
 		{
-			LoadString(m_FITID, stream);
+			Storage::LoadString(m_FITID, stream);
 		}
 	}
 
@@ -86,7 +86,7 @@ void Transaction::Load(std::fstream &stream, int version)
 	if (version < 6 || m_Split)
 	{
 		unsigned char numSplits = 0;
-		stream.read((char *) &numSplits, sizeof(unsigned char));
+		Storage::loadUChar(numSplits, stream);
 		
 		for (int i = 0; i < numSplits; i++)
 		{
@@ -101,12 +101,12 @@ void Transaction::Load(std::fstream &stream, int version)
 void Transaction::Store(std::fstream &stream) const
 {
 	m_Date.Store(stream);
-	StoreString(m_Description, stream);
-	StoreString(m_Payee, stream);
-	StoreString(m_Category, stream);
+	Storage::StoreString(m_Description, stream);
+	Storage::StoreString(m_Payee, stream);
+	Storage::StoreString(m_Category, stream);
 	m_Amount.Store(stream);
 	
-	stream.write((char *) &m_Type, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_Type, stream);
 	
 	std::bitset<8> localset;	
 	localset[0] = m_Cleared;
@@ -116,17 +116,17 @@ void Transaction::Store(std::fstream &stream) const
 	localset[4] = m_HasFITID;
 	
 	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
-	stream.write((char *) &cBitset, sizeof(unsigned char));
+	Storage::storeUChar(cBitset, stream);
 	
 	if (m_HasFITID)
 	{
-		StoreString(m_FITID, stream);
+		Storage::StoreString(m_FITID, stream);
 	}
 
 	if (m_Split)
 	{
 		unsigned char numSplits = static_cast<unsigned char>(m_aSplits.size());
-		stream.write((char *) &numSplits, sizeof(unsigned char));
+		Storage::storeUChar(numSplits, stream);
 		
 		std::vector<SplitTransaction>::const_iterator it = m_aSplits.begin();
 		std::vector<SplitTransaction>::const_iterator itEnd = m_aSplits.end();

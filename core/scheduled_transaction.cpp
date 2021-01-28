@@ -22,8 +22,8 @@
 
 #include <bitset>
 
-#include "string.h"
 #include "scheduled_transaction.h"
+#include "storage.h"
 
 ScheduledTransaction::ScheduledTransaction() : m_enabled(true), m_frequency(Weekly), m_account(0), m_type(Transaction::None), m_constraint(ExactDate)
 {
@@ -34,7 +34,7 @@ void ScheduledTransaction::Load(std::fstream &stream, int version)
 {
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 256 accounts...
-	stream.read((char *) &m_account, sizeof(unsigned char));
+	m_account = Storage::loadValueFromUChar(stream);
 	
 	if (version == 0)
 	{
@@ -43,47 +43,47 @@ void ScheduledTransaction::Load(std::fstream &stream, int version)
 	else
 	{
 		unsigned char cBitset = 0;
-		stream.read((char *) &cBitset, sizeof(unsigned char));
+		Storage::loadUChar(cBitset, stream);
 	
 		std::bitset<8> localset(static_cast<unsigned long>(cBitset));
 	
 		m_enabled = localset[0];
 	}
 	
-	LoadString(m_payee, stream);
+	Storage::LoadString(m_payee, stream);
 	m_amount.Load(stream, version);
-	LoadString(m_category, stream);
-	LoadString(m_description, stream);
+	Storage::LoadString(m_category, stream);
+	Storage::LoadString(m_description, stream);
 	
-	stream.read((char *) &m_frequency, sizeof(unsigned char));
+	m_frequency = (Frequency)Storage::loadValueFromUChar(stream);
 	m_nextDate.Load(stream, version);
 	
-	stream.read((char *) &m_type, sizeof(unsigned char));
-	stream.read((char *) &m_constraint, sizeof(unsigned char));
+	m_type = (Transaction::Type)Storage::loadValueFromUChar(stream);
+	m_constraint = (Constraint)Storage::loadValueFromUChar(stream);
 }
 
 void ScheduledTransaction::Store(std::fstream &stream) const
 {
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 256 accounts...
-	stream.write((char *) &m_account, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_account, stream);
 	
 	std::bitset<8> localset;	
 	localset[0] = m_enabled;
 	
 	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
-	stream.write((char *) &cBitset, sizeof(unsigned char));
+	Storage::storeUChar(cBitset, stream);
 	
-	StoreString(m_payee, stream);
+	Storage::StoreString(m_payee, stream);
 	m_amount.Store(stream);
-	StoreString(m_category, stream);
-	StoreString(m_description, stream);
+	Storage::StoreString(m_category, stream);
+	Storage::StoreString(m_description, stream);
 	
-	stream.write((char *) &m_frequency, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_frequency, stream);
 	m_nextDate.Store(stream);
 	
-	stream.write((char *) &m_type, sizeof(unsigned char));
-	stream.write((char *) &m_constraint, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_type, stream);
+	Storage::storeValueToUChar(m_constraint, stream);
 }
 
 void ScheduledTransaction::AdvanceNextDate()

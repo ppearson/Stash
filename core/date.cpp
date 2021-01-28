@@ -23,6 +23,7 @@
 #include <cstring>
 #include <algorithm>
 #include <iomanip>
+#include "storage.h"
 
 #include "date.h"
 
@@ -298,16 +299,16 @@ void Date::Load(std::fstream &stream, int version)
 		// new one:
 		// Use more portable and space-efficient method:
 		
-		// day is stored in left-most 5 bits
+		// day is stored in left-most (most significant in little-endian) 5 bits
 		// month is stored in next 4 bits
-		// year in right-most 16 bits
+		// year in right-most (least significant in little-endian) 16 bits
 		
 		// day shift 27 - mask: 0xF8000000
 		// month shift 23 - mask: 0x7800000
 		// year shift 0 - mask: 0xFFFF
 		
 		uint32_t packedDate = 0;
-		stream.read((char *)&packedDate, sizeof(uint32_t));
+		Storage::loadUInt(packedDate, stream);
 		
 		uint32_t day = (packedDate & 0xF8000000) >> 27;
 		uint32_t month = (packedDate & 0x7800000) >> 23;
@@ -330,16 +331,16 @@ void Date::Store(std::fstream &stream) const
 	// new one:
 	// Use more portable and space-efficient method:
 	
-	// day is stored in left-most 5 bits
+	// day is stored in left-most (most significant in little-endian) 5 bits
 	// month is stored in next 4 bits
-	// year in right-most 16 bits
+	// year in right-most (least significant in little-endian) 16 bits
 
 	// day shift 27 - mask: 0xF8000000
 	// month shift 23 - mask: 0x7800000
 	// year shift 0 - mask: 0xFFFF
 
 	uint32_t packedDate = ((unsigned int)m_Day << 27) | ((unsigned int)m_Month << 23) | (unsigned int)m_Year;
-	stream.write((char *)&packedDate, sizeof(uint32_t));
+	Storage::storeUInt(packedDate, stream);
 }
 
 // old code that wasn't portable between systems (and was wasteful as well)

@@ -28,7 +28,7 @@
 #include <cstring>
 
 #include "split_transaction.h"
-#include "string.h"
+#include "storage.h"
 
 SplitTransaction::SplitTransaction(const std::string& Description, const std::string& Payee, const std::string& Category, fixed Amount) :
 		m_Description(Description), m_Payee(Payee), m_Category(Category), m_Amount(Amount)
@@ -38,16 +38,16 @@ SplitTransaction::SplitTransaction(const std::string& Description, const std::st
 
 void SplitTransaction::Load(std::fstream &stream, int version)
 {
-	LoadString(m_Description, stream);
-	LoadString(m_Payee, stream);
-	LoadString(m_Category, stream);
+	Storage::LoadString(m_Description, stream);
+	Storage::LoadString(m_Payee, stream);
+	Storage::LoadString(m_Category, stream);
 	m_Amount.Load(stream, version);	
 }
 
 void SplitTransaction::Store(std::fstream &stream) const
 {
-	StoreString(m_Description, stream);
-	StoreString(m_Payee, stream);
-	StoreString(m_Category, stream);
+	Storage::StoreString(m_Description, stream);
+	Storage::StoreString(m_Payee, stream);
+	Storage::StoreString(m_Category, stream);
 	m_Amount.Store(stream);
 }

@@ -10,6 +10,7 @@
 #include <fstream>
 #include <cstring>
 #include <algorithm>
+#include "storage.h"
 
 #if FIXED_SUPPORT_MULT_DIVIDE
 
@@ -202,7 +203,7 @@ void fixed::Load(std::fstream& stream, int version)
 	// worth doing for efficient storage
 	
 	int temp = 0;
-	stream.read((char *) &temp, sizeof(int));
+	Storage::loadInt(temp, stream);
 	
 	m_num = abs(temp);
 	
@@ -229,7 +230,7 @@ void fixed::Store(std::fstream& stream) const
 	// TODO: we don't currenly need this, but if we were going to support multiply/divide,
 	//       and/or varying precision numbers, we'd need to also load/store m_precision...
 	
-	stream.write((char *) &temp, sizeof(int));
+	Storage::storeInt(temp, stream);
 }
 
 bool fixed::operator >( const fixed & rhs ) const

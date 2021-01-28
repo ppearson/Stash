@@ -83,6 +83,7 @@
 		D082AD9A124E2BD500C525E1 /* trans_prefs.png in Resources */ = {isa = PBXBuildFile; fileRef = D082AD8C124E2BD500C525E1 /* trans_prefs.png */; };
 		D082AD9B124E2BD500C525E1 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = D082AD8D124E2BD500C525E1 /* up.png */; };
 		D09FE557124EBCAC00F68813 /* GraphController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D09FE556124EBCAC00F68813 /* GraphController.mm */; };
+		D0B0315825C210D70031D75A /* storage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0B0315725C210D70031D75A /* storage.cpp */; };
 		D0D29EBF22C416F300BF5BB0 /* DueScheduledTransactionsController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0D29EBE22C416F200BF5BB0 /* DueScheduledTransactionsController.mm */; };
 /* End PBXBuildFile section */
 
@@ -138,7 +139,6 @@
 		D082ACD5124E2B2C00C525E1 /* split_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = split_transaction.h; sourceTree = "<group>"; };
 		D082ACD6124E2B2C00C525E1 /* io_qif.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = io_qif.cpp; sourceTree = "<group>"; };
 		D082ACD7124E2B2C00C525E1 /* io_qif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = io_qif.h; sourceTree = "<group>"; };
-		D082ACD8124E2B2C00C525E1 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		D082ACD9124E2B2C00C525E1 /* transaction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transaction.cpp; sourceTree = "<group>"; };
 		D082ACDA124E2B2C00C525E1 /* transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transaction.h; sourceTree = "<group>"; };
 		D082ACE9124E2B8600C525E1 /* StashAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = StashAppDelegate.mm; path = mac/StashAppDelegate.mm; sourceTree = "<group>"; };
@@ -210,6 +210,8 @@
 		D082AD8D124E2BD500C525E1 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
 		D09FE555124EBCAC00F68813 /* GraphController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphController.h; path = mac/GraphController.h; sourceTree = "<group>"; };
 		D09FE556124EBCAC00F68813 /* GraphController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GraphController.mm; path = mac/GraphController.mm; sourceTree = "<group>"; };
+		D0B0315625C210C20031D75A /* storage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = storage.h; sourceTree = "<group>"; };
+		D0B0315725C210D70031D75A /* storage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = storage.cpp; sourceTree = "<group>"; };
 		D0D29EBE22C416F200BF5BB0 /* DueScheduledTransactionsController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DueScheduledTransactionsController.mm; path = mac/DueScheduledTransactionsController.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -384,6 +386,8 @@
 				D082ACC5124E2B2C00C525E1 /* analysis.h */,
 				D082ACC6124E2B2C00C525E1 /* date.cpp */,
 				D082ACC7124E2B2C00C525E1 /* date.h */,
+				D0B0315725C210D70031D75A /* storage.cpp */,
+				D0B0315625C210C20031D75A /* storage.h */,
 				D082ACC8124E2B2C00C525E1 /* document.cpp */,
 				D082ACC9124E2B2C00C525E1 /* document.h */,
 				D082ACCA124E2B2C00C525E1 /* expression_parser.cpp */,
@@ -400,7 +404,6 @@
 				D082ACD3124E2B2C00C525E1 /* scheduled_transaction.h */,
 				D082ACD4124E2B2C00C525E1 /* split_transaction.cpp */,
 				D082ACD5124E2B2C00C525E1 /* split_transaction.h */,
-				D082ACD8124E2B2C00C525E1 /* string.h */,
 				D082ACD9124E2B2C00C525E1 /* transaction.cpp */,
 				D082ACDA124E2B2C00C525E1 /* transaction.h */,
 			);
@@ -566,6 +569,7 @@
 				D082AD38124E2B8600C525E1 /* SplitViewEx.m in Sources */,
 				D0084E6522C4506700661851 /* PreferencesWindow.mm in Sources */,
 				D082AD39124E2B8600C525E1 /* main.m in Sources */,
+				D0B0315825C210D70031D75A /* storage.cpp in Sources */,
 				D09FE557124EBCAC00F68813 /* GraphController.mm in Sources */,
 				D04734721269F4E1002E5A71 /* ValueFormatter.mm in Sources */,
 			);

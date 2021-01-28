@@ -24,7 +24,7 @@
 
 #include <algorithm>
 
-#include "string.h"
+#include "storage.h"
 
 Account::Account()
 {
@@ -33,16 +33,16 @@ Account::Account()
 
 void Account::Load(std::fstream& stream, int version)
 {
-	LoadString(m_name, stream);
-	LoadString(m_institution, stream);
-	LoadString(m_number, stream);
-	LoadString(m_note, stream);
+	Storage::LoadString(m_name, stream);
+	Storage::LoadString(m_institution, stream);
+	Storage::LoadString(m_number, stream);
+	Storage::LoadString(m_note, stream);
 	
-	stream.read((char *) &m_type, sizeof(unsigned char));
+	m_type = (Type)Storage::loadValueFromUChar(stream);
 	
-	unsigned int numTransactions = 0;	
-	stream.read((char *) &numTransactions, sizeof(unsigned int));
-    
+	unsigned int numTransactions = 0;
+	Storage::loadUInt(numTransactions, stream);
+
 	m_aTransactions.reserve(numTransactions);
 	
 	for (unsigned int i = 0; i < numTransactions; i++)
@@ -62,15 +62,15 @@ void Account::Load(std::fstream& stream, int version)
 
 void Account::Store(std::fstream& stream) const
 {
-	StoreString(m_name, stream);
-	StoreString(m_institution, stream);
-	StoreString(m_number, stream);
-	StoreString(m_note, stream);
+	Storage::StoreString(m_name, stream);
+	Storage::StoreString(m_institution, stream);
+	Storage::StoreString(m_number, stream);
+	Storage::StoreString(m_note, stream);
 	
-	stream.write((char *) &m_type, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_type, stream);
 	
-	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());	
-	stream.write((char *) &numTransactions, sizeof(unsigned int));
+	unsigned int numTransactions = static_cast<unsigned int>(m_aTransactions.size());
+	Storage::storeUInt(numTransactions, stream);
 	
 	std::vector<Transaction>::const_iterator it = m_aTransactions.begin();
 	std::vector<Transaction>::const_iterator itEnd = m_aTransactions.end();

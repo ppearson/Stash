@@ -22,7 +22,7 @@
 
 #include "document.h"
 
-#include "string.h"
+#include "storage.h"
 
 static const int kDocumentVersion = 6;
 
@@ -41,7 +41,7 @@ Document* Document::getInstance()
 bool Document::Load(std::fstream &stream, bool& futureVersion)
 {
 	unsigned char fileID = 0;
-	stream.read((char *) &fileID, sizeof(unsigned char));
+	Storage::loadUChar(fileID, stream);
 	
 	if (fileID != 42)
 	{		
@@ -49,7 +49,7 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	}
 	
 	unsigned char fileVersion = 0;
-	stream.read((char *) &fileVersion, sizeof(unsigned char));
+	Storage::loadUChar(fileVersion, stream);
 	
 	if (fileVersion > kDocumentVersion)
 	{
@@ -61,7 +61,7 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	m_aAccounts.clear();
 	
 	unsigned int numAccounts = 0;	
-	stream.read((char *) &numAccounts, sizeof(unsigned int));
+	Storage::loadUInt(numAccounts, stream);
 	
 	for (unsigned int i = 0; i < numAccounts; i++)
 	{
@@ -74,7 +74,7 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	m_aScheduledTransactions.clear();
 	
 	unsigned int numSchedTrans = 0;	
-	stream.read((char *) &numSchedTrans, sizeof(unsigned int));
+	Storage::loadUInt(numSchedTrans, stream);
 	
 	for (unsigned int i = 0; i < numSchedTrans; i++)
 	{
@@ -87,12 +87,12 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	m_aPayees.clear();
 	
 	unsigned int numPayees = 0;
-	stream.read((char *) &numPayees, sizeof(unsigned int));
+	Storage::loadUInt(numPayees, stream);
 		
 	for (unsigned int i = 0; i < numPayees; i++)
 	{
 		std::string strPayee;
-		LoadString(strPayee, stream);
+		Storage::LoadString(strPayee, stream);
 		
 		m_aPayees.insert(strPayee);
 	}
@@ -100,12 +100,12 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	m_aCategories.clear();
 	
 	unsigned int numCategories = 0;
-	stream.read((char *) &numCategories, sizeof(unsigned int));
+	Storage::loadUInt(numCategories, stream);
 	
 	for (unsigned int i = 0; i < numCategories; i++)
 	{
 		std::string strCategory;
-		LoadString(strCategory, stream);
+		Storage::LoadString(strCategory, stream);
 		
 		m_aCategories.insert(strCategory);
 	}
@@ -115,7 +115,7 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 	if (fileVersion > 1)
 	{
 		unsigned int numGraphs = 0;
-		stream.read((char *) &numGraphs, sizeof(unsigned int));
+		Storage::loadUInt(numGraphs, stream);
 		
 		for (unsigned int i = 0; i < numGraphs; i++)
 		{
@@ -132,13 +132,13 @@ bool Document::Load(std::fstream &stream, bool& futureVersion)
 bool Document::Store(std::fstream &stream) const
 {
 	unsigned char fileID = 42;
-	stream.write((char *) &fileID, sizeof(unsigned char));
+	Storage::storeUChar(fileID, stream);
 	
 	unsigned char fileVersion = kDocumentVersion;
-	stream.write((char *) &fileVersion, sizeof(unsigned char));
+	Storage::storeUChar(fileVersion, stream);
 	
-	unsigned int numAccounts = static_cast<unsigned int>(m_aAccounts.size());	
-	stream.write((char *) &numAccounts, sizeof(unsigned int));
+	unsigned int numAccounts = static_cast<unsigned int>(m_aAccounts.size());
+	Storage::storeUInt(numAccounts, stream);
 	
 	for (std::vector<Account>::const_iterator it = m_aAccounts.begin(); it != m_aAccounts.end(); ++it)
 	{
@@ -146,7 +146,7 @@ bool Document::Store(std::fstream &stream) const
 	}
 	
 	unsigned int numSchedTrans = static_cast<unsigned int>(m_aScheduledTransactions.size());	
-	stream.write((char *) &numSchedTrans, sizeof(unsigned int));
+	Storage::storeUInt(numSchedTrans, stream);
 	
 	for (std::vector<ScheduledTransaction>::const_iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
 	{
@@ -154,23 +154,23 @@ bool Document::Store(std::fstream &stream) const
 	}
 	
 	unsigned int numPayees = static_cast<unsigned int>(m_aPayees.size());
-	stream.write((char *) &numPayees, sizeof(unsigned int));
+	Storage::storeUInt(numPayees, stream);
 	
 	for (std::set<std::string>::const_iterator it = m_aPayees.begin(); it != m_aPayees.end(); ++it)
 	{
-		StoreString((*it), stream);
+		Storage::StoreString((*it), stream);
 	}
 	
 	unsigned int numCategories = static_cast<unsigned int>(m_aCategories.size());
-	stream.write((char *) &numCategories, sizeof(unsigned int));
+	Storage::storeUInt(numCategories, stream);
 	
 	for (std::set<std::string>::const_iterator it = m_aCategories.begin(); it != m_aCategories.end(); ++it)
 	{
-		StoreString((*it), stream);
+		Storage::StoreString((*it), stream);
 	}
 	
 	unsigned int numGraphs = static_cast<unsigned int>(m_aGraphs.size());	
-	stream.write((char *) &numGraphs, sizeof(unsigned int));
+	Storage::storeUInt(numGraphs, stream);
 	
 	for (std::vector<Graph>::const_iterator it = m_aGraphs.begin(); it != m_aGraphs.end(); ++it)
 	{

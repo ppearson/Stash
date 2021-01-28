@@ -23,7 +23,7 @@
 #include <bitset>
 
 #include "graph.h"
-#include "string.h"
+#include "storage.h"
 
 Graph::Graph() : m_name(""), m_account(0), m_viewType(Total), m_type(ExpenseCategories), m_ignoreTransfers(false),
 			m_dateType(DateCustom), m_itemsType(AllItems)
@@ -34,18 +34,18 @@ Graph::Graph() : m_name(""), m_account(0), m_viewType(Total), m_type(ExpenseCate
 void Graph::Load(std::fstream &stream, int version)
 {
 	// not the best way of doing this, should have some unique ID for accounts...
-	// not strictly valid either, but are we going to have more than 512 accounts...
-	stream.read((char *) &m_account, sizeof(unsigned char));
+	// not strictly valid either, but are we going to have more than 256 accounts...
+	m_account = Storage::loadValueFromUChar(stream);
 	
-	LoadString(m_name, stream);
+	Storage::LoadString(m_name, stream);
 	
 	m_startDate.Load(stream, version);
 	m_endDate.Load(stream, version);
 	
-	stream.read((char *) &m_type, sizeof(unsigned char));
+	m_type = (Graph::Type)Storage::loadValueFromUChar(stream);
 	
 	unsigned char cBitset = 0;
-	stream.read((char *) &cBitset, sizeof(unsigned char));
+	Storage::loadUChar(cBitset, stream);
 	
 	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
 	
@@ -53,60 +53,60 @@ void Graph::Load(std::fstream &stream, int version)
 	
 	if (version > 2)
 	{
-		stream.read((char *) &m_dateType, sizeof(unsigned char));
+		m_dateType = (Graph::DateType)Storage::loadValueFromUChar(stream);
 	}
 	
 	if (version > 4)
 	{
-		stream.read((char *) &m_itemsType, sizeof(unsigned char));
+		m_itemsType = (Graph::ItemsType)Storage::loadValueFromUChar(stream);
 		
 		m_items.clear();
 		
 		unsigned int numItems = 0;
-		stream.read((char *) &numItems, sizeof(unsigned int));
+		Storage::loadUInt(numItems, stream);
 		
 		for (unsigned int i = 0; i < numItems; i++)
 		{
 			std::string strItem;
-			LoadString(strItem, stream);
+			Storage::LoadString(strItem, stream);
 			
 			m_items.insert(strItem);
 		}
 		
-		stream.read((char *) &m_viewType, sizeof(unsigned char));
+		m_viewType = (Graph::ViewType)Storage::loadValueFromUChar(stream);
 	}
 }
 
 void Graph::Store(std::fstream &stream) const
 {
 	// not the best way of doing this, should have some unique ID for accounts...
-	// not strictly valid either, but are we going to have more than 512 accounts...
-	stream.write((char *) &m_account, sizeof(unsigned char));
+	// not strictly valid either, but are we going to have more than 256 accounts...
+	Storage::storeValueToUChar(m_account, stream);
 	
-	StoreString(m_name, stream);
+	Storage::StoreString(m_name, stream);
 	
 	m_startDate.Store(stream);
 	m_endDate.Store(stream);
 	
-	stream.write((char *) &m_type, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_type, stream);
 	
 	std::bitset<8> localset;	
 	localset[0] = m_ignoreTransfers;
 	
 	unsigned char cBitset = static_cast<unsigned char>(localset.to_ulong());
-	stream.write((char *) &cBitset, sizeof(unsigned char));
+	Storage::storeUChar(cBitset, stream);
 	
-	stream.write((char *) &m_dateType, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_dateType, stream);
 	
-	stream.write((char *) &m_itemsType, sizeof(unsigned char));	
+	Storage::storeValueToUChar(m_itemsType, stream);
 	
 	unsigned int numItems = static_cast<unsigned int>(m_items.size());
-	stream.write((char *) &numItems, sizeof(unsigned int));
+	Storage::storeUInt(numItems, stream);
 	
 	for (std::set<std::string>::iterator it = m_items.begin(); it != m_items.end(); ++it)
 	{
-		StoreString((*it), stream);
+		Storage::StoreString((*it), stream);
 	}
 	
-	stream.write((char *) &m_viewType, sizeof(unsigned char));
+	Storage::storeValueToUChar(m_viewType, stream);
 }
