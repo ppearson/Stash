@@ -191,7 +191,7 @@ OFXStatementTransaction::OFXStatementTransaction(const Transaction::Type &type, 
 	m_fitid = ss.str();
 }
 
-void OFXStatementTransaction::setDate(std::string &date)
+void OFXStatementTransaction::setDate(const std::string &date)
 {
 	m_date.setDate(date, 0, Date::OFX);
 }
@@ -230,12 +230,12 @@ void OFXStatementTransaction::writeToXMLStream(std::fstream &stream) const
 	stream << "        </STMTTRN>\n\n";
 }
 
-void OFXBankAccount::setType(std::string type)
+void OFXBankAccount::setType(const std::string& type)
 {
 	m_type = StringToAccountType(type);
 }
 
-void OFXStatementTransaction::setType(std::string &type)
+void OFXStatementTransaction::setType(const std::string& type)
 {
 	m_type = StringToTransactionType(type);
 }

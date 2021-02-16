@@ -47,14 +47,14 @@ public:
 	}
 	OFXBankAccount(const std::string& bankID, const std::string& accountID, const std::string& type);
 	
-	void setBankID(std::string id) { m_bankID = id; }
-	void setAccountID(std::string id) { m_accountID = id; }
-	void setType(std::string type);
+	void setBankID(const std::string& id) { m_bankID = id; }
+	void setAccountID(const std::string& id) { m_accountID = id; }
+	void setType(const std::string& type);
 	void setType(Account::Type type) { m_type = type; }
 	
-	std::string		getBankID() const { return m_bankID; }
-	std::string		getAccountID() const { return m_accountID; }
-	Account::Type	getType() const { return m_type; }
+	const std::string& getBankID() const { return m_bankID; }
+	const std::string& getAccountID() const { return m_accountID; }
+	Account::Type getType() const { return m_type; }
 	
 private:
 	std::string		m_bankID;
@@ -77,19 +77,19 @@ public:
 	OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, std::string &name, int FITID);
 	virtual ~OFXStatementTransaction() { }
 	
-	void setType(std::string &type);
-	void setDate(std::string &date);
-	void setAmount(std::string &amount) { m_amount.SetFromString(amount); }
-	void setName(std::string &name) { m_name = name; }
-	void setMemo(std::string &memo) { m_memo = memo; }
-	void setFITID(std::string &FITID) { m_fitid = FITID; }
+	void setType(const std::string &type);
+	void setDate(const std::string &date);
+	void setAmount(const std::string &amount) { m_amount.SetFromString(amount); }
+	void setName(const std::string &name) { m_name = name; }
+	void setMemo(const std::string &memo) { m_memo = memo; }
+	void setFITID(const std::string &FITID) { m_fitid = FITID; }
 	
 	Transaction::Type	getType() const { return m_type; }
 	const Date&			getDate() const { return m_date; }
 	fixed				getAmount() const { return m_amount; }
-	std::string			getName() const { return m_name; }
-	std::string			getMemo() const { return m_memo; }
-	std::string			getFITID() const { return m_fitid; }
+	const std::string&	getName() const { return m_name; }
+	const std::string&	getMemo() const { return m_memo; }
+	const std::string&	getFITID() const { return m_fitid; }
 	
 	void writeToSGMLStream(std::fstream &stream) const;
 	void writeToXMLStream(std::fstream &stream) const;

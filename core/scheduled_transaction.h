@@ -65,10 +65,10 @@ public:
 	
 	void setAccount(unsigned int account) { m_account = account; }
 	void setEnabled(bool enabled) { m_enabled = enabled; }
-	void setPayee(std::string payee) { m_payee = payee; }
+	void setPayee(const std::string& payee) { m_payee = payee; }
 	void setAmount(fixed amount) { m_amount = amount; }
-	void setCategory(std::string category) { m_category = category; }
-	void setDescription(std::string description) { m_description = description; }
+	void setCategory(const std::string& category) { m_category = category; }
+	void setDescription(const std::string& description) { m_description = description; }
 	void setFrequency(Frequency frequency) { m_frequency = frequency; }
 	void setNextDate(Date nextDate) { m_nextDate = nextDate; }
 	void setType(Transaction::Type type) { m_type = type; }

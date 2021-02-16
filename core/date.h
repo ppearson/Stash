@@ -73,12 +73,12 @@ public:
 	
 	bool isLeapYear() const;
 
-	bool operator==(Date date) const { return m_Time == date.m_Time; }
-	bool operator!=(Date date) const { return m_Time != date.m_Time; }
-	bool operator>(Date date) const { return m_Time > date.m_Time; }
-	bool operator<(Date date) const { return m_Time < date.m_Time; }
-	bool operator>=(Date date) const { return m_Time >= date.m_Time; }
-	bool operator<=(Date date) const { return m_Time <= date.m_Time; }
+	bool operator==(const Date& date) const { return m_Time == date.m_Time; }
+	bool operator!=(const Date& date) const { return m_Time != date.m_Time; }
+	bool operator>(const Date& date) const { return m_Time > date.m_Time; }
+	bool operator<(const Date& date) const { return m_Time < date.m_Time; }
+	bool operator>=(const Date& date) const { return m_Time >= date.m_Time; }
+	bool operator<=(const Date& date) const { return m_Time <= date.m_Time; }
 
 	void SetVarsFromTime();
 	void SetTimeFromVars();

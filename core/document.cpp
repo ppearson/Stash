@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app (core).
- * Copyright (C) 2009-2020 Peter Pearson
+ * Copyright (C) 2009-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -28,7 +28,7 @@ static const int kDocumentVersion = 6;
 
 Document* Document::m_pInstance = NULL;
 
-Document::Document()
+Document::Document() : m_unsavedChanges(false)
 {	
 	m_pInstance = this;
 }

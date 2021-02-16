@@ -61,18 +61,18 @@ public:
 	
 	const Date& getDate() const { return m_Date; }
 	void setDate(const Date& date) { m_Date = date; }
-	std::string getCategory() const { return m_Category; }
-	void setCategory(std::string Category) { m_Category = Category; }
-	std::string getDescription() const { return m_Description; }
-	void setDescription(std::string Description) { m_Description = Description; }
-	std::string getPayee() const { return m_Payee; }
-	void setPayee(std::string Payee) { m_Payee = Payee; }
+	const std::string& getCategory() const { return m_Category; }
+	void setCategory(const std::string& Category) { m_Category = Category; }
+	const std::string& getDescription() const { return m_Description; }
+	void setDescription(const std::string& Description) { m_Description = Description; }
+	const std::string& getPayee() const { return m_Payee; }
+	void setPayee(const std::string& Payee) { m_Payee = Payee; }
 	const fixed& getAmount() const { return m_Amount; }
 	void setAmount(fixed Amount) { m_Amount = Amount; }
 	Type getType() const { return m_Type; }
 	void setType(Type type) { m_Type = type; }
 	std::string getFITID() const { return m_FITID; }
-	void setFITID(std::string FITID) { m_FITID = FITID; }
+	void setFITID(const std::string& FITID) { m_FITID = FITID; }
 	
 	bool hasFITID() const { return m_HasFITID; }
 	void setHasFITID(bool has) { m_HasFITID = has; }

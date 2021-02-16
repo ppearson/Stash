@@ -782,7 +782,7 @@ void StashWindow::fileImportOFXFile()
 	if (!settingsDlg.exec())
 		return;
 	
-	const std::vector<OFXImportSettingsDialog::AccountSettings> importAccountSettings = settingsDlg.getAccountSettings();
+	const std::vector<OFXImportSettingsDialog::AccountSettings>& importAccountSettings = settingsDlg.getAccountSettings();
 	
 	bool reverseTransactions = settingsDlg.getReverseTransactionOrder();
 	bool markTransactionsCleared = settingsDlg.getMarkTransactionsCleared();

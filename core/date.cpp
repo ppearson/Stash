@@ -409,7 +409,7 @@ time_t Date::GetDate() const
 	return m_Time;
 }
 
-MonthYear::MonthYear(int Month, int Year) : m_month(Month), m_year(Year)
+MonthYear::MonthYear(int month, int year) : m_month(month), m_year(year)
 {
 
 }

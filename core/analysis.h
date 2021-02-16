@@ -1,6 +1,6 @@
 /* 
  * Stash:  A Personal Finance app (core).
- * Copyright (C) 2009-2020 Peter Pearson
+ * Copyright (C) 2009-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -90,11 +90,11 @@ struct OverviewChartItem
 	OverviewChartItem() { } // only needed for std::map[] if the values isn't found
 	OverviewChartItem(MonthYear &date) : m_date(date) { }
 	
-	void addIncome(fixed &income)
+	void addIncome(const fixed &income)
 	{
 		m_income += income;
 	}
-	void addOutgoings(fixed &outgoings)
+	void addOutgoings(const fixed &outgoings)
 	{
 		m_outgoings += outgoings;
 	}

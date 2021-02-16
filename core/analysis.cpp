@@ -248,7 +248,6 @@ void copyPieItemsToVector(std::map<std::string, fixed>& aMap, const PieChartCrit
 bool buildAreaChartItems(const AreaChartCriteria& criteria, AreaChartResults& results, bool expense, bool categories)
 {
 	// make temporary cache of all items on a month/day basis
-	std::map<MonthYear, fixed> aDateMap;
 	std::map<std::string, std::map< MonthYear, fixed > > aItemMap;
 	
 	std::map<std::string, std::map< MonthYear, fixed > >::iterator itItemFind = aItemMap.end();
