@@ -61,7 +61,7 @@ public slots:
 	
 protected:
 	
-	QPushButton* createNewButton(const QIcon& icon, const QString& tooltip);
+	QPushButton* createNewButton(int size, const QIcon& icon, const QString& tooltip);
 
 protected:	
 	QPushButton*		m_pPreviousButton;

@@ -31,19 +31,22 @@ DatePeriodControlButtonsWidget::DatePeriodControlButtonsWidget(QWidget* pParent)
 	QHBoxLayout* layout = new QHBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-	
-	m_pPreviousButton = createNewButton(QIcon(), QString("Decrement both dates to the next period type"));
-	m_pPreviousButton->setText("<");
-	m_pNextButton = createNewButton(QIcon(), QString("Increment both dates to the next period type"));
-	m_pNextButton->setText(">");
-	
+
 	m_pType = new QComboBox(this);
 	m_pType->addItem("Week");
 	m_pType->addItem("Month");
 	m_pType->addItem("Year");
 	m_pType->addItem("Custom");
+
+	// Try and size the push buttons to be the same height as the combo box so they look aligned, given they're right next to each other...
+	int targetSize = m_pType->sizeHint().height();
+
+	m_pPreviousButton = createNewButton(targetSize, QIcon(), QString("Decrement both dates to the next period type"));
+	m_pPreviousButton->setText("<");
+	m_pNextButton = createNewButton(targetSize, QIcon(), QString("Increment both dates to the next period type"));
+	m_pNextButton->setText(">");
 	
-	m_pType->setMinimumWidth(100);
+	m_pType->setMinimumWidth(110);
 	
 	connect(m_pPreviousButton, SIGNAL(clicked()), this, SLOT(previousClicked()));
 	connect(m_pNextButton, SIGNAL(clicked()), this, SLOT(nextClicked()));
@@ -87,14 +90,15 @@ void DatePeriodControlButtonsWidget::typeChanged()
 	emit typeIndexChanged();
 }
 
-QPushButton* DatePeriodControlButtonsWidget::createNewButton(const QIcon& icon, const QString& tooltip)
+QPushButton* DatePeriodControlButtonsWidget::createNewButton(int size, const QIcon& icon, const QString& tooltip)
 {
 	QPushButton* pNewButton = new QPushButton(icon, "", this);
-	pNewButton->setMaximumWidth(32);
-	pNewButton->setMinimumWidth(32);
+
+	pNewButton->setMaximumWidth(size);
+	pNewButton->setMinimumWidth(size);
 	
-	pNewButton->setMaximumHeight(32);
-	pNewButton->setMinimumHeight(32);
+	pNewButton->setMaximumHeight(size);
+	pNewButton->setMinimumHeight(size);
 	pNewButton->setToolTip(tooltip);
 	
 	pNewButton->setStyleSheet("QPushButton { qproperty-iconSize: 22px; };");	
