@@ -20,22 +20,31 @@
  *
  */
 
+#ifndef AREA_CHART_PAGE_H
+#define AREA_CHART_PAGE_H
+
 #include "settings_page.h"
 
-SettingsPage::SettingsPage(QSettings& settings, QWidget* parent) : QWidget(parent), m_settings(settings)
+class QCheckBox;
+class QSpinBox;
+class QLineEdit;
+
+class AreaChartPage : public SettingsPage
 {
-	m_pFormLayout = new QFormLayout();
+	Q_OBJECT
+public:
+	AreaChartPage(QSettings& settings, QWidget* parent = 0);
 
-	m_pFormLayout->setContentsMargins(2, 2, 2, 2);
+	virtual void saveSettings() override;
 
-	m_pFormLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-	m_pFormLayout->setFormAlignment(Qt::AlignLeft | Qt::AlignTop);
-	m_pFormLayout->setLabelAlignment(Qt::AlignLeft);
+protected slots:
+	void groupSmallerThanCheckToggle();
 
-	setLayout(m_pFormLayout);
-}
+protected:
 
-SettingsPage::~SettingsPage()
-{
+	QCheckBox*		m_pGroupItemsSmaller;
+	QSpinBox*		m_pGroupItemsSmallerSize;
+	QLineEdit*		m_pGroupItemsSmallerName;
+};
 
-}
+#endif // AREA_CHART_PAGE_H

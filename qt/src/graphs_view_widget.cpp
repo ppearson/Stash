@@ -119,7 +119,6 @@ void GraphsViewWidget::buildPieChartGraph()
 	int sortType = settingsState.getInt("pie_chart/segment_sort_type", 0);
 	PieChartCriteria::PieChartSort ePieChartSort = (PieChartCriteria::PieChartSort)sortType;
 	
-	// TODO: from Settings...
 	int pieSmallerThanValue = -1;
 	if (settingsState.getBool("pie_chart/group_items_smaller_than", true))
 	{
@@ -179,9 +178,14 @@ void GraphsViewWidget::buildAreaChartGraph()
 
 	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
 
-	// TODO: from Settings...
-	int areaSmallerThanValue = 2;
-	std::string areaGroupSmallerName = "Other";
+	const SettingsState& settingsState = m_pMainWindow->getSettingsState();
+
+	int areaSmallerThanValue = -1;
+	if (settingsState.getBool("area_chart/group_items_smaller_than", true))
+	{
+		areaSmallerThanValue = settingsState.getInt("area_chart/group_items_smaller_than_size", 2);
+	}
+	std::string areaGroupSmallerName = settingsState.getInternal().value("area_chart/group_items_smaller_than_name", "Other").toString().toStdString();
 
 	AreaChartCriteria areaCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, areaSmallerThanValue, areaGroupSmallerName);
