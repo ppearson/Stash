@@ -54,8 +54,12 @@ public:
 	
 	bool isCleared() const { return m_Cleared; }
 	void setCleared(bool cleared) { m_Cleared = cleared; }
+	
+	// Note: m_Flagged isn't used at all....
+	// TODO: remove it?
 	bool isFlagged() const { return m_Flagged; }
 	void setFlagged(bool flagged) { m_Flagged = flagged; }
+	
 	bool isReconciled() const { return m_Reconciled; }
 	void setReconciled(bool recon) { m_Reconciled = recon; }
 	
@@ -108,7 +112,7 @@ private:
 	Type			m_Type;	
 	
 	bool			m_Cleared;
-	bool			m_Flagged;
+	bool			m_Flagged; // Note: Not used...
 	bool			m_Reconciled;
 		
 	bool			m_HasFITID;
