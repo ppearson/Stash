@@ -43,6 +43,9 @@ public:
 	// more easily...
 	static void storeValueToUChar(const unsigned int value, std::fstream& stream);
 	
+	// Note: these by-design use by-reference for the value, rather than by value or return
+	// value, so that there's a *bit* of type-safety at compile time (i.e. implicit casts are slightly harder).
+	
 	static void loadUChar(unsigned char& value, std::fstream& stream);
 	static void storeUChar(const unsigned char& value, std::fstream& stream);
 	
@@ -51,6 +54,11 @@ public:
 	
 	static void loadUInt(unsigned int& value, std::fstream& stream);
 	static void storeUInt(const unsigned int& value, std::fstream& stream);
+	
+	// Note: These are only used for loading old file formats, so aren't really needed any more,
+	//       but for compatibilty for the moment, they remain
+	static void loadUInt64(uint64_t& value, std::fstream& stream);
+	static void storeUInt64(const uint64_t& value, std::fstream& stream);
 	
 	static void LoadString(std::string& string, std::fstream& stream);
 	static void StoreString(const std::string& string, std::fstream& stream);

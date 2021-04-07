@@ -68,6 +68,20 @@ void Storage::storeUInt(const unsigned int& value, std::fstream& stream)
 	stream.write((char*)&value, sizeof(unsigned int));
 }
 
+// Note: This isn't really used any more (at least for recent file format versions),
+//       but it's still here just to be able to read older file format versions correctly
+void Storage::loadUInt64(uint64_t& value, std::fstream& stream)
+{
+	stream.read((char *)&value, sizeof(uint64_t));
+}
+
+// Note: This isn't really needed at all, as we can't save older versions, but it's here
+//       for completeness
+void Storage::storeUInt64(const uint64_t& value, std::fstream& stream)
+{
+	stream.write((char *)&value, sizeof(uint64_t));
+}
+
 void Storage::LoadString(std::string& string, std::fstream& stream)
 {
 	unsigned char size = 0;
