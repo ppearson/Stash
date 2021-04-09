@@ -43,6 +43,8 @@ protected:
 	QCheckBox*		m_pResetEditTransactionDateOnRefresh; // not a great description, but...
 	QCheckBox*		m_pColourNegativeAmountValuesRed;
 	QCheckBox*		m_pColourNegativeBalanceValuesRed;
+	QCheckBox*		m_pEnforceNegativeAmountsOfTransactionsBasedOffType;
+	QCheckBox*		m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent;
 };
 
 #endif // TRANSACTIONS_PAGE_H

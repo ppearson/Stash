@@ -446,6 +446,8 @@ void TransactionsViewWidget::transactionValuesUpdated()
 	// TODO: we could also pull through whether the amount was updated, to isolate even more...
 	bool updateDocIndex = false;
 	
+	bool enforceNegativeSplitValuesIfParentIsNegative = m_pMainWindow->getSettingsState().getBool("transactions/enforce_negative_amounts_of_split_transactions", true);
+	
 	if (m_splitTransactionIndex == -1)
 	{
 		// it's not a split transaction, it's a normal one...
@@ -464,6 +466,15 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		
 		m_pTransactionFormPanel->updateSplitTransactionFromParamValues(splitTransaction);
 		
+		// Note: this is done here for the moment (instead of in TransactionFormPanel which ideally would be better),
+		//       so that the parent Transaction object is readily available.
+		if (enforceNegativeSplitValuesIfParentIsNegative && !transaction.getAmount().IsPositive())
+		{
+			fixed negativeAmount = splitTransaction.getAmount();
+			negativeAmount.setNegative();
+			splitTransaction.setAmount(negativeAmount);
+		}
+		
 		splitTransactionItemIndex = getSingleSelectedIndex();
 		mainTransactionItemIndex = splitTransactionItemIndex.parent();
 	}
@@ -475,6 +486,15 @@ void TransactionsViewWidget::transactionValuesUpdated()
 		SplitTransaction newSplitTransaction;
 		
 		m_pTransactionFormPanel->updateSplitTransactionFromParamValues(newSplitTransaction);
+		
+		// Note: this is done here for the moment (instead of in TransactionFormPanel which ideally would be better),
+		//       so that the parent Transaction object is readily available.
+		if (enforceNegativeSplitValuesIfParentIsNegative && !transaction.getAmount().IsPositive())
+		{
+			fixed negativeAmount = newSplitTransaction.getAmount();
+			negativeAmount.setNegative();
+			newSplitTransaction.setAmount(negativeAmount);
+		}
 		
 		transaction.addSplit(newSplitTransaction);
 		

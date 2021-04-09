@@ -305,9 +305,6 @@ void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transac
 	
 	m_document.addPayee(payee);
 	
-	double dAmount = m_pAmount->text().toDouble();
-	transaction.setAmount(dAmount);
-	
 	std::string category = m_pCategory->currentText().toStdString();
 	transaction.setCategory(category);
 	
@@ -317,7 +314,37 @@ void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transac
 	transaction.setCleared(cleared);
 	
 	int typeIndex = m_pType->currentIndex();
-	transaction.setType((Transaction::Type)typeIndex);
+	Transaction::Type transactionType = (Transaction::Type)typeIndex;
+	transaction.setType(transactionType);
+	
+	double dAmount = m_pAmount->text().toDouble();
+	fixed fAmount = dAmount;
+	
+	const SettingsState& settingsState = m_pStashWindow->getSettingsState();
+	bool enforceNegative = settingsState.getBool("transactions/enforce_negative_amounts_of_transactions_from_type", false);
+	if (enforceNegative)
+	{
+		// see if the type should be negative...
+		bool negType = false;
+		switch (transactionType)
+		{
+			case Transaction::Withdrawal:
+			case Transaction::PointOfSale:
+			case Transaction::Debit:
+			case Transaction::ATM:
+				negType = true;
+				break;
+			default:
+				break;
+		}
+		
+		if (negType)
+		{
+			fAmount.setNegative();
+		}
+	}
+	
+	transaction.setAmount(fAmount);
 	
 	QDate rawDate = m_pDate->date();
 	Date date(rawDate.day(), rawDate.month(), rawDate.year());

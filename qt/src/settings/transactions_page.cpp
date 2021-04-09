@@ -50,6 +50,14 @@ TransactionsPage::TransactionsPage(QSettings& settings, QWidget* parent) : Setti
 	m_pColourNegativeBalanceValuesRed = new QCheckBox(this);
 	m_pColourNegativeBalanceValuesRed->setText("Colour negative Balance values red");
 	m_pColourNegativeBalanceValuesRed->setChecked(m_settings.value("transactions/colour_negative_balance_values_red", true).toBool());
+	
+	m_pEnforceNegativeAmountsOfTransactionsBasedOffType = new QCheckBox(this);
+	m_pEnforceNegativeAmountsOfTransactionsBasedOffType->setText("Enforce negative amounts of Transactions for appropriate types");
+	m_pEnforceNegativeAmountsOfTransactionsBasedOffType->setChecked(m_settings.value("transactions/enforce_negative_amounts_of_transactions_from_type", false).toBool());
+	
+	m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent = new QCheckBox(this);
+	m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent->setText("Enforce negative amounts of Splits if parent Transaction is negative");
+	m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent->setChecked(m_settings.value("transactions/enforce_negative_amounts_of_split_transactions", true).toBool());
 
 	//
 
@@ -58,7 +66,9 @@ TransactionsPage::TransactionsPage(QSettings& settings, QWidget* parent) : Setti
 	m_pFormLayout->addRow("", m_pNewTransactionsAreMarkedCleared);
 	m_pFormLayout->addRow("", m_pResetEditTransactionDateOnRefresh);
 	m_pFormLayout->addRow("", m_pColourNegativeAmountValuesRed);
-	m_pFormLayout->addRow("", m_pColourNegativeBalanceValuesRed);	
+	m_pFormLayout->addRow("", m_pColourNegativeBalanceValuesRed);
+	m_pFormLayout->addRow("", m_pEnforceNegativeAmountsOfTransactionsBasedOffType);
+	m_pFormLayout->addRow("", m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent);
 }
 
 void TransactionsPage::saveSettings()
@@ -69,4 +79,6 @@ void TransactionsPage::saveSettings()
 	m_settings.setValue("transactions/reset_edit_transaction_date_on_refresh", m_pResetEditTransactionDateOnRefresh->isChecked());
 	m_settings.setValue("transactions/colour_negative_amount_values_red", m_pColourNegativeAmountValuesRed->isChecked());
 	m_settings.setValue("transactions/colour_negative_balance_values_red", m_pColourNegativeBalanceValuesRed->isChecked());
+	m_settings.setValue("transactions/enforce_negative_amounts_of_transactions_from_type", m_pEnforceNegativeAmountsOfTransactionsBasedOffType->isChecked());
+	m_settings.setValue("transactions/enforce_negative_amounts_of_split_transactions", m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent->isChecked());
 }
