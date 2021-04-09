@@ -90,7 +90,7 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	m_pType = new QComboBox(this);
 	QStringList typeChoices;
 	typeChoices << "None" << "Deposit" << "Withdrawal" << "Transfer" << "Standing Order" << "Direct Debit" << "Point Of Sale" <<
-				   "ATM" << "Cheque" << "Credit" << "Debit";
+				   "Charge" << "ATM" << "Cheque" << "Credit" << "Debit";
 	m_pType->addItems(typeChoices);
 	m_pType->setCurrentIndex(0);
 	pTypeLabel->setBuddy(m_pType);
