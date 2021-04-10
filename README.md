@@ -1,7 +1,7 @@
 Stash
 -----
 
-Stash is a fast and simple personal finance application.
+Stash is a fast and simple personal finance native application.
 
 Its core data-storage and serialisation files are written in C++, and there is an
 existing (but somewhat old) native Mac OS interface written in Objective-C++ / Cocoa,
@@ -36,6 +36,24 @@ https://github.com/ppearson/Stash
 If you want to download the source code, you can do the following:
 
 git clone git://github.com/ppearson/Stash
+
+Implementations
+---------------
+
+There are two full implementations of Stash now, in different subdirectories of the main checkout. Both implementations
+are native wrappers around the core C++ storage files:
+
+* mac/: the original OS X / MacOS interface wrapper, written in Objective C++ against native Cocoa bindings, which was written in 2009-2010.
+* qt/: a much newer (written in 2020-2021) Qt (4/5) interface wrapper, predominantly for native Linux support.
+
+The Qt port is now feature-complete to the original MacOS version, and it's likely any future
+development I do will be against the Qt version.
+
+There's also a *very* incomplete and WIP CLI version of Stash which is only really for testing file format
+and core infrastructure experiments, as I don't really see the use in having a fully-featured command line
+interface to Stash (I much prefer using a GUI), however it could be worthwhile adding export functionality
+in the future to this version, however I have no need for that currently, and otherwise this CLI is very
+unlikely to be worked on by me.
 
 Helping
 -------
