@@ -135,6 +135,8 @@ public slots:
 	
 	void toolsSettings();
 	
+	void helpAbout();
+	
 	void docIndexSelectionHasChanged(DocumentIndexType type, int index);
 	void documentChangedFromIndex(); // trigger document modify from index (for account deletion)
 	void deselectAnyAccount(); // for deselecting/hiding transaction when the last account is deleted.

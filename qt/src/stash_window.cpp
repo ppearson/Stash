@@ -62,6 +62,7 @@
 #include "dialogs/qif_import_settings_dialog.h"
 #include "dialogs/ofx_import_settings_dialog.h"
 #include "dialogs/ofx_export_settings_dialog.h"
+#include "dialogs/about_dialog.h"
 
 #include "settings/settings_window.h"
 
@@ -405,12 +406,23 @@ void StashWindow::setupMenu()
 	
 	menuTools->addAction(pToolsSettings);
 	
+	QMenu* menuHelp = new QMenu("Help", m_pMenuBar);
+	menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
+	
+	QAction* pHelpAbout = new QAction(this);
+	pHelpAbout->setText("&About...");
+	
+	menuHelp->addAction(pHelpAbout);
+	
+	connect(pHelpAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
+	
 	m_pMenuBar->addMenu(menuFile);
 	m_pMenuBar->addMenu(menuEdit);
 	m_pMenuBar->addMenu(menuView);
 	m_pMenuBar->addMenu(menuInsert);
 	m_pMenuBar->addMenu(menuTransaction);
 	m_pMenuBar->addMenu(menuTools);
+	m_pMenuBar->addMenu(menuHelp);
 	
 	setMenuBar(m_pMenuBar);
 	
@@ -1220,6 +1232,12 @@ void StashWindow::toolsSettings()
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
 		m_pGraphsViewWidget->rebuildFromGraph();
 	}
+}
+
+void StashWindow::helpAbout()
+{
+	AboutDialog dlg(this);
+	dlg.exec();
 }
 
 void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)

@@ -8,5 +8,6 @@
         <file>images/make_transfer.png</file>
         <file>images/add_account.png</file>
         <file>images/main_icon_0.png</file>
+        <file>images/main_icon_2.png</file>
     </qresource>
 </RCC>
