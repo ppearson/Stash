@@ -1224,7 +1224,7 @@ void StashWindow::toolsSettings()
 
 void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 {
-	if (type == eDocIndex_Account && index >= 0 && index < m_documentController.getDocument().getAccountCount())
+	if (type == eDocIndex_Account && index >= 0 && index < (int)m_documentController.getDocument().getAccountCount())
 	{
 		Account* pAccount = &m_documentController.getDocument().getAccount(index);
 		
@@ -1273,7 +1273,7 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 		
 		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
 	}
-	else if (type == eDocIndex_Graph && index >= 0 && index < m_documentController.getDocument().getGraphCount())
+	else if (type == eDocIndex_Graph && index >= 0 && index < (int)m_documentController.getDocument().getGraphCount())
 	{
 		Graph* pGraph = &m_documentController.getDocument().getGraph(index);
 		
@@ -1399,7 +1399,7 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 			
 			// TODO: this isn't really *that* much of a guarentee, ideally we'd have something like a UUID
 			//       connecting the two...
-			if (accountIndex >= 0 && accountIndex < m_documentController.getDocument().getAccountCount())
+			if (accountIndex >= 0 && accountIndex < (int)m_documentController.getDocument().getAccountCount())
 			{
 				// Note: schedTransIndex is the index into the overall total list of scheduled transactions
 				DueSchedTransactions::DueSchedTrans newTrans(schedTransIndex, it->getPayee(), it->getDescription());

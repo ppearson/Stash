@@ -202,7 +202,7 @@ void TransactionsViewWidget::deleteSelectedTransaction()
 	if (!m_pAccount)
 		return;
 	
-	if (m_transactionIndex == -1)
+	if (m_transactionIndex == -1u)
 		return;
 	
 	QModelIndex selectedModelTransactionIndex = getSingleSelectedIndex();
@@ -246,7 +246,7 @@ void TransactionsViewWidget::deleteSelectedTransaction()
 		
 		// given it's not possible to not have model items for splits, we can get the count for this from
 		// the transaction itself, rather than from the model.
-		if (deletedSplitTransModelRow < transaction.getSplitCount())
+		if (deletedSplitTransModelRow < (int)transaction.getSplitCount())
 		{
 			QModelIndex newSelection = m_pModel->index(deletedSplitTransModelRow, 0, parentTransactionModelIndex);
 			m_pTreeView->selectionModel()->select(newSelection, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
@@ -265,7 +265,7 @@ void TransactionsViewWidget::splitCurrentTransaction()
 	if (!m_pAccount)
 		return;
 	
-	if (m_transactionIndex == -1)
+	if (m_transactionIndex == -1u)
 		return;
 	
 	Transaction& transaction = m_pAccount->getTransaction(m_transactionIndex);
@@ -301,7 +301,7 @@ void TransactionsViewWidget::moveSelectedTransactionUp()
 	if (!m_pAccount)
 		return;
 	
-	if (m_transactionIndex == -1)
+	if (m_transactionIndex == -1u)
 		return;
 	
 	// for the moment, only support moving the main transactions
@@ -333,7 +333,7 @@ void TransactionsViewWidget::moveSelectedTransactionDown()
 	if (!m_pAccount)
 		return;
 	
-	if (m_transactionIndex == -1)
+	if (m_transactionIndex == -1u)
 		return;
 	
 	// for the moment, only support moving the main transactions
@@ -435,7 +435,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 	if (!m_pAccount)
 		return;
 	
-	if (m_transactionIndex == -1)
+	if (m_transactionIndex == -1u)
 		return;
 	
 	Transaction& transaction = m_pAccount->getTransaction(m_transactionIndex);
@@ -593,7 +593,7 @@ void TransactionsViewWidget::updateItemButtonsAndMainMenuStateFromSelection()
 	{
 		buttonsEnabled = ItemControlButtonsWidget::eBtnAdd;
 		
-		if (m_transactionIndex != -1)
+		if (m_transactionIndex != -1u)
 		{
 			if (m_splitTransactionIndex != -2)
 			{

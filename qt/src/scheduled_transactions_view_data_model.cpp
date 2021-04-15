@@ -286,7 +286,7 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		// it's not great having to do this...
 		const Document& document = m_pMainWindow->getDocumentController().getDocument();
 		unsigned int accountIndex = schedTrans.getAccount();
-		if (accountIndex != -1 && accountIndex < document.getAccountCount())
+		if (accountIndex != -1u && accountIndex < document.getAccountCount())
 		{
 			const Account& acc = document.getAccount(accountIndex);
 			newModelItem->m_account = acc.getName().c_str();

@@ -61,7 +61,7 @@ OFXExportSettingsDialog::OFXExportSettingsDialog(QWidget* parent, const StashWin
 	unsigned int numAccounts = mainWindow->getDocumentController().getDocument().getAccountCount();
 	m_pTableWidget->setRowCount(numAccounts);
 	
-	for (int i = 0; i < numAccounts; i++)
+	for (int i = 0; i < (int)numAccounts; i++)
 	{		
 		m_pTableWidget->setRowHeight(i, 18);
 		

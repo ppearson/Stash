@@ -160,7 +160,7 @@ void ScheduledTransactionsViewWidget::addNewScheduledTransaction()
 
 void ScheduledTransactionsViewWidget::deleteSelectedScheduledTransaction()
 {
-	if (m_scheduledTransactionIndex == -1)
+	if (m_scheduledTransactionIndex == -1u)
 		return;
 	
 	QModelIndex selectedModelScheduledTransactionIndex = getSingleSelectedIndex();
@@ -211,7 +211,7 @@ void ScheduledTransactionsViewWidget::selectionChanged(const QItemSelection& sel
 // called based on the "Update" button being pressed on the ScheduledTransactionsFormPanel.
 void ScheduledTransactionsViewWidget::scheduledTransactionValuesUpdated()
 {
-	if (m_scheduledTransactionIndex == -1)
+	if (m_scheduledTransactionIndex == -1u)
 		return;
 	
 	ScheduledTransaction& scheduledTransaction = m_document.getScheduledTransaction(m_scheduledTransactionIndex);
@@ -271,7 +271,7 @@ void ScheduledTransactionsViewWidget::updateItemButtonsFromSelection()
 {
 	unsigned int buttonsEnabled = ItemControlButtonsWidget::eBtnAdd;
 	
-	if (m_scheduledTransactionIndex != -1)
+	if (m_scheduledTransactionIndex != -1u)
 	{
 		buttonsEnabled |= ItemControlButtonsWidget::eBtnDelete;
 	}

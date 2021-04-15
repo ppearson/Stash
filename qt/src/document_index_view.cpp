@@ -256,7 +256,7 @@ void DocumentIndexView::menuAccountDetails()
 void DocumentIndexView::menuAccountDelete()
 {
 	// shouldn't need this, but...
-	if (m_selectedIndexSubIndex == -1 || m_selectedIndexSubIndex >= m_document.getAccountCount())
+	if (m_selectedIndexSubIndex == -1u || m_selectedIndexSubIndex >= m_document.getAccountCount())
 		return;
 	
 	const Account& account = m_document.getAccount(m_selectedIndexSubIndex);
@@ -295,7 +295,7 @@ void DocumentIndexView::menuAccountDelete()
 void DocumentIndexView::menuGraphDelete()
 {
 	// shouldn't need this, but...
-	if (m_selectedIndexSubIndex == -1 || m_selectedIndexSubIndex >= m_document.getGraphCount())
+	if (m_selectedIndexSubIndex == -1u || m_selectedIndexSubIndex >= m_document.getGraphCount())
 		return;
 	
 	const Graph& graph = m_document.getGraph(m_selectedIndexSubIndex);

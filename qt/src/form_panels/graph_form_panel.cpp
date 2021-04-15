@@ -164,7 +164,7 @@ void GraphFormPanel::setParamsFromGraph(const Graph& graph)
 	m_pGraph = const_cast<Graph*>(&graph);
 	
 	int accountIndex = graph.getAccount();
-	if (accountIndex == -1 || accountIndex >= m_document.getAccountCount())
+	if (accountIndex == -1 || accountIndex >= (int)m_document.getAccountCount())
 		return;
 	
 	m_pAccount->setCurrentIndex(accountIndex);

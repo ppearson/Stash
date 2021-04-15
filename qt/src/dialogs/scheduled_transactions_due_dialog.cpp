@@ -139,9 +139,9 @@ void ScheduledTransactionsDueDialog::handleActionButtonClick(ActionType type)
 		
 		if (index.isValid())
 		{
-			unsigned int selectedDueSchedTransactionIndex = index.row();
+			int selectedDueSchedTransactionIndex = index.row();
 			
-			if (selectedDueSchedTransactionIndex < m_dueTransactions.transactions.size())
+			if (selectedDueSchedTransactionIndex < (int)m_dueTransactions.transactions.size())
 			{
 				// now actually look up the index of the due scheduled transaction item, in order to map it back
 				// to the index of the scheduled transaction in the main Document class...
