@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -100,6 +100,8 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_pTreeView->setAlternatingRowColors(true);
 	
 	m_pTreeView->setStyleSheet(sTableStyle.c_str());
+
+	connect(m_pModel, SIGNAL(transactionClearedStateChanged(unsigned int,bool)), this, SLOT(transactionClearedStateToggled(uint,bool)));
 	
 	m_pTransactionFormPanel = new TransactionFormPanel(mainWindow, m_pMainWindow->getDocumentController().getDocument(), m_pSplitter);
 	
@@ -508,7 +510,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 	int splitTransactionModelRowIndex = splitTransactionItemIndex.isValid() ? splitTransactionItemIndex.row() : -1;
 	
 	// only a partial reset...
-	// TODO: this is still pretty brute-force - would be nice to edit-in-place just the single item...
+	// TODO: this is still pretty brute-force - would be nice to edit-in-place just the single item and any transactions below...
 	m_pModel->rebuildModelFromAccount();
 	
 	mainTransactionItemIndex = m_pTreeView->model()->index(mainTransactionModelRowIndex, 0);
@@ -563,6 +565,58 @@ void TransactionsViewWidget::moveUpItemClicked()
 void TransactionsViewWidget::moveDownItemClicked()
 {
 	moveSelectedTransactionDown();
+}
+
+void TransactionsViewWidget::transactionClearedStateToggled(unsigned int transactionIndex, bool newClearedState)
+{
+	// see if this functionality is enabled or not
+	if (!m_pMainWindow->getSettingsState().getBool("transactions/enable_toggling_cleared_transactions", true))
+		return;
+
+	if (!m_pAccount)
+		return;
+
+	if (transactionIndex == -1u)
+		return;
+
+	Transaction& transaction = m_pAccount->getTransaction(transactionIndex);
+	transaction.setCleared(newClearedState);
+
+	// partially update view
+	// TODO: there's a bit of duplication from transactionValuesUpdated() here, but we don't
+	//       want to do all of that stuff, so...
+
+	QModelIndex mainTransactionItemIndex;
+
+	// TODO: we could also pull through whether the amount was updated, to isolate even more...
+	bool updateDocIndex = false;
+
+	// Note: we should only be able to toggle the cleared state of full transactions (not sub split items)
+
+	if (m_transactionIndex == transactionIndex)
+	{
+		// If the modified transaction is selected (and thus params are shown), update
+		m_pTransactionFormPanel->setClearedParamValue(newClearedState);
+	}
+
+	mainTransactionItemIndex = getSingleSelectedIndex();
+
+	updateDocIndex = true;
+
+	// save the row index to construct a new QModelIndex after we've refreshed it.
+	int mainTransactionModelRowIndex = mainTransactionItemIndex.row();
+
+	// only a partial reset...
+	// TODO: this is still pretty brute-force - would be nice to edit-in-place just the single item and any transactions below...
+	m_pModel->rebuildModelFromAccount();
+
+	mainTransactionItemIndex = m_pTreeView->model()->index(mainTransactionModelRowIndex, 0);
+
+	// reselect the item
+	m_pTreeView->selectionModel()->select(mainTransactionItemIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	m_pTreeView->scrollTo(mainTransactionItemIndex);
+
+	m_pMainWindow->setWindowModifiedAndRebuildIndex(updateDocIndex);
 }
 
 void TransactionsViewWidget::selectTransaction(unsigned int transactionIndex, int splitIndex)

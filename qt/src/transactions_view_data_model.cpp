@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -167,6 +167,27 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 	}
 
 	return QVariant();
+}
+
+bool TransactionsViewDataModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+	if (role == Qt::CheckStateRole)
+	{
+		if (index.column() == 0)
+		{
+			TransactionsModelItem* item = getItem(index);
+			if (item && item->getSplitTransactionIndex() == -1)
+			{
+				unsigned int transactionIndex = item->getTransactionIndex();
+				bool newClearedState = !item->getCleared().toBool();
+
+				emit transactionClearedStateChanged(transactionIndex, newClearedState);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 Qt::ItemFlags TransactionsViewDataModel::flags(const QModelIndex& index) const

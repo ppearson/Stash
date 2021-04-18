@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -39,12 +39,18 @@ public:
 protected:
 	QSpinBox*		m_pRecentDurationDays;
 	QCheckBox*		m_pScrollToLatestTransaction;
+
 	QCheckBox*		m_pNewTransactionsAreMarkedCleared;
+	QCheckBox*		m_pEnableTogglingClearedTransactionColumn;
+
 	QCheckBox*		m_pResetEditTransactionDateOnRefresh; // not a great description, but...
+
 	QCheckBox*		m_pColourNegativeAmountValuesRed;
 	QCheckBox*		m_pColourNegativeBalanceValuesRed;
+
 	QCheckBox*		m_pEnforceNegativeAmountsOfTransactionsBasedOffType;
 	QCheckBox*		m_pEnforceNegativeAmountsOfSplitTransactionsBasedOffParent;
+
 };
 
 #endif // TRANSACTIONS_PAGE_H

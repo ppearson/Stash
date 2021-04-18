@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -296,6 +296,11 @@ void TransactionFormPanel::setParamsForEmptySplitTransaction(QString amountStrin
 	// set focus and select text
 	m_pPayee->setFocus();
 	m_pPayee->lineEdit()->selectAll();
+}
+
+void TransactionFormPanel::setClearedParamValue(bool clearedValue)
+{
+	m_pCleared->setChecked(clearedValue);
 }
 
 void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transaction)

@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -81,6 +81,8 @@ public slots:
 	void splitItemClicked();
 	void moveUpItemClicked();
 	void moveDownItemClicked();
+
+	void transactionClearedStateToggled(unsigned int transactionIndex, bool newClearedState);
 	
 protected:
 	void selectTransaction(unsigned int transactionIndex, int splitIndex = -1);

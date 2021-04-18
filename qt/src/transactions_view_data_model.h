@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -40,6 +40,7 @@ class TransactionsModelItem;
 
 class TransactionsViewDataModel : public QAbstractItemModel
 {
+	Q_OBJECT
 public:
 	TransactionsViewDataModel(const SettingsState& settingsState, QWidget* parent, StashWindow* stashWindow);
 	virtual ~TransactionsViewDataModel();
@@ -49,6 +50,7 @@ public:
 	void setTransactionsViewDurationType(TransactionsViewDurationType viewType);
 	
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+	virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 	
 	virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 	
@@ -67,6 +69,9 @@ public:
 
 	void rebuildModelFromAccount();
 	void clear();
+
+signals:
+	void transactionClearedStateChanged(unsigned int transactionIndex, bool newClearedState);
 		
 protected:
 	const SettingsState&			m_settingsState;

@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -37,6 +37,10 @@ TransactionsPage::TransactionsPage(QSettings& settings, QWidget* parent) : Setti
 	m_pNewTransactionsAreMarkedCleared = new QCheckBox(this);
 	m_pNewTransactionsAreMarkedCleared->setText("New Transactions are marked cleared by default");
 	m_pNewTransactionsAreMarkedCleared->setChecked(m_settings.value("transactions/new_transactions_are_marked_cleared", true).toBool());
+
+	m_pEnableTogglingClearedTransactionColumn = new QCheckBox(this);
+	m_pEnableTogglingClearedTransactionColumn->setText("Enable toggling cleared transaction column");
+	m_pEnableTogglingClearedTransactionColumn->setChecked(m_settings.value("transactions/enable_toggling_cleared_transactions", true).toBool());
 	
 	m_pResetEditTransactionDateOnRefresh = new QCheckBox(this);
 	// TODO: some better name/description than this, or a tooltip?
@@ -64,6 +68,7 @@ TransactionsPage::TransactionsPage(QSettings& settings, QWidget* parent) : Setti
 	m_pFormLayout->addRow("Recent transaction days:", m_pRecentDurationDays);
 	m_pFormLayout->addRow("", m_pScrollToLatestTransaction);
 	m_pFormLayout->addRow("", m_pNewTransactionsAreMarkedCleared);
+	m_pFormLayout->addRow("", m_pEnableTogglingClearedTransactionColumn);
 	m_pFormLayout->addRow("", m_pResetEditTransactionDateOnRefresh);
 	m_pFormLayout->addRow("", m_pColourNegativeAmountValuesRed);
 	m_pFormLayout->addRow("", m_pColourNegativeBalanceValuesRed);
@@ -76,6 +81,7 @@ void TransactionsPage::saveSettings()
 	m_settings.setValue("transactions/recent_duration_days", m_pRecentDurationDays->value());
 	m_settings.setValue("transactions/scroll_to_latest_auto", m_pScrollToLatestTransaction->isChecked());
 	m_settings.setValue("transactions/new_transactions_are_marked_cleared", m_pNewTransactionsAreMarkedCleared->isChecked());
+	m_settings.setValue("transactions/enable_toggling_cleared_transactions", m_pEnableTogglingClearedTransactionColumn->isChecked());
 	m_settings.setValue("transactions/reset_edit_transaction_date_on_refresh", m_pResetEditTransactionDateOnRefresh->isChecked());
 	m_settings.setValue("transactions/colour_negative_amount_values_red", m_pColourNegativeAmountValuesRed->isChecked());
 	m_settings.setValue("transactions/colour_negative_balance_values_red", m_pColourNegativeBalanceValuesRed->isChecked());
