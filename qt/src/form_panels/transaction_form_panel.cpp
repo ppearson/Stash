@@ -39,6 +39,8 @@
 
 #include "widgets/expression_line_edit.h"
 
+#include "ui_currency_formatter.h"
+
 #include "../../core/document.h"
 #include "../../core/split_transaction.h"
 
@@ -322,7 +324,13 @@ void TransactionFormPanel::updateTransactionFromParamValues(Transaction& transac
 	Transaction::Type transactionType = (Transaction::Type)typeIndex;
 	transaction.setType(transactionType);
 	
-	double dAmount = m_pAmount->text().toDouble();
+	bool wasOk = false;
+	double dAmount = m_pAmount->text().toDouble(&wasOk);
+	if (!wasOk)
+	{
+		// we didn't parse the number correctly, so try and remove currency characters.
+		dAmount = parseStringAmountValue();
+	}
 	fixed fAmount = dAmount;
 	
 	const SettingsState& settingsState = m_pStashWindow->getSettingsState();
@@ -366,7 +374,14 @@ void TransactionFormPanel::updateSplitTransactionFromParamValues(SplitTransactio
 	
 	m_document.addPayee(payee);
 	
-	double dAmount = m_pAmount->text().toDouble();
+	bool wasOk = false;
+	double dAmount = m_pAmount->text().toDouble(&wasOk);
+	if (!wasOk)
+	{
+		// we didn't parse the number correctly, so try and remove currency characters.
+		dAmount = parseStringAmountValue();
+	}
+	
 	splitTransaction.setAmount(dAmount);
 	
 	std::string category = m_pCategory->currentText().toStdString();
@@ -418,6 +433,16 @@ void TransactionFormPanel::updateClicked()
 		
 		emit transactionValuesUpdated();
 	}
+	else
+	{
+		// we didn't parse the number correctly, so try and remove currency characters.
+		dAmount = parseStringAmountValue();
+		
+		if (dAmount != 0.0)
+		{
+			emit transactionValuesUpdated();
+		}
+	}
 }
 
 void TransactionFormPanel::updatePayeeAndCategoryComboBoxChoicesFromDocument()
@@ -437,4 +462,33 @@ void TransactionFormPanel::updatePayeeAndCategoryComboBoxChoicesFromDocument()
 	{
 		m_pCategory->addItem(itCat->c_str());
 	}
+}
+
+double TransactionFormPanel::parseStringAmountValue() const
+{
+	QChar thousandsSeparatorChar = m_pStashWindow->getCurrencyFormatter()->getThousandsSeparatorChar();
+	
+	QString simplifiedString;
+	int length = m_pAmount->text().size();
+	for (int i = 0; i < length; i++)
+	{
+		QChar chr = m_pAmount->text().at(i);
+		QChar::Category cat = chr.category();
+		if (cat == QChar::Symbol_Currency)
+		{
+			continue;
+		}
+		
+		if (chr == thousandsSeparatorChar ||
+			chr == ' ')
+		{
+			continue;
+		}
+		
+		simplifiedString += chr;
+	}
+	
+	// TODO: further error checking...
+	double dAmount = simplifiedString.toDouble();
+	return dAmount;
 }

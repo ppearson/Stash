@@ -45,6 +45,8 @@ public:
 	// this is non-const on purpose, as derived classes may
 	// have an internal cache/buffer...
 	virtual QString formatCurrencyAmount(const fixed& amount) = 0;
+	
+	virtual QChar getThousandsSeparatorChar() const = 0;
 };
 
 class UICurrForm_DollarNegSymbolPrefix : public UICurrencyFormatter
@@ -58,6 +60,11 @@ public:
 	virtual QString formatCurrencyAmount(const fixed& amount)
 	{
 		return QString::fromUtf8(m_formatter.formatValue(amount));
+	}
+	
+	virtual QChar getThousandsSeparatorChar() const
+	{
+		return m_formatter.getThousandsSeparatorChar();
 	}
 	
 protected:
@@ -77,6 +84,11 @@ public:
 		return QString::fromUtf8(m_formatter.formatValue(amount));
 	}
 	
+	virtual QChar getThousandsSeparatorChar() const
+	{
+		return m_formatter.getThousandsSeparatorChar();
+	}
+	
 protected:
 	CurrencyValueFormatter	m_formatter;
 };
@@ -92,6 +104,11 @@ public:
 	virtual QString formatCurrencyAmount(const fixed& amount)
 	{
 		return QString::fromUtf8(m_formatter.formatValue(amount));
+	}
+	
+	virtual QChar getThousandsSeparatorChar() const
+	{
+		return m_formatter.getThousandsSeparatorChar();
 	}
 	
 protected:
@@ -110,6 +127,11 @@ public:
 	virtual QString formatCurrencyAmount(const fixed& amount)
 	{
 		return m_locale.toCurrencyString(amount.ToDouble());
+	}
+	
+	virtual QChar getThousandsSeparatorChar() const
+	{
+		return m_locale.groupSeparator();
 	}
 	
 protected:

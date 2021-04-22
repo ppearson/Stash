@@ -56,7 +56,12 @@ public:
 	const char* formatValue(const fixed& value)
 	{
 		return m_pImpl->formatValue(value);
-	}	
+	}
+	
+	char getThousandsSeparatorChar() const
+	{
+		return m_pImpl->getThousandsSeparatorChar();
+	}
 	
 private:
 	class InternalFormatterImplementation
@@ -71,6 +76,11 @@ private:
 		}
 		
 		virtual const char* formatValue(const fixed& value) = 0;
+		
+		virtual char getThousandsSeparatorChar() const
+		{
+			return ',';
+		}
 	};
 	
 	//

@@ -34,6 +34,8 @@ class SplitTransaction;
 
 class StashWindow;
 
+class UICurrencyFormatter;
+
 class SettingsState;
 
 class TransactionsModelItem;
@@ -94,7 +96,7 @@ public:
 	TransactionsModelItem(TransactionsModelItem* parent = nullptr);
 	~TransactionsModelItem();
 	
-	void extractDetails(const Transaction& transaction, unsigned int transactionIndex);
+	void extractDetails(const Transaction& transaction, UICurrencyFormatter* currencyFormatter, unsigned int transactionIndex);
 	
 	// these are set separately, because they need to be formatted and calculated
 	// externally (at least for the balance)
