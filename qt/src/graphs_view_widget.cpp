@@ -31,7 +31,7 @@
 #include "../../core/analysis.h"
 
 #include "stash_window.h"
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 #include "settings_state.h"
 
 #include "form_panels/graph_form_panel.h"
@@ -142,7 +142,7 @@ void GraphsViewWidget::buildPieChartGraph()
 	if (!buildPieChartItems(pieCriteria, pieResults, expenses, categories))
 		return;
 	
-	UICurrencyFormatter* pCurrencyFormatter = m_pMainWindow->getCurrencyFormatter();
+	UICurrencyHandler* pCurrencyHandler = m_pMainWindow->getCurrencyHandler();
 	
 	fixed totalAmount;
 	
@@ -155,14 +155,14 @@ void GraphsViewWidget::buildPieChartGraph()
 		
 		// TODO: now that the GraphDrawWidget is actually doing currency formatting (due to AreaChart requirements)
 		//       we could do that in there instead of here
-		newItem.amount = pCurrencyFormatter->formatCurrencyAmount(itemValues.getAmount());
+		newItem.amount = pCurrencyHandler->formatCurrencyAmount(itemValues.getAmount());
 		
 		totalAmount += itemValues.getAmount();
 		
 		pieItems.emplace_back(newItem);
 	}
 	
-	QString totalAmountString = pCurrencyFormatter->formatCurrencyAmount(totalAmount);
+	QString totalAmountString = pCurrencyHandler->formatCurrencyAmount(totalAmount);
 
 	m_pGraphTotal->setPieChartItems(pieItems, totalAmountString);
 }

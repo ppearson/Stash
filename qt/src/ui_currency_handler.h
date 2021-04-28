@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef UI_CURRENCY_FORMATTER_H
-#define UI_CURRENCY_FORMATTER_H
+#ifndef UI_CURRENCY_HANDLER_H
+#define UI_CURRENCY_HANDLER_H
 
 #include <QString>
 #include <QLocale>
@@ -29,15 +29,15 @@
 #include "../../core/currency_value_formatter.h"
 #include "../../core/fixed.h"
 
-class UICurrencyFormatter
+class UICurrencyHandler
 {
 public:
-	UICurrencyFormatter()
+	UICurrencyHandler()
 	{
 		
 	}
 
-	virtual ~UICurrencyFormatter()
+	virtual ~UICurrencyHandler()
 	{
 		
 	}
@@ -47,12 +47,41 @@ public:
 	virtual QString formatCurrencyAmount(const fixed& amount) = 0;
 	
 	virtual QChar getThousandsSeparatorChar() const = 0;
+	
+	virtual bool parseStringAmountValue(const QString& stringAmount, double& doubleAmount) const
+	{
+		QChar thousandsSeparatorChar = getThousandsSeparatorChar();
+		
+		QString simplifiedString;
+		int length = stringAmount.size();
+		for (int i = 0; i < length; i++)
+		{
+			QChar chr = stringAmount.at(i);
+			QChar::Category cat = chr.category();
+			if (cat == QChar::Symbol_Currency)
+			{
+				continue;
+			}
+			
+			if (chr == thousandsSeparatorChar ||
+				chr == ' ')
+			{
+				continue;
+			}
+			
+			simplifiedString += chr;
+		}
+		
+		bool isOK = false;
+		doubleAmount = simplifiedString.toDouble(&isOK);
+		return isOK;
+	}
 };
 
-class UICurrForm_DollarNegSymbolPrefix : public UICurrencyFormatter
+class UICurrHandler_DollarNegSymbolPrefix : public UICurrencyHandler
 {
 public:
-	UICurrForm_DollarNegSymbolPrefix()
+	UICurrHandler_DollarNegSymbolPrefix()
 	{
 		m_formatter.setFromPreset(CurrencyValueFormatter::ePresetNZ);
 	}
@@ -71,10 +100,10 @@ protected:
 	CurrencyValueFormatter	m_formatter;
 };
 
-class UICurrForm_DollarNegParenthesis : public UICurrencyFormatter
+class UICurrHandler_DollarNegParenthesis : public UICurrencyHandler
 {
 public:
-	UICurrForm_DollarNegParenthesis()
+	UICurrHandler_DollarNegParenthesis()
 	{
 		m_formatter.setFromPreset(CurrencyValueFormatter::ePresetUS);
 	}
@@ -93,10 +122,10 @@ protected:
 	CurrencyValueFormatter	m_formatter;
 };
 
-class UICurrForm_PoundSterling : public UICurrencyFormatter
+class UICurrHandler_PoundSterling : public UICurrencyHandler
 {
 public:
-	UICurrForm_PoundSterling()
+	UICurrHandler_PoundSterling()
 	{
 		m_formatter.setFromPreset(CurrencyValueFormatter::ePresetUK);
 	}
@@ -116,10 +145,10 @@ protected:
 };
 
 // backup one for all else...
-class UICurrForm_QLocale : public UICurrencyFormatter
+class UICurrHandler_QLocale : public UICurrencyHandler
 {
 public:
-	UICurrForm_QLocale()
+	UICurrHandler_QLocale()
 	{
 		
 	}
@@ -138,4 +167,4 @@ protected:
 	QLocale		m_locale;
 };
 
-#endif // UI_CURRENCY_FORMATTER_H
+#endif // UI_CURRENCY_HANDLER_H

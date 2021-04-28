@@ -34,7 +34,7 @@
 #include "../../core/io_ofx.h"
 
 #include "stash_window.h"
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 OFXImportSettingsDialog::OFXImportSettingsDialog(QWidget* parent, const StashWindow* mainWindow,
 												 const OFXData& ofxData) : QDialog(parent),
@@ -75,7 +75,7 @@ OFXImportSettingsDialog::OFXImportSettingsDialog(QWidget* parent, const StashWin
 	int numAccounts = ofxData.getResponseCount();
 	m_pTableWidget->setRowCount(numAccounts);
 	
-	UICurrencyFormatter* currencyFormatter = m_pMainWindow->getCurrencyFormatter();
+	UICurrencyHandler* currencyHandler = m_pMainWindow->getCurrencyHandler();
 	
 	bool documentHasExistingAccounts = m_pMainWindow->getDocumentController().getDocument().getAccountCount() > 0;
 	
@@ -99,7 +99,7 @@ OFXImportSettingsDialog::OFXImportSettingsDialog(QWidget* parent, const StashWin
 		pTransactionsCountCell->setTextAlignment(Qt::AlignRight);
 		m_pTableWidget->setItem(i, 2, pTransactionsCountCell);
 		
-		QString balanceStr = currencyFormatter->formatCurrencyAmount(statementResponse.getBalance());
+		QString balanceStr = currencyHandler->formatCurrencyAmount(statementResponse.getBalance());
 		QTableWidgetItem* pBalanceCell = new QTableWidgetItem(balanceStr);
 		pBalanceCell->setTextAlignment(Qt::AlignRight);
 		m_pTableWidget->setItem(i, 3, pBalanceCell);
@@ -152,7 +152,6 @@ OFXImportSettingsDialog::OFXImportSettingsDialog(QWidget* parent, const StashWin
 	m_pNewAccountType->addItems(typeChoices);
 	
 	updateWidgetsFromSelection();
-	
 	
 	connect(m_pTableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(tableSelectionChanged()));
 	connect(m_pTableWidget, SIGNAL(cellClicked(int,int)), this, SLOT(cellClicked(int,int)));

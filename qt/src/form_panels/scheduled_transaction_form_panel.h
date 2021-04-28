@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -37,11 +37,13 @@ class QDateEdit;
 class Document;
 class ScheduledTransaction;
 
+class StashWindow;
+
 class ScheduledTransactionFormPanel : public QWidget
 {
 	Q_OBJECT
 public:
-	ScheduledTransactionFormPanel(const Document& document, QWidget* parent = 0);
+	ScheduledTransactionFormPanel(const StashWindow* pStashWindow, const Document& document, QWidget* parent = nullptr);
 	
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
@@ -63,6 +65,12 @@ protected:
 	void updateAccountsList(bool selectFirst);
 	void updatePayeeAndCategoryChoices();
 	
+	// return the amount value from the m_pAmount LineEdit if it's parse-able - otherwise,
+	// attempt to ignore currency and thousand separator characters - this is done
+	// as a separate function, as it requires skipping characters (currency ones)
+	// in some cases in order to be robust...
+	double parseStringAmountValue() const;
+	
 signals:
 	void scheduledTransactionValuesUpdated();
 
@@ -70,6 +78,7 @@ public slots:
 	void updateClicked();
 	
 protected:
+	const StashWindow*	m_pStashWindow;
 	const Document&		m_document;
 		
 	QComboBox*			m_pPayee;

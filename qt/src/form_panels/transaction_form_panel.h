@@ -78,7 +78,8 @@ public slots:
 protected:
 	void updatePayeeAndCategoryComboBoxChoicesFromDocument();
 	
-	// return the amount value from the m_pAmount LineEdit if it's non-trivial - this is done
+	// return the amount value from the m_pAmount LineEdit if it's parse-able - otherwise,
+	// attempt to ignore currency and thousand separator characters - this is done
 	// as a separate function, as it requires skipping characters (currency ones)
 	// in some cases in order to be robust...
 	double parseStringAmountValue() const;

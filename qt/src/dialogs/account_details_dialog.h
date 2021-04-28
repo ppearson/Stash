@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -33,11 +33,13 @@
 
 #include "../../core/account.h"
 
+class StashWindow;
+
 class AccountDetailsDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	AccountDetailsDialog(QWidget* parent, bool newAccount);
+	AccountDetailsDialog(const StashWindow* pStashWindow, QWidget* parent, bool newAccount);
 	
 	void setFromAccount(const Account& account);
 	
@@ -46,7 +48,7 @@ public:
 		return m_accountName;
 	}
 	
-	const std::string& getAccountStartingBalance() const
+	fixed getAccountStartingBalance() const
 	{
 		return m_accountStartingBalance;
 	}
@@ -77,8 +79,11 @@ public slots:
 	void OKClicked();
 
 protected:
+	const StashWindow*	m_pStashWindow;
+	
+	
 	std::string			m_accountName;
-	std::string			m_accountStartingBalance;
+	fixed				m_accountStartingBalance;
 	std::string			m_accountInstitution;
 	std::string			m_accountNumber;
 	std::string			m_accountNote;

@@ -38,8 +38,7 @@
 #include "stash_window.h"
 
 #include "widgets/expression_line_edit.h"
-
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 #include "../../core/document.h"
 #include "../../core/split_transaction.h"
@@ -466,29 +465,8 @@ void TransactionFormPanel::updatePayeeAndCategoryComboBoxChoicesFromDocument()
 
 double TransactionFormPanel::parseStringAmountValue() const
 {
-	QChar thousandsSeparatorChar = m_pStashWindow->getCurrencyFormatter()->getThousandsSeparatorChar();
-	
-	QString simplifiedString;
-	int length = m_pAmount->text().size();
-	for (int i = 0; i < length; i++)
-	{
-		QChar chr = m_pAmount->text().at(i);
-		QChar::Category cat = chr.category();
-		if (cat == QChar::Symbol_Currency)
-		{
-			continue;
-		}
-		
-		if (chr == thousandsSeparatorChar ||
-			chr == ' ')
-		{
-			continue;
-		}
-		
-		simplifiedString += chr;
-	}
-	
-	// TODO: further error checking...
-	double dAmount = simplifiedString.toDouble();
-	return dAmount;
+	double parsedAmount = 0.0;
+	// TODO: error checking of return value...
+	m_pStashWindow->getCurrencyHandler()->parseStringAmountValue(m_pAmount->text(), parsedAmount);
+	return parsedAmount;
 }

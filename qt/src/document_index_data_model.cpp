@@ -28,8 +28,7 @@
 #include "../../core/document.h"
 
 #include "stash_window.h"
-
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 DocumentIndexDataModel::DocumentIndexDataModel(const Document& document, QObject* parent, StashWindow* stashWindow) : QAbstractItemModel(parent), 
 		m_document(document),
@@ -162,8 +161,8 @@ void DocumentIndexDataModel::rebuildModelFromDocument()
 		
 		fixed balance = account.getBalance(true, -1);
 		
-		UICurrencyFormatter* pCurrencyFormatter = m_pStashWindow->getCurrencyFormatter();
-		QString unicodeBalanceString = pCurrencyFormatter->formatCurrencyAmount(balance);
+		UICurrencyHandler* pCurrencyHandler = m_pStashWindow->getCurrencyHandler();
+		QString unicodeBalanceString = pCurrencyHandler->formatCurrencyAmount(balance);
 		pAccN->setSecondaryData(unicodeBalanceString);
 
 		pAccounts->addChild(pAccN);

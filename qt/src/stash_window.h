@@ -45,7 +45,7 @@ class CategoriesViewWidget;
 class ScheduledTransactionsViewWidget;
 class GraphsViewWidget;
 
-class UICurrencyFormatter;
+class UICurrencyHandler;
 
 class StashWindow : public QMainWindow
 {
@@ -73,9 +73,9 @@ public:
 		return m_documentController;
 	}
 	
-	UICurrencyFormatter* getCurrencyFormatter() const
+	UICurrencyHandler* getCurrencyHandler() const
 	{
-		return m_pCurrencyFormatter;
+		return m_pCurrencyHandler;
 	}
 	
 protected:
@@ -196,7 +196,7 @@ protected:
 	QTimer*						m_pDeferredScheduledPopupTimer;
 	
 	// formatters used globally. We have ownership of them.
-	UICurrencyFormatter*		m_pCurrencyFormatter;
+	UICurrencyHandler*			m_pCurrencyHandler;
 	
 	
 	SettingsState				m_settings;

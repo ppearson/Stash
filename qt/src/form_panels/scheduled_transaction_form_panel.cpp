@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -40,7 +40,11 @@
 #include "../../core/document.h"
 #include "../../core/scheduled_transaction.h"
 
-ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const Document& document, QWidget* parent) : QWidget(parent),
+#include "stash_window.h"
+#include "ui_currency_handler.h"
+
+ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const StashWindow* pStashWindow, const Document& document, QWidget* parent) : QWidget(parent),
+	m_pStashWindow(pStashWindow),
 	m_document(document)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
@@ -259,12 +263,11 @@ void ScheduledTransactionFormPanel::updateScheduledTransactionFromParamValues(Sc
 	std::string payee = m_pPayee->currentText().toStdString();
 	schedTransaction.setPayee(payee);
 	
-	double dAmount = m_pAmount->text().toDouble();
+	double dAmount = parseStringAmountValue();
 	schedTransaction.setAmount(dAmount);
 	
 	std::string category = m_pCategory->currentText().toStdString();
 	schedTransaction.setCategory(category);
-	
 	
 	int typeIndex = m_pType->currentIndex();
 	schedTransaction.setType((Transaction::Type)typeIndex);
@@ -339,16 +342,24 @@ void ScheduledTransactionFormPanel::updatePayeeAndCategoryChoices()
 	}
 }
 
+double ScheduledTransactionFormPanel::parseStringAmountValue() const
+{
+	double parsedAmount = 0.0;
+	// TODO: error checking of return value...
+	m_pStashWindow->getCurrencyHandler()->parseStringAmountValue(m_pAmount->text(), parsedAmount);
+	return parsedAmount;
+}
+
 void ScheduledTransactionFormPanel::updateClicked()
 {
-	bool amountIsValid = false;
-	double dAmount = m_pAmount->text().toDouble(&amountIsValid);
+	double dAmount = 0.0;
+	
+	bool amountIsValid = m_pStashWindow->getCurrencyHandler()->parseStringAmountValue(m_pAmount->text(), dAmount);
 	
 	if (amountIsValid)
 	{
-	
-		// signal that Update has been pressed, which will be caught by TransactionsViewWidget,
-		// and it will call either updateScheduledTransactionFromParamValues()
+		// signal that Update has been pressed, which will be caught by ScheduledTransactionsViewWidget,
+		// and it will call updateScheduledTransactionFromParamValues()
 		
 		emit scheduledTransactionValuesUpdated();
 	}

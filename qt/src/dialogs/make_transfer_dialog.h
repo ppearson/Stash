@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -38,11 +38,13 @@
 
 class Document;
 
+class StashWindow;
+
 class MakeTransferDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	MakeTransferDialog(const Document& document, QWidget* parent);
+	MakeTransferDialog(const StashWindow* pStashWindow, const Document& document, QWidget* parent);
 	
 	// getters for data
 	unsigned int getFromAccountIndex() const
@@ -86,6 +88,7 @@ public slots:
 	void OKClicked();
 	
 private:
+	const StashWindow* m_pStashWindow;
 	const Document&	m_document;
 	
 	// widgets

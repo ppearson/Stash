@@ -89,7 +89,7 @@ ScheduledTransactionsViewWidget::ScheduledTransactionsViewWidget(Document& docum
 	
 	m_pTreeView->setStyleSheet(sTableStyle2.c_str());
 	
-	m_pScheduledTransactionFormPanel = new ScheduledTransactionFormPanel(m_document, m_pSplitter);
+	m_pScheduledTransactionFormPanel = new ScheduledTransactionFormPanel(m_pMainWindow, m_document, m_pSplitter);
 	
 	m_pSplitter->addWidget(m_pTreeView);
 	m_pSplitter->addWidget(m_pScheduledTransactionFormPanel);

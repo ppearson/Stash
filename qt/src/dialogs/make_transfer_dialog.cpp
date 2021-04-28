@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -25,12 +25,16 @@
 #include <QPushButton>
 #include <QCalendarWidget>
 #include <QCompleter>
-
+#include <QToolTip>
 #include <QFormLayout>
 
 #include "../../core/document.h"
 
-MakeTransferDialog::MakeTransferDialog(const Document& document, QWidget* parent) : QDialog(parent),
+#include "stash_window.h"
+#include "ui_currency_handler.h"
+
+MakeTransferDialog::MakeTransferDialog(const StashWindow* pStashWindow, const Document& document, QWidget* parent) : QDialog(parent),
+	m_pStashWindow(pStashWindow),
 	m_document(document)
 {
 	resize(527, 302);
@@ -109,7 +113,20 @@ void MakeTransferDialog::OKClicked()
 	m_fromAccountIndex = m_pFromAccount->currentIndex();
 	m_toAccountIndex = m_pToAccount->currentIndex();
 	
-	double dAmount = m_pAmount->text().toDouble();
+	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
+	
+	double dAmount = 0.0;
+	bool haveValidAmount = currencyHandler->parseStringAmountValue(m_pAmount->text(), dAmount);
+	if (!haveValidAmount)
+	{
+		m_pAmount->selectAll();
+		m_pAmount->setFocus();
+		
+		QToolTip::showText(m_pAmount->mapToGlobal(QPoint(0,0)), "Could not parse Amount string to a currency numeric value.");
+		return;
+	}
+	
+	// TODO: enforce positive amount?
 	m_amount = dAmount;
 	
 	QDate rawDate = m_pDate->date();

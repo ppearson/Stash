@@ -31,7 +31,7 @@
 #include <QMenu>
 
 #include "stash_window.h"
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 GraphDrawWidget::GraphDrawWidget(StashWindow* pStashWindow, QWidget* pParent) : QWidget(pParent), m_pStashWindow(pStashWindow)
 {
@@ -102,8 +102,8 @@ void GraphDrawWidget::setPieChartItems(const std::vector<PieChartItem>& items, c
 	m_selectedItemIndex = -1;
 	
 	fixed zero;
-	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
-	m_pieChartEmptyAmount = currencyFormatter->formatCurrencyAmount(zero);
+	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
+	m_pieChartEmptyAmount = currencyHandler->formatCurrencyAmount(zero);
 	
 	update();
 	repaint();
@@ -452,8 +452,8 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 
 	QFontMetrics metrics(font());
 
-	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
-	QString maxValueString = currencyFormatter->formatCurrencyAmount(m_maxAreaValue);
+	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
+	QString maxValueString = currencyHandler->formatCurrencyAmount(m_maxAreaValue);
 
 	float leftMargin = 30.0f + metrics.width(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
@@ -542,7 +542,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 		float thisYValue = plotArea.top() + ((YInc * i) * YScale);
 
 		fixed lineValue = (double)ceilMaxValue - (double)(YInc * i);
-		QString lineValueString = currencyFormatter->formatCurrencyAmount(lineValue);
+		QString lineValueString = currencyHandler->formatCurrencyAmount(lineValue);
 
 		painter.setPen(Qt::darkGray);
 
@@ -649,8 +649,8 @@ void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
 	
 	int textHeight = metrics.height();
 
-	UICurrencyFormatter* currencyFormatter = m_pStashWindow->getCurrencyFormatter();
-	QString maxValueString = currencyFormatter->formatCurrencyAmount(m_maxOverviewValue);
+	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
+	QString maxValueString = currencyHandler->formatCurrencyAmount(m_maxOverviewValue);
 
 	float leftMargin = 30.0f + metrics.width(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
@@ -797,7 +797,7 @@ void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
 		float thisYValue = plotArea.top() + ((YInc * i) * YScale);
 
 		fixed lineValue = (double)ceilMaxValue - (double)(YInc * i);
-		QString lineValueString = currencyFormatter->formatCurrencyAmount(lineValue);
+		QString lineValueString = currencyHandler->formatCurrencyAmount(lineValue);
 
 		painter.setPen(Qt::darkGray);
 

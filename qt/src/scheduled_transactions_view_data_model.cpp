@@ -27,7 +27,7 @@
 #include "../../core/document.h"
 #include "../../core/scheduled_transaction.h"
 
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 #include "stash_window.h"
 
@@ -252,9 +252,9 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		newModelItem->m_payee = schedTrans.getPayee().c_str();
 		newModelItem->m_category = schedTrans.getCategory().c_str();
 		
-		UICurrencyFormatter* pCurrencyFormatter = m_pMainWindow->getCurrencyFormatter();
+		UICurrencyHandler* pCurrencyHandler = m_pMainWindow->getCurrencyHandler();
 		
-		newModelItem->m_amount = pCurrencyFormatter->formatCurrencyAmount(schedTrans.getAmount());
+		newModelItem->m_amount = pCurrencyHandler->formatCurrencyAmount(schedTrans.getAmount());
 		
 		switch (schedTrans.getFrequency())
 		{

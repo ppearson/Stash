@@ -235,7 +235,7 @@ void DocumentIndexView::menuAccountDetails()
 {
 	Account& account = m_document.getAccount(m_selectedIndexSubIndex);
 	
-	AccountDetailsDialog accountDetailsDlg(this, false);
+	AccountDetailsDialog accountDetailsDlg(nullptr, this, false);
 	accountDetailsDlg.setFromAccount(account);
 	
 	if (accountDetailsDlg.exec() == QDialog::Accepted)

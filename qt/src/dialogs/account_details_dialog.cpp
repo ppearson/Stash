@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -23,10 +23,15 @@
 #include "account_details_dialog.h"
 
 #include <QPushButton>
-
+#include <QToolTip>
 #include <QFormLayout>
 
-AccountDetailsDialog::AccountDetailsDialog(QWidget* parent, bool newAccount) : QDialog(parent)
+#include "stash_window.h"
+
+#include "ui_currency_handler.h"
+
+AccountDetailsDialog::AccountDetailsDialog(const StashWindow* pStashWindow, QWidget* parent, bool newAccount) : QDialog(parent),
+	m_pStashWindow(pStashWindow)
 {
 	resize(527, 302);
 
@@ -99,9 +104,19 @@ void AccountDetailsDialog::OKClicked()
 {
 	m_accountName = m_pName->text().toStdString();
 	
-	if (m_pStartingBalance)
+	if (m_pStartingBalance && m_pStashWindow)
 	{
-		m_accountStartingBalance = m_pStartingBalance->text().toStdString();
+		double dAmount = 0.0;
+		if (!m_pStashWindow->getCurrencyHandler()->parseStringAmountValue(m_pStartingBalance->text(), dAmount))
+		{
+			// failed to parse, so reject...
+			m_pStartingBalance->selectAll();
+			m_pStartingBalance->setFocus();
+			QToolTip::showText(m_pStartingBalance->mapToGlobal(QPoint(0,0)), "Could not parse Starting Balance string to a currency numeric value.");
+			return;
+		}
+		
+		m_accountStartingBalance = dAmount;
 	}
 	
 	m_accountInstitution = m_pInstitution->text().toStdString();

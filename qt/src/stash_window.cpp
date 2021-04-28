@@ -66,21 +66,21 @@
 
 #include "settings/settings_window.h"
 
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 StashWindow::StashWindow() : QMainWindow(nullptr),
 	m_pDeferredScheduledPopupTimer(nullptr),
-	m_pCurrencyFormatter(nullptr)
+	m_pCurrencyHandler(nullptr)
 {
 	setupWindow();
 }
 
 StashWindow::~StashWindow()
 {
-	if (m_pCurrencyFormatter)
+	if (m_pCurrencyHandler)
 	{
-		delete m_pCurrencyFormatter;
-		m_pCurrencyFormatter = nullptr;
+		delete m_pCurrencyHandler;
+		m_pCurrencyHandler = nullptr;
 	}
 }
 
@@ -626,10 +626,10 @@ void StashWindow::saveSettings()
 
 void StashWindow::configureFormatters()
 {
-	if (m_pCurrencyFormatter)
+	if (m_pCurrencyHandler)
 	{
-		delete m_pCurrencyFormatter;
-		m_pCurrencyFormatter = nullptr;
+		delete m_pCurrencyHandler;
+		m_pCurrencyHandler = nullptr;
 	}
 	
 	int displayCurrencySourceTypeValue = m_settings.getInt("global/display_currency_source_type", 0);
@@ -641,19 +641,19 @@ void StashWindow::configureFormatters()
 		QLocale::Country country = locale.country();
 		if (country == QLocale::NewZealand || country == QLocale::Australia)
 		{
-			m_pCurrencyFormatter = new UICurrForm_DollarNegSymbolPrefix();
+			m_pCurrencyHandler = new UICurrHandler_DollarNegSymbolPrefix();
 		}
 		else if (country == QLocale::UnitedKingdom)
 		{
-			m_pCurrencyFormatter = new UICurrForm_PoundSterling();
+			m_pCurrencyHandler = new UICurrHandler_PoundSterling();
 		}
 		else if (country == QLocale::UnitedStates)
 		{
-			m_pCurrencyFormatter = new UICurrForm_DollarNegParenthesis();
+			m_pCurrencyHandler = new UICurrHandler_DollarNegParenthesis();
 		}
 		else
 		{
-			m_pCurrencyFormatter = new UICurrForm_QLocale();
+			m_pCurrencyHandler = new UICurrHandler_QLocale();
 		}
 	}
 /*	else if (displayCurrencySourceTypeValue == 1)
@@ -666,19 +666,19 @@ void StashWindow::configureFormatters()
 		int manualOverrideType = m_settings.getInt("global/display_currency_manual_override", 0);
 		if (manualOverrideType == 0)
 		{
-			m_pCurrencyFormatter = new UICurrForm_DollarNegSymbolPrefix();
+			m_pCurrencyHandler = new UICurrHandler_DollarNegSymbolPrefix();
 		}
 		else if (manualOverrideType == 1)
 		{
-			m_pCurrencyFormatter = new UICurrForm_PoundSterling();
+			m_pCurrencyHandler = new UICurrHandler_PoundSterling();
 		}
 		else if (manualOverrideType == 2)
 		{
-			m_pCurrencyFormatter = new UICurrForm_DollarNegParenthesis();
+			m_pCurrencyHandler = new UICurrHandler_DollarNegParenthesis();
 		}
 		else
 		{
-			m_pCurrencyFormatter = new UICurrForm_QLocale();
+			m_pCurrencyHandler = new UICurrHandler_QLocale();
 		}
 	}
 
@@ -1067,7 +1067,7 @@ void StashWindow::viewShowAllTransactions()
 
 void StashWindow::insertAccount()
 {
-	AccountDetailsDialog accountDetails(this, true);
+	AccountDetailsDialog accountDetails(this, this, true);
 	if (accountDetails.exec() != QDialog::Accepted)
 		return;
 	
@@ -1079,19 +1079,13 @@ void StashWindow::insertAccount()
 	newAccount.setNumber(accountDetails.getAccountNumber());
 	newAccount.setNote(accountDetails.getAccountNote());
 	newAccount.setType(accountDetails.getAccountType());
-	
-	float fVal = 0.0f;
-	
-	std::string startingBalance = accountDetails.getAccountStartingBalance();
-	if (!startingBalance.empty())
-	{
-		sscanf(startingBalance.c_str(), "%f", &fVal);
-	}
-	
+		
+	fixed startingBalance = accountDetails.getAccountStartingBalance();
+		
 	Date todaysDate;
 	todaysDate.Now();
 	
-	Transaction startingTransaction("Starting Balance", "", "", fixed(fVal), todaysDate);
+	Transaction startingTransaction("Starting Balance", "", "", startingBalance, todaysDate);
 	startingTransaction.setCleared(true);
 	newAccount.addTransaction(startingTransaction);
 	
@@ -1176,7 +1170,7 @@ void StashWindow::transactionMakeTransfer()
 	if (m_documentController.getDocument().getAccountCount() <= 1)
 		return;
 	
-	MakeTransferDialog makeTransferDlg(m_documentController.getDocument(), this);
+	MakeTransferDialog makeTransferDlg(this, m_documentController.getDocument(), this);
 	
 	if (makeTransferDlg.exec() != QDialog::Accepted)
 		return;
@@ -1423,7 +1417,7 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 				DueSchedTransactions::DueSchedTrans newTrans(schedTransIndex, it->getPayee(), it->getDescription());
 				
 				// TODO: again, replace this with something better...
-				newTrans.amount = m_pCurrencyFormatter->formatCurrencyAmount(it->getAmount());
+				newTrans.amount = m_pCurrencyHandler->formatCurrencyAmount(it->getAmount());
 				newTrans.date = it->getNextDate().FormattedDate(Date::UK);
 				
 				const Account& account = m_documentController.getDocument().getAccount(accountIndex);

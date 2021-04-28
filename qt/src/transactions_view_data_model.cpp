@@ -29,7 +29,7 @@
 #include "../../core/account.h"
 
 #include "stash_window.h"
-#include "ui_currency_formatter.h"
+#include "ui_currency_handler.h"
 
 #include "settings_state.h"
 
@@ -356,7 +356,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		it = itTemp;
 	}
 	
-	UICurrencyFormatter* pCurrencyFormatter = m_pStashWindow->getCurrencyFormatter();
+	UICurrencyHandler* pCurrencyHandler = m_pStashWindow->getCurrencyHandler();
 	
 	bool negativeAmountValuesRed = m_settingsState.getBool("transactions/colour_negative_amount_values_red", false);
 	bool negativeBalanceValuesRed = m_settingsState.getBool("transactions/colour_negative_balance_values_red", true);
@@ -368,9 +368,9 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		
 		TransactionsModelItem* pNewItem = new TransactionsModelItem(m_pRootItem);
 		
-		pNewItem->extractDetails(transaction, pCurrencyFormatter, transactionIndex);
+		pNewItem->extractDetails(transaction, pCurrencyHandler, transactionIndex);
 		
-		QString unicodeAmountString = pCurrencyFormatter->formatCurrencyAmount(transactionAmount);
+		QString unicodeAmountString = pCurrencyHandler->formatCurrencyAmount(transactionAmount);
 		pNewItem->setAmount(unicodeAmountString);
 		
 		if (negativeAmountValuesRed && !transaction.getAmount().IsPositive())
@@ -383,7 +383,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 			balance += transactionAmount;
 		}
 
-		QString unicodeBalanceString = pCurrencyFormatter->formatCurrencyAmount(balance);
+		QString unicodeBalanceString = pCurrencyHandler->formatCurrencyAmount(balance);
 		pNewItem->setBalance(unicodeBalanceString);
 		
 		if (negativeBalanceValuesRed && !balance.IsPositive())
@@ -432,7 +432,7 @@ TransactionsModelItem::~TransactionsModelItem()
 	qDeleteAll(m_childItems);
 }
 
-void TransactionsModelItem::extractDetails(const Transaction& transaction, UICurrencyFormatter* currencyFormatter, unsigned int transactionIndex)
+void TransactionsModelItem::extractDetails(const Transaction& transaction, UICurrencyHandler* currencyHandler, unsigned int transactionIndex)
 {
 	m_cleared = transaction.isCleared();
 	m_date = transaction.getDate().FormattedDate(Date::UK).c_str();
@@ -462,7 +462,7 @@ void TransactionsModelItem::extractDetails(const Transaction& transaction, UICur
 			pNewSplitItem->m_category = splitTrans.getCategory().c_str();
 			pNewSplitItem->m_description = splitTrans.getDescription().c_str();
 			
-			pNewSplitItem->setAmount(currencyFormatter->formatCurrencyAmount(splitTrans.getAmount()));
+			pNewSplitItem->setAmount(currencyHandler->formatCurrencyAmount(splitTrans.getAmount()));
 			
 			pNewSplitItem->m_transactionIndex = transactionIndex;
 			pNewSplitItem->m_splitTransactionIndex = (int)i;
@@ -476,7 +476,7 @@ void TransactionsModelItem::extractDetails(const Transaction& transaction, UICur
 		{
 			TransactionsModelItem* pNewRemainderSplitItem = new TransactionsModelItem(this);
 			
-			pNewRemainderSplitItem->setAmount(currencyFormatter->formatCurrencyAmount(remainingSplitAmount));
+			pNewRemainderSplitItem->setAmount(currencyHandler->formatCurrencyAmount(remainingSplitAmount));
 			
 			pNewRemainderSplitItem->m_payee = "Split Value";
 			pNewRemainderSplitItem->m_description = "Split Value";
