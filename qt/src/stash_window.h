@@ -46,6 +46,7 @@ class ScheduledTransactionsViewWidget;
 class GraphsViewWidget;
 
 class UICurrencyHandler;
+class UIDateHandler;
 
 class StashWindow : public QMainWindow
 {
@@ -76,6 +77,11 @@ public:
 	UICurrencyHandler* getCurrencyHandler() const
 	{
 		return m_pCurrencyHandler;
+	}
+	
+	UIDateHandler* getDateHandler() const
+	{
+		return m_pDateHandler;
 	}
 	
 protected:
@@ -197,6 +203,7 @@ protected:
 	
 	// formatters used globally. We have ownership of them.
 	UICurrencyHandler*			m_pCurrencyHandler;
+	UIDateHandler*				m_pDateHandler;
 	
 	
 	SettingsState				m_settings;

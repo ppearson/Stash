@@ -67,10 +67,12 @@
 #include "settings/settings_window.h"
 
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 StashWindow::StashWindow() : QMainWindow(nullptr),
 	m_pDeferredScheduledPopupTimer(nullptr),
-	m_pCurrencyHandler(nullptr)
+	m_pCurrencyHandler(nullptr),
+	m_pDateHandler(nullptr)
 {
 	setupWindow();
 }
@@ -81,6 +83,12 @@ StashWindow::~StashWindow()
 	{
 		delete m_pCurrencyHandler;
 		m_pCurrencyHandler = nullptr;
+	}
+	
+	if (m_pDateHandler)
+	{
+		delete m_pDateHandler;
+		m_pDateHandler = nullptr;
 	}
 }
 
@@ -636,7 +644,7 @@ void StashWindow::configureFormatters()
 	
 	if (displayCurrencySourceTypeValue == 0)
 	{
-		// based of locale, but use our own formatters for certain things if we have them
+		// based off locale, but use our own formatters for certain things if we have them
 		QLocale locale;
 		QLocale::Country country = locale.country();
 		if (country == QLocale::NewZealand || country == QLocale::Australia)
@@ -681,7 +689,48 @@ void StashWindow::configureFormatters()
 			m_pCurrencyHandler = new UICurrHandler_QLocale();
 		}
 	}
-
+	
+	if (m_pDateHandler)
+	{
+		delete m_pDateHandler;
+		m_pDateHandler = nullptr;
+	}
+	
+	int displayDateTypeValue = m_settings.getInt("global/display_date_type", 0);
+	
+	if (displayDateTypeValue == 0)
+	{
+		QLocale locale;
+		QLocale::Country country = locale.country();
+		if (country == QLocale::UnitedKingdom || country == QLocale::NewZealand || country == QLocale::Australia)
+		{
+			m_pDateHandler = new UIDateHandler_DMY();
+		}
+		else if (country == QLocale::UnitedStates)
+		{
+			m_pDateHandler = new UIDateHandler_MDY();
+		}
+		else
+		{
+			m_pDateHandler = new UIDateHandler_QLocale();
+		}
+	}
+	else if (displayDateTypeValue == 1)
+	{
+		m_pDateHandler = new UIDateHandler_DMY();
+	}
+	else if (displayDateTypeValue == 2)
+	{
+		m_pDateHandler = new UIDateHandler_MDY();
+	}
+	else if (displayDateTypeValue == 3)
+	{
+		m_pDateHandler = new UIDateHandler_ISO8601();
+	}
+	else
+	{
+		m_pDateHandler = new UIDateHandler_QLocale();
+	}
 }
 
 // menu actions
@@ -1222,9 +1271,11 @@ void StashWindow::toolsSettings()
 		
 		m_pIndexView->rebuildFromDocument();
 		
-		m_pTransactionsViewWidget->rebuildFromAccount();
-		m_pScheduledTransactionsViewWidget->rebuildFromDocument();
-		m_pGraphsViewWidget->rebuildFromGraph();
+		// tell subviews to refresh the date format in their date picker controls
+		const bool refreshDatePickerFormat = true;
+		m_pTransactionsViewWidget->rebuildFromAccount(refreshDatePickerFormat);
+		m_pScheduledTransactionsViewWidget->rebuildFromDocument(refreshDatePickerFormat);
+		m_pGraphsViewWidget->rebuildFromGraph(refreshDatePickerFormat);
 	}
 }
 

@@ -54,7 +54,7 @@ public:
 		m_transactionIndex = -1;
 	}
 
-	void rebuildFromAccount();
+	void rebuildFromAccount(bool refreshDatePickerFormat = false);
 	
 	void setViewDurationType(TransactionsViewDurationType viewType);
 	

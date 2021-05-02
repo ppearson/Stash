@@ -141,7 +141,7 @@ QSize TransactionsViewWidget::sizeHint() const
 	return QSize(600, 300);
 }
 
-void TransactionsViewWidget::rebuildFromAccount()
+void TransactionsViewWidget::rebuildFromAccount(bool refreshDatePickerFormat)
 {
 	m_pModel->setAccount(m_pAccount);
 		
@@ -152,6 +152,10 @@ void TransactionsViewWidget::rebuildFromAccount()
 	scrollToLastTransaction();
 	
 	m_pTransactionFormPanel->clear(true);
+	if (refreshDatePickerFormat)
+	{
+		m_pTransactionFormPanel->refreshDatePickerFormat();
+	}
 	
 	m_transactionIndex = -1;
 	m_splitTransactionIndex = -1;

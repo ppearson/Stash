@@ -403,6 +403,13 @@ std::string Date::FormattedDate(DateStringFormat format) const
 		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Day;
 		sDate << m_Separator << (unsigned int)m_Year;
 	}
+	else if (format == ISO_8601)
+	{
+		sDate << (unsigned int)m_Year << '-';
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Month;
+		sDate << '-';
+		sDate << std::setw(2) << std::setfill('0') << (unsigned int)m_Day;
+	}
 	else
 	{
 		sDate << (unsigned int)m_Year;

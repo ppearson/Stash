@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -28,6 +28,7 @@
 #include "../../core/scheduled_transaction.h"
 
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 #include "stash_window.h"
 
@@ -242,6 +243,11 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 	
 	int schedTransIndex = 0;
 	
+	UICurrencyHandler* pCurrencyHandler = m_pMainWindow->getCurrencyHandler();
+	UIDateHandler* pDateHandler = m_pMainWindow->getDateHandler();
+	
+	const Document& document = m_pMainWindow->getDocumentController().getDocument();
+	
 	for (; schedTransIt != m_document.SchedTransEnd(); ++schedTransIt, schedTransIndex++)
 	{
 		const ScheduledTransaction& schedTrans = *schedTransIt;
@@ -251,8 +257,6 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		newModelItem->m_enabled = schedTrans.isEnabled();
 		newModelItem->m_payee = schedTrans.getPayee().c_str();
 		newModelItem->m_category = schedTrans.getCategory().c_str();
-		
-		UICurrencyHandler* pCurrencyHandler = m_pMainWindow->getCurrencyHandler();
 		
 		newModelItem->m_amount = pCurrencyHandler->formatCurrencyAmount(schedTrans.getAmount());
 		
@@ -281,10 +285,9 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 			break;
 		}
 		
-		newModelItem->m_nextDate = schedTrans.getNextDate().FormattedDate(Date::UK).c_str();
+		newModelItem->m_nextDate = pDateHandler->formatDate(schedTrans.getNextDate());
 		
 		// it's not great having to do this...
-		const Document& document = m_pMainWindow->getDocumentController().getDocument();
 		unsigned int accountIndex = schedTrans.getAccount();
 		if (accountIndex != -1u && accountIndex < document.getAccountCount())
 		{
@@ -293,7 +296,6 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		}
 		
 		newModelItem->m_scheduledTransactionIndex = schedTransIndex;
-		
 	
 		m_pRootItem->addChild(newModelItem);
 	}

@@ -58,6 +58,14 @@ GeneralPage::GeneralPage(QSettings& settings, QWidget* parent) : SettingsPage(se
 	displayCurrencySourceTypeChanged(displayCurrencySourceTypeValue);
 	
 	connect(m_pDisplayCurrencySourceType, SIGNAL(currentIndexChanged(int)), this, SLOT(displayCurrencySourceTypeChanged(int)));
+	
+	m_pDisplayDateType = new QComboBox(this);
+	m_pDisplayDateType->addItem("Detect from System Locale Settings");
+	m_pDisplayDateType->addItem("UK Format (DD/MM/YYYY)");
+	m_pDisplayDateType->addItem("US Format (MM/DD/YYYY)");
+	m_pDisplayDateType->addItem("ISO 8601 (YYYY-MM-DD)");
+	m_pDisplayDateType->addItem("QLocale formatting");
+	m_pDisplayDateType->setCurrentIndex(m_settings.value("global/display_date_type", 0).toInt());
 
 	//
 
@@ -65,6 +73,7 @@ GeneralPage::GeneralPage(QSettings& settings, QWidget* parent) : SettingsPage(se
 	m_pFormLayout->addRow("", m_pMakeBackupFileWhenSaving);
 	m_pFormLayout->addRow("Display Currency source:", m_pDisplayCurrencySourceType);
 	m_pFormLayout->addRow("Display Currency override:", m_pDisplayCurrencyManualOverride);
+	m_pFormLayout->addRow("Display Date type:", m_pDisplayDateType);
 }
 
 void GeneralPage::saveSettings()
@@ -73,6 +82,7 @@ void GeneralPage::saveSettings()
 	m_settings.setValue("global/make_backup_file_when_saving", m_pMakeBackupFileWhenSaving->isChecked());
 	m_settings.setValue("global/display_currency_source_type", m_pDisplayCurrencySourceType->currentIndex());
 	m_settings.setValue("global/display_currency_manual_override", m_pDisplayCurrencyManualOverride->currentIndex());
+	m_settings.setValue("global/display_date_type", m_pDisplayDateType->currentIndex());
 }
 
 void GeneralPage::displayCurrencySourceTypeChanged(int currentIndex)

@@ -39,6 +39,7 @@
 
 #include "widgets/expression_line_edit.h"
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 #include "../../core/document.h"
 #include "../../core/split_transaction.h"
@@ -106,11 +107,11 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	pDateLabel->setText("D&ate:");
 	
 	// create this one intentionally last, such that it's the last tab order (after Description),
-	// as DateEdit control isn't really that helpful with tab order, and matches what we did in ObjC
+	// as DateEdit control isn't really that helpful with tab order, and matches what we did in the ObjC
 	// Cocoa version...
 	m_pDate = new QDateEdit(this);
 	// apparently Qt doesn't take the format from the region settings, so...
-	m_pDate->setDisplayFormat("dd/MM/yyyy");
+	m_pDate->setDisplayFormat(m_pStashWindow->getDateHandler()->getDatePickerDisplayFormat());
 	m_pDate->setCalendarPopup(true);
 	m_pDate->setDate(QDate::currentDate());
 	m_pDate->setWrapping(true);
@@ -200,6 +201,11 @@ void TransactionFormPanel::clear(bool resetDate)
 	m_pType->setEnabled(true);
 	m_pCleared->setEnabled(true);
 	m_pDate->setEnabled(true);
+}
+
+void TransactionFormPanel::refreshDatePickerFormat()
+{
+	m_pDate->setDisplayFormat(m_pStashWindow->getDateHandler()->getDatePickerDisplayFormat());
 }
 
 void TransactionFormPanel::setFocusPayee(bool selectText)

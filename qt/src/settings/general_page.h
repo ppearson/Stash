@@ -45,6 +45,8 @@ protected:
 	
 	QComboBox*		m_pDisplayCurrencySourceType;
 	QComboBox*		m_pDisplayCurrencyManualOverride;
+	
+	QComboBox*		m_pDisplayDateType;
 };
 
 #endif // GENERAL_PAGE_H

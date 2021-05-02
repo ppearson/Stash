@@ -36,6 +36,7 @@ public:
 	{
 		UK,
 		US,
+		ISO_8601,
 		OFX
 	};
 

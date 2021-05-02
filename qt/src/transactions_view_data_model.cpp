@@ -30,6 +30,7 @@
 
 #include "stash_window.h"
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 #include "settings_state.h"
 
@@ -357,6 +358,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 	}
 	
 	UICurrencyHandler* pCurrencyHandler = m_pStashWindow->getCurrencyHandler();
+	UIDateHandler* pDateHandler = m_pStashWindow->getDateHandler();
 	
 	bool negativeAmountValuesRed = m_settingsState.getBool("transactions/colour_negative_amount_values_red", false);
 	bool negativeBalanceValuesRed = m_settingsState.getBool("transactions/colour_negative_balance_values_red", true);
@@ -368,7 +370,7 @@ void TransactionsViewDataModel::rebuildModelFromAccount()
 		
 		TransactionsModelItem* pNewItem = new TransactionsModelItem(m_pRootItem);
 		
-		pNewItem->extractDetails(transaction, pCurrencyHandler, transactionIndex);
+		pNewItem->extractDetails(transaction, pCurrencyHandler, pDateHandler, transactionIndex);
 		
 		QString unicodeAmountString = pCurrencyHandler->formatCurrencyAmount(transactionAmount);
 		pNewItem->setAmount(unicodeAmountString);
@@ -432,18 +434,17 @@ TransactionsModelItem::~TransactionsModelItem()
 	qDeleteAll(m_childItems);
 }
 
-void TransactionsModelItem::extractDetails(const Transaction& transaction, UICurrencyHandler* currencyHandler, unsigned int transactionIndex)
+void TransactionsModelItem::extractDetails(const Transaction& transaction, UICurrencyHandler* currencyHandler,
+										   UIDateHandler* dateHandler, unsigned int transactionIndex)
 {
 	m_cleared = transaction.isCleared();
-	m_date = transaction.getDate().FormattedDate(Date::UK).c_str();
+	m_date = dateHandler->formatDate(transaction.getDate());
 	m_payee = transaction.getPayee().c_str();
 	m_category = transaction.getCategory().c_str();
 	m_description = transaction.getDescription().c_str();
 	
 	m_transactionIndex = transactionIndex;
-	
-	QLocale locale;
-	
+		
 	if (transaction.isSplit())
 	{
 		unsigned int numSplits = transaction.getSplitCount();

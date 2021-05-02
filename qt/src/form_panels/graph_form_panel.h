@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -55,6 +55,7 @@ public:
 	void setParamsFromGraph(const Graph& graph);
 	
 	void updateGraphFromParamValues();
+	void refreshDatePickerFormats();
 	
 	void setViewTypeIndex(int index);
 	

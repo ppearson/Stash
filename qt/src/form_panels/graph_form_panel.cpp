@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -40,6 +40,11 @@
 #include "widgets/date_period_control_buttons_widget.h"
 #include "widgets/item_control_buttons_widget.h"
 
+#include "graphs_view_widget.h"
+#include "stash_window.h"
+
+#include "ui_date_handler.h"
+
 GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsViewWidget, QWidget* parent) : QWidget(parent),
 	m_document(document),
 	m_pGraph(nullptr),
@@ -65,7 +70,7 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	pStartDateLabel->setText("Start date:");
 	
 	m_pStartDate = new QDateEdit(this);
-	m_pStartDate->setDisplayFormat("dd/MM/yyyy");
+	m_pStartDate->setDisplayFormat(m_pGraphsViewWidget->getMainWindow()->getDateHandler()->getDatePickerDisplayFormat());
 	m_pStartDate->setWrapping(true);
 	m_pStartDate->setCalendarPopup(true);
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
@@ -75,7 +80,7 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	pEndDateLabel->setText("End date:");
 	
 	m_pEndDate = new QDateEdit(this);
-	m_pEndDate->setDisplayFormat("dd/MM/yyyy");
+	m_pEndDate->setDisplayFormat(m_pGraphsViewWidget->getMainWindow()->getDateHandler()->getDatePickerDisplayFormat());
 	m_pEndDate->setWrapping(true);
 	m_pEndDate->setCalendarPopup(true);
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
@@ -218,6 +223,12 @@ void GraphFormPanel::updateGraphFromParamValues()
 	graph.setViewType(viewType);
 		
 	emit graphParamValuesUpdateApplied();
+}
+
+void GraphFormPanel::refreshDatePickerFormats()
+{
+	m_pStartDate->setDisplayFormat(m_pGraphsViewWidget->getMainWindow()->getDateHandler()->getDatePickerDisplayFormat());
+	m_pEndDate->setDisplayFormat(m_pGraphsViewWidget->getMainWindow()->getDateHandler()->getDatePickerDisplayFormat());
 }
 
 // Not really happy about this, but...

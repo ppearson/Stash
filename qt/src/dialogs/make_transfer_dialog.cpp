@@ -32,6 +32,7 @@
 
 #include "stash_window.h"
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 MakeTransferDialog::MakeTransferDialog(const StashWindow* pStashWindow, const Document& document, QWidget* parent) : QDialog(parent),
 	m_pStashWindow(pStashWindow),
@@ -71,7 +72,7 @@ MakeTransferDialog::MakeTransferDialog(const StashWindow* pStashWindow, const Do
 	
 	m_pDate = new QDateEdit(this);
 	// apparently Qt doesn't take the format from the region settings, so...
-	m_pDate->setDisplayFormat("dd/MM/yyyy");
+	m_pDate->setDisplayFormat(m_pStashWindow->getDateHandler()->getDatePickerDisplayFormat());
 	m_pDate->setCalendarPopup(true);
 	m_pDate->setDate(QDate::currentDate());
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...

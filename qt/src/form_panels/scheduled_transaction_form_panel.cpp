@@ -42,6 +42,7 @@
 
 #include "stash_window.h"
 #include "ui_currency_handler.h"
+#include "ui_date_handler.h"
 
 ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const StashWindow* pStashWindow, const Document& document, QWidget* parent) : QWidget(parent),
 	m_pStashWindow(pStashWindow),
@@ -126,7 +127,7 @@ ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const StashWindow* 
 	// Cocoa version...
 	m_pDate = new QDateEdit(this);
 	// apparently Qt doesn't take the format from the region settings, so...
-	m_pDate->setDisplayFormat("dd/MM/yyyy");
+	m_pDate->setDisplayFormat(m_pStashWindow->getDateHandler()->getDatePickerDisplayFormat());
 	m_pDate->setCalendarPopup(true);
 	m_pDate->setDate(QDate::currentDate());
 	// ideally Qt would do the right thing based off the system Locale, but obviously not, so...
@@ -211,16 +212,18 @@ void ScheduledTransactionFormPanel::clear()
 	m_pConstraint->setCurrentIndex(0);
 	
 	m_pDate->setDate(QDate::currentDate());
-	m_pDate->setDisplayFormat("dd/MM/yyyy");
-	m_pDate->setCalendarPopup(true);
-	m_pDate->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
-	m_pDate->setWrapping(true);
+
 	m_pDescription->setText("");
 	
 	m_pAccount->setCurrentIndex(0);
 	
 	updateAccountsList(true);
 	updatePayeeAndCategoryChoices();
+}
+
+void ScheduledTransactionFormPanel::refreshDatePickerFormat()
+{
+	m_pDate->setDisplayFormat(m_pStashWindow->getDateHandler()->getDatePickerDisplayFormat());
 }
 
 void ScheduledTransactionFormPanel::setFocusPayee(bool selectText)

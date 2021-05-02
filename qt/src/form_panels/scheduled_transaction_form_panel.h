@@ -49,6 +49,7 @@ public:
 	virtual QSize sizeHint() const;
 	
 	void clear();
+	void refreshDatePickerFormat();
 	void setFocusPayee(bool selectText = false);
 	
 	void setParamsFromScheduledTransaction(const ScheduledTransaction& schedTransaction);

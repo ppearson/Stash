@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -122,7 +122,7 @@ QSize ScheduledTransactionsViewWidget::sizeHint() const
 	return QSize(600, 300);
 }
 
-void ScheduledTransactionsViewWidget::rebuildFromDocument()
+void ScheduledTransactionsViewWidget::rebuildFromDocument(bool refreshDatePickerFormat)
 {
 	m_pModel->rebuildModelFromDocument();
 	
@@ -131,6 +131,10 @@ void ScheduledTransactionsViewWidget::rebuildFromDocument()
 	m_pTreeView->scrollToTop();
 	
 	m_pScheduledTransactionFormPanel->clear();
+	if (refreshDatePickerFormat)
+	{
+		m_pScheduledTransactionFormPanel->refreshDatePickerFormat();
+	}
 	
 	m_scheduledTransactionIndex = -1;
 	

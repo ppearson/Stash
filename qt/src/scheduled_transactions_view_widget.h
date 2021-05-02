@@ -1,6 +1,6 @@
 /*
  * Stash:  A Personal Finance app (Qt UI).
- * Copyright (C) 2020 Peter Pearson
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -48,7 +48,7 @@ public:
 	virtual QSize minimumSizeHint() const;
 	virtual QSize sizeHint() const;
 	
-	void rebuildFromDocument();
+	void rebuildFromDocument(bool refreshDatePickerFormat = false);
 	
 	void addNewScheduledTransaction();
 	void deleteSelectedScheduledTransaction();

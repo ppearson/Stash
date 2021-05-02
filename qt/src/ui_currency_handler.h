@@ -34,12 +34,10 @@ class UICurrencyHandler
 public:
 	UICurrencyHandler()
 	{
-		
 	}
 
 	virtual ~UICurrencyHandler()
 	{
-		
 	}
 	
 	// this is non-const on purpose, as derived classes may
