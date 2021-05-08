@@ -131,10 +131,10 @@ Qt::ItemFlags ScheduledTransactionsViewDataModel::flags(const QModelIndex& index
 QVariant ScheduledTransactionsViewDataModel::headerData(int section, Qt::Orientation orientation,
 														int role) const
 {
-	if (orientation != Qt::Horizontal || role != Qt::DisplayRole)
+	if (orientation != Qt::Horizontal)
 		return QVariant();
 	
-	if (orientation == Qt::Horizontal)
+	if (role == Qt::DisplayRole)
 	{
 		if (section == 0)
 			return QVariant("Enabled");
@@ -150,6 +150,10 @@ QVariant ScheduledTransactionsViewDataModel::headerData(int section, Qt::Orienta
 			return QVariant("Next Date");
 		else if (section == 6)
 			return QVariant("Account");
+	}
+	else if (role == Qt::TextAlignmentRole)
+	{
+		return (section == 3) ? Qt::AlignRight : Qt::AlignLeft;
 	}
 	
 	return QVariant();

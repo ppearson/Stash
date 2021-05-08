@@ -212,10 +212,10 @@ Qt::ItemFlags TransactionsViewDataModel::flags(const QModelIndex& index) const
 
 QVariant TransactionsViewDataModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (orientation != Qt::Horizontal || role != Qt::DisplayRole)
+	if (orientation != Qt::Horizontal)
 		return QVariant();
 	
-	if (orientation == Qt::Horizontal)
+	if (role == Qt::DisplayRole)
 	{
 		if (section == 0)
 			return QVariant("Cleared");
@@ -231,6 +231,10 @@ QVariant TransactionsViewDataModel::headerData(int section, Qt::Orientation orie
 			return QVariant("Amount");
 		else if (section == 6)
 			return QVariant("Balance");
+	}
+	else if (role == Qt::TextAlignmentRole)
+	{
+		return (section == 5 || section == 6) ? Qt::AlignRight : Qt::AlignLeft;
 	}
 	
 	return QVariant();
