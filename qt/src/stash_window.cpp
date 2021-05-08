@@ -116,6 +116,11 @@ void StashWindow::setWindowModifiedAndRebuildIndex(bool rebuildDocIndex)
 	}
 }
 
+bool StashWindow::openDocument(const std::string& fileName)
+{
+	return loadDocument(fileName.c_str());
+}
+
 void StashWindow::setupWindow()
 {
 	setTabShape(QTabWidget::Rounded);

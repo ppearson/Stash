@@ -84,6 +84,8 @@ public:
 		return m_pDateHandler;
 	}
 	
+	bool openDocument(const std::string& fileName);
+	
 protected:
 	
 	void setupWindow();
