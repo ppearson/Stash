@@ -26,7 +26,7 @@
 
 - (void)validate
 {
-    [self setEnabled:[[self target] validateToolbarItem:self]];
+	[self setEnabled:[[self target] validateToolbarItem:self]];
 }
 
 @end

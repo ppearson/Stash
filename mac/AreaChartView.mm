@@ -28,10 +28,10 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self)
+	self = [super initWithFrame:frame];
+	if (self)
 	{
-        m_aData = [[NSMutableArray alloc] init];
+		m_aData = [[NSMutableArray alloc] init];
 		m_aColours = [[NSMutableArray alloc] init];
 		
 		m_aDates = [[NSMutableArray alloc] init];
@@ -46,8 +46,8 @@
 		[m_aColours addObject:[NSColor grayColor]];
 		[m_aColours addObject:[NSColor orangeColor]];
 		[m_aColours addObject:[NSColor brownColor]];
-    }
-    return self;
+	}
+	return self;
 }
 
 - (void)dealloc
@@ -63,7 +63,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSRect bounds = [self bounds];
+	NSRect bounds = [self bounds];
 	[[NSColor whiteColor] set];
 	[NSBezierPath fillRect:bounds];
 	[[NSColor blackColor] set];
@@ -345,7 +345,7 @@
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	NSPoint eventLocation = [theEvent locationInWindow];
-    NSPoint newPoint = [self convertPoint:eventLocation fromView:nil];
+	NSPoint newPoint = [self convertPoint:eventLocation fromView:nil];
 	
 	NSBezierPath *plotShape = 0;
 	
@@ -372,7 +372,7 @@
 
 - (NSMenu*)menuForEvent:(NSEvent*)event
 {
-    if (m_selectedPlot != -1)
+	if (m_selectedPlot != -1)
 		return fMenu;
 	
 	return nil;

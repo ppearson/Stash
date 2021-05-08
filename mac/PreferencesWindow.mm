@@ -26,16 +26,16 @@
 
 - (void)keyDown:(NSEvent *)event
 {
-    if ([event keyCode] == 53) // esc key
-        [self close];
-    else
-        [super keyDown: event];
+	if ([event keyCode] == 53) // esc key
+		[self close];
+	else
+		[super keyDown: event];
 }
 
 - (void)close
 {
-    [self makeFirstResponder: nil];
-    [super close];
+	[self makeFirstResponder: nil];
+	[super close];
 }
 
 @end

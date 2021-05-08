@@ -27,14 +27,14 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self)
+	self = [super initWithFrame:frame];
+	if (self)
 	{
-        m_aData = [[NSMutableArray alloc] init];
+		m_aData = [[NSMutableArray alloc] init];
 		
 		m_nCurrentPage = 0;
-    }
-    return self;
+	}
+	return self;
 }
 
 - (void)dealloc
@@ -46,7 +46,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    NSRect bounds = [self bounds];
+	NSRect bounds = [self bounds];
 	[[NSColor whiteColor] set];
 	[NSBezierPath fillRect:bounds];
 	[[NSColor blackColor] set];

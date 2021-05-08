@@ -176,7 +176,7 @@
 	else
 	{
 		return [(IndexItem*)item childAtIndex:index];
-    }
+	}
 }
 
 - (BOOL)outlineView:(NSOutlineView*)outlineView isGroupItem:(id)item
@@ -191,7 +191,7 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    return [item isSection];
+	return [item isSection];
 }
 
 -(NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
@@ -269,11 +269,11 @@
 
 - (NSMenu*)menuForEvent:(NSEvent*)event
 {
-    int row = [self rowAtPoint: [self convertPoint: [event locationInWindow] fromView: nil]];
-	
-    if (row >= 0)
-    {
-        if ([self isRowSelected:row])
+	int row = [self rowAtPoint: [self convertPoint: [event locationInWindow] fromView: nil]];
+
+	if (row >= 0)
+	{
+		if ([self isRowSelected:row])
 		{
 			IndexItem *selectedItem = [self itemAtRow:row];
 			
@@ -291,7 +291,7 @@
 				return fMiscMenu;
 			}
 		}
-    }
+	}
 	
 	return nil;
 }

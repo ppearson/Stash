@@ -73,27 +73,27 @@
 	// get the SchedTrans index
 	NSInteger row = [fTransactionsList selectedRow];
 	NSMutableDictionary *oObject = [m_aTransactions objectAtIndex:row];
-	
+
 	int nSchedTransIndex = [[oObject valueForKey:@"index"] intValue];
-	
+
 	if (nSchedTransIndex < 0)
 		return;
-	
+
 	[fMainController AddDueScheduledTransaction:nSchedTransIndex];
-	
+
 	[m_aTransactions removeObjectAtIndex:row];
-	
+
 	[fTransactionsList reloadData];
-	
+
 	if ([m_aTransactions count] == 0)
 	{
 		[[self window] performClose:sender];
 	}
-    else
-    {
-        // select the next item
-        [fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
-    }
+	else
+	{
+		// select the next item
+		[fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+	}
 }
 
 - (void)skipTransaction:(id)sender
@@ -101,27 +101,27 @@
 	// get the SchedTrans index
 	NSInteger row = [fTransactionsList selectedRow];
 	NSMutableDictionary *oObject = [m_aTransactions objectAtIndex:row];
-	
+
 	int nSchedTransIndex = [[oObject valueForKey:@"index"] intValue];
-	
+
 	if (nSchedTransIndex < 0)
 		return;
-	
+
 	[fMainController SkipDueScheduledTransaction:nSchedTransIndex];
-	
+
 	[m_aTransactions removeObjectAtIndex:row];
-	
+
 	[fTransactionsList reloadData];
-	
+
 	if ([m_aTransactions count] == 0)
 	{
 		[[self window] performClose:sender];
 	}
-    else
-    {
-        // select the next item
-        [fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
-    }
+	else
+	{
+		// select the next item
+		[fTransactionsList selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
+	}
 }
 
 - (void)closeWindow:(id)sender

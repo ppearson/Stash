@@ -40,37 +40,37 @@ static GraphController *gSharedInterface = nil;
 			gSharedInterface = [[super allocWithZone:NULL] init];
 		}
 	}
-    return gSharedInterface;
+	return gSharedInterface;
 }
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [[self sharedInterface] retain];
+	return [[self sharedInterface] retain];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    return self;
+	return self;
 }
 
 - (id)retain
 {
-    return self;
+	return self;
 }
 
 - (NSUInteger)retainCount
 {
-    return NSUIntegerMax;
+	return NSUIntegerMax;
 }
 
 - (void)release
 {
-    // do nothing
+	// do nothing
 }
 
 - (id)autorelease
 {
-    return self;
+	return self;
 }
 
 - (id)init
@@ -781,21 +781,21 @@ static GraphController *gSharedInterface = nil;
 NSDate *convertToNSDate(MonthYear &date)
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    
-    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    [dateComponents setYear:date.getYear()];
-    [dateComponents setMonth:date.getMonth()];
-    [dateComponents setDay:1];
-    
-    [dateComponents setHour:0];
-    [dateComponents setMinute:0];
-    [dateComponents setSecond:0];
-	
+
+	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+	[dateComponents setYear:date.getYear()];
+	[dateComponents setMonth:date.getMonth()];
+	[dateComponents setDay:1];
+
+	[dateComponents setHour:0];
+	[dateComponents setMinute:0];
+	[dateComponents setSecond:0];
+
 	NSDate *nsDate = [gregorian dateFromComponents:dateComponents];
 	[dateComponents release];
 	[gregorian release];
-	
-    return nsDate;	
+
+	return nsDate;
 }
 
 - (void)handleGraphSettingsUpdate:(NSNotification *)note

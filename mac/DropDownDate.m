@@ -27,12 +27,12 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self)
+	self = [super initWithFrame:frame];
+	if (self)
 	{
-        // Initialization code here.
-    }
-    return self;
+		// Initialization code here.
+	}
+	return self;
 }
 
 - (void)mouseDown:(NSEvent*)event

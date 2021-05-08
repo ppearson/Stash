@@ -37,7 +37,7 @@
 
 @interface StashAppDelegate : NSObject
 {
-    NSWindow *window;
+	NSWindow *window;
 	
 	IBOutlet NSView *indexViewPlaceholder;
 	IBOutlet NSView *contentViewPlaceholder;
@@ -99,8 +99,6 @@
 	
 	NSString *m_sPendingOpenFile;
 	bool m_HasFinishedLoading;
-    
-    
 }
 
 @property (assign) int ShowTransactionsViewType;

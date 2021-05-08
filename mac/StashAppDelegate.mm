@@ -43,8 +43,8 @@
 
 typedef enum
 {
-    TOOLBAR_VIEW_RECENT_TAG = 0,
-    TOOLBAR_VIEW_THISYEAR_TAG = 1,
+	TOOLBAR_VIEW_RECENT_TAG = 0,
+	TOOLBAR_VIEW_THISYEAR_TAG = 1,
 	TOOLBAR_VIEW_ALL_TAG = 2
 }
 toolbarViewGroupTag;
@@ -130,7 +130,7 @@ toolbarViewGroupTag;
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsNegBalancesRed"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForCategories"];
 	[defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"TransactionsEnforceNegForSplit"];
-    [defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsAreClearedByDefault"];
+[defaultValues setObject:[NSNumber numberWithBool:NO] forKey:@"TransactionsAreClearedByDefault"];
 	
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSortType"];
 	[defaultValues setObject:[NSNumber numberWithInt:0] forKey:@"PieChartSelectionType"];
@@ -188,12 +188,12 @@ toolbarViewGroupTag;
 	nViewType = 0;
 	
 	NSToolbar * toolbar = [[NSToolbar alloc] initWithIdentifier:@"Toolbar"];
-    [toolbar setDelegate:(id)self];
-    [toolbar setAllowsUserCustomization:NO];
-    [toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
-    [toolbar setSizeMode:NSToolbarSizeModeRegular];
-    [[self window] setToolbar:toolbar];
-    [toolbar release];
+	[toolbar setDelegate:(id)self];
+	[toolbar setAllowsUserCustomization:NO];
+	[toolbar setDisplayMode:NSToolbarDisplayModeIconAndLabel];
+	[toolbar setSizeMode:NSToolbarSizeModeRegular];
+	[[self window] setToolbar:toolbar];
+	[toolbar release];
 	
 	TransactionsController* pTC = [TransactionsController sharedInterface];
 	[pTC setWindow:[self window]];
@@ -278,76 +278,76 @@ toolbarViewGroupTag;
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar itemForItemIdentifier:(NSString *)ident willBeInsertedIntoToolbar:(BOOL)flag
 {	
-    if ([ident isEqualToString:TOOLBAR_ADDACCOUNT])
-    {
+	if ([ident isEqualToString:TOOLBAR_ADDACCOUNT])
+	{
 		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
 		
-        [item setLabel:NSLocalizedString(@"Add Account", "Main Toolbar -> Add Account")];
-        [item setImage:[NSImage imageNamed:@"add_account.png"]];
-        [item setTarget:self];
-        [item setAction:@selector(AddAccount:)];
-        [item setAutovalidates:NO];
+		[item setLabel:NSLocalizedString(@"Add Account", "Main Toolbar -> Add Account")];
+		[item setImage:[NSImage imageNamed:@"add_account.png"]];
+		[item setTarget:self];
+		[item setAction:@selector(AddAccount:)];
+		[item setAutovalidates:NO];
 		
 		return item;
-    }
-    else if ([ident isEqualToString:TOOLBAR_ADDGRAPH])
-    {
+	}
+	else if ([ident isEqualToString:TOOLBAR_ADDGRAPH])
+	{
 		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
 		
-        [item setLabel:NSLocalizedString(@"Add Graph", "Main Toolbar -> Add Graph")];
-        [item setImage:[NSImage imageNamed:@"add_graph.png"]];
-        [item setTarget:self];
-        [item setAction:@selector(AddGraph:)];
-        [item setAutovalidates:NO];
+		[item setLabel:NSLocalizedString(@"Add Graph", "Main Toolbar -> Add Graph")];
+		[item setImage:[NSImage imageNamed:@"add_graph.png"]];
+		[item setTarget:self];
+		[item setAction:@selector(AddGraph:)];
+		[item setAutovalidates:NO];
 		
 		return item;
-    }
+	}
 	else if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
-    {
+	{
 		NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:ident];
 		
-        [item setLabel:NSLocalizedString(@"Make Transfer", "Main Toolbar -> Make Transfer")];
-        [item setImage:[NSImage imageNamed:@"make_transfer.png"]];
-        [item setTarget:self];
-        [item setAction:@selector(MakeTransfer:)];
-        [item setAutovalidates:YES];
+		[item setLabel:NSLocalizedString(@"Make Transfer", "Main Toolbar -> Make Transfer")];
+		[item setImage:[NSImage imageNamed:@"make_transfer.png"]];
+		[item setTarget:self];
+		[item setAction:@selector(MakeTransfer:)];
+		[item setAutovalidates:YES];
 		
 		return item;
-    }
+	}
 	else if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
-    {
-        ToolbarItemEx *groupItem = [[ToolbarItemEx alloc] initWithItemIdentifier:ident];
-        
-        NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] initWithFrame:NSZeroRect];
-        [segmentedControl setCell:[[[NSSegmentedCell alloc] init] autorelease]];
-        [groupItem setView:segmentedControl];
-        NSSegmentedCell *segmentedCell = (NSSegmentedCell *)[segmentedControl cell];
-        
-        [segmentedControl setSegmentCount:3];
-        [segmentedCell setTrackingMode:NSSegmentSwitchTrackingSelectOne];
+	{
+		ToolbarItemEx *groupItem = [[ToolbarItemEx alloc] initWithItemIdentifier:ident];
+		
+		NSSegmentedControl *segmentedControl = [[NSSegmentedControl alloc] initWithFrame:NSZeroRect];
+		[segmentedControl setCell:[[[NSSegmentedCell alloc] init] autorelease]];
+		[groupItem setView:segmentedControl];
+		NSSegmentedCell *segmentedCell = (NSSegmentedCell *)[segmentedControl cell];
+		
+		[segmentedControl setSegmentCount:3];
+		[segmentedCell setTrackingMode:NSSegmentSwitchTrackingSelectOne];
 		
 		[segmentedControl setSegmentStyle:NSSegmentStyleTexturedSquare];
-        
-        const NSSize groupSize = NSMakeSize(180.0, 25.0);
-        [groupItem setMinSize:groupSize];
-        [groupItem setMaxSize:groupSize];
-        
-        [groupItem setLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
-        [groupItem setPaletteLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
-        [groupItem setTarget:self];
-        [groupItem setAction:@selector(viewToolbarClicked:)];
-        
-        [segmentedCell setTag:TOOLBAR_VIEW_RECENT_TAG forSegment:TOOLBAR_VIEW_RECENT_TAG];
+		
+		const NSSize groupSize = NSMakeSize(180.0, 25.0);
+		[groupItem setMinSize:groupSize];
+		[groupItem setMaxSize:groupSize];
+		
+		[groupItem setLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
+		[groupItem setPaletteLabel:NSLocalizedString(@"View Type", "Main Toolbar -> View Type")];
+		[groupItem setTarget:self];
+		[groupItem setAction:@selector(viewToolbarClicked:)];
+		
+		[segmentedCell setTag:TOOLBAR_VIEW_RECENT_TAG forSegment:TOOLBAR_VIEW_RECENT_TAG];
 		[segmentedControl setLabel:NSLocalizedString(@"Recent", "Main Toolbar -> View Type -> Recent") forSegment:TOOLBAR_VIEW_RECENT_TAG];
-        [segmentedCell setToolTip:NSLocalizedString(@"Show recent Transactions", "Main Toolbar -> View Type -> Recent Tooltip") forSegment:TOOLBAR_VIEW_RECENT_TAG];
-        
-        [segmentedCell setTag:TOOLBAR_VIEW_THISYEAR_TAG forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+		[segmentedCell setToolTip:NSLocalizedString(@"Show recent Transactions", "Main Toolbar -> View Type -> Recent Tooltip") forSegment:TOOLBAR_VIEW_RECENT_TAG];
+		
+		[segmentedCell setTag:TOOLBAR_VIEW_THISYEAR_TAG forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
 		[segmentedControl setLabel:NSLocalizedString(@"This Year", "Main Toolbar -> View Type -> This Year") forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
-        [segmentedCell setToolTip:NSLocalizedString(@"Show Transactions from this year", "Main Toolbar -> View Type -> This Year Tooltip") forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
+		[segmentedCell setToolTip:NSLocalizedString(@"Show Transactions from this year", "Main Toolbar -> View Type -> This Year Tooltip") forSegment:TOOLBAR_VIEW_THISYEAR_TAG];
 		
 		[segmentedCell setTag: TOOLBAR_VIEW_ALL_TAG forSegment:TOOLBAR_VIEW_ALL_TAG];
 		[segmentedControl setLabel:NSLocalizedString(@"All", "Main Toolbar -> View Type -> All") forSegment:TOOLBAR_VIEW_ALL_TAG];
-        [segmentedCell setToolTip:NSLocalizedString(@"Show all Transactions", "Main Toolbar -> View Type -> All Tooltip") forSegment:TOOLBAR_VIEW_ALL_TAG];
+		[segmentedCell setToolTip:NSLocalizedString(@"Show all Transactions", "Main Toolbar -> View Type -> All Tooltip") forSegment:TOOLBAR_VIEW_ALL_TAG];
 		
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[segmentedControl bind:@"selectedIndex" toObject:pTC withKeyPath:@"m_showTransactionsViewType" options:0];
@@ -357,22 +357,22 @@ toolbarViewGroupTag;
 		int nTransactionsViewType = [[defs objectForKey:@"TransactionsViewType"] intValue];
 		
 		[segmentedControl setSelectedSegment:nTransactionsViewType];
-        
-        [segmentedControl release];
-        return [groupItem autorelease];
-    }
-	
-    return nil;
+		
+		[segmentedControl release];
+		return [groupItem autorelease];
+	}
+
+	return nil;
 }
 
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [self toolbarAllowedItemIdentifiers:toolbar];
+	return [self toolbarAllowedItemIdentifiers:toolbar];
 }
 
 - (NSArray *)toolbarAllowedItemIdentifiers:(NSToolbar *)toolbar
 {
-    return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, TOOLBAR_VIEWTYPE, TOOLBAR_MAKETRANSFER, nil];
+	return [NSArray arrayWithObjects:TOOLBAR_ADDACCOUNT, TOOLBAR_ADDGRAPH, TOOLBAR_VIEWTYPE, TOOLBAR_MAKETRANSFER, nil];
 }
 
 - (void)buildIndexTree
@@ -685,14 +685,14 @@ toolbarViewGroupTag;
 		[item setValue:sSDate forKey:@"nextdate"];
 		[item setValue:sFrequency forKey:@"frequency"];
 		[item setValue:sAccount forKey:@"account"];
-        
-        [sSCategory release];
-        [sSAmount release];
-        [sSDate release];
+		
+		[sSCategory release];
+		[sSAmount release];
+		[sSDate release];
 		
 		[m_aScheduledTransactions addObject:item];
-        
-        [item release];
+		
+		[item release];
 	}
 	
 	[dateFormatter release];
@@ -798,9 +798,9 @@ toolbarViewGroupTag;
 	if (nAccountNum == 0) // if first account added, select it
 	{
 		[indexBar selectItem:sAccountKey];
-        
-        // update data structures
-        m_pAccount = &m_Document.getAccount(0);
+		
+		// update data structures
+		m_pAccount = &m_Document.getAccount(0);
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC showTransactionsForAccount:m_pAccount];
 	}
@@ -1132,18 +1132,18 @@ toolbarViewGroupTag;
 	NSInteger tagValue = [sender isKindOfClass: [NSSegmentedControl class]]
 	? [(NSSegmentedCell *)[sender cell] tagForSegment: [sender selectedSegment]] : [sender tag];
 	
-    switch (tagValue)
-    {
-        case TOOLBAR_VIEW_RECENT_TAG:
-            [self showRecentTransactions: sender];
-            break;
-        case TOOLBAR_VIEW_THISYEAR_TAG:
-            [self showAllTransactionsThisYear: sender];
-            break;
+	switch (tagValue)
+	{
+		case TOOLBAR_VIEW_RECENT_TAG:
+			[self showRecentTransactions: sender];
+			break;
+		case TOOLBAR_VIEW_THISYEAR_TAG:
+			[self showAllTransactionsThisYear: sender];
+			break;
 		case TOOLBAR_VIEW_ALL_TAG:
-            [self showAllTransactions: sender];
-            break;
-    }	
+			[self showAllTransactions: sender];
+			break;
+	}
 }
 
 - (IBAction)AddPayee:(id)sender
@@ -1453,7 +1453,7 @@ toolbarViewGroupTag;
 - (IBAction)NewFile:(id)sender
 {
 	if (m_Document.hasUnsavedChanges())
-    {
+	{
 		int choice = NSAlertDefaultReturn;
 		
 		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
@@ -1471,7 +1471,7 @@ toolbarViewGroupTag;
 		{
 			return;
 		}
-    }
+	}
 	
 	[self setDocumentModified:FALSE];
 	m_DocumentFile = "";
@@ -1485,19 +1485,19 @@ toolbarViewGroupTag;
 	[self buildIndexTree];
 
 	[self buildSchedTransList];
-    
-    // calling this don't do anything, as we don't have an account
+
+	// calling this don't do anything, as we don't have an account
 	[self refreshLibraryItems];
-    
-    // so has a hack to clear the transactions list, let's do this:
-    TransactionsController* pTC = [TransactionsController sharedInterface];
+
+	// so has a hack to clear the transactions list, let's do this:
+	TransactionsController* pTC = [TransactionsController sharedInterface];
 	[pTC showTransactionsForAccount:Nil];
 }
 
 - (IBAction)OpenFile:(id)sender
 {
 	if (m_Document.hasUnsavedChanges())
-    {
+	{
 		int choice = NSAlertDefaultReturn;
 		
 		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
@@ -1515,7 +1515,7 @@ toolbarViewGroupTag;
 		{
 			return;
 		}
-    }
+	}
 	
 	NSOpenPanel *oPanel = [NSOpenPanel openPanel];
 	NSString *fileToOpen;
@@ -1527,7 +1527,7 @@ toolbarViewGroupTag;
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToOpen = [[oPanel URL] retain];
+		NSURL* urlToOpen = [[oPanel URL] retain];
 		fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
@@ -1586,8 +1586,8 @@ toolbarViewGroupTag;
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToSave = [[sPanel URL] retain];
-        fileToSave = [urlToSave path];
+		NSURL* urlToSave = [[sPanel URL] retain];
+		fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		if ([self SaveFileTo:strFile] == false)
@@ -1718,8 +1718,8 @@ toolbarViewGroupTag;
 				
 				[array addObject:item];
 			}
-            
-            [item release];
+			
+			[item release];
 		}
 	}
 	
@@ -1754,9 +1754,9 @@ toolbarViewGroupTag;
 	[pTC buildTransactionsTree];
 	
 	schedTrans.AdvanceNextDate();
-    
-    // update the index view so the accounts show the correct new final balance
-    [self buildIndexTree];
+
+	// update the index view so the accounts show the correct new final balance
+	[self buildIndexTree];
 	
 	[self setDocumentModified:TRUE];
 }
@@ -1790,8 +1790,8 @@ toolbarViewGroupTag;
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToOpen = [[oPanel URL] retain];
-        fileToOpen = [urlToOpen path];
+		NSURL* urlToOpen = [[oPanel URL] retain];
+		fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		std::string strDateSample = "";
@@ -1863,8 +1863,8 @@ toolbarViewGroupTag;
 	
 	if ([oPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToOpen = [[oPanel URL] retain];
-        fileToOpen = [urlToOpen path];
+		NSURL* urlToOpen = [[oPanel URL] retain];
+		fileToOpen = [urlToOpen path];
 		strFile = [fileToOpen cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		OFXData dataItem;
@@ -2066,8 +2066,8 @@ toolbarViewGroupTag;
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToSave = [[sPanel URL] retain];
-        fileToSave = [urlToSave path];
+		NSURL* urlToSave = [[sPanel URL] retain];
+		fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		NSMutableArray *aExistingAccounts = [[NSMutableArray alloc] init];
@@ -2159,8 +2159,8 @@ toolbarViewGroupTag;
 	
 	if ([sPanel runModal] == NSOKButton)
 	{
-        NSURL* urlToSave = [[sPanel URL] retain];
-        fileToSave = [urlToSave path];
+		NSURL* urlToSave = [[sPanel URL] retain];
+		fileToSave = [urlToSave path];
 		strFile = [fileToSave cStringUsingEncoding: NSUTF8StringEncoding];
 		
 		exportAccountToQIFFile(m_pAccount, strFile, Date::UK);
@@ -2170,61 +2170,61 @@ toolbarViewGroupTag;
 - (IBAction)showPreferencesWindow:(id)sender
 {
 	NSWindow *window1 = [prefController window];
-    if (![window1 isVisible])
-        [window1 center];
-	
-    [window1 makeKeyAndOrderFront:self];
+	if (![window1 isVisible])
+		[window1 center];
+
+	[window1 makeKeyAndOrderFront:self];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
-    SEL action = [menuItem action];
-	
+	SEL action = [menuItem action];
+
 	if (action == @selector(showRecentTransactions:))
-    {
-        [menuItem setState:ShowTransactionsViewType == RECENT ? NSOnState : NSOffState];
-        return YES;
-    }
+	{
+		[menuItem setState:ShowTransactionsViewType == RECENT ? NSOnState : NSOffState];
+		return YES;
+	}
 	if (action == @selector(showAllTransactionsThisYear:))
-    {
-        [menuItem setState:ShowTransactionsViewType == ALL_THIS_YEAR ? NSOnState : NSOffState];
-        return YES;
-    }
+	{
+		[menuItem setState:ShowTransactionsViewType == ALL_THIS_YEAR ? NSOnState : NSOffState];
+		return YES;
+	}
 	if (action == @selector(showAllTransactions:))
-    {
-        [menuItem setState:ShowTransactionsViewType == ALL ? NSOnState : NSOffState];
-        return YES;
-    }
-	
+	{
+		[menuItem setState:ShowTransactionsViewType == ALL ? NSOnState : NSOffState];
+		return YES;
+	}
+
 	if (action == @selector(MakeTransfer:))
 	{
 		if (m_Document.getAccountCount() < 2)
 			return NO;
 	}
-	
+
 	return YES;
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem
 {
-    NSString *ident = [toolbarItem itemIdentifier];
-    
-    if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
-        return nViewType == 0;
-	
+	NSString *ident = [toolbarItem itemIdentifier];
+
+	if ([ident isEqualToString:TOOLBAR_VIEWTYPE])
+		return nViewType == 0;
+
 	if ([ident isEqualToString:TOOLBAR_MAKETRANSFER])
 	{
 		if (m_Document.getAccountCount() < 2)
 			return NO;
 	}
-	
+
 	return YES;
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
 	if (m_Document.hasUnsavedChanges())
-    {
+	{
 		int choice = NSAlertDefaultReturn;
 		
 		NSString *title = NSLocalizedString(@"Do you want to save the changes you made in this document?", "Save Document Warning Title");
@@ -2243,9 +2243,9 @@ toolbarViewGroupTag;
 		{
 			return NSTerminateLater;
 		}
-    }
-	
-    return NSTerminateNow;
+	}
+
+	return NSTerminateNow;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -2285,10 +2285,10 @@ toolbarViewGroupTag;
 	}
 	
 	if (m_Document.hasUnsavedChanges())
-    {
+	{
 		int choice = NSAlertDefaultReturn;
 		
-        NSString * message = NSLocalizedString(@"You have unsaved changes in this document. Are you sure you want to open another document?", "Replace Document Warning Message");
+		NSString * message = NSLocalizedString(@"You have unsaved changes in this document. Are you sure you want to open another document?", "Replace Document Warning Message");
 		
 		choice = NSRunAlertPanel(NSLocalizedString(@"Replace current document?", "Replace Document Warning Title"),
 								 message, NSLocalizedString(@"Replace", "Replace Button"),
@@ -2296,7 +2296,7 @@ toolbarViewGroupTag;
 		
 		if (choice != NSAlertDefaultReturn)
 			return NO;
-    }
+	}
 	
 	std::string strFile = [filename cStringUsingEncoding: NSUTF8StringEncoding];
 	
@@ -2338,7 +2338,7 @@ toolbarViewGroupTag;
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)application
 {
-    return YES;
+	return YES;
 }
 
 - (void)windowWillClose:(NSNotification *)aNotification

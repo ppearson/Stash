@@ -26,15 +26,15 @@
 @interface PreferencesController : NSWindowController <NSToolbarDelegate>
 {
 	NSUserDefaults *uDefaults;
-    BOOL bHasLoaded;
-    
-    IBOutlet NSView *vGeneralView, *vTransactionsView, *vPieChartView, *vAreaChartView;
-	
+	BOOL bHasLoaded;
+
+	IBOutlet NSView *vGeneralView, *vTransactionsView, *vPieChartView, *vAreaChartView;
+
 	// General
-	
+
 	// Transactons
-    
-   	IBOutlet NSPopUpButton *fTransactionClearedStatus;
+
+	IBOutlet NSPopUpButton *fTransactionClearedStatus;
 	
 	// Pie Chart
 	

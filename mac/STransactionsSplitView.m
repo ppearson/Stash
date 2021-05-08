@@ -57,7 +57,7 @@
 
 - (BOOL)splitView:(id)sender canCollapseSubview:(NSView *)subview
 {
-    return (subview == editSubView);
+	return (subview == editSubView);
 }
 
 - (void)splitView:(id)sender resizeSubviewsWithOldSize:(NSSize)oldSize

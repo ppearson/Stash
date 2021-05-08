@@ -35,37 +35,37 @@ static ValueFormatter *gSharedInterface = nil;
 			gSharedInterface = [[super allocWithZone:NULL] init];
 		}
 	}
-    return gSharedInterface;
+	return gSharedInterface;
 }
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return [[self sharedInterface] retain];
+	return [[self sharedInterface] retain];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    return self;
+	return self;
 }
 
 - (id)retain
 {
-    return self;
+	return self;
 }
 
 - (NSUInteger)retainCount
 {
-    return NSUIntegerMax;
+	return NSUIntegerMax;
 }
 
 - (void)release
 {
-    // do nothing
+	// do nothing
 }
 
 - (id)autorelease
 {
-    return self;
+	return self;
 }
 
 - (id)init
