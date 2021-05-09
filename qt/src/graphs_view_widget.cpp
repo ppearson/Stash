@@ -97,17 +97,20 @@ void GraphsViewWidget::rebuildFromGraph(bool refreshDatePickerFormat)
 	// need to force the update here so internal member variable is correct...
 	viewIndexChanged();
 	
-	buildGraph();
+	buildGraph(viewTypeIndex);
 }
 
-void GraphsViewWidget::buildGraph()
+void GraphsViewWidget::buildGraph(int viewIndex)
 {
-	buildPieChartGraph();
-	buildAreaChartGraph();
-	buildOverviewChartGraph();
+	// only redraw a particular graph if it's visible in the tab widget,
+	// otherwise in Qt5 we get progressive flickering and drawing of each view
+	// before it switches the tab...
+	buildPieChartGraph(viewIndex == 0);
+	buildAreaChartGraph(viewIndex == 1);
+	buildOverviewChartGraph(viewIndex == 2);
 }
 
-void GraphsViewWidget::buildPieChartGraph()
+void GraphsViewWidget::buildPieChartGraph(bool redraw)
 {
 	const Document& document = m_pMainWindow->getDocumentController().getDocument();
 	
@@ -169,9 +172,15 @@ void GraphsViewWidget::buildPieChartGraph()
 	QString totalAmountString = pCurrencyHandler->formatCurrencyAmount(totalAmount);
 
 	m_pGraphTotal->setPieChartItems(pieItems, totalAmountString);
+	
+	if (redraw)
+	{
+		m_pGraphTotal->update();
+		m_pGraphTotal->repaint();
+	}
 }
 
-void GraphsViewWidget::buildAreaChartGraph()
+void GraphsViewWidget::buildAreaChartGraph(bool redraw)
 {
 	const Document& document = m_pMainWindow->getDocumentController().getDocument();
 
@@ -231,9 +240,15 @@ void GraphsViewWidget::buildAreaChartGraph()
 	}
 
 	m_pGraphOverTime->setAreaChartItems(areaItems, areaResults.m_aDates, areaResults.m_overallMax);
+	
+	if (redraw)
+	{
+		m_pGraphOverTime->update();
+		m_pGraphOverTime->repaint();
+	}
 }
 
-void GraphsViewWidget::buildOverviewChartGraph()
+void GraphsViewWidget::buildOverviewChartGraph(bool redraw)
 {
 	const Document& document = m_pMainWindow->getDocumentController().getDocument();
 	
@@ -269,12 +284,19 @@ void GraphsViewWidget::buildOverviewChartGraph()
 	}
 	
 	m_pGraphOverview->setOverviewChartItems(overviewGraphItems, overallMax);
+	
+	if (redraw)
+	{
+		m_pGraphOverview->update();
+		m_pGraphOverview->repaint();
+	}
 }
 
 void GraphsViewWidget::graphParamValuesChanged()
 {
+	int viewTypeIndex = m_pGraph->getViewType();
 	// update the graph view
-	buildGraph();
+	buildGraph(viewTypeIndex);
 }
 
 void GraphsViewWidget::graphParamValuesUpdated()

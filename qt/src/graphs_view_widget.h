@@ -59,10 +59,11 @@ public:
 	
 	
 protected:
-	void buildGraph();
-	void buildPieChartGraph();
-	void buildAreaChartGraph();
-	void buildOverviewChartGraph();
+	void buildGraph(int viewIndex);
+	
+	void buildPieChartGraph(bool redraw);
+	void buildAreaChartGraph(bool redraw);
+	void buildOverviewChartGraph(bool redraw);
 	
 	
 protected slots:

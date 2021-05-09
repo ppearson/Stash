@@ -104,9 +104,6 @@ void GraphDrawWidget::setPieChartItems(const std::vector<PieChartItem>& items, c
 	fixed zero;
 	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
 	m_pieChartEmptyAmount = currencyHandler->formatCurrencyAmount(zero);
-	
-	update();
-	repaint();
 }
 
 void GraphDrawWidget::setAreaChartItems(const std::vector<AreaChartItemValues>& dataItems, const std::vector<MonthYear>& dates, fixed maxValue)
@@ -132,9 +129,6 @@ void GraphDrawWidget::setAreaChartItems(const std::vector<AreaChartItemValues>& 
 	m_maxAreaValue = maxValue;
 
 	m_selectedItemIndex = -1;
-
-	update();
-	repaint();
 }
 
 void GraphDrawWidget::setOverviewChartItems(const std::vector<OverviewChartItem>& items, fixed maxValue)
@@ -157,9 +151,6 @@ void GraphDrawWidget::setOverviewChartItems(const std::vector<OverviewChartItem>
 	m_overviewMonthsToShow = 0;
 	m_overviewCurrentPage = 0;
 	m_overviewMultiplePages = false;
-	
-	update();
-	repaint();
 }
 
 void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
@@ -249,6 +240,8 @@ void GraphDrawWidget::mouseReleaseEvent(QMouseEvent* event)
 		
 		QPointF fPos(event->pos());
 		
+		// TODO: this can be a bit laggy in some situations, being brute-force...
+		//       try and remove empty polygons previously.?
 		for (unsigned int i = 0; i < m_areaItemPolygons.size(); i++)
 		{
 			const QPolygonF& polygon = m_areaItemPolygons[i];
@@ -562,6 +555,8 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	
 	m_areaItemPolygons.clear();
 	m_areaItemPolygons.resize(m_aAreaChartDataItems.size());
+	
+	// TODO: try and not generate empty polygons...
 
 	int shapeIndex = 0;
 	for (const AreaChartItemValues& item : m_aAreaChartDataItems)
