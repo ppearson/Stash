@@ -1,3 +1,9 @@
+Version 1.0
+-----------
+
+* Qt port exists (for Linux), which is now feature-complete with older MacOS version
+* Code refactoring to core storage files to improve consistency and portability/maintenance
+
 Version 0.9
 -----------
 

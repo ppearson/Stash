@@ -5,7 +5,7 @@ Stash is a fast and simple personal finance native application.
 
 Its core data-storage and serialisation files are written in C++, and there is an
 existing (but somewhat old) native Mac OS interface written in Objective-C++ / Cocoa,
-as well as a much more recent, Qt interface/port which now exists (for Linux).
+as well as a much more recent Qt interface/port which now exists (for Linux).
 
 Features
 --------
@@ -63,6 +63,7 @@ C++, with the Mac Cocoa interface written in Objective-C++, and a newer Qt inter
 in C++ (for Linux). The list of features still to be implemented in Stash that I hope to get to eventually is:
 
 * Encryption of data files
+* More efficient serialisation - i.e. string interning for payees and categories
 * Import Rules
 * CSV import/export
 * Reports
