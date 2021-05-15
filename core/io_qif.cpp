@@ -70,9 +70,9 @@ bool exportAccountToQIFFile(Account *pAccount, std::string path, Date::DateStrin
 
 		// now do splits
 
-		int numSplits = it->getSplitCount();
+		unsigned int numSplits = it->getSplitCount();
 
-		for (int i = 0; i < numSplits; i++)
+		for (unsigned int i = 0; i < numSplits; i++)
 		{
 			SplitTransaction split = it->getSplit(i);
 
@@ -302,9 +302,9 @@ void clearTransaction(Transaction &trans)
 	trans.setType(Transaction::None);
 	trans.setSplit(false);
 
-	int numSplits = trans.getSplitCount();
+	unsigned int numSplits = trans.getSplitCount();
 
-	for (int i = 0; i < numSplits; i++)
+	for (unsigned int i = 0; i < numSplits; i++)
 	{
 		trans.deleteSplit(i);
 	}
@@ -318,7 +318,7 @@ void clearSplitTransaction(SplitTransaction &split)
 	split.setPayee("");
 }
 
-bool getLineEndingsFromFile(const std::string path, char &endChar, bool &bDOSFormat)
+bool getLineEndingsFromFile(const std::string& path, char &endChar, bool &bDOSFormat)
 {
 	std::fstream testStream(path.c_str(), std::ios::in);
 	if (!testStream)

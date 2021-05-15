@@ -76,7 +76,7 @@ public:
 	const std::string& getNote() const { return m_note; }
 	Type getType() const { return m_type; }
 	
-	int addTransaction(const Transaction& trans, bool bFITID = false);
+	unsigned int addTransaction(const Transaction& trans, bool bFITID = false);
 	Transaction& getTransaction(unsigned int trans) { return m_aTransactions[trans]; }
 	const Transaction& getTransaction(unsigned int trans) const { return m_aTransactions[trans]; }
 	unsigned int getTransactionCount() const { return m_aTransactions.size(); }

@@ -41,12 +41,12 @@ public:
 		return m_aAccounts.size() - 1;
 	}
 
-	Account& getAccount(int acc)
+	Account& getAccount(unsigned int acc)
 	{
 		return m_aAccounts[acc];
 	}
 
-	const Account& getAccount(int acc) const
+	const Account& getAccount(unsigned int acc) const
 	{
 		return m_aAccounts[acc];
 	}
@@ -75,7 +75,7 @@ public:
 	}
 	void deleteCategory(const std::string& Category);
 	
-	int addScheduledTransaction(const ScheduledTransaction& schedTransaction);
+	unsigned int addScheduledTransaction(const ScheduledTransaction& schedTransaction);
 	ScheduledTransaction& getScheduledTransaction(unsigned int schedTrans)
 	{
 		return m_aScheduledTransactions[schedTrans];

@@ -74,7 +74,7 @@ class OFXStatementTransaction
 {
 public:
 	OFXStatementTransaction() { }
-	OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, std::string &name, int FITID);
+	OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, const std::string &name, int FITID);
 	virtual ~OFXStatementTransaction() { }
 	
 	void setType(const std::string &type);
@@ -193,7 +193,10 @@ public:
 	const OFXBankAccount &getAccount() const { return m_account; }
 	
 	int getTransactionCount() const { return m_aTransactions.size(); }
-	const OFXStatementTransaction &getTransaction(int trans) const { return m_aTransactions[trans]; }
+	const OFXStatementTransaction &getTransaction(unsigned int trans) const
+	{
+		return m_aTransactions[trans];
+	}
 	
 	const fixed& getBalance() const { return m_balance; }
 	
@@ -256,12 +259,12 @@ public:
 	inline OFXStTrResIt begin() const { return m_aStatements.cbegin(); }
 	inline OFXStTrResIt end() const { return m_aStatements.cend(); }
 	
-	const OFXStatementTransactionResponse& getResponse(int response) const
+	const OFXStatementTransactionResponse& getResponse(unsigned int response) const
 	{
 		return m_aStatements[response];
 	}
 	
-	int getResponseCount() const { return m_aStatements.size(); }
+	unsigned int getResponseCount() const { return m_aStatements.size(); }
 	
 	bool exportDataToFile(const std::string& path, bool xml) const;
 	static void writeSGMLStartToStream(std::fstream &stream);

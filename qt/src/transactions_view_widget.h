@@ -109,6 +109,7 @@ protected:
 	
 	// Cached indices of transaction selection. These map into the Account/Transaction, *not* the DataModel...
 	unsigned int				m_transactionIndex;
+	// this needs to be signed
 	int							m_splitTransactionIndex;
 	
 };

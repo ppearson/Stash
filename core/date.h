@@ -114,8 +114,8 @@ public:
 	MonthYear() : m_month(-1), m_year(0) { } // needed for std::map[]
 	MonthYear(int month, int year);
 	
-	int getMonth() const { return m_month; }
-	int getYear() const { return m_year; }
+	unsigned int getMonth() const { return m_month; }
+	unsigned int getYear() const { return m_year; }
 	
 	void increment1();
 	
@@ -124,8 +124,8 @@ public:
 	bool operator<(MonthYear my) const { return m_year < my.m_year || (m_month < my.m_month && m_year == my.m_year); }
 	
 protected:
-	int m_month;
-	int m_year;	
+	unsigned int m_month;
+	unsigned int m_year;	
 };
 
 #endif

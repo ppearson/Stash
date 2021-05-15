@@ -48,14 +48,14 @@ bool parse(const std::string &expr, double &result)
 		expression = expression.substr(1);
 	}
 
-	int currPos = 0;
-	int nextOpPos = 0;
+	size_t currPos = 0;
+	size_t nextOpPos = 0;
 
 	while (true)
 	{
 		nextOpPos = expression.find_first_of("+-", currPos);
 
-		if (nextOpPos == -1)
+		if (nextOpPos == std::string::npos)
 		{
 			if (currPos == 0)
 				break;
@@ -71,7 +71,7 @@ bool parse(const std::string &expr, double &result)
 		{
 			nextOpPos = expression.find_first_of("+-", 1);
 
-			if (nextOpPos == -1)
+			if (nextOpPos == std::string::npos)
 				break;
 		}
 		else if (nextOpPos == currPos) // two operators together before the end - last one will be sign

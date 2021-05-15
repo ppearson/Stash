@@ -89,7 +89,7 @@ public:
 	SplitTransaction & getSplit(unsigned int item) { return m_aSplits[item]; }
 	const SplitTransaction & getSplit(unsigned int item) const { return m_aSplits[item]; }
 	unsigned int getSplitCount() const { return m_aSplits.size(); }
-	void deleteSplit(int split) { m_aSplits.erase(m_aSplits.begin() + split); }
+	void deleteSplit(unsigned int split) { m_aSplits.erase(m_aSplits.begin() + split); }
 	fixed getSplitTotal() const;
 	
 	void Load(std::fstream &stream, int version);

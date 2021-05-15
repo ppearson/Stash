@@ -72,7 +72,7 @@ OFXImportSettingsDialog::OFXImportSettingsDialog(QWidget* parent, const StashWin
 
 	// set table contents
 	
-	int numAccounts = ofxData.getResponseCount();
+	int numAccounts = (int)ofxData.getResponseCount();
 	m_pTableWidget->setRowCount(numAccounts);
 	
 	UICurrencyHandler* currencyHandler = m_pMainWindow->getCurrencyHandler();

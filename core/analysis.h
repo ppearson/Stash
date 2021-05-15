@@ -71,7 +71,7 @@ public:
 	}
 	
 	const std::string&	getTitle() const { return m_title; }
-	int					getNumItems() const { return m_amounts.size(); }
+	unsigned int		getNumItems() const { return m_amounts.size(); }
 	fixed				getItemAmount(int item) const { return m_amounts.at(item); }
 	fixed				getMaxValue() const { return m_maxValue; }
 	

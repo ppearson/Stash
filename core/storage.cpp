@@ -35,7 +35,7 @@ unsigned char Storage::loadValueFromUChar(std::fstream& stream)
 
 void Storage::storeValueToUChar(const unsigned int value, std::fstream& stream)
 {
-	stream.write((char*)&value, sizeof(unsigned char));
+	stream.write((const char*)&value, sizeof(unsigned char));
 }
 
 void Storage::loadUChar(unsigned char& value, std::fstream& stream)
@@ -45,7 +45,7 @@ void Storage::loadUChar(unsigned char& value, std::fstream& stream)
 
 void Storage::storeUChar(const unsigned char& value, std::fstream& stream)
 {
-	stream.write((char*)&value, sizeof(unsigned char));
+	stream.write((const char*)&value, sizeof(unsigned char));
 }
 
 void Storage::loadInt(int& value, std::fstream& stream)
@@ -55,7 +55,7 @@ void Storage::loadInt(int& value, std::fstream& stream)
 
 void Storage::storeInt(const int& value, std::fstream& stream)
 {
-	stream.write((char*)&value, sizeof(int));
+	stream.write((const char*)&value, sizeof(int));
 }
 
 void Storage::loadUInt(unsigned int& value, std::fstream& stream)
@@ -65,7 +65,7 @@ void Storage::loadUInt(unsigned int& value, std::fstream& stream)
 
 void Storage::storeUInt(const unsigned int& value, std::fstream& stream)
 {
-	stream.write((char*)&value, sizeof(unsigned int));
+	stream.write((const char*)&value, sizeof(unsigned int));
 }
 
 // Note: This isn't really used any more (at least for recent file format versions),
@@ -79,7 +79,7 @@ void Storage::loadUInt64(uint64_t& value, std::fstream& stream)
 //       for completeness
 void Storage::storeUInt64(const uint64_t& value, std::fstream& stream)
 {
-	stream.write((char *)&value, sizeof(uint64_t));
+	stream.write((const char*)&value, sizeof(uint64_t));
 }
 
 void Storage::LoadString(std::string& string, std::fstream& stream)

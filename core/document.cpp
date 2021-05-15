@@ -239,10 +239,10 @@ void Document::deleteCategory(const std::string& Category)
 		m_aCategories.erase(it);
 }
 
-int Document::addScheduledTransaction(const ScheduledTransaction& schedTransaction)
+unsigned int Document::addScheduledTransaction(const ScheduledTransaction& schedTransaction)
 {
 	m_aScheduledTransactions.push_back(schedTransaction);
-	return m_aScheduledTransactions.size() - 1;
+	return m_aScheduledTransactions.size() - 1u;
 }
 
 void Document::disabledScheduledTransactionsForAccount(unsigned int nAccount)
@@ -251,7 +251,7 @@ void Document::disabledScheduledTransactionsForAccount(unsigned int nAccount)
 	{
 		if (it->getAccount() == nAccount)
 		{
-			it->setAccount(-1);
+			it->setAccount(-1u);
 			it->setEnabled(false);
 		}
 		

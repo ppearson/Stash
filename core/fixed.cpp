@@ -153,7 +153,7 @@ std::string fixed::ToString() const
 	uint16_t precision = kPrecisionDigits;
 #endif
 	
-	if ((str.length() != precision) && ((m_num / (unsigned long int)powl(10.0, precision)) == 0))
+	if ((str.length() != precision) && ((m_num / (uint64_t)powl(10.0, precision)) == 0))
 	{
 		// this handles the case where a fixed has no integer part (like 0.00003)
 		// In this case, m_num is stored as 3, and is converted the same way
@@ -197,7 +197,7 @@ fixed::operator std::string() const
 
 void fixed::Load(std::fstream& stream, int version)
 {
-	// Strictly speaking, this isn't right, as m_num is an unsigned long,
+	// Strictly speaking, this isn't right, as m_num is a uint64_t,
 	// but as it's very unlikely that an individual transaction is going to
 	// have a value of over 21,474,836.47 (what this code can cope with), it's probably
 	// worth doing for efficient storage
@@ -205,7 +205,7 @@ void fixed::Load(std::fstream& stream, int version)
 	int temp = 0;
 	Storage::loadInt(temp, stream);
 	
-	m_num = abs(temp);
+	m_num = (uint64_t)abs((double)temp);
 	
 	// TODO: we don't currenly need this, but if we were going to support multiply/divide,
 	//       and/or varying precision numbers, we'd need to also load/store m_precision...
@@ -218,12 +218,12 @@ void fixed::Load(std::fstream& stream, int version)
 
 void fixed::Store(std::fstream& stream) const
 {
-	// Strictly speaking, this isn't right, as m_num is an unsigned long,
+	// Strictly speaking, this isn't right, as m_num is a uint64_t,
 	// but as it's very unlikely that an individual transaction is going to
 	// have a value of over 21,474,836.47 (what this code can cope with), it's probably
 	// worth doing for efficient storage
 	
-	int temp = m_num;
+	int temp = (int32_t)m_num;
 	if (!m_positive)
 		temp = -temp;
 	
@@ -286,10 +286,10 @@ void fixed::SetFromDouble(const double value)
 	
 	// combine fracpart into (already shifted) m_intpart
 	double roundCheck = modf(fractpart, &fractpart);
-	m_num += (long int)fractpart;
+	m_num += (uint64_t)fractpart;
 	
 	double nextDigit;
-	roundCheck = modf(roundCheck * 10.0, &nextDigit);
+	/*roundCheck = */modf(roundCheck * 10.0, &nextDigit);
 	
 //	if (m_round==Normal) {
 		if ((int)nextDigit > 4)

@@ -81,7 +81,7 @@ void Account::Store(std::fstream& stream) const
 	}
 }
 
-int Account::addTransaction(const Transaction& trans, bool bFITID)
+unsigned int Account::addTransaction(const Transaction& trans, bool bFITID)
 {
 	if (bFITID && trans.hasFITID())
 	{
@@ -90,7 +90,7 @@ int Account::addTransaction(const Transaction& trans, bool bFITID)
 	}
 	
 	m_aTransactions.push_back(trans);
-	return m_aTransactions.size() - 1;
+	return m_aTransactions.size() - 1u;
 }
 
 void Account::swapTransactions(unsigned int from, unsigned int to)

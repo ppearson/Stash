@@ -59,7 +59,7 @@ OFXExportSettingsDialog::OFXExportSettingsDialog(QWidget* parent, const StashWin
 	m_pTableWidget->setColumnWidth(1, 220);
 	
 	unsigned int numAccounts = mainWindow->getDocumentController().getDocument().getAccountCount();
-	m_pTableWidget->setRowCount(numAccounts);
+	m_pTableWidget->setRowCount((int)numAccounts);
 	
 	for (int i = 0; i < (int)numAccounts; i++)
 	{		

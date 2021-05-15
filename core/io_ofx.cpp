@@ -72,7 +72,7 @@ void OFXStatementResponse::writeToSGMLStream(std::fstream &stream) const
 	dtStart.Now();
 	dtEnd.Now();
 	
-	int numTransactions = m_aTransactions.size();
+	unsigned int numTransactions = m_aTransactions.size();
 	
 	if (numTransactions > 0)
 	{
@@ -124,7 +124,7 @@ void OFXStatementResponse::writeToXMLStream(std::fstream &stream) const
 	dtStart.Now();
 	dtEnd.Now();
 	
-	int numTransactions = m_aTransactions.size();
+	unsigned int numTransactions = m_aTransactions.size();
 	
 	if (numTransactions > 0)
 	{
@@ -169,8 +169,8 @@ void OFXStatementResponse::addOFXTransactionsForAccount(const Account& account)
 	{
 		const Transaction &trans = (*it);
 		
-		std::string strName = trans.getPayee();
-		std::string strMemo = trans.getDescription();
+		const std::string& strName = trans.getPayee();
+		const std::string& strMemo = trans.getDescription();
 		
 		OFXStatementTransaction newStatementTransaction(trans.getType(), trans.getDate(), trans.getAmount(), strName, FITID++);
 		newStatementTransaction.setMemo(strMemo);
@@ -182,7 +182,7 @@ void OFXStatementResponse::addOFXTransactionsForAccount(const Account& account)
 	m_account.setAccountID(account.getName());
 }
 
-OFXStatementTransaction::OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, std::string &name, int FITID) :
+OFXStatementTransaction::OFXStatementTransaction(const Transaction::Type &type, const Date &date, const fixed &amount, const std::string &name, int FITID) :
 									m_type(type), m_date(date), m_amount(amount), m_name(name)
 {
 	std::stringstream ss;
@@ -549,8 +549,8 @@ bool importOFXSGMLFile(std::string path, OFXData &dataItem, std::string &encodin
 			}
 			
 			// handle possible OFX 1.x formats with closing tags
-			int nEndTag = data.find('<');
-			if (nEndTag >= 0)
+			size_t nEndTag = data.find('<');
+			if (nEndTag != std::string::npos)
 			{
 				data = data.substr(0, nEndTag);
 			}

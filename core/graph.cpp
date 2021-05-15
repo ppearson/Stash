@@ -47,7 +47,7 @@ void Graph::Load(std::fstream &stream, int version)
 	unsigned char cBitset = 0;
 	Storage::loadUChar(cBitset, stream);
 	
-	std::bitset<8> localset(static_cast<unsigned long>(cBitset));
+	std::bitset<8> localset(static_cast<uint64_t>(cBitset));
 	
 	m_ignoreTransfers = localset[0];
 	
@@ -81,7 +81,7 @@ void Graph::Store(std::fstream &stream) const
 {
 	// not the best way of doing this, should have some unique ID for accounts...
 	// not strictly valid either, but are we going to have more than 256 accounts...
-	Storage::storeValueToUChar(m_account, stream);
+	Storage::storeValueToUChar((unsigned char)m_account, stream);
 	
 	Storage::StoreString(m_name, stream);
 	

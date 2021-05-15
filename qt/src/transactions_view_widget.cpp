@@ -157,7 +157,7 @@ void TransactionsViewWidget::rebuildFromAccount(bool refreshDatePickerFormat)
 		m_pTransactionFormPanel->refreshDatePickerFormat();
 	}
 	
-	m_transactionIndex = -1;
+	m_transactionIndex = -1u;
 	m_splitTransactionIndex = -1;
 	
 	updateItemButtonsAndMainMenuStateFromSelection();
@@ -169,7 +169,7 @@ void TransactionsViewWidget::setViewDurationType(TransactionsViewDurationType vi
 	
 	m_pTransactionFormPanel->clear(true);
 	
-	m_transactionIndex = -1;
+	m_transactionIndex = -1u;
 	m_splitTransactionIndex = -1;
 	
 	scrollToLastTransaction();
