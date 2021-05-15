@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 set(QMAKE_CXXFLAGS "-std=c++11")
 
 #set(DEBUG_WARNINGS "-Wall -Wextra")
+#set(DEBUG_WARNINGS "${DEBUG_WARNINGS} -Weverything")
 #set(DEBUG_WARNINGS_SUPPRESS "-Wno-unused-function -Wno-unused-parameter -Wno-unused-variable")
 #set(MAIN_DEBUG_CPP_FLAGS "-g -D_GLIBCXX_DEBUG ${DEBUG_WARNINGS} ${DEBUG_WARNINGS_SUPPRESS}")
 set(MAIN_DEBUG_CPP_FLAGS "-g ${DEBUG_WARNINGS} ${DEBUG_WARNINGS_SUPPRESS}")
@@ -22,11 +23,12 @@ set(EXTRA_FLAGS "-std=c++11")
 set(CMAKE_CXX_FLAGS_DEBUG "${EXTRA_FLAGS} ${MAIN_DEBUG_CPP_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "${EXTRA_FLAGS} ${MAIN_RELEASE_CPP_FLAGS}")
 
-set(QT5 0)
+# To build with Qt 4.x, set this to 0
+set(QT5 1)
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    # We don't really care about using the Qt port on MacOS, but it does build, and is an additional
+    # testing point, so...
 	set(QT5 1)
-	# Also set GL_SILENCE_DEPRECATION on MacOS, to stop warnings about gl functions
-	add_definitions(-DGL_SILENCE_DEPRECATION=1)
 endif()
 
 if(${QT5} MATCHES 0)
@@ -34,15 +36,10 @@ if(${QT5} MATCHES 0)
 	find_package(Qt4 REQUIRED)
 else()
 	# Qt 5
-	##
 	add_definitions(-DSTASH_QT_5)
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	set(CMAKE_AUTOMOC ON)
-#	find_package(Qt5Core)
 	find_package(Qt5Widgets)
-#	find_package(Qt5OpenGL)
-	
-#	qt5_use_modules(Imagine Core Gui OpenGL Widgets)
 endif()
 #set(QT_USE_QTOPENGL TRUE)
 
