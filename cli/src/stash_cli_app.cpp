@@ -1,6 +1,6 @@
 /*
- * Stash:  A Personal Finance app for OS X.
- * Copyright (C)  2020 Peter Pearson
+ * Stash:  A Personal Finance app (WIP CLI version).
+ * Copyright (C)  2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -134,6 +134,118 @@ void StashCLIApp::listAccountTransactions(unsigned int accountIndex, unsigned in
 		{
 			balance += (*it).getAmount();
 		}
+	}
+}
+
+void StashCLIApp::printDatesAndBalances(unsigned int accountIndex) const
+{
+	if (accountIndex >= m_document.getAccountCount())
+		return;
+
+	const Account& account = m_document.getAccounts()[accountIndex];
+
+	fixed balance = 0.0;
+
+	std::vector<Transaction>::const_iterator it = account.begin();
+	std::vector<Transaction>::const_iterator itEnd = account.end();
+
+	// Note: this won't include non-cleared...
+	unsigned int numTransactions = account.getTransactionCount();
+
+//	unsigned int startPrintIndex = (numTransactions <= numRecentTransactions) ? 0 : (numTransactions - numRecentTransactions);
+
+	unsigned int count = 0;
+
+	for (; it != itEnd; ++it)
+	{
+		balance += (*it).getAmount();
+		
+		const Transaction& transaction = *it;
+		
+		fprintf(stdout, "%s,%0.2f\n", transaction.getDate().FormattedDate(Date::UK).c_str(), balance.ToDouble());
+	}
+}
+
+void StashCLIApp::printTotalDatesAndBalances() const
+{
+	// find starting date
+	unsigned int numAccounts = m_document.getAccountCount();
+	Date firstDate;
+	firstDate.Now();
+	for (unsigned int i = 0; i < numAccounts; i++)
+	{
+		const Account& account = m_document.getAccounts()[i];
+		if (account.getTransactionCount() == 0)
+			continue;
+		
+		Date firstTransactionDate = account.getTransaction(0).getDate();
+		if (firstTransactionDate < firstDate)
+		{
+			firstDate = firstTransactionDate;
+		}
+	}
+	
+	Date endDate;
+	endDate.Now();
+	
+	Date testDate = firstDate;
+	
+	fixed currentBalance = 0.0;
+	
+	while (testDate < endDate)
+	{
+		// brute-force find any transactions for the date, and accumulate them...
+		
+		// this is hilariously bad complexity-wise, but given it's still pretty much instant in terms of speed with < 10,000 transactions over 6 accounts,
+		// easiest for the moment...
+		// TODO: keep a note of per-account indices we've checked already to restart there next time, or something better...
+		
+		bool foundSomething = false;
+		
+		for (unsigned int i = 0; i < numAccounts; i++)
+		{
+			const Account& account = m_document.getAccounts()[i];
+			if (account.getTransactionCount() == 0)
+				continue;
+			
+			std::vector<Transaction>::const_iterator it = account.begin();
+			std::vector<Transaction>::const_iterator itEnd = account.end();
+			
+			// start with the date of the first transaction
+			Date previousDate = account.getTransaction(0).getDate();
+			
+			for (; it != itEnd; ++it)
+			{
+				const Transaction& transaction = *it;
+				
+				// detect if any dates might be in the wrong order...
+				if (transaction.getDate() < previousDate)
+				{
+					// print a warning to stderr (very verbose due to the brute-force algorithm, but...)
+					fprintf(stderr, "Warning: unexpected date order: account index: %u, this date: %s, previous date: %s\n",
+							i, transaction.getDate().FormattedDate(Date::UK).c_str(), previousDate.FormattedDate(Date::UK).c_str());
+				}
+				previousDate = transaction.getDate();
+				
+				if (transaction.getDate() == testDate)
+				{
+					currentBalance += (*it).getAmount();
+					foundSomething = true;
+				}
+				else if (transaction.getDate() > testDate)
+				{
+					// won't find it...
+					break;
+				}
+			}
+		}
+		
+		if (foundSomething)
+		{
+			fprintf(stdout, "%s,%0.2f\n", testDate.FormattedDate(Date::UK).c_str(), currentBalance.ToDouble());
+		}
+		
+		testDate.IncrementDays(1);
 	}
 }
 

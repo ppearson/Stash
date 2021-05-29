@@ -1,5 +1,5 @@
 /*
- * Stash:  A Personal Finance app for OS X.
+ * Stash:  A Personal Finance app (WIP CLI version).
  * Copyright (C) 2020 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
@@ -27,10 +27,13 @@
 void printUsage()
 {
 	fprintf(stderr, "Stash command line interface.\n");
-	fprintf(stderr, "Usage: stash_cli <filename> <command>\n");
+	fprintf(stderr, "Usage: stash_cli <filename> <command> <command args>\n");
 	fprintf(stderr, "Commands:\n");
 	fprintf(stderr, "  lista:\t\tList account names\n");
 	fprintf(stderr, "  listab:\t\tList account names along with balance of each\n");
+	fprintf(stderr, "  listt:\t\tList account Transactions\n");
+	fprintf(stderr, "  print:\t\tPrint CSV values of dates and balances to stdout for specified account index\n");
+	fprintf(stderr, "  printall:\t\tPrint CSV values of dates and balances to stdout for all accounts\n");
 }
 
 int main(int argc, char** argv)
@@ -69,6 +72,19 @@ int main(int argc, char** argv)
 	else if (command == "listt")
 	{
 		app.listAccountTransactions(0, 10);
+	}
+	else if (command == "print")
+	{
+		unsigned int accountIndex = 0;
+		if (argc > 3)
+		{
+			accountIndex = atoi(argv[3]);
+		}
+		app.printDatesAndBalances(accountIndex);
+	}
+	else if (command == "printall")
+	{
+		app.printTotalDatesAndBalances();
 	}
 
 	return 0;

@@ -1,6 +1,6 @@
 /*
- * Stash:  A Personal Finance app for OS X.
- * Copyright (C) 2020 Peter Pearson
+ * Stash:  A Personal Finance app (WIP CLI version).
+ * Copyright (C) 2020-2021 Peter Pearson
  * You can view the complete license in the Licence.txt file in the root
  * of the source tree.
  *
@@ -37,6 +37,10 @@ public:
 	void listAccounts(bool showBalances) const;
 
 	void listAccountTransactions(unsigned int accountIndex, unsigned int numRecentTransactions) const;
+	
+	void printDatesAndBalances(unsigned int accountIndex) const;
+	
+	void printTotalDatesAndBalances() const;
 	
 	void test() const;
 
