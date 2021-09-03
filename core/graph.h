@@ -67,7 +67,7 @@ public:
 	};
 	
 	void setName(const std::string& name) { m_name = name; }
-	void setAccount(int account) { m_account = account; }
+	void setAccount(unsigned int account) { m_account = account; }
 	void setViewType(ViewType type) { m_viewType = type; }
 	void setStartDate(Date startDate) { m_startDate = startDate; }
 	void setEndDate(Date endDate) { m_endDate = endDate; }
@@ -77,7 +77,7 @@ public:
 	void setItemsType(ItemsType type) { m_itemsType = type; }
 	
 	const std::string&		getName() const { return m_name; }
-	int					getAccount() const { return m_account; }
+	unsigned int			getAccount() const { return m_account; }
 	ViewType		getViewType() const { return m_viewType; }
 	const Date&			getStartDate() const { return m_startDate; }
 	const Date&			getEndDate() const { return m_endDate; }
@@ -94,7 +94,7 @@ public:
 	
 protected:
 	std::string		m_name;
-	int				m_account;
+	unsigned int	m_account;
 	ViewType		m_viewType;
 	Date			m_startDate;
 	Date			m_endDate;

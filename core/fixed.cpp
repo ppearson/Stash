@@ -284,7 +284,7 @@ void fixed::SetFromDouble(const double value)
 	// are on the int side
 	fractpart *= pow(10.0, precision);
 	
-	// combine fracpart into (already shifted) m_intpart
+	// combine fracpart into (already shifted) intpart
 	double roundCheck = modf(fractpart, &fractpart);
 	m_num += (uint64_t)fractpart;
 	

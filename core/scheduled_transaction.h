@@ -80,7 +80,9 @@ public:
 	void AdvanceNextDate();
 	
 protected:
+	// TODO: clearly not very good or robust... Use unique ID instead?
 	unsigned int		m_account;
+
 	bool				m_enabled;
 	std::string			m_payee;
 	fixed				m_amount;
