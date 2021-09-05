@@ -95,15 +95,8 @@ const char* CurrencyValueFormatter::IFImpl_DollarNegSymbolPrefix::formatValue(co
 		{
 			m_buffer[pos++] = ',';
 		}
-		
-		if (numBaseDigits > 3 && --numBaseDigits % 3 == 0)
-		{
-			addSepNext = true;
-		}
-		else
-		{
-			addSepNext = false;
-		}
+
+		addSepNext = numBaseDigits > 3 && --numBaseDigits % 3 == 0;
 			
 		m_buffer[pos++] = *pSrcBuffer;		
 		
@@ -145,14 +138,7 @@ const char* CurrencyValueFormatter::IFImpl_PoundSterling::formatValue(const fixe
 			m_buffer += ',';
 		}
 		
-		if (numBaseDigits > 3 && --numBaseDigits % 3 == 0)
-		{
-			addSepNext = true;
-		}
-		else
-		{
-			addSepNext = false;
-		}
+		addSepNext = numBaseDigits > 3 && --numBaseDigits % 3 == 0;
 			
 		m_buffer += *pSrcBuffer;		
 		
@@ -190,14 +176,7 @@ const char* CurrencyValueFormatter::IFImpl_DollarNegParenthesis::formatValue(con
 			m_buffer[pos++] = ',';
 		}
 		
-		if (numBaseDigits > 3 && --numBaseDigits % 3 == 0)
-		{
-			addSepNext = true;
-		}
-		else
-		{
-			addSepNext = false;
-		}
+		addSepNext = numBaseDigits > 3 && --numBaseDigits % 3 == 0;
 			
 		m_buffer[pos++] = *pSrcBuffer;		
 		
