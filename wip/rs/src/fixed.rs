@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 //use std::ops;
 use std::cmp;
 use std::fmt;
@@ -267,6 +269,7 @@ impl Fixed {
         self.m_positive = false;
     }
 
+    #[allow(dead_code)]
     fn is_zero(&self) -> bool {
         return true;
     }

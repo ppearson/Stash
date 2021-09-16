@@ -15,7 +15,6 @@ use fixed::Fixed;
 use date::Date;
 use transaction::Transaction;
 use account::Account;
-use scheduled_transaction::ScheduledTransaction;
 use document::Document;
 
 
@@ -152,7 +151,19 @@ fn main() {
             }
         }
         let account = &document.accounts[account_index as usize];
- //       list_transactions(&account, transaction_limit);
+        list_transactions(&account, transaction_limit);
+ //       list_transactions_with_balance(&account, transaction_limit);
+    }
+    else if command.eq("listtb") {
+        let mut account_index = 0;
+        let mut transaction_limit = 30;
+        if args.len() > 3 {
+            account_index = args[3].parse::<i32>().unwrap();
+            if args.len() > 4 {
+                transaction_limit = args[4].parse::<i32>().unwrap();
+            }
+        }
+        let account = &document.accounts[account_index as usize];
         list_transactions_with_balance(&account, transaction_limit);
     }
     else if command.eq("resave") {

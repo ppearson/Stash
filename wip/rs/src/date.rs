@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use chrono::{NaiveDate, Datelike, Weekday};
 
 use std::fmt;
@@ -67,15 +69,15 @@ impl Date {
     pub fn load(&mut self, mut file: &std::fs::File) -> Result<(), SerialiseError> {
 
         // new one:
-		// Use more portable and space-efficient method:
-		
-		// day is stored in left-most (most significant in little-endian) 5 bits
-		// month is stored in next 4 bits
-		// year in right-most (least significant in little-endian) 16 bits
-		
-		// day shift 27 - mask: 0xF8000000
-		// month shift 23 - mask: 0x7800000
-		// year shift 0 - mask: 0xFFFF
+        // Use more portable and space-efficient method:
+        
+        // day is stored in left-most (most significant in little-endian) 5 bits
+        // month is stored in next 4 bits
+        // year in right-most (least significant in little-endian) 16 bits
+        
+        // day shift 27 - mask: 0xF8000000
+        // month shift 23 - mask: 0x7800000
+        // year shift 0 - mask: 0xFFFF
 
         let packed_value = file.read_u32::<LittleEndian>()?;
 
