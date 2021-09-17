@@ -92,12 +92,13 @@ fn list_transactions_with_balance(account: &Account, transaction_limit: i32) {
     }
 }
 
-fn resave_document(document: &Document, save_filename: &String) -> bool {
+fn resave_document(document: &Document, save_filename: &str) {
     match document.store(save_filename) {
-        Ok(()) => return true,
+        Ok(()) => {
+            eprintln!("Document resaved successfully");
+        },
         Err(err) => {
             eprintln!("Error saving document: {}", err.to_string());
-            return false;
         }
     }
 }
@@ -112,14 +113,14 @@ fn main() {
 
         println!("Final val: {}", final_val);
 
-        let date: Date = Date::create_from_components(5, 10, 2014);
+        let date: Date = Date::from_components(5, 10, 2014);
         println!("Date: {}", date);
 
-        let transaction: Transaction = Transaction::create("Food".to_string(), "Waitrose".to_string(), "Food".to_string(),
-                                    Fixed::from(-42.0), Date::create_from_components(22, 04, 2018));
+        let transaction: Transaction = Transaction::new("Food", "Waitrose", "Food",
+                                    Fixed::from(-42.0), Date::from_components(22, 4, 2018));
         println!("Transaction: {}", transaction);
 
-        let account: Account = Account::create("Main".to_string(), "Barclays".to_string(), "012345".to_string(), account::Type::Cash);
+        let account: Account = Account::new("Main", "Barclays", "012345", account::Type::Cash);
         println!("Account: {}", account);
 
         return;
@@ -127,7 +128,7 @@ fn main() {
 
     let path_arg = &args[1];
 
-    let mut document = Document::create();
+    let mut document = Document::new();
     let res = document.load(path_arg);
     if res.is_err() {
         eprintln!("Couldn't open document... {}", res.unwrap_err());

@@ -39,14 +39,18 @@ pub fn read_cstring(mut file: &std::fs::File) -> Result<String, SerialiseError> 
     let mut buf = [0u8; 255];
 
     let mut handle = file.take(length as u64);
-    handle.read(&mut buf)?;
-
+    
+    let read_size = handle.read(&mut buf);
+    if read_size? != length as usize {
+        return Err(SerialiseError::StdError("Error reading string".to_string()));
+    }
+    
     let final_string = std::str::from_utf8(&buf[..length as usize])?;
 
     return Ok(final_string.to_string());
 }
 
-pub fn write_cstring(mut file: &std::fs::File, string_val: &String) -> Result<(), SerialiseError> {
+pub fn write_cstring(mut file: &std::fs::File, string_val: &str) -> Result<(), SerialiseError> {
     // we clamp strings to 255 'chars'...
     // TODO: check for multi-byte chars first?!
     let length = cmp::min(255, string_val.len());

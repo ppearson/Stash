@@ -12,7 +12,7 @@ use crate::scheduled_transaction::ScheduledTransaction;
 use crate::graph::Graph;
 
 #[allow(non_upper_case_globals)]
-const kDOCUMENT_VERSION: u8 = 6;
+const DOCUMENT_VERSION: u8 = 6;
 
 #[derive(Clone, Debug)]
 pub struct Document {
@@ -43,7 +43,7 @@ impl fmt::Display for Document {
 }
 
 impl Document {
-    pub fn create() -> Document {
+    pub fn new() -> Document {
         let new_document = Document::default();
         return new_document;
     }
@@ -62,7 +62,7 @@ impl Document {
         }
 
         let file_version = file.read_u8()?;
-        if file_version > kDOCUMENT_VERSION {
+        if file_version > DOCUMENT_VERSION {
             // it's a document version from the future we don't know about...
             return Err(SerialiseError::CustomError("Future file format version.".to_string()));
         }
@@ -127,7 +127,7 @@ impl Document {
         let file_id = 42u8;
         file.write_u8(file_id)?;
 
-        file.write_u8(kDOCUMENT_VERSION)?;
+        file.write_u8(DOCUMENT_VERSION)?;
 
         let account_count = self.accounts.len() as u32;
         file.write_u32::<LittleEndian>(account_count)?;

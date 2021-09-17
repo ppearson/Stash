@@ -35,7 +35,7 @@ impl fmt::Display for Date {
 
 
 impl Date {
-    pub fn create_from_components(day: u32, month: u32, year: u32) -> Date {
+    pub fn from_components(day: u32, month: u32, year: u32) -> Date {
         let new_date = Date {internal_date: chrono::NaiveDate::from_ymd(year as i32, month, day),
                                  year: year as u16, month: month as u8, day: day as u8, day_of_week: 0};
         return new_date;
@@ -129,7 +129,7 @@ mod tests {
 
     #[test]
     fn date_create2() {
-        let date = Date::create_from_components(15, 10, 2019);
+        let date = Date::from_components(15, 10, 2019);
 
         assert_eq!(date.year, 2019);
         assert_eq!(date.month, 10);

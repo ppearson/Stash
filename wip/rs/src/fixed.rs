@@ -12,13 +12,13 @@ const PRECISION: u32 = 2;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Fixed {
-    m_num:      u64,
-    m_positive: bool
+    num:      u64,
+    positive: bool
 }
 
 impl Default for Fixed {
     fn default () -> Fixed {
-        Fixed{m_num: 0, m_positive: true}
+        Fixed{num: 0, positive: true}
     }
 }
 
@@ -41,37 +41,37 @@ impl fmt::Display for Fixed {
 /*
 impl Clone for Fixed {
     fn clone(&self) -> Fixed {
-        Fixed new_copy { m_num : self.m_num, m_positive : self.m_positive };
+        Fixed new_copy { num : self.num, positive : self.positive };
     }
 }
 */
 
 impl PartialEq for Fixed {
     fn eq(&self, other: &Self) -> bool {
-        self.m_positive == other.m_positive &&
-        self.m_num == other.m_num
+        self.positive == other.positive &&
+        self.num == other.num
     }
 
     fn ne(&self, other: &Self) -> bool {
-        self.m_positive != other.m_positive ||
-        self.m_num != other.m_num
+        self.positive != other.positive ||
+        self.num != other.num
     }
 }
 
 impl PartialOrd for Fixed {
     fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         // TODO: can we use match?
-        if self.m_positive == other.m_positive &&
-           self.m_num == other.m_num {
+        if self.positive == other.positive &&
+           self.num == other.num {
                 return Some(cmp::Ordering::Equal);
            }
         else {
             let is_less_than;
-            if self.m_positive != other.m_positive {
-                is_less_than = !other.m_positive && self.m_positive;
+            if self.positive != other.positive {
+                is_less_than = !other.positive && self.positive;
             }
             else {
-                is_less_than = other.m_num < self.m_num;
+                is_less_than = other.num < self.num;
             }
             
             match is_less_than {
@@ -82,35 +82,35 @@ impl PartialOrd for Fixed {
     }
 
     fn lt(&self, other: &Self) -> bool {
-        if self.m_positive && !other.m_positive {
+        if self.positive && !other.positive {
             return false;
         }
-        else if !self.m_positive && other.m_positive {
+        else if !self.positive && other.positive {
             return true;
         }
         else {
-            if self.m_positive && other.m_positive {
-                return self.m_num < other.m_num;
+            if self.positive && other.positive {
+                return self.num < other.num;
             }
             else {
-                return self.m_num > other.m_num;
+                return self.num > other.num;
             }
         }
     }
 
     fn gt(&self, other: &Self) -> bool {
-        if self.m_positive && !other.m_positive {
+        if self.positive && !other.positive {
             return true;
         }
-        else if !self.m_positive && other.m_positive {
+        else if !self.positive && other.positive {
             return false;
         }
         else {
-            if self.m_positive && other.m_positive {
-                return self.m_num > other.m_num;
+            if self.positive && other.positive {
+                return self.num > other.num;
             }
             else {
-                return self.m_num < other.m_num;
+                return self.num < other.num;
             }
         }
     }
@@ -130,7 +130,7 @@ impl std::ops::Sub for Fixed {
     type Output = Fixed;
 
     fn sub(self, other: Fixed) -> Fixed {
-        let mut copy = self.clone();
+        let mut copy = self;
         copy.subtract_impl(other);
         return copy;       
     }
@@ -151,63 +151,63 @@ impl std::ops::SubAssign for Fixed {
 impl Fixed {
 
     fn add_impl(&mut self, val: Fixed) {
-        if self.m_positive == val.m_positive {
-            self.m_num += val.m_num;
+        if self.positive == val.positive {
+            self.num += val.num;
         }
         else {
-            if self.m_num > val.m_num {
-                self.m_num -= val.m_num;
+            if self.num > val.num {
+                self.num -= val.num;
             }
-            else if self.m_num < val.m_num {
-                self.m_num = val.m_num - self.m_num;
-                if val.m_positive == true {
-                    self.m_positive = true;
+            else if self.num < val.num {
+                self.num = val.num - self.num;
+                if val.positive {
+                    self.positive = true;
                 }
                 else {
-                    self.m_positive = false;
+                    self.positive = false;
                 }
             }
             else {
-                self.m_num = 0;
+                self.num = 0;
             }
         }
     }
 
     fn subtract_impl(&mut self, val: Fixed) {
-        if self.m_positive != val.m_positive {
+        if self.positive != val.positive {
             // TODO: there's a bug here that's triggering some of the unit tests
-            if val.m_positive && val.m_num > self.m_num {
-                self.m_positive = false;
-                self.m_num += val.m_num;
+            if val.positive && val.num > self.num {
+                self.positive = false;
+                self.num += val.num;
             }
             else {
-                self.m_num -= val.m_num;
+                self.num -= val.num;
             }
         }
-        else if !self.m_positive && !val.m_positive {
+        else if !self.positive && !val.positive {
             // TODO: there's a bug here that's triggering some of the unit tests
-            if self.m_num > val.m_num {
-                self.m_num -= val.m_num;
-                self.m_positive = false;
+            if self.num > val.num {
+                self.num -= val.num;
+                self.positive = false;
             }
-            else if self.m_num < val.m_num {
-                self.m_positive = true;
+            else if self.num < val.num {
+                self.positive = true;
             }
             else {
-                self.m_num = 0;
+                self.num = 0;
             }
         }
         else {
             // both are positive
-            if self.m_num > val.m_num {
-                self.m_num -= val.m_num;
+            if self.num > val.num {
+                self.num -= val.num;
             }
-            else if self.m_num < val.m_num {
-                self.m_num = val.m_num - self.m_num;
-                self.m_positive = false;
+            else if self.num < val.num {
+                self.num = val.num - self.num;
+                self.positive = false;
             }
             else {
-                self.m_num = 0;
+                self.num = 0;
             }
         }
     }
@@ -224,7 +224,7 @@ impl Fixed {
     fn set_from_f64(&mut self, val: f64) {
         let (fract_part, int_part) = Fixed::modf(val);
 
-        self.m_num = int_part as u64 * 10u64.pow(PRECISION);
+        self.num = int_part as u64 * 10u64.pow(PRECISION);
 
         // move Fixed point over so now fractpart's `precision` digits
 	    // are on the int side
@@ -232,23 +232,23 @@ impl Fixed {
 
         // combine fracpart into (already shifted) intpart
         let (round_check, fract_part) = Fixed::modf(fract_part);
-        self.m_num += fract_part as u64;
+        self.num += fract_part as u64;
 
         let (_fract_temp, next_digit) = Fixed::modf(round_check * 10.0);
         if next_digit as u64 > 4 {
-            self.m_num += 1;
+            self.num += 1;
         }
 
-        self.m_positive = !(val < 0.0);
+        self.positive = val >= 0.0;
     }
 
     fn to_f64(self) -> f64 {
-        if self.m_positive {
-            return (self.m_num as f64) / 10.0f64.powf(PRECISION as f64);
+        if self.positive {
+            return (self.num as f64) / 10.0f64.powf(PRECISION as f64);
         }
         else {
-            if self.m_num != 0 {
-                return (self.m_num as f64) / 10.0f64.powf(PRECISION as f64) * -1.0;
+            if self.num != 0 {
+                return (self.num as f64) / 10.0f64.powf(PRECISION as f64) * -1.0;
             }
             else {
                 // TODO: do we even need this else clause?
@@ -258,24 +258,23 @@ impl Fixed {
     }
 
     fn to_f64_abs(self) -> f64 {
-        return (self.m_num as f64) / 10.0f64.powf(PRECISION as f64);
+        return (self.num as f64) / 10.0f64.powf(PRECISION as f64);
     }
 
     fn set_positive(&mut self) {
-        self.m_positive = true;
+        self.positive = true;
     }
 
     fn set_negative(&mut self) {
-        self.m_positive = false;
+        self.positive = false;
     }
 
-    #[allow(dead_code)]
     fn is_zero(&self) -> bool {
         return true;
     }
 
     fn is_positive(&self) -> bool {
-        return self.m_positive;
+        return self.positive;
     }
 
     pub fn num_digits(&self) -> u32 {
@@ -283,7 +282,7 @@ impl Fixed {
         //       as Rust doesn't support self modification (\=) returning
         //       the value.
         let mut count = 0;
-        let mut temp = self.m_num;
+        let mut temp = self.num;
 
         // Note: this is different to the C++ version, as Rust doesn't
         //       support while temp /= 10 { ...
@@ -307,14 +306,14 @@ impl Fixed {
 
     pub fn num_full_digits(&self) -> u32 {
         let mut count = 1;
-        let mut temp = self.m_num;
+        let mut temp = self.num;
 
         while temp > 0 {
             temp /= 10;
             count += 1;
         }
 
-        if !self.m_positive {
+        if !self.positive {
             count += 1;
         }
 
@@ -363,28 +362,28 @@ impl Fixed {
     }
 
     pub fn load(&mut self, mut file: &std::fs::File) -> Result<(), SerialiseError> {
-        // Strictly speaking, this isn't right, as m_num is a u64,
+        // Strictly speaking, this isn't right, as num is a u64,
         // but as it's very unlikely that an individual transaction is going to
         // have a value of over 21,474,836.47 (what this code can cope with), it's probably
         // worth doing for efficient storage
 
         let temp = file.read_i32::<LittleEndian>()?;
 
-        self.m_num = temp.abs() as u64;
+        self.num = temp.abs() as u64;
 
-        self.m_positive = temp > 0;
+        self.positive = temp > 0;
 
         Ok(())
     }
 
     pub fn store(&self, mut file: &std::fs::File) -> Result<(), SerialiseError> {
-        // Strictly speaking, this isn't right, as m_num is a u64,
+        // Strictly speaking, this isn't right, as num is a u64,
         // but as it's very unlikely that an individual transaction is going to
         // have a value of over 21,474,836.47 (what this code can cope with), it's probably
         // worth doing for efficient storage
 
-        let mut temp = self.m_num as i32;
-        if !self.m_positive {
+        let mut temp = self.num as i32;
+        if !self.positive {
             temp = -temp;
         }
         file.write_i32::<LittleEndian>(temp)?;

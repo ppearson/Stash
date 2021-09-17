@@ -40,7 +40,7 @@ pub struct ScheduledTransaction {
 
     frequency:            Frequency,
     next_date:            Date,
-    ttype:                transaction::Type,
+    type_:                transaction::Type,
 
     constraint:           Constraint
 }
@@ -49,7 +49,7 @@ impl Default for ScheduledTransaction {
     fn default () -> ScheduledTransaction {
         ScheduledTransaction{account_index: 0, enabled: true, description: "".to_string(), payee: "".to_string(), category: "".to_string(),
                     amount: Fixed::from(0.0),
-                    frequency: Frequency::Weekly, next_date: Date::default(), ttype: transaction::Type::None, constraint: Constraint::ExactDate}
+                    frequency: Frequency::Weekly, next_date: Date::default(), type_: transaction::Type::None, constraint: Constraint::ExactDate}
     }
 }
 
@@ -86,7 +86,7 @@ impl ScheduledTransaction {
         self.next_date.load(&file)?;
 
         let transaction_type_value = file.read_u8()?;
-        self.ttype = unsafe { ::std::mem::transmute(transaction_type_value) };
+        self.type_ = unsafe { ::std::mem::transmute(transaction_type_value) };
 
         let constraint_value = file.read_u8()?;
         self.constraint = unsafe { ::std::mem::transmute(constraint_value) };
@@ -112,7 +112,7 @@ impl ScheduledTransaction {
 
         self.next_date.store(&file)?;
 
-        file.write_u8(self.ttype as u8)?;
+        file.write_u8(self.type_ as u8)?;
         file.write_u8(self.constraint as u8)?;
 
         Ok(())

@@ -7,17 +7,18 @@ use crate::storage::{SerialiseError};
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 
-#[derive(Clone,Copy, Debug)]
+#[derive(Clone, Copy, Debug)]
 #[allow(dead_code)]
+#[repr(u8)]
 pub enum Type {
-    Cash,
-    Checking,
-    Savings,
-    CreditCard,
-    Investment,
-    Asset,
-    Liability,
-    Other,
+    Cash = 0,
+    Checking = 1,
+    Savings = 2,
+    CreditCard = 3,
+    Investment = 4,
+    Asset = 5,
+    Liability = 6,
+    Other = 7,
 }
 
 #[derive(Clone, Debug)]
@@ -27,7 +28,7 @@ pub name:               String,
     number:             String,
     note:               String,
 
-    mtype:              Type,
+    type_:              Type,
 
 pub transactions:       Vec<Transaction>,
 }
@@ -35,7 +36,7 @@ pub transactions:       Vec<Transaction>,
 impl Default for Account {
     fn default () -> Account {
         Account{name: "".to_string(), institution: "".to_string(), number: "".to_string(), note: "".to_string(),
-                    mtype: Type::Cash, transactions: Vec::with_capacity(0)}
+                    type_: Type::Cash, transactions: Vec::with_capacity(0)}
     }
 }
 
@@ -47,13 +48,13 @@ impl fmt::Display for Account {
 }
 
 impl Account {
-    pub fn create(name: String, institution: String, number: String, mtype: Type) -> Account {
+    pub fn new(name: &str, institution: &str, number: &str, acc_type: Type) -> Account {
         let mut new_account = Account::default();
 
-        new_account.name = name.clone();
-        new_account.institution = institution.clone();
-        new_account.number = number.clone();
-        new_account.mtype = mtype;
+        new_account.name = name.to_string();
+        new_account.institution = institution.to_string();
+        new_account.number = number.to_string();
+        new_account.type_ = acc_type;
 
         return new_account;
     }
@@ -65,7 +66,7 @@ impl Account {
         self.note = storage::read_cstring(&file)?;
 
         let type_value = file.read_u8()?;
-        self.mtype = unsafe { ::std::mem::transmute(type_value) };
+        self.type_ = unsafe { ::std::mem::transmute(type_value) };
 
         let num_transactions = file.read_u32::<LittleEndian>()?;
 
@@ -88,7 +89,7 @@ impl Account {
         storage::write_cstring(file, &self.number)?;
         storage::write_cstring(file, &self.note)?;
 
-        let type_value = self.mtype as u8;
+        let type_value = self.type_ as u8;
         file.write_u8(type_value)?;
 
         file.write_u32::<LittleEndian>(self.transactions.len() as u32)?;
@@ -115,7 +116,6 @@ impl Account {
                 final_balance += trans.amount;
             }
         }
-
 
         return final_balance;
     }

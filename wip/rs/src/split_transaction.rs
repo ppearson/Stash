@@ -28,12 +28,13 @@ impl fmt::Display for SplitTransaction {
 }
 
 impl SplitTransaction {
-    pub fn create(description: String, payee: String, category: String, amount: Fixed) -> SplitTransaction {
+    #[allow(dead_code)]
+    pub fn new(description: &str, payee: &str, category: &str, amount: Fixed) -> SplitTransaction {
         let mut new_split_transaction = SplitTransaction::default();
 
-        new_split_transaction.description = description.clone();
-        new_split_transaction.payee = payee.clone();
-        new_split_transaction.category = category.clone();
+        new_split_transaction.description = description.to_string();
+        new_split_transaction.payee = payee.to_string();
+        new_split_transaction.category = category.to_string();
         new_split_transaction.amount = amount;
 
         return new_split_transaction;
