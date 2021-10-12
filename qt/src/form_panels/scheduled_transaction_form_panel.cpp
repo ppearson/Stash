@@ -249,6 +249,9 @@ void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const Sche
 		
 	m_pType->setCurrentIndex((unsigned int)schedTransaction.getType());
 	
+	m_pFrequency->setCurrentIndex((unsigned int)schedTransaction.getFrequency());
+	
+	m_pCategory->setCurrentIndex((unsigned int)schedTransaction.getConstraint());
 	
 	// Date
 	QDate date(schedTransaction.getNextDate().getYear(), schedTransaction.getNextDate().getMonth(), schedTransaction.getNextDate().getDay());
@@ -274,6 +277,12 @@ void ScheduledTransactionFormPanel::updateScheduledTransactionFromParamValues(Sc
 	
 	int typeIndex = m_pType->currentIndex();
 	schedTransaction.setType((Transaction::Type)typeIndex);
+	
+	int freqIndex = m_pFrequency->currentIndex();
+	schedTransaction.setFrequency((ScheduledTransaction::Frequency)freqIndex);
+	
+	int constraintIndex = m_pConstraint->currentIndex();
+	schedTransaction.setConstraint((ScheduledTransaction::Constraint)constraintIndex);
 	
 	QDate rawDate = m_pDate->date();
 	Date date(rawDate.day(), rawDate.month(), rawDate.year());
