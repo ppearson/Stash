@@ -37,7 +37,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 	
 	// in theory could pull this through from a shared variable in core/
 	// that both Qt and MacOS versions use, but not sure it's worth it?
-	QLabel* label1 = new QLabel("Stash version 1.0");
+	QLabel* label1 = new QLabel("Stash version 1.0.1");
 	// Make the font a bit bigger and bold for this label.
 	QFont currFont = label1->font();
 	currFont.setPointSize(currFont.pointSize() + 2);
