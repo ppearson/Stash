@@ -1435,7 +1435,7 @@ bool StashWindow::shouldDiscardCurrentDocument()
 					QString("Yes"), QString("No"), QString("Cancel"),
 					0, 2);
 
-	if (ret == QMessageBox::Yes)
+	if (ret == QMessageBox::Yes || ret == 0) // because it's custom buttons
 	{
 		// TODO:  ? ...
 		// TODO: we can't just call this as-is, as it has early-outs without a return value...
