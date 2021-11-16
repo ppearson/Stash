@@ -250,9 +250,7 @@ void ScheduledTransactionFormPanel::setParamsFromScheduledTransaction(const Sche
 	m_pType->setCurrentIndex((unsigned int)schedTransaction.getType());
 	
 	m_pFrequency->setCurrentIndex((unsigned int)schedTransaction.getFrequency());
-	
-	m_pCategory->setCurrentIndex((unsigned int)schedTransaction.getConstraint());
-	
+		
 	// Date
 	QDate date(schedTransaction.getNextDate().getYear(), schedTransaction.getNextDate().getMonth(), schedTransaction.getNextDate().getDay());
 	m_pDate->setDate(date);
