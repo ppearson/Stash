@@ -291,7 +291,7 @@ void TransactionsViewWidget::splitCurrentTransaction()
 		
 	// now select first child
 	
-	QModelIndex newChildIndex = newlySplitTransactionIndex.child(0, 0);
+	QModelIndex newChildIndex = m_pModel->index(0, 0, newlySplitTransactionIndex);
 	
 	m_pTreeView->selectionModel()->select(newChildIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 	m_pTreeView->scrollTo(newChildIndex);
@@ -537,7 +537,7 @@ void TransactionsViewWidget::transactionValuesUpdated()
 			splitTransactionModelRowIndex++;
 		}
 		
-		splitTransactionItemIndex = mainTransactionItemIndex.child(splitTransactionModelRowIndex, 0);
+		splitTransactionItemIndex = m_pModel->index(splitTransactionModelRowIndex, 0, mainTransactionItemIndex);
 		
 		m_pTreeView->selectionModel()->select(splitTransactionItemIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 		m_pTreeView->scrollTo(splitTransactionItemIndex);

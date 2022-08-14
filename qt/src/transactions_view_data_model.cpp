@@ -194,7 +194,7 @@ bool TransactionsViewDataModel::setData(const QModelIndex& index, const QVariant
 Qt::ItemFlags TransactionsViewDataModel::flags(const QModelIndex& index) const
 {
 	if (!index.isValid())
-		return 0;
+		return QFlag(0);
 	
 	Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 	

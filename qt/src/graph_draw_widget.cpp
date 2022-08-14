@@ -391,10 +391,9 @@ void GraphDrawWidget::drawPieChart(QPainter& painter, QPaintEvent* event)
 		float wedgeEdgeCentrePosX = std::cos(midPointRads);
 		float wedgeEdgeCentrePosY = std::sin(midPointRads);
 		
-		QString fullText;
-		fullText.sprintf("%s  %s",	item.title.c_str(), item.amount.toStdString().c_str());		
+		QString fullText = QString("%1  %2").arg(item.title.c_str()).arg(item.amount.toStdString().c_str());
 		
-		int textExtentWidth = metrics.width(fullText);
+		int textExtentWidth = metrics.horizontalAdvance(fullText);
 				
 		float fTextStartPosX = centrePoint.rx() + (wedgeEdgeCentrePosX * mainRadius);
 		float fTextStartPosY = centrePoint.ry() - (wedgeEdgeCentrePosY * mainRadius);
@@ -448,7 +447,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
 	QString maxValueString = currencyHandler->formatCurrencyAmount(m_maxAreaValue);
 
-	float leftMargin = 30.0f + metrics.width(maxValueString);
+	float leftMargin = 30.0f + metrics.horizontalAdvance(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
 	int topMargin = 40;
 
@@ -474,7 +473,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 	// work out how many X-axis labels can fit into the space available
 	if (!m_longestDate.empty())
 	{
-		float dateTextWidth = metrics.width(m_longestDate.c_str());
+		float dateTextWidth = metrics.horizontalAdvance(m_longestDate.c_str());
 		// slight margin so that we ensure that labels don't touch
 		dateTextWidth += 4.0f;
 
@@ -499,7 +498,7 @@ void GraphDrawWidget::drawAreaChart(QPainter& painter, QPaintEvent* event)
 		if (i == 0 || i % dateLabelAlternating == 0)
 		{
 			const QString& dateStr = m_aAreaChartDates[i];
-			float textExtent = metrics.width(dateStr);
+			float textExtent = metrics.horizontalAdvance(dateStr);
 
 			painter.setPen(Qt::black);
 
@@ -647,7 +646,7 @@ void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
 	UICurrencyHandler* currencyHandler = m_pStashWindow->getCurrencyHandler();
 	QString maxValueString = currencyHandler->formatCurrencyAmount(m_maxOverviewValue);
 
-	float leftMargin = 30.0f + metrics.width(maxValueString);
+	float leftMargin = 30.0f + metrics.horizontalAdvance(maxValueString);
 	int bottomMargin = (metrics.height() * 2) + 20;
 	int topMargin = 40;
 
@@ -837,7 +836,7 @@ void GraphDrawWidget::drawOverviewChart(QPainter& painter, QPaintEvent* event)
 		// draw date text at the bottom
 		
 		const QString& dateStr = m_aOverviewChartDates[index];
-//		float textExtent = metrics.width(dateStr);
+//		float textExtent = metrics.horizontalAdvance(dateStr);
 
 //		yAxisLabelRect.setLeft(xPos - (textExtent / 2.0f));
 		yAxisLabelRect.setLeft(overallXStart);

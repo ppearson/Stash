@@ -56,7 +56,6 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	
 	m_pPayee = new QComboBox(this);
 	m_pPayee->setEditable(true);
-	m_pPayee->setAutoCompletion(true);
 	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
 	m_pPayee->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
 	m_pPayee->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
@@ -75,7 +74,6 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	
 	m_pCategory = new QComboBox(this);
 	m_pCategory->setEditable(true);
-	m_pCategory->setAutoCompletion(true);	
 	// TODO: None of these built-in options are that great, so I guess write our own QCompleter?
 	m_pCategory->completer()->setCompletionMode(QCompleter::UnfilteredPopupCompletion); // okay
 	m_pCategory->completer()->setCompletionMode(QCompleter::InlineCompletion); // this would be almost perfect if it didn't occasionally miss things!
@@ -136,24 +134,24 @@ TransactionFormPanel::TransactionFormPanel(const StashWindow* pStashWindow, Docu
 	m_pDescription->setMinimumHeight(22);
 	
 	pGridLayout->addWidget(pPayeeLabel, 0, 0, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pPayee, 0, 1, 1, 1, 0);
+	pGridLayout->addWidget(m_pPayee, 0, 1, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(pAmountLabel, 0, 2, 1, 1, Qt::AlignRight);
-	pGridLayout->addWidget(m_pAmount, 0, 3, 1, 1, 0);
+	pGridLayout->addWidget(m_pAmount, 0, 3, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(pCategoryLabel, 1, 0, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pCategory, 1, 1, 1, 1, 0);
+	pGridLayout->addWidget(m_pCategory, 1, 1, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(m_pCleared, 1, 3, 1, 2, Qt::AlignLeft);
 	
 	pGridLayout->addWidget(pTypeLabel, 2, 0, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pType, 2, 1, 1, 1, 0);
+	pGridLayout->addWidget(m_pType, 2, 1, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(pDateLabel, 2, 2, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pDate, 2, 3, 1, 1, 0);
+	pGridLayout->addWidget(m_pDate, 2, 3, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(pDescriptionLabel, 3, 0, 1, 1, Qt::AlignLeft);
-	pGridLayout->addWidget(m_pDescription, 3, 1, 1, 1, 0);
+	pGridLayout->addWidget(m_pDescription, 3, 1, 1, 1, QFlag(0));
 	
 	pGridLayout->addWidget(pUpdateButton, 4, 0, 1, 1, Qt::AlignLeft);
 	

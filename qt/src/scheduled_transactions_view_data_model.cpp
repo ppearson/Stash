@@ -118,7 +118,7 @@ QVariant ScheduledTransactionsViewDataModel::data(const QModelIndex& index, int 
 Qt::ItemFlags ScheduledTransactionsViewDataModel::flags(const QModelIndex& index) const
 {
 	if (!index.isValid())
-		return 0;
+		return QFlag(0);
 	
 	Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 	

@@ -148,7 +148,7 @@ void DocumentIndexView::selectItem(DocumentIndexType type, unsigned int index, b
 	if (type == eDocIndex_Account)
 	{
 		itemToSelect = m_pModel->index(0, 0); // first level
-		itemToSelect = itemToSelect.child((int)index, 0);
+		itemToSelect = m_pModel->index((int)index, 0, itemToSelect);
 	}
 	
 	if (itemToSelect.isValid())
