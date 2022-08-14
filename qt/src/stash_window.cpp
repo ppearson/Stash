@@ -788,7 +788,7 @@ void StashWindow::fileSaveAs()
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setAcceptMode(QFileDialog::AcceptSave);
 	dialog.setDefaultSuffix(tr("stash"));
-	dialog.setConfirmOverwrite(true);
+	dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 
 	if (!dialog.exec())
 		 return;
@@ -992,7 +992,7 @@ void StashWindow::fileExportOFXFile()
 	fileDialog.setViewMode(QFileDialog::Detail);
 	fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 	fileDialog.setDefaultSuffix(tr("ofx"));
-	fileDialog.setConfirmOverwrite(true);
+	fileDialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 	
 	if (!fileDialog.exec())
 		 return;
@@ -1040,7 +1040,7 @@ void StashWindow::fileExportQIFFile()
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setAcceptMode(QFileDialog::AcceptSave);
 	dialog.setDefaultSuffix(tr("qif"));
-	dialog.setConfirmOverwrite(true);
+	dialog.setOption(QFileDialog::DontConfirmOverwrite, false);
 
 	if (!dialog.exec())
 		 return;
