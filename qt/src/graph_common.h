@@ -26,36 +26,25 @@
 #include <string>
 #include <set>
 
-#include "../../core/date.h"
+#include "../../core/graph.h"
 
 // struct to hold temporary graph params state before applied to actual graph
+// TODO: why don't we just use a copy of Graph itself rather than duplicating
+//       things?
 struct TempGraphParamState
 {
-	enum DataType
-	{
-		eExpenseCategories,
-		eExpensePayees,
-		eDepositCategories,
-		eDepositPayees
-	};
-	
-	enum ItemType
-	{
-		eITAll,
-		eITAllExcept,
-		eITOnlySpecified
-	};
-
 	int				accountIndex = -1;
 	
-	DataType		dataType = eExpenseCategories;
+	Graph::Type		dataType = Graph::ExpenseCategories;
+
+	Graph::DateType	dateType = Graph::DateWeek;
 	
 	Date			startDate;
 	Date			endDate;
 	
 	bool			ignoreTransfers = false;
 	
-	ItemType		itemType = eITAll;
+	Graph::ItemsType	itemType = Graph::AllItems;
 	std::set<std::string>	aItems;
 };
 

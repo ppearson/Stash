@@ -181,14 +181,18 @@ void GraphFormPanel::setParamsFromGraph(const Graph& graph)
 	
 	const Date& startDate = graph.getStartDate();
 	const Date& endDate = graph.getEndDate();
+
+	m_pDatesControl->blockSignals(true);
 	
 	m_pStartDate->setDate(QDate(startDate.getYear(), startDate.getMonth(), startDate.getDay()));
 	m_pEndDate->setDate(QDate(endDate.getYear(), endDate.getMonth(), endDate.getDay()));
 	
 	// TODO: do this properly...
-	m_pDatesControl->setType((DatePeriodControlButtonsWidget::DurationType)(int)graph.getDateType());
+	m_pDatesControl->setType((Graph::DateType)(int)graph.getDateType());
 	
 	m_pItemType->setCurrentIndex((int)graph.getItemsType());
+
+	m_pDatesControl->blockSignals(false);
 	
 	m_pItemsList->clear();
 	
@@ -216,8 +220,11 @@ void GraphFormPanel::updateGraphFromParamValues()
 	graph.setStartDate(tempState.startDate);
 	graph.setEndDate(tempState.endDate);
 	
-	Graph::ItemsType itemsType = (Graph::ItemsType)tempState.itemType;
+	Graph::ItemsType itemsType = tempState.itemType;
 	graph.setItemsType(itemsType);
+
+	Graph::DateType dateType = tempState.dateType;
+	graph.setDateType(dateType);
 	
 	Graph::ViewType viewType = (Graph::ViewType)m_viewTypeIndex;
 	graph.setViewType(viewType);
@@ -250,7 +257,9 @@ TempGraphParamState GraphFormPanel::getTempGraphParamValues() const
 	
 	state.accountIndex = m_pAccount->currentIndex();
 	
-	state.dataType = (TempGraphParamState::DataType)m_pDataType->currentIndex();
+	state.dataType = (Graph::Type)m_pDataType->currentIndex();
+
+	state.dateType = (Graph::DateType)m_pDatesControl->getType();
 	
 	QDate rawStartDate = m_pStartDate->date();
 	QDate rawEndDate = m_pEndDate->date();
@@ -259,7 +268,7 @@ TempGraphParamState GraphFormPanel::getTempGraphParamValues() const
 	
 	state.ignoreTransfers = m_pIgnoreTransfers->isChecked();
 	
-	state.itemType = (TempGraphParamState::ItemType)m_pItemType->currentIndex();
+	state.itemType = (Graph::ItemsType)m_pItemType->currentIndex();
 	
 	int numItems = m_pItemsList->count();
 	for (int i = 0; i < numItems; i++)
@@ -314,25 +323,25 @@ void GraphFormPanel::updateClicked()
 
 void GraphFormPanel::datesModifiedPrevious()
 {
-	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
-	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+	Graph::DateType type = m_pDatesControl->getType();
+	if (type == Graph::DateCustom)
 		return;
 	
 	QDate startDate = m_pStartDate->date();
 	QDate endDate = m_pEndDate->date();
 	
-	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	if (type == Graph::DateWeek)
 	{
 		startDate = startDate.addDays(-7);
 		endDate = endDate.addDays(-7);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	else if (type == Graph::DateMonth)
 	{
 		startDate = startDate.addMonths(-1);
 		startDate = startDate.addDays(- (startDate.day() - 1));
 		endDate = startDate.addDays(startDate.daysInMonth() - 1);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	else if (type == Graph::DateYear)
 	{
 		startDate = QDate(startDate.year() - 1, 1, 1);
 		endDate = QDate(startDate.year(), 12, 31);
@@ -344,25 +353,25 @@ void GraphFormPanel::datesModifiedPrevious()
 
 void GraphFormPanel::datesModifiedNext()
 {
-	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
-	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+	Graph::DateType type = m_pDatesControl->getType();
+	if (type == Graph::DateCustom)
 		return;
 	
 	QDate startDate = m_pStartDate->date();
 	QDate endDate = m_pEndDate->date();
 	
-	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	if (type == Graph::DateWeek)
 	{
 		startDate = startDate.addDays(7);
 		endDate = endDate.addDays(7);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	else if (type == Graph::DateMonth)
 	{
 		startDate = startDate.addMonths(1);
 		startDate = startDate.addDays(- (startDate.day() - 1));
 		endDate = startDate.addDays(startDate.daysInMonth() - 1);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	else if (type == Graph::DateYear)
 	{
 		startDate = QDate(startDate.year() + 1, 1, 1);
 		endDate = QDate(startDate.year(), 12, 31);
@@ -374,8 +383,8 @@ void GraphFormPanel::datesModifiedNext()
 
 void GraphFormPanel::datesModifiedTypeChanged()
 {
-	DatePeriodControlButtonsWidget::DurationType type = m_pDatesControl->getType();
-	if (type == DatePeriodControlButtonsWidget::eTypeCustom)
+	Graph::DateType type = m_pDatesControl->getType();
+	if (type == Graph::DateCustom)
 	{
 		return;
 	}
@@ -383,16 +392,16 @@ void GraphFormPanel::datesModifiedTypeChanged()
 	QDate startDate = m_pStartDate->date();
 	QDate endDate = m_pEndDate->date();
 	
-	if (type == DatePeriodControlButtonsWidget::eTypeWeek)
+	if (type == Graph::DateWeek)
 	{
 		endDate = startDate.addDays(7);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeMonth)
+	else if (type == Graph::DateMonth)
 	{
 		startDate = startDate.addDays(- (startDate.day() - 1));
 		endDate = startDate.addDays(startDate.daysInMonth() - 1);
 	}
-	else if (type == DatePeriodControlButtonsWidget::eTypeYear)
+	else if (type == Graph::DateYear)
 	{
 		startDate = QDate(startDate.year(), 1, 1);
 		endDate = QDate(startDate.year(), 12, 31);

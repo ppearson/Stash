@@ -25,6 +25,8 @@
 
 #include <QWidget>
 
+#include "../../core/graph.h"
+
 class QPushButton;
 class QComboBox;
 
@@ -33,20 +35,11 @@ class DatePeriodControlButtonsWidget : public QWidget
 	Q_OBJECT
 public:
 	DatePeriodControlButtonsWidget(QWidget* pParent);
+
+	void setType(Graph::DateType type);
 	
-	enum DurationType
-	{
-		eTypeWeek,
-		eTypeMonth,
-		eTypeYear,
-		eTypeCustom
-	};
-	
-	void setType(DurationType type);
-	
-	DurationType getType() const;
-	
-	
+	Graph::DateType getType() const;
+		
 signals:
 	void previousButtonClicked();
 	void nextButtonClicked();

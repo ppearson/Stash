@@ -59,14 +59,14 @@ DatePeriodControlButtonsWidget::DatePeriodControlButtonsWidget(QWidget* pParent)
 	layout->addStretch(5);	
 }
 
-void DatePeriodControlButtonsWidget::setType(DurationType type)
+void DatePeriodControlButtonsWidget::setType(Graph::DateType type)
 {
 	m_pType->setCurrentIndex((int)type);
 }
 
-DatePeriodControlButtonsWidget::DurationType DatePeriodControlButtonsWidget::getType() const
+Graph::DateType DatePeriodControlButtonsWidget::getType() const
 {
-	DurationType type = (DurationType)m_pType->currentIndex();
+	Graph::DateType type = (Graph::DateType)m_pType->currentIndex();
 	return type;
 }
 
@@ -82,7 +82,7 @@ void DatePeriodControlButtonsWidget::nextClicked()
 
 void DatePeriodControlButtonsWidget::typeChanged()
 {
-	bool nextPrevEnabled = getType() != eTypeCustom;
+	bool nextPrevEnabled = getType() != Graph::DateCustom;
 	
 	m_pPreviousButton->setEnabled(nextPrevEnabled);
 	m_pNextButton->setEnabled(nextPrevEnabled);

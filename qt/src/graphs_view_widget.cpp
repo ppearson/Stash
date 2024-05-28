@@ -136,13 +136,13 @@ void GraphsViewWidget::buildPieChartGraph(bool redraw)
 	PieChartCriteria pieCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, pieSmallerThanValue, pieGroupSmallerName, ePieChartSort);
 	
-	pieCriteria.m_itemsType = (Graph::ItemsType)tempParamState.itemType;
+	pieCriteria.m_itemsType = tempParamState.itemType;
 	pieCriteria.m_aItems = tempParamState.aItems;
 	
-	bool expenses = (tempParamState.dataType == TempGraphParamState::eExpenseCategories ||
-					 tempParamState.dataType == TempGraphParamState::eExpensePayees);
-	bool categories = (tempParamState.dataType == TempGraphParamState::eDepositCategories ||
-					   tempParamState.dataType == TempGraphParamState::eExpenseCategories);
+	bool expenses = (tempParamState.dataType == Graph::ExpenseCategories ||
+					 tempParamState.dataType == Graph::ExpensePayees);
+	bool categories = (tempParamState.dataType == Graph::DepositCategories ||
+					   tempParamState.dataType == Graph::ExpenseCategories);
 
 	PieChartResults pieResults;
 	
@@ -203,13 +203,13 @@ void GraphsViewWidget::buildAreaChartGraph(bool redraw)
 	AreaChartCriteria areaCriteria(pAccount, tempParamState.startDate, tempParamState.endDate,
 								 tempParamState.ignoreTransfers, areaSmallerThanValue, areaGroupSmallerName);
 
-	areaCriteria.m_itemsType = (Graph::ItemsType)tempParamState.itemType;
+	areaCriteria.m_itemsType = tempParamState.itemType;
 	areaCriteria.m_aItems = tempParamState.aItems;
 
-	bool expenses = (tempParamState.dataType == TempGraphParamState::eExpenseCategories ||
-					 tempParamState.dataType == TempGraphParamState::eExpensePayees);
-	bool categories = (tempParamState.dataType == TempGraphParamState::eDepositCategories ||
-					   tempParamState.dataType == TempGraphParamState::eExpenseCategories);
+	bool expenses = (tempParamState.dataType == Graph::ExpenseCategories ||
+					 tempParamState.dataType == Graph::ExpensePayees);
+	bool categories = (tempParamState.dataType == Graph::DepositCategories ||
+					   tempParamState.dataType == Graph::ExpenseCategories);
 
 	AreaChartResults areaResults;
 
