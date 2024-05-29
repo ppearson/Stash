@@ -20,10 +20,12 @@
  *
  */
 
-#ifndef STASH_QT_5
+#if STASH_QT_VER < 5
 #include <QtGui/QApplication>
-#else
+#elif STASH_QT_VER < 6
 #include <QtWidgets/QApplication>
+#else
+#include <QApplication>
 #endif
 
 #include "stash_window.h"
@@ -34,7 +36,7 @@ int main(int argc, char** argv)
 	QApplication a(argc, argv);
 
 #if __APPLE__
-#ifdef STASH_QT_5
+#if STASH_QT_VER > 5
 	a.setAttribute(Qt::AA_UseHighDpiPixmaps);
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
 	a.setAttribute(Qt::AA_EnableHighDpiScaling);

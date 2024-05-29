@@ -116,7 +116,11 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 			}
 		}
 	}
+#if QT_VERSION < 0x060000
 	else if (role == Qt::TextColorRole)
+#else
+	else if (role == Qt::ForegroundRole)
+#endif
 	{
 		TransactionsModelItem* item = getItem(index);
 		if (item)
@@ -137,7 +141,11 @@ QVariant TransactionsViewDataModel::data(const QModelIndex& index, int role) con
 			}
 		}
 	}
+#if QT_VERSION < 0x060000
 	else if (role == Qt::BackgroundColorRole)
+#else
+	else if (role == Qt::BackgroundRole)
+#endif
 	{
 
 	}

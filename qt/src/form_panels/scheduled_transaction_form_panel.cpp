@@ -49,7 +49,11 @@ ScheduledTransactionFormPanel::ScheduledTransactionFormPanel(const StashWindow* 
 	m_document(document)
 {
 	QGridLayout* pGridLayout = new QGridLayout(this);
+#if QT_VERSION < 0x060000
 	pGridLayout->setMargin(4);
+#else
+	pGridLayout->setContentsMargins(4, 4, 4, 4);
+#endif
 		
 	QLabel* pPayeeLabel = new QLabel(this);
 	pPayeeLabel->setText("Payee:");

@@ -65,7 +65,11 @@ QVariant DocumentIndexDataModel::data(const QModelIndex& index, int role) const
 	{
 		
 	}
+#if QT_VERSION < 0x060000
 	else if (role == Qt::TextColorRole)
+#else
+	else if (role == Qt::ForegroundRole)
+#endif
 	{
 		if (index.column() == 1)
 		{

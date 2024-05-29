@@ -102,6 +102,8 @@ protected:
 	void displayPopupMenu(const QPoint& pos);
 	
 	static QPolygon createArrowPolylineFromRect(const QRect& rectBounds, bool pointLeft);
+
+	static int getTextExtentHelper(const QFontMetrics& fontMetrics, const QString& stringValue);
 	
 signals:
 	void selectedItemAdded(QString stringValue);

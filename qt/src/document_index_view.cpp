@@ -44,7 +44,11 @@ DocumentIndexView::DocumentIndexView(Document& document, QWidget* parent, StashW
 	m_selectedIndexSubIndex(-1)
 {
 	QHBoxLayout* layout = new QHBoxLayout();
+#if QT_VERSION < 0x060000
 	layout->setMargin(0);
+#else
+	layout->setContentsMargins(0, 0, 0, 0);
+#endif
 	layout->setSpacing(0);
 
 	setLayout(layout);

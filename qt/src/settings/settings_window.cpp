@@ -22,7 +22,7 @@
 
 #include "settings_window.h"
 
-#ifndef STASH_QT_5
+#if STASH_QT_VER < 5
 #include <QtGui>
 #else
 #include <QListWidget>

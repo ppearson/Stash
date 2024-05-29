@@ -133,8 +133,11 @@ void StashWindow::setupWindow()
 		
 	m_pMainContainerWidget = new QWidget(this);
 	m_pMainLayout = new QVBoxLayout(m_pMainContainerWidget);
+#if QT_VERSION < 0x060000
 	m_pMainLayout->setMargin(0);
+#else
 	m_pMainLayout->setContentsMargins(0, 0, 0, 0);
+#endif
 	m_pMainLayout->setSpacing(0);
 
 	QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

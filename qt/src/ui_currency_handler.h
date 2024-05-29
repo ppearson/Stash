@@ -158,7 +158,12 @@ public:
 	
 	virtual QChar getThousandsSeparatorChar() const
 	{
+#if QT_VERSION < 0x060000
 		return m_locale.groupSeparator();
+#else
+		// Not sure this will always be right, but...
+		return m_locale.groupSeparator().at(0);
+#endif
 	}
 	
 protected:

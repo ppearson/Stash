@@ -51,7 +51,11 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	m_pGraphsViewWidget(pGraphsViewWidget)
 {
 	QVBoxLayout* pVBoxLayout = new QVBoxLayout(this);
+#if QT_VERSION < 0x060000
 	pVBoxLayout->setMargin(4);
+#else
+	pVBoxLayout->setContentsMargins(4, 4, 4, 4);
+#endif
 	
 	QLabel* pAccountLabel = new QLabel(this);
 	pAccountLabel->setText("Account:");
@@ -98,7 +102,11 @@ GraphFormPanel::GraphFormPanel(Document& document, GraphsViewWidget* pGraphsView
 	
 	// bundle these two together in another VBox, so there's no gap
 	QVBoxLayout* pListSubLayout = new QVBoxLayout();
+#if QT_VERSION < 0x060000
 	pListSubLayout->setMargin(0);
+#else
+	pListSubLayout->setContentsMargins(0, 0, 0, 0);
+#endif
 	pListSubLayout->setSpacing(0);
 	m_pItemsList = new QListWidget(this);
 	m_pItemsList->setMinimumHeight(130);

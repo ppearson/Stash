@@ -44,7 +44,11 @@ GraphsViewWidget::GraphsViewWidget(Document& document, QWidget* pParent, StashWi
 	m_pGraphFormPanel(nullptr)
 {
 	QHBoxLayout* pHBoxLayout = new QHBoxLayout(this);
+#if QT_VERSION < 0x060000
 	pHBoxLayout->setMargin(2);
+#else
+	pHBoxLayout->setContentsMargins(2, 2, 2, 2);
+#endif
 	
 	m_pGraphFormPanel = new GraphFormPanel(document, this, this);
 	m_pGraphFormPanel->setMaximumWidth(200);

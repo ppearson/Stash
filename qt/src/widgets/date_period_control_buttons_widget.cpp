@@ -29,7 +29,11 @@
 DatePeriodControlButtonsWidget::DatePeriodControlButtonsWidget(QWidget* pParent) : QWidget(pParent)
 {
 	QHBoxLayout* layout = new QHBoxLayout(this);
+#if QT_VERSION < 0x060000
 	layout->setMargin(0);
+#else
+	layout->setContentsMargins(0, 0, 0, 0);
+#endif
 	layout->setSpacing(0);
 
 	m_pType = new QComboBox(this);

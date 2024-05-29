@@ -57,7 +57,11 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	m_splitTransactionIndex(-1)
 {
 	QVBoxLayout* layout = new QVBoxLayout(this);
+#if QT_VERSION < 0x060000
 	layout->setMargin(0);
+#else
+	layout->setContentsMargins(0, 0, 0, 0);
+#endif
 	layout->setSpacing(0);
 	
 	//
@@ -88,7 +92,7 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	QHeaderView* pHeader = m_pTreeView->header();
 	// this is apparently the best we can do, but it means the "Description" column
 	// isn't actually resizeable on its own, you have to resize the others...
-#ifdef STASH_QT_5
+#if STASH_QT_VER > 4
 	pHeader->setSectionResizeMode(QHeaderView::Interactive);
 	pHeader->setSectionResizeMode(4, QHeaderView::Stretch);
 #else
@@ -104,6 +108,11 @@ TransactionsViewWidget::TransactionsViewWidget(QWidget* pParent, StashWindow* ma
 	connect(m_pModel, SIGNAL(transactionClearedStateChanged(unsigned int,bool)), this, SLOT(transactionClearedStateToggled(uint,bool)));
 	
 	m_pTransactionFormPanel = new TransactionFormPanel(mainWindow, m_pMainWindow->getDocumentController().getDocument(), m_pSplitter);
+
+	// this is needed in Qt6, otherwise the entire horizontal extent of the QSplitter and the subwidgets are
+	// limited to the sizeHint() returned by TransactionFormPanel, and can't be expanded further.
+	// Qt 4 and 5 don't seem to need this.
+	m_pTransactionFormPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	
 	m_pSplitter->addWidget(m_pTreeView);
 	m_pSplitter->addWidget(m_pTransactionFormPanel);

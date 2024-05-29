@@ -55,17 +55,19 @@ ScheduledTransactionsViewWidget::ScheduledTransactionsViewWidget(Document& docum
 	m_pItemControlButtons(nullptr),
 	m_scheduledTransactionIndex(-1)
 {
-	QVBoxLayout* layout = new QVBoxLayout();
+	QVBoxLayout* layout = new QVBoxLayout(this);
+#if QT_VERSION < 0x060000
 	layout->setMargin(0);
+#else
+	layout->setContentsMargins(0, 0, 0, 0);
+#endif
 	layout->setSpacing(0);
 
 	setLayout(layout);
-	
-	//
-	
+
 	m_pSplitter = new QSplitter(Qt::Vertical, this);
 	m_pSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	
+
 	layout->addWidget(m_pSplitter);
 	
 	m_pTreeView = new QTreeView(m_pSplitter);
@@ -90,14 +92,18 @@ ScheduledTransactionsViewWidget::ScheduledTransactionsViewWidget(Document& docum
 	m_pTreeView->setStyleSheet(sTableStyle2.c_str());
 	
 	m_pScheduledTransactionFormPanel = new ScheduledTransactionFormPanel(m_pMainWindow, m_document, m_pSplitter);
+	// this is needed in Qt6, otherwise the entire horizontal extent of the QSplitter and the subwidgets are
+	// limited to the sizeHint() returned by ScheduledTransactionFormPanel, and can't be expanded further.
+	// Qt 4 and 5 don't seem to need this.
+	m_pScheduledTransactionFormPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	
 	m_pSplitter->addWidget(m_pTreeView);
 	m_pSplitter->addWidget(m_pScheduledTransactionFormPanel);
 
-	m_pSplitter->setHandleWidth(2);	
+	m_pSplitter->setHandleWidth(2);
 	m_pSplitter->setStretchFactor(0, 2);
 	m_pSplitter->setStretchFactor(1, 0);
-	
+
 	m_pItemControlButtons = new ItemControlButtonsWidget(ItemControlButtonsWidget::eScheduledTransaction, this);
 	layout->addWidget(m_pItemControlButtons);
 

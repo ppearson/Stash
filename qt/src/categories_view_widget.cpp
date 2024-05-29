@@ -32,7 +32,11 @@ CategoriesViewWidget::CategoriesViewWidget(QWidget* pParent, StashWindow* mainWi
     m_pMainWindow(mainWindow)
 {
 	QVBoxLayout* layout = new QVBoxLayout(this);
+#if QT_VERSION < 0x060000
 	layout->setMargin(0);
+#else
+	layout->setContentsMargins(0, 0, 0, 0);
+#endif
 	layout->setSpacing(0);
 	
 	m_pListWidget = new QListWidget(this);
