@@ -19,7 +19,7 @@ use std::fmt;
 use crate::transaction::Transaction;
 use crate::fixed::Fixed;
 use crate::storage;
-use crate::storage::{SerialiseError};
+use crate::storage::SerialiseError;
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 
@@ -72,14 +72,14 @@ impl Account {
         new_account.number = number.to_string();
         new_account.type_ = acc_type;
 
-        return new_account;
+        new_account
     }
 
     pub fn load(&mut self, mut file: &std::fs::File, file_version: u8) -> Result<(), SerialiseError> {
-        self.name = storage::read_cstring(&file)?;
-        self.institution = storage::read_cstring(&file)?;
-        self.number = storage::read_cstring(&file)?;
-        self.note = storage::read_cstring(&file)?;
+        self.name = storage::read_cstring(file)?;
+        self.institution = storage::read_cstring(file)?;
+        self.number = storage::read_cstring(file)?;
+        self.note = storage::read_cstring(file)?;
 
         let type_value = file.read_u8()?;
         self.type_ = unsafe { ::std::mem::transmute(type_value) };
@@ -91,7 +91,7 @@ impl Account {
 
         for _i in 0..num_transactions {
             let mut transaction = Transaction::default();
-            transaction.load(&file, file_version)?;
+            transaction.load(file, file_version)?;
 
             self.transactions.push(transaction);
         }
@@ -133,6 +133,6 @@ impl Account {
             }
         }
 
-        return final_balance;
+        final_balance
     }
 }

@@ -18,7 +18,7 @@ use crate::fixed::Fixed;
 use crate::date::Date;
 
 use crate::storage;
-use crate::storage::{SerialiseError};
+use crate::storage::SerialiseError;
 
 use crate::split_transaction::SplitTransaction;
 
@@ -92,15 +92,15 @@ impl Transaction {
         new_transaction.amount = amount;
         new_transaction.date = date;
 
-        return new_transaction;
+        new_transaction
     }
 
     pub fn load(&mut self, mut file: &std::fs::File, file_version: u8) -> Result<(), SerialiseError> {
-        self.date.load(&file)?;
-        self.description = storage::read_cstring(&file)?;
-        self.payee = storage::read_cstring(&file)?;
-        self.category = storage::read_cstring(&file)?;
-        self.amount.load(&file)?;
+        self.date.load(file)?;
+        self.description = storage::read_cstring(file)?;
+        self.payee = storage::read_cstring(file)?;
+        self.category = storage::read_cstring(file)?;
+        self.amount.load(file)?;
 
         let type_value = file.read_u8()?;
         self.type_ = unsafe { ::std::mem::transmute(type_value) };
@@ -118,7 +118,7 @@ impl Transaction {
 
             for _i in 0..num_splits {
                 let mut split_trans = SplitTransaction::default();
-                split_trans.load(&file, file_version)?;
+                split_trans.load(file, file_version)?;
 
                 self.splits.push(split_trans);
             }
@@ -128,13 +128,13 @@ impl Transaction {
     }
 
     pub fn store(&self, mut file: &std::fs::File) -> Result<(), SerialiseError> {
-        self.date.store(&file)?;
+        self.date.store(file)?;
 
         storage::write_cstring(file, &self.description)?;
         storage::write_cstring(file, &self.payee)?;
         storage::write_cstring(file, &self.category)?;
 
-        self.amount.store(&file)?;
+        self.amount.store(file)?;
 
         let type_value = self.type_ as u8;
         file.write_u8(type_value)?;
@@ -154,7 +154,7 @@ impl Transaction {
             file.write_u8(num_splits)?;
 
             for split in &self.splits {
-                split.store(&file)?;
+                split.store(file)?;
             }
         }
 

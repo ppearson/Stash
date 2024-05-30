@@ -63,7 +63,7 @@ pub fn read_cstring(mut file: &std::fs::File) -> Result<String, SerialiseError> 
     
     let final_string = std::str::from_utf8(&buf[..length as usize])?;
 
-    return Ok(final_string.to_string());
+    Ok(final_string.to_string())
 }
 
 pub fn write_cstring(mut file: &std::fs::File, string_val: &str) -> Result<(), SerialiseError> {

@@ -43,7 +43,7 @@ impl From<f64> for Fixed {
         let mut num = Fixed::default();
         num.set_from_f64(val);
 
-        return num;
+        num
     }
 }
 
@@ -136,9 +136,9 @@ impl std::ops::Add for Fixed {
     type Output = Fixed;
 
     fn add(self, other: Fixed) -> Fixed {
-        let mut copy = self.clone();
+        let mut copy = self;
         copy.add_impl(other);
-        return copy;       
+        copy    
     }
 }
 
@@ -148,7 +148,7 @@ impl std::ops::Sub for Fixed {
     fn sub(self, other: Fixed) -> Fixed {
         let mut copy = self;
         copy.subtract_impl(other);
-        return copy;       
+        copy
     }
 }
 
@@ -234,7 +234,7 @@ impl Fixed {
         let fract_part = val_abs % 1.0;
         let int_part = (val_abs / 1.0).floor();
 
-        return (fract_part, int_part);
+        (fract_part, int_part)
     }
 
     fn set_from_f64(&mut self, val: f64) {
@@ -286,11 +286,11 @@ impl Fixed {
     }
 
     fn is_zero(&self) -> bool {
-        return true;
+        self.num == 0
     }
 
     fn is_positive(&self) -> bool {
-        return self.positive;
+        self.positive
     }
 
     pub fn num_digits(&self) -> u32 {
@@ -317,7 +317,7 @@ impl Fixed {
 		    count -= 1;
         }
 
-        return count;
+        count
     }
 
     pub fn num_full_digits(&self) -> u32 {
@@ -333,7 +333,7 @@ impl Fixed {
             count += 1;
         }
 
-        return count;
+        count
     }
 
     pub fn format(&self) -> String {
@@ -374,7 +374,7 @@ impl Fixed {
             out.insert(0, val);
         }
 */
-        return out;
+        out
     }
 
     pub fn load(&mut self, mut file: &std::fs::File) -> Result<(), SerialiseError> {

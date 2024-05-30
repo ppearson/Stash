@@ -54,7 +54,7 @@ impl Date {
     pub fn from_components(day: u32, month: u32, year: u32) -> Date {
         let new_date = Date {internal_date: chrono::NaiveDate::from_ymd(year as i32, month, day),
                                  year: year as u16, month: month as u8, day: day as u8, day_of_week: 0};
-        return new_date;
+        new_date
     }
 
     pub fn now(&mut self) {

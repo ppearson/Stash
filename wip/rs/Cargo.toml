@@ -1,7 +1,7 @@
 [package]
 name = "stash_rs"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -9,4 +9,4 @@ edition = "2018"
 #"approx" = "0.3.2"
 "assert_approx_eq" = "1.1.0"
 chrono = "0.4"
-byteorder = "1.4.3"
+byteorder = "1.5"

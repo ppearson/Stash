@@ -17,7 +17,7 @@
 use crate::fixed::Fixed;
 
 use crate::storage;
-use crate::storage::{SerialiseError};
+use crate::storage::SerialiseError;
 
 use std::fmt;
 
@@ -46,21 +46,17 @@ impl fmt::Display for SplitTransaction {
 impl SplitTransaction {
     #[allow(dead_code)]
     pub fn new(description: &str, payee: &str, category: &str, amount: Fixed) -> SplitTransaction {
-        let mut new_split_transaction = SplitTransaction::default();
-
-        new_split_transaction.description = description.to_string();
-        new_split_transaction.payee = payee.to_string();
-        new_split_transaction.category = category.to_string();
-        new_split_transaction.amount = amount;
-
-        return new_split_transaction;
+        SplitTransaction { description: description.to_string(),
+                           payee: payee.to_string(),
+                           category: category.to_string(),
+                           amount }
     }
 
     pub fn load(&mut self, file: &std::fs::File, _file_version: u8) -> Result<(), SerialiseError> {
-        self.description = storage::read_cstring(&file)?;
-        self.payee = storage::read_cstring(&file)?;
-        self.category = storage::read_cstring(&file)?;
-        self.amount.load(&file)?;
+        self.description = storage::read_cstring(file)?;
+        self.payee = storage::read_cstring(file)?;
+        self.category = storage::read_cstring(file)?;
+        self.amount.load(file)?;
 
         Ok(())
     }
@@ -69,7 +65,7 @@ impl SplitTransaction {
         storage::write_cstring(file, &self.description)?;
         storage::write_cstring(file, &self.payee)?;
         storage::write_cstring(file, &self.category)?;
-        self.amount.store(&file)?;
+        self.amount.store(file)?;
 
         Ok(())
     }

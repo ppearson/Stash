@@ -22,7 +22,7 @@ use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use crate::account::Account;
 
 use crate::storage;
-use crate::storage::{SerialiseError};
+use crate::storage::SerialiseError;
 use crate::fixed::Fixed;
 use crate::scheduled_transaction::ScheduledTransaction;
 use crate::graph::Graph;
@@ -61,13 +61,13 @@ impl fmt::Display for Document {
 impl Document {
     pub fn new() -> Document {
         let new_document = Document::default();
-        return new_document;
+        new_document
     }
 
     pub fn load(&mut self, filename: &str) -> Result<(), SerialiseError> {
         let mut file = match std::fs::File::open(filename) {
             Ok(file) => file,
-            Err(err) => return Err(SerialiseError::StdError(format!("Couldn't open file: '{}' - ", filename.to_string())
+            Err(err) => return Err(SerialiseError::StdError(format!("Couldn't open file: '{}' - ", filename)
                                                              + &err.to_string())),
         };
 
@@ -187,6 +187,6 @@ impl Document {
             final_balance += acc.get_balance(cleared_only);
         }
 
-        return final_balance;
+        final_balance
     }
 }

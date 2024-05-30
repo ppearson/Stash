@@ -17,7 +17,7 @@
 use crate::date::Date;
 
 use crate::storage;
-use crate::storage::{SerialiseError};
+use crate::storage::SerialiseError;
 
 use std::collections::BTreeSet;
 
@@ -93,10 +93,10 @@ impl Graph {
         // obviously not great in general, but it's what the C++ version is doing, so...
         self.account_index = file.read_u8()? as u32;
 
-        self.name = storage::read_cstring(&file)?;
+        self.name = storage::read_cstring(file)?;
 
-        self.start_date.load(&file)?;
-        self.end_date.load(&file)?;
+        self.start_date.load(file)?;
+        self.end_date.load(file)?;
 
         let type_value = file.read_u8()?;
         self.gtype = unsafe { ::std::mem::transmute(type_value) };
@@ -118,7 +118,7 @@ impl Graph {
             let num_items = file.read_u32::<LittleEndian>()?;
             self.items.clear();
             for _i in 0..num_items {
-                let string_item = storage::read_cstring(&file)?;
+                let string_item = storage::read_cstring(file)?;
                 self.items.insert(string_item);
             }
 
@@ -132,10 +132,10 @@ impl Graph {
     pub fn store(&self, mut file: &std::fs::File) -> Result<(), SerialiseError> {
         file.write_u8(self.account_index as u8)?;
 
-        storage::write_cstring(&file, &self.name)?;
+        storage::write_cstring(file, &self.name)?;
 
-        self.start_date.store(&file)?;
-        self.end_date.store(&file)?;
+        self.start_date.store(file)?;
+        self.end_date.store(file)?;
 
         file.write_u8(self.gtype as u8)?;
 
@@ -150,7 +150,7 @@ impl Graph {
 
         file.write_u32::<LittleEndian>(self.items.len() as u32)?;
         for item in &self.items {
-            storage::write_cstring(&file, &item)?;
+            storage::write_cstring(file, item)?;
         }
 
         file.write_u8(self.view_type as u8)?;

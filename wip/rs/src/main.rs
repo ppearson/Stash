@@ -113,7 +113,7 @@ fn resave_document(document: &Document, save_filename: &str) {
             eprintln!("Document resaved successfully");
         },
         Err(err) => {
-            eprintln!("Error saving document: {}", err.to_string());
+            eprintln!("Error saving document: {}", err);
         }
     }
 }
@@ -167,8 +167,8 @@ fn main() {
             }
         }
         let account = &document.accounts[account_index as usize];
-        list_transactions(&account, transaction_limit);
- //       list_transactions_with_balance(&account, transaction_limit);
+        list_transactions(account, transaction_limit);
+ //       list_transactions_with_balance(account, transaction_limit);
     }
     else if command.eq("listtb") {
         let mut account_index = 0;
@@ -180,7 +180,7 @@ fn main() {
             }
         }
         let account = &document.accounts[account_index as usize];
-        list_transactions_with_balance(&account, transaction_limit);
+        list_transactions_with_balance(account, transaction_limit);
     }
     else if command.eq("resave") {
         if args.len() > 3 {
