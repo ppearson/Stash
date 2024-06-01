@@ -1,5 +1,5 @@
-# technically, we need 3.21 for Qt6 support, but..
-cmake_minimum_required(VERSION 3.0)
+# technically, we need 3.21 for Qt6 support, but, otherwise we can get away with a much older version...
+cmake_minimum_required(VERSION 3.2)
 project(stash)
 
 enable_language(CXX)
@@ -13,16 +13,18 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set(STASH_QT_VERSION 5)
 endif()
 
-if(${STASH_QT_VERSION} LESS_EQUAL 5)
+if(${STASH_QT_VERSION} LESS 6)
+    # Qt 4 and 5
     set(CMAKE_CXX_STANDARD 11)
     set(CMAKE_CXX_STANDARD_REQUIRED on)
-    # so that QtCreator uses modern C++..
+    # so that QtCreator uses modern C++...
     set(QMAKE_CXXFLAGS "-std=c++11")
     set(EXTRA_FLAGS "-std=c++11")
 else()
+    # Qt 6
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    # so that QtCreator uses modern C++ - note, this needs to be c++11, it doesn't affect the compilation..
+    # so that QtCreator uses modern C++ - note, this needs to be c++11, it doesn't affect the compilation itself...
     set(QMAKE_CXXFLAGS "-std=c++11")
     set(EXTRA_FLAGS "-std=c++17")
 endif()
@@ -48,10 +50,12 @@ elseif(${STASH_QT_VERSION} EQUAL 5)
     # Qt 5
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	set(CMAKE_AUTOMOC ON)
+    # MacOS seems to sort of need this, but as we don't *really*
+    # care about MacOS for the Qt port, it's disabled for the moment.
 	#set(QT_USE_QTOPENGL TRUE)
 	find_package(Qt5Widgets)
 else()
-	# Qt 7
+	# Qt 6
 	find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	set(CMAKE_AUTOMOC ON)
