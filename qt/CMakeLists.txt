@@ -14,19 +14,19 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 endif()
 
 if(${STASH_QT_VERSION} LESS 6)
-    # Qt 4 and 5
-    set(CMAKE_CXX_STANDARD 11)
-    set(CMAKE_CXX_STANDARD_REQUIRED on)
-    # so that QtCreator uses modern C++...
-    set(QMAKE_CXXFLAGS "-std=c++11")
-    set(EXTRA_FLAGS "-std=c++11")
+	# Qt 4 and 5
+	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD_REQUIRED on)
+	# so that QtCreator uses modern C++...
+	set(QMAKE_CXXFLAGS "-std=c++11")
+	set(EXTRA_FLAGS "-std=c++11")
 else()
-    # Qt 6
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    # so that QtCreator uses modern C++ - note, this needs to be c++11, it doesn't affect the compilation itself...
-    set(QMAKE_CXXFLAGS "-std=c++11")
-    set(EXTRA_FLAGS "-std=c++17")
+	# Qt 6
+	set(CMAKE_CXX_STANDARD 17)
+	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+	# so that QtCreator uses modern C++ - note, this needs to be c++11, it doesn't affect the compilation itself...
+	set(QMAKE_CXXFLAGS "-std=c++11")
+	set(EXTRA_FLAGS "-std=c++17")
 endif()
 
 add_definitions(-DSTASH_QT_VER=${STASH_QT_VERSION})
@@ -47,11 +47,11 @@ if(${STASH_QT_VERSION} EQUAL 4)
 	# Qt 4
 	find_package(Qt4 REQUIRED)
 elseif(${STASH_QT_VERSION} EQUAL 5)
-    # Qt 5
+	# Qt 5
 	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	set(CMAKE_AUTOMOC ON)
-    # MacOS seems to sort of need this, but as we don't *really*
-    # care about MacOS for the Qt port, it's disabled for the moment.
+	# MacOS seems to sort of need this, but as we don't *really*
+	# care about MacOS for the Qt port, it's disabled for the moment.
 	#set(QT_USE_QTOPENGL TRUE)
 	find_package(Qt5Widgets)
 else()
@@ -62,9 +62,9 @@ else()
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING
-	  "Choose the type of build, options are: None Debug Release"
-	  FORCE)
+	set(CMAKE_BUILD_TYPE Debug CACHE STRING
+		"Choose the type of build, options are: None Debug Release"
+	 	FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 if(CMAKE_FIRST_RUN)
 	message(STATUS "Setting Build Type to: ${CMAKE_BUILD_TYPE}")
@@ -99,21 +99,21 @@ add_executable(stash ${stash_core_SOURCES} ${stash_qt_SOURCES} ${stash_HEADERS_M
 
 # OS X needs iconv at link time, but Linux doesn't for some reason.
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    if(${STASH_QT_VERSION} EQUAL 4)
-    	target_link_libraries(stash "iconv" ${QT_LIBRARIES} ${OPENGL_LIBRARY})
-    elseif(${STASH_QT_VERSION} EQUAL 5)
-        target_link_libraries(stash "iconv" Qt5::Widgets ${OPENGL_LIBRARY})
-    else()
-        target_link_libraries(stash "iconv" Qt6::Widgets ${OPENGL_LIBRARY})
-    endif()
+	if(${STASH_QT_VERSION} EQUAL 4)
+		target_link_libraries(stash "iconv" ${QT_LIBRARIES} ${OPENGL_LIBRARY})
+	elseif(${STASH_QT_VERSION} EQUAL 5)
+		target_link_libraries(stash "iconv" Qt5::Widgets ${OPENGL_LIBRARY})
+	else()
+		target_link_libraries(stash "iconv" Qt6::Widgets ${OPENGL_LIBRARY})
+	endif()
 else()
-    if(${STASH_QT_VERSION} EQUAL 4)
-        target_link_libraries(stash ${QT_LIBRARIES} ${OPENGL_LIBRARY})
-    elseif(${STASH_QT_VERSION} EQUAL 5)
-        target_link_libraries(stash Qt5::Widgets ${OPENGL_LIBRARY})
-    else()
-        target_link_libraries(stash Qt6::Widgets ${OPENGL_LIBRARY})
-    endif()
+	if(${STASH_QT_VERSION} EQUAL 4)
+		target_link_libraries(stash ${QT_LIBRARIES})
+	elseif(${STASH_QT_VERSION} EQUAL 5)
+		target_link_libraries(stash Qt5::Widgets)
+	else()
+		target_link_libraries(stash Qt6::Widgets)
+	endif()
 endif()
 
 
