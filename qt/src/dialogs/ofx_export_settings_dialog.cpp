@@ -69,7 +69,7 @@ OFXExportSettingsDialog::OFXExportSettingsDialog(QWidget* parent, const StashWin
 		pExportCell->setCheckState(Qt::Checked);
 		m_pTableWidget->setItem(i, 0, pExportCell);
 		
-		const Account& account = mainWindow->getDocumentController().getDocument().getAccount(i);
+		const Account& account = mainWindow->getDocumentController().getDocument().getAccountByIndex(i);
 
 		QTableWidgetItem* pAccountNameCell = new QTableWidgetItem(account.getName().c_str());
 		m_pTableWidget->setItem(i, 1, pAccountNameCell);

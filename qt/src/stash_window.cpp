@@ -595,14 +595,14 @@ bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransac
 {
 	Date today;
 	
-	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransaction(schedTransactionIndex);
+	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransactionByIndex(schedTransactionIndex);
 	
 	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), today);
 	
 	newTransaction.setType(schedTrans.getType());
 	newTransaction.setCleared(true);
 	
-	Account& account = m_documentController.getDocument().getAccount(schedTrans.getAccount());
+	Account& account = m_documentController.getDocument().getAccountByIndex(schedTrans.getAccount());
 	account.addTransaction(newTransaction);
 	
 	schedTrans.AdvanceNextDate();
@@ -618,7 +618,7 @@ bool StashWindow::addScheduledTransactionAsTransaction(unsigned int schedTransac
 
 bool StashWindow::skipScheduledTransaction(unsigned int schedTransactionIndex)
 {
-	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransaction(schedTransactionIndex);
+	ScheduledTransaction& schedTrans = m_documentController.getDocument().getScheduledTransactionByIndex(schedTransactionIndex);
 	schedTrans.AdvanceNextDate();
 	
 	setWindowModified(true);
@@ -890,7 +890,7 @@ void StashWindow::fileImportOFXFile()
 		{
 			// we're importing into an existing account...
 			// TODO: validate account index? Don't really see how it could be wrong, but...
-			Account& existingAccount = m_documentController.getDocument().getAccount(accSettings.existingAccountIndex);
+			Account& existingAccount = m_documentController.getDocument().getAccountByIndex(accSettings.existingAccountIndex);
 			importOFXStatementIntoAccount(existingAccount, stResp, reverseTransactions, markTransactionsCleared, ignoreExistingTransactions);
 		}
 	}
@@ -960,7 +960,7 @@ void StashWindow::fileImportQIFFile()
 	if (!qifImportSettingsDlg.exec())
 		return;
 	
-	Account* pAccount = &m_documentController.getDocument().getAccount(selectedAccountIndex);
+	Account* pAccount = &m_documentController.getDocument().getAccountByIndex(selectedAccountIndex);
 	
 	Date::DateStringFormat dateFormat = qifImportSettingsDlg.getDateFormat();
 	char separatorChar = qifImportSettingsDlg.getSeparator();
@@ -1010,7 +1010,7 @@ void StashWindow::fileExportOFXFile()
 	OFXData ofxData;
 	for (const unsigned int accIndex : aAccountsToExport)
 	{
-		const Account& srcAccount = m_documentController.getDocument().getAccount(accIndex);
+		const Account& srcAccount = m_documentController.getDocument().getAccountByIndex(accIndex);
 		
 		OFXStatementTransactionResponse statementTransactionResponse;
 		statementTransactionResponse.getStatementResponse().addOFXTransactionsForAccount(srcAccount);
@@ -1052,7 +1052,7 @@ void StashWindow::fileExportQIFFile()
 	if (fileName.isEmpty())
 		return;
 	
-	Account* pAccount = &m_documentController.getDocument().getAccount(selectedAccountIndex);
+	Account* pAccount = &m_documentController.getDocument().getAccountByIndex(selectedAccountIndex);
 	
 	Date::DateStringFormat dateFormat = Date::UK; // TODO: make this selectable...
 	if (!exportAccountToQIFFile(pAccount, fileName.toStdString(), dateFormat))
@@ -1234,8 +1234,8 @@ void StashWindow::transactionMakeTransfer()
 	
 	// create two transactions to represent the transfer between accounts.
 	
-	Account& fromAccount = m_documentController.getDocument().getAccount(makeTransferDlg.getFromAccountIndex());
-	Account& toAccount = m_documentController.getDocument().getAccount(makeTransferDlg.getToAccountIndex());
+	Account& fromAccount = m_documentController.getDocument().getAccountByIndex(makeTransferDlg.getFromAccountIndex());
+	Account& toAccount = m_documentController.getDocument().getAccountByIndex(makeTransferDlg.getToAccountIndex());
 	
 	fixed transferAmount = makeTransferDlg.getAmount();
 	fixed transferAmountNegative = transferAmount;
@@ -1297,7 +1297,7 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 {
 	if (type == eDocIndex_Account && index >= 0 && index < (int)m_documentController.getDocument().getAccountCount())
 	{
-		Account* pAccount = &m_documentController.getDocument().getAccount(index);
+		Account* pAccount = &m_documentController.getDocument().getAccountByIndex(index);
 		
 		m_pTransactionsViewWidget->setAccount(pAccount);
 		
@@ -1346,7 +1346,7 @@ void StashWindow::docIndexSelectionHasChanged(DocumentIndexType type, int index)
 	}
 	else if (type == eDocIndex_Graph && index >= 0 && index < (int)m_documentController.getDocument().getGraphCount())
 	{
-		Graph* pGraph = &m_documentController.getDocument().getGraph(index);
+		Graph* pGraph = &m_documentController.getDocument().getGraphByIndex(index);
 		
 		m_pTransactionsViewWidget->hide();
 		m_pPayeesViewWidget->hide();
@@ -1479,7 +1479,7 @@ void StashWindow::calculateDueScheduledTransactionAndDisplayDialog()
 				newTrans.amount = m_pCurrencyHandler->formatCurrencyAmount(it->getAmount());
 				newTrans.date = it->getNextDate().FormattedDate(Date::UK);
 				
-				const Account& account = m_documentController.getDocument().getAccount(accountIndex);
+				const Account& account = m_documentController.getDocument().getAccountByIndex(accountIndex);
 				newTrans.account = account.getName();
 				dueTransactions.transactions.emplace_back(newTrans);
 			}

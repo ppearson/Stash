@@ -237,7 +237,7 @@ void DocumentIndexView::customContextMenuRequested(const QPoint& pos)
 
 void DocumentIndexView::menuAccountDetails()
 {
-	Account& account = m_document.getAccount(m_selectedIndexSubIndex);
+	Account& account = m_document.getAccountByIndex(m_selectedIndexSubIndex);
 	
 	AccountDetailsDialog accountDetailsDlg(nullptr, this, false);
 	accountDetailsDlg.setFromAccount(account);
@@ -263,7 +263,7 @@ void DocumentIndexView::menuAccountDelete()
 	if (m_selectedIndexSubIndex == -1u || m_selectedIndexSubIndex >= m_document.getAccountCount())
 		return;
 	
-	const Account& account = m_document.getAccount(m_selectedIndexSubIndex);
+	const Account& account = m_document.getAccountByIndex(m_selectedIndexSubIndex);
 	
 	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the account called '") + QString(account.getName().c_str()) + "'?",
 					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);
@@ -273,7 +273,7 @@ void DocumentIndexView::menuAccountDelete()
 	
 	// otherwise, delete the account.
 	
-	m_document.deleteAccount((int)m_selectedIndexSubIndex);
+	m_document.deleteAccountByIndex((int)m_selectedIndexSubIndex);
 	
 	rebuildFromDocument();
 	
@@ -302,7 +302,7 @@ void DocumentIndexView::menuGraphDelete()
 	if (m_selectedIndexSubIndex == -1u || m_selectedIndexSubIndex >= m_document.getGraphCount())
 		return;
 	
-	const Graph& graph = m_document.getGraph(m_selectedIndexSubIndex);
+	const Graph& graph = m_document.getGraphByIndex(m_selectedIndexSubIndex);
 	
 	int ret = QMessageBox::question(this, tr("Stash"), tr("Are you sure you want to delete the graph called '") + QString(graph.getName().c_str()) + "'?",
 					QMessageBox::No | QMessageBox::Default, QMessageBox::Yes);
@@ -312,7 +312,7 @@ void DocumentIndexView::menuGraphDelete()
 	
 	// otherwise, delete the account.
 	
-	m_document.deleteGraph((int)m_selectedIndexSubIndex);
+	m_document.deleteGraphByIndex((int)m_selectedIndexSubIndex);
 	
 	rebuildFromDocument();
 }

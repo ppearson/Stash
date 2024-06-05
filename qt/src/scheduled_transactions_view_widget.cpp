@@ -175,7 +175,7 @@ void ScheduledTransactionsViewWidget::deleteSelectedScheduledTransaction()
 	
 	QModelIndex selectedModelScheduledTransactionIndex = getSingleSelectedIndex();
 	
-	m_document.deleteScheduledTransaction(m_scheduledTransactionIndex);
+	m_document.deleteScheduledTransactionByIndex(m_scheduledTransactionIndex);
 	
 	// TODO: use removeRow in the model
 	m_pModel->rebuildModelFromDocument();
@@ -210,7 +210,7 @@ void ScheduledTransactionsViewWidget::selectionChanged(const QItemSelection& sel
 	{
 		m_scheduledTransactionIndex = item->getScheduledTransactionIndex();
 
-		const ScheduledTransaction& schedTransaction = m_document.getScheduledTransaction(m_scheduledTransactionIndex);
+		const ScheduledTransaction& schedTransaction = m_document.getScheduledTransactionByIndex(m_scheduledTransactionIndex);
 		
 		m_pScheduledTransactionFormPanel->setParamsFromScheduledTransaction(schedTransaction);
 		
@@ -224,7 +224,7 @@ void ScheduledTransactionsViewWidget::scheduledTransactionValuesUpdated()
 	if (m_scheduledTransactionIndex == -1u)
 		return;
 	
-	ScheduledTransaction& scheduledTransaction = m_document.getScheduledTransaction(m_scheduledTransactionIndex);
+	ScheduledTransaction& scheduledTransaction = m_document.getScheduledTransactionByIndex(m_scheduledTransactionIndex);
 	
 	QModelIndex scheduledTransactionItemIndex = getSingleSelectedIndex();
 	

@@ -445,7 +445,7 @@ toolbarViewGroupTag;
 	
 	int nAccount = [sender getItemIndex];
 		
-	m_pAccount = &m_Document.getAccount(nAccount);
+	m_pAccount = &m_Document.getAccountByIndex(nAccount);
 	
 	[vTransactionsView setFrameSize:[contentViewPlaceholder frame].size];
 	[contentViewPlaceholder replaceSubview:contentView with:vTransactionsView];
@@ -527,7 +527,7 @@ toolbarViewGroupTag;
 	
 	int nGraph = [sender getItemIndex];
 	
-	Graph* pGraph = &m_Document.getGraph(nGraph);
+	Graph* pGraph = &m_Document.getGraphByIndex(nGraph);
 	
 	if (!pGraph)
 		return;
@@ -548,7 +548,7 @@ toolbarViewGroupTag;
 {
 	int nAccount = [sender getItemIndex];
 	
-	m_pAccount = &m_Document.getAccount(nAccount);
+	m_pAccount = &m_Document.getAccountByIndex(nAccount);
 	
 	NSString *title = [sender title];
 	
@@ -566,7 +566,7 @@ toolbarViewGroupTag;
 {
 	int nGraph = [sender getItemIndex];
 	
-	Graph* pGraph = &m_Document.getGraph(nGraph);
+	Graph* pGraph = &m_Document.getGraphByIndex(nGraph);
 	
 	if (!pGraph)
 		return;
@@ -800,7 +800,7 @@ toolbarViewGroupTag;
 		[indexBar selectItem:sAccountKey];
 		
 		// update data structures
-		m_pAccount = &m_Document.getAccount(0);
+		m_pAccount = &m_Document.getAccountByIndex(0);
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC showTransactionsForAccount:m_pAccount];
 	}
@@ -808,7 +808,7 @@ toolbarViewGroupTag;
 	{
 		int nSelectedAccount = [indexBar getItemIndex];
 		
-		m_pAccount = &m_Document.getAccount(nSelectedAccount);
+		m_pAccount = &m_Document.getAccountByIndex(nSelectedAccount);
 		TransactionsController* pTC = [TransactionsController sharedInterface];
 		[pTC showTransactionsForAccount:m_pAccount];
 	}
@@ -820,7 +820,7 @@ toolbarViewGroupTag;
 	
 	if (nAccount >= 0)
 	{
-		Account &oAccount = m_Document.getAccount(nAccount);
+		Account &oAccount = m_Document.getAccountByIndex(nAccount);
 		
 		NSString *sName = [[NSString alloc] initWithUTF8String:oAccount.getName().c_str()];
 		NSString *sInstitution = [[NSString alloc] initWithUTF8String:oAccount.getInstitution().c_str()];
@@ -842,7 +842,7 @@ toolbarViewGroupTag;
 - (void)updateAccountInfo:(int)account name:(NSString*)name institution:(NSString*)institution
 				   number:(NSString*)number note:(NSString*)note type:(Account::Type)type
 {
-	Account &oAccount = m_Document.getAccount(account);
+	Account &oAccount = m_Document.getAccountByIndex(account);
 	
 	std::string strName = [name cStringUsingEncoding:NSUTF8StringEncoding];
 	std::string strInstitution = [institution cStringUsingEncoding:NSUTF8StringEncoding];
@@ -877,9 +877,9 @@ toolbarViewGroupTag;
 		if (choice != NSAlertDefaultReturn)
 			return;
 		
-		m_Document.deleteAccount(nAccount);
+		m_Document.deleteAccountByIndex(nAccount);
 		
-		m_Document.disabledScheduledTransactionsForAccount(nAccount);
+		m_Document.disabledScheduledTransactionsForAccountByIndex(nAccount);
 		
 		[self setDocumentModified:TRUE];
 		
@@ -953,7 +953,7 @@ toolbarViewGroupTag;
 
 		NSMutableDictionary *item = [[m_aScheduledTransactions objectAtIndex:row] retain];
 		
-		ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(row);
+		ScheduledTransaction &schedTrans = m_Document.getScheduledTransactionByIndex(row);
 		
 		Transaction::Type eType = schedTrans.getType();
 		
@@ -1013,7 +1013,7 @@ toolbarViewGroupTag;
 	
 	NSInteger row = [rows lastIndex];
 	
-	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(row);
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransactionByIndex(row);
 	
 	NSDate *ndate1 = [scheduledDateCntl dateValue];
 	NSCalendarDate *CalDate = [ndate1 dateWithCalendarFormat:0 timeZone:0];
@@ -1101,7 +1101,7 @@ toolbarViewGroupTag;
 		if (choice != NSAlertDefaultReturn)
 			return;
 		
-		m_Document.deleteGraph(nGraph);
+		m_Document.deleteGraphByIndex(nGraph);
 		
 		[self setDocumentModified:TRUE];
 		
@@ -1273,7 +1273,7 @@ toolbarViewGroupTag;
 	if (row >= 0)
 	{
 		[m_aScheduledTransactions removeObjectAtIndex:row];
-		m_Document.deleteScheduledTransaction(row);
+		m_Document.deleteScheduledTransactionByIndex(row);
 	}
 	
 	[scheduledTransactionsTableView reloadData];
@@ -1389,7 +1389,7 @@ toolbarViewGroupTag;
 			
 			[nsSchedTrans setValue:[NSNumber numberWithBool:[object boolValue]] forKey:@"enabled"];
 			
-			ScheduledTransaction &oSchedTrans = m_Document.getScheduledTransaction(rowIndex);
+			ScheduledTransaction &oSchedTrans = m_Document.getScheduledTransactionByIndex(rowIndex);
 			
 			if ([object boolValue] == YES)
 			{
@@ -1705,7 +1705,7 @@ toolbarViewGroupTag;
 			
 			if (nAccount >= 0)
 			{
-				Account &oAccount = m_Document.getAccount(nAccount);
+				Account &oAccount = m_Document.getAccountByIndex(nAccount);
 				std::string strAccount = oAccount.getName();
 				NSString *sAccount = [[NSString alloc] initWithUTF8String:strAccount.c_str()];
 				
@@ -1739,14 +1739,14 @@ toolbarViewGroupTag;
 {
 	Date today;
 	
-	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransactionByIndex(index);
 	
 	Transaction newTransaction(schedTrans.getDescription(), schedTrans.getPayee(), schedTrans.getCategory(), schedTrans.getAmount(), today);
 	
 	newTransaction.setType(schedTrans.getType());
 	newTransaction.setCleared(true);
 	
-	Account &oAccount = m_Document.getAccount(schedTrans.getAccount());
+	Account &oAccount = m_Document.getAccountByIndex(schedTrans.getAccount());
 	
 	oAccount.addTransaction(newTransaction);
 	
@@ -1763,7 +1763,7 @@ toolbarViewGroupTag;
 
 - (void)SkipDueScheduledTransaction:(int)index
 {
-	ScheduledTransaction &schedTrans = m_Document.getScheduledTransaction(index);
+	ScheduledTransaction &schedTrans = m_Document.getScheduledTransactionByIndex(index);
 	
 	schedTrans.AdvanceNextDate();
 	
@@ -2013,7 +2013,7 @@ toolbarViewGroupTag;
 		if (importType == 0) // existing Account
 		{
 			int existingAccountIndex = [[accountSettings objectForKey:@"existingAccount"] intValue];
-			Account &existingAccount = m_Document.getAccount(existingAccountIndex);
+			Account &existingAccount = m_Document.getAccountByIndex(existingAccountIndex);
 			
 			importOFXStatementIntoAccount(existingAccount, stResp, reverse, cleared, ignoreExisting);
 		}
@@ -2123,14 +2123,14 @@ toolbarViewGroupTag;
 		
 		if (bExport)
 		{
-			Account &account = m_Document.getAccount(accountIndex);
+			Account &account = m_Document.getAccountByIndex(accountIndex);
 			
 			OFXStatementTransactionResponse newResponseItem;
 			newResponseItem.getStatementResponse().setCurrencyCode(strCurrencyCode);
 			
 			newResponseItem.addOFXTransactionsForAccount(account);
 			
-			dataItem.addStatementTransactionResponse(newResponseItem);			
+			dataItem.addStatementTransactionResponse(newResponseItem);
 		}
 	}
 	

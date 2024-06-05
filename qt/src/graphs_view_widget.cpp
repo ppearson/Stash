@@ -123,7 +123,7 @@ void GraphsViewWidget::buildPieChartGraph(bool redraw)
 	if (tempParamState.accountIndex < 0)
 		return;
 	
-	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
+	const Account* pAccount = &document.getAccountByIndex(tempParamState.accountIndex);
 	
 	const SettingsState& settingsState = m_pMainWindow->getSettingsState();
 	
@@ -193,7 +193,7 @@ void GraphsViewWidget::buildAreaChartGraph(bool redraw)
 	if (tempParamState.accountIndex < 0)
 		return;
 
-	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
+	const Account* pAccount = &document.getAccountByIndex(tempParamState.accountIndex);
 
 	const SettingsState& settingsState = m_pMainWindow->getSettingsState();
 
@@ -261,7 +261,7 @@ void GraphsViewWidget::buildOverviewChartGraph(bool redraw)
 	if (tempParamState.accountIndex < 0)
 		return;
 	
-	const Account* pAccount = &document.getAccount(tempParamState.accountIndex);
+	const Account* pAccount = &document.getAccountByIndex(tempParamState.accountIndex);
 	
 	fixed overallMax;
 	

@@ -234,7 +234,7 @@ static GraphController *gSharedInterface = nil;
 	if (account < 0)
 		return;
 	
-	Account* pAccount = &m_pDocument->getAccount(account);
+	Account* pAccount = &m_pDocument->getAccountByIndex(account);
 	
 	NSCalendarDate *nsCalStartDate = [startDate dateWithCalendarFormat:0 timeZone:0];
 	

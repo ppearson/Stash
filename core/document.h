@@ -41,14 +41,14 @@ public:
 		return m_aAccounts.size() - 1;
 	}
 
-	Account& getAccount(unsigned int acc)
+	Account& getAccountByIndex(unsigned int accIndex)
 	{
-		return m_aAccounts[acc];
+		return m_aAccounts[accIndex];
 	}
 
-	const Account& getAccount(unsigned int acc) const
+	const Account& getAccountByIndex(unsigned int accIndex) const
 	{
-		return m_aAccounts[acc];
+		return m_aAccounts[accIndex];
 	}
 
 	unsigned int getAccountCount() const
@@ -56,9 +56,9 @@ public:
 		return m_aAccounts.size();
 	}
 
-	void deleteAccount(int acc)
+	void deleteAccountByIndex(unsigned int accIndex)
 	{
-		m_aAccounts.erase(m_aAccounts.begin() + acc);
+		m_aAccounts.erase(m_aAccounts.begin() + accIndex);
 	}
 	
 	bool doesPayeeExist(const std::string& payee) const;
@@ -76,21 +76,21 @@ public:
 	void deleteCategory(const std::string& Category);
 	
 	unsigned int addScheduledTransaction(const ScheduledTransaction& schedTransaction);
-	ScheduledTransaction& getScheduledTransaction(unsigned int schedTrans)
+	ScheduledTransaction& getScheduledTransactionByIndex(unsigned int schedTransIndex)
 	{
-		return m_aScheduledTransactions[schedTrans];
+		return m_aScheduledTransactions[schedTransIndex];
 	}
-	const ScheduledTransaction& getScheduledTransaction(unsigned int schedTrans) const
+	const ScheduledTransaction& getScheduledTransactionByIndex(unsigned int schedTransIndex) const
 	{
-		return m_aScheduledTransactions[schedTrans];
+		return m_aScheduledTransactions[schedTransIndex];
 	}
 
-	void deleteScheduledTransaction(unsigned int schedTrans)
+	void deleteScheduledTransactionByIndex(unsigned int schedTransIndex)
 	{
-		m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTrans);
+		m_aScheduledTransactions.erase(m_aScheduledTransactions.begin() + schedTransIndex);
 	}
 	
-	void disabledScheduledTransactionsForAccount(unsigned int nAccount);
+	void disabledScheduledTransactionsForAccountByIndex(unsigned int accountIndex);
 	
 	int addGraph(const Graph& graph)
 	{
@@ -98,22 +98,22 @@ public:
 		return m_aGraphs.size() - 1;
 	}
 
-	Graph& getGraph(unsigned int graph)
+	Graph& getGraphByIndex(unsigned int graphIndex)
 	{
-		return m_aGraphs[graph];
+		return m_aGraphs[graphIndex];
 	}
-	const Graph& getGraph(unsigned int graph) const
+	const Graph& getGraphByIndex(unsigned int graphIndex) const
 	{
-		return m_aGraphs[graph];
+		return m_aGraphs[graphIndex];
 	}
 
 	unsigned int getGraphCount() const
 	{
 		return m_aGraphs.size();
 	}
-	void deleteGraph(unsigned int graph)
+	void deleteGraphByIndex(unsigned int graphIndex)
 	{
-		m_aGraphs.erase(m_aGraphs.begin() + graph);
+		m_aGraphs.erase(m_aGraphs.begin() + graphIndex);
 	}
 	
 	void clear();

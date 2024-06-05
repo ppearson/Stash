@@ -245,11 +245,11 @@ unsigned int Document::addScheduledTransaction(const ScheduledTransaction& sched
 	return m_aScheduledTransactions.size() - 1u;
 }
 
-void Document::disabledScheduledTransactionsForAccount(unsigned int nAccount)
+void Document::disabledScheduledTransactionsForAccountByIndex(unsigned int accountIndex)
 {
 	for (std::vector<ScheduledTransaction>::iterator it = m_aScheduledTransactions.begin(); it != m_aScheduledTransactions.end(); ++it)
 	{
-		if (it->getAccount() == nAccount)
+		if (it->getAccount() == accountIndex)
 		{
 			it->setAccount(-1u);
 			it->setEnabled(false);
@@ -261,7 +261,7 @@ void Document::disabledScheduledTransactionsForAccount(unsigned int nAccount)
 		{
 			unsigned int nLocalAccount = it->getAccount();
 			
-			if (nLocalAccount > nAccount)
+			if (nLocalAccount > accountIndex)
 			{
 				nLocalAccount--;
 				

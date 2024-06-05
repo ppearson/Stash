@@ -170,7 +170,7 @@ bool ScheduledTransactionsViewDataModel::setData(const QModelIndex& index, const
 		item->setEnabled(value == Qt::Checked);
 		
 		// update the data in the actual scheduled transaction
-		ScheduledTransaction& scheduledTransaction = m_document.getScheduledTransaction(item->getScheduledTransactionIndex());
+		ScheduledTransaction& scheduledTransaction = m_document.getScheduledTransactionByIndex(item->getScheduledTransactionIndex());
 		scheduledTransaction.setEnabled(item->getEnabled().toBool());
 		
 		// notify main window that the document has been updated
@@ -295,7 +295,7 @@ void ScheduledTransactionsViewDataModel::rebuildModelFromDocument()
 		unsigned int accountIndex = schedTrans.getAccount();
 		if (accountIndex != -1u && accountIndex < document.getAccountCount())
 		{
-			const Account& acc = document.getAccount(accountIndex);
+			const Account& acc = document.getAccountByIndex(accountIndex);
 			newModelItem->m_account = acc.getName().c_str();
 		}
 		

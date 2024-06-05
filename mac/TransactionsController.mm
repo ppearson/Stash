@@ -1666,8 +1666,8 @@ NSDate* convertToNSDate(const Date& date, NSCalendar* gregorian, NSDateComponent
 	if (!pDocument)
 		return;
 	
-	Account* pFromAccount = &pDocument->getAccount(nFromAccount);
-	Account* pToAccount = &pDocument->getAccount(nToAccount);
+	Account* pFromAccount = &pDocument->getAccountByIndex(nFromAccount);
+	Account* pToAccount = &pDocument->getAccountByIndex(nToAccount);
 	
 	if (!pFromAccount || !pToAccount)
 	{
